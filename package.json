@@ -1,0 +1,16 @@
+{
+  "name": "reddit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "private": true,
+  "license": "ISC",
+  "scripts": {
+    "client": "yarn workspace client dev",
+    "server": "yarn workspace server dev"
+  }
+}
