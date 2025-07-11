@@ -1,16 +1,30 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Length } from "class-validator";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  Index,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
+import { User } from "./User";
+import { Post } from "./Post";
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class Comment extends BaseEntity {
+  @Column({ unique: true })
+  identifier: string;
 
   @Column()
-  firstName: string;
+  @Length(1, 255, { message: "must be at least 1 characters long" })
+  body: string;
 
-  @Column()
-  lastName: string;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "username", referencedColumnName: "username" })
+  user: User;
 
-  @Column()
-  age: number;
+  @ManyToOne(() => Post)
+  @JoinColumn({ name: "postId", referencedColumnName: "id" })
+  post: Post;
 }

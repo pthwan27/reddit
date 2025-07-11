@@ -1,18 +1,47 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  ManyToOne,
+  OneToMany,
+  JoinColumn,
+  Index,
+} from "typeorm";
+import { User } from "./User";
+import { Post } from "./Post";
+import { Expose } from "class-transformer";
 
 @Entity()
-export class User {
+export class Sub extends BaseEntity {
+  @Index()
+  @Column()
+  name: string;
 
-    @PrimaryGeneratedColumn()
-    id: number
+  @Column()
+  title: string;
 
-    @Column()
-    firstName: string
+  @Column({ nullable: true })
+  description: string;
 
-    @Column()
-    lastName: string
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "username", referencedColumnName: "username" })
+  user: User;
 
-    @Column()
-    age: number
+  @OneToMany(() => Post, (post) => post.sub)
+  posts: Post[];
 
+  @Expose()
+  get imageUrl(): string {
+    return this.imageUrl
+      ? `${process.env.APP_URL}/images/${this.imageUrl}`
+      : "https://avatar.iran.liara.run/public";
+  }
+
+  @Expose()
+  get bannerUrl(): string {
+    return this.bannerUrl
+      ? `${process.env.APP_URL}/images/${this.bannerUrl}`
+      : "";
+  }
 }

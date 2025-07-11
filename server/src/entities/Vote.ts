@@ -1,16 +1,20 @@
 import { Length } from "class-validator";
-import { Entity, Column, BaseEntity, Index, ManyToOne } from "typeorm";
+import {
+  Entity,
+  Column,
+  BaseEntity,
+  ManyToOne,
+  IntegerType,
+  JoinColumn,
+} from "typeorm";
 import { User } from "./User";
 
 @Entity("votes")
 export class Vote extends BaseEntity {
   @Column()
-  value: string;
+  value: IntegerType;
 
-  @Column()
-  @Length(1, 255, { message: "must be at least 1 characters long" })
-  username: string;
-
-  @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "username", referencedColumnName: "username" })
   user: User;
 }
