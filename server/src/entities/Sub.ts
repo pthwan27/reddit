@@ -12,7 +12,7 @@ import { User } from "./User";
 import { Post } from "./Post";
 import { Expose } from "class-transformer";
 
-@Entity()
+@Entity("subs")
 export class Sub extends BaseEntity {
   @Index()
   @Column()
@@ -21,8 +21,17 @@ export class Sub extends BaseEntity {
   @Column()
   title: string;
 
-  @Column({ nullable: true })
+  @Column({ type: "text", nullable: true })
   description: string;
+
+  @Column({ nullable: true })
+  imageUrn: string;
+
+  @Column({ nullable: true })
+  bannerUrn: string;
+
+  @Column()
+  username: string;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: "username", referencedColumnName: "username" })
@@ -33,15 +42,15 @@ export class Sub extends BaseEntity {
 
   @Expose()
   get imageUrl(): string {
-    return this.imageUrl
-      ? `${process.env.APP_URL}/images/${this.imageUrl}`
+    return this.imageUrn
+      ? `${process.env.APP_URL}/images/${this.imageUrn}`
       : "https://avatar.iran.liara.run/public";
   }
 
   @Expose()
   get bannerUrl(): string {
-    return this.bannerUrl
-      ? `${process.env.APP_URL}/images/${this.bannerUrl}`
+    return this.bannerUrn
+      ? `${process.env.APP_URL}/images/${this.bannerUrn}`
       : "";
   }
 }
