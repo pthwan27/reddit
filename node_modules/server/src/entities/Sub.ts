@@ -1,21 +1,23 @@
+//community
+
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
-  BaseEntity,
   ManyToOne,
   OneToMany,
   JoinColumn,
   Index,
 } from "typeorm";
+
+import CoreEntity from "./CoreEntity";
 import { User } from "./User";
 import { Post } from "./Post";
-import { Expose } from "class-transformer";
+import { Exclude, Expose } from "class-transformer";
 
 @Entity("subs")
-export class Sub extends BaseEntity {
+export class Sub extends CoreEntity {
   @Index()
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @Column()
@@ -30,15 +32,18 @@ export class Sub extends BaseEntity {
   @Column({ nullable: true })
   bannerUrn: string;
 
-  @Column()
-  username: string;
-
+  @Exclude()
   @ManyToOne(() => User)
-  @JoinColumn({ name: "username", referencedColumnName: "username" })
+  @JoinColumn({ name: "userId", referencedColumnName: "id" })
   user: User;
 
   @OneToMany(() => Post, (post) => post.sub)
   posts: Post[];
+
+  @Expose()
+  get username(): string {
+    return this.user?.username;
+  }
 
   @Expose()
   get imageUrl(): string {

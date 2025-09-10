@@ -2,7 +2,6 @@ import { Length } from "class-validator";
 import {
   Entity,
   Column,
-  BaseEntity,
   Index,
   ManyToOne,
   JoinColumn,
@@ -11,6 +10,8 @@ import {
   JoinTable,
   BeforeInsert,
 } from "typeorm";
+
+import CoreEntity from "./CoreEntity";
 import { User } from "./User";
 import { Sub } from "./Sub";
 import { Comment } from "./Comment";
@@ -19,11 +20,11 @@ import { Exclude, Expose } from "class-transformer";
 import { makeId, slugify } from "../utils/helpers";
 
 @Entity("posts")
-export class Post extends BaseEntity {
+export class Post extends CoreEntity {
+  @Index()
   @Column({ unique: true })
   identifier: string;
 
-  @Index()
   @Column({ unique: true })
   @Length(1, 255, { message: "must be at least 1 characters long" })
   title: string;
@@ -38,11 +39,9 @@ export class Post extends BaseEntity {
   @Column()
   subName: string;
 
-  @Column()
-  username: string;
-
+  @Exclude()
   @ManyToOne(() => User, (user) => user.posts)
-  @JoinColumn({ name: "username", referencedColumnName: "username" })
+  @JoinColumn({ name: "userId", referencedColumnName: "id" })
   user: User;
 
   @ManyToOne(() => Sub, (sub) => sub.posts)
@@ -62,6 +61,11 @@ export class Post extends BaseEntity {
   setUserVote(user: User) {
     const idx = this.votes?.findIndex((v) => v.username === user.username);
     this.userVote = idx > -1 ? this.votes[idx].value : 0;
+  }
+
+  @Expose()
+  get username(): string {
+    return this.user?.username;
   }
 
   @Expose()

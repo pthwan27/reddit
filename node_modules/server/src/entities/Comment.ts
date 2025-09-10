@@ -2,14 +2,13 @@ import { Length } from "class-validator";
 import {
   Entity,
   Column,
-  BaseEntity,
   ManyToOne,
   JoinColumn,
-  ManyToMany,
-  JoinTable,
   OneToMany,
   BeforeInsert,
 } from "typeorm";
+
+import CoreEntity from "./CoreEntity";
 import { User } from "./User";
 import { Post } from "./Post";
 import { Vote } from "./Vote";
@@ -17,7 +16,7 @@ import { Exclude, Expose } from "class-transformer";
 import { makeId } from "../utils/helpers";
 
 @Entity("comments")
-export class Comment extends BaseEntity {
+export class Comment extends CoreEntity {
   @Column({ unique: true })
   identifier: string;
 
@@ -26,21 +25,24 @@ export class Comment extends BaseEntity {
   body: string;
 
   @Column()
-  username: string;
-
-  @Column()
   postId: number;
 
+  @Exclude()
   @ManyToOne(() => User)
-  @JoinColumn({ name: "username", referencedColumnName: "username" })
+  @JoinColumn({ name: "userId", referencedColumnName: "id" })
   user: User;
 
-  @ManyToOne(() => Post)
+  @ManyToOne(() => Post, (post) => post.comments, { nullable: false })
   post: Post;
 
   @Exclude()
   @OneToMany(() => Vote, (vote) => vote.post)
   votes: Vote[];
+
+  @Expose()
+  get username(): string {
+    return this.user?.username;
+  }
 
   protected userVote: number;
 

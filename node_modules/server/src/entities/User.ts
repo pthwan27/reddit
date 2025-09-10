@@ -1,21 +1,16 @@
 import { Exclude } from "class-transformer";
 import { IsEmail, Length } from "class-validator";
-import {
-  Entity,
-  Column,
-  BaseEntity,
-  Index,
-  BeforeInsert,
-  OneToMany,
-} from "typeorm";
+import { Column, Index, BeforeInsert, OneToMany, Entity } from "typeorm";
 import bcrypt from "bcryptjs";
+
+import CoreEntity from "./CoreEntity";
 import { Post } from "./Post";
 import { Vote } from "./Vote";
 import { Sub } from "./Sub";
 import { Comment } from "./Comment";
 
 @Entity("users")
-export class User extends BaseEntity {
+export class User extends CoreEntity {
   @Index()
   @Column({ unique: true })
   @IsEmail(undefined, { message: "must be a valid email address" })
@@ -32,14 +27,14 @@ export class User extends BaseEntity {
   @Length(6, 20, { message: "must be at least 6 characters long" })
   password: string;
 
-  @OneToMany(() => Sub, (sub) => sub.user)
-  subs: Sub[];
-
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
 
   @OneToMany(() => Vote, (vote) => vote.user)
   votes: Vote[];
+
+  @OneToMany(() => Sub, (sub) => sub.user)
+  subs: Sub[];
 
   @OneToMany(() => Comment, (comment) => comment.user)
   Comments: Comment[];
