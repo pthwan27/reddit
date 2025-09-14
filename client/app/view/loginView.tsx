@@ -17,7 +17,7 @@ const LoginView = ({
   onPasswordChange,
   onLogin,
 }: LoginViewProps) => (
-  <StyledLoginContainer>
+  <StyledLoginView>
     <h2>로그인</h2>
     <TextInputView
       text={email}
@@ -30,9 +30,9 @@ const LoginView = ({
       onChange={(e) => onPasswordChange(e.target.value)}
     />
     <ButtonView onClick={onLogin} text="회원가입" />
-  </StyledLoginContainer>
+  </StyledLoginView>
 );
-const StyledLoginContainer = styled.form`
+const StyledLoginView = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;

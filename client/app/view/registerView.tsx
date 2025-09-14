@@ -21,7 +21,7 @@ const RegisterView = ({
   onPasswordChange,
   onRegister,
 }: RegisterViewProps) => (
-  <StyledRegisterContainer>
+  <StyledRegisterView>
     <h2>가입</h2>
     <TextInputView
       text={email}
@@ -39,10 +39,10 @@ const RegisterView = ({
       onChange={(e) => onPasswordChange(e.target.value)}
     />
     <ButtonView onClick={onRegister} text="회원가입" />
-  </StyledRegisterContainer>
+  </StyledRegisterView>
 );
 
-const StyledRegisterContainer = styled.form`
+const StyledRegisterView = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;

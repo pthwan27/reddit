@@ -1,5 +1,5 @@
 import { useState } from "react";
-import LoginView from "../view/LoginView";
+import LoginView from "../view/loginView";
 
 const LoginContainer = () => {
   const [email, setEmail] = useState("");

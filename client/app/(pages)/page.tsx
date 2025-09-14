@@ -2,11 +2,13 @@
 
 import styled from "styled-components";
 import HeaderContainer from "../container/headerContainer";
+import MainContainer from "../container/mainContainer";
 
 const Home = () => {
   return (
     <PageContainer>
       <HeaderContainer />
+      <MainContainer />
     </PageContainer>
   );
 };
@@ -19,9 +21,7 @@ const PageContainer = styled.main`
   justify-content: center;
   background: ${({ theme }) => theme.colors.background};
   width: 100%;
-  max-width: 600px;
   margin: 0 auto;
-  box-sizing: border-box;
   padding: var(--spacer-lg);
 `;
 
