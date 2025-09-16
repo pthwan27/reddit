@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import styled from "styled-components";
+import { clientAxiosInstance } from "../utils/axios";
+import axios from "axios";
 
 const RegisterContainer = () => {
   const [email, setEmail] = useState("");
@@ -8,8 +10,11 @@ const RegisterContainer = () => {
   const [password, setPassword] = useState("");
 
   const register = () => {
-    console.log(email, username, password);
-    // 회원가입 로직
+    axios.post("/api/auth/register", {
+      email,
+      username,
+      password,
+    });
   };
 
   const isFilled = email && username && password;
@@ -31,7 +36,7 @@ const RegisterContainer = () => {
         placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}
       />
-      <StyledButton onClick={register} disabled={!isFilled}>
+      <StyledButton type="button" onClick={register} disabled={!isFilled}>
         회원가입
       </StyledButton>
     </StyledRegisterContainer>
