@@ -1,7 +1,12 @@
-import MainView from "../view/mainView";
+import styled from "styled-components";
 
 const MainContainer = () => {
-  return <MainView children={<></>}></MainView>;
+  return <StyledMainContainer children={<></>}></StyledMainContainer>;
 };
+
+const StyledMainContainer = styled.main`
+  flex: 9;
+  width: 100%;
+`;
 
 export default MainContainer;

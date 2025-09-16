@@ -44,10 +44,11 @@ const GlobalStyle = createGlobalStyle`
   --size-md: 1rem;
   --size-lg: 1.5rem;
   --size-xl: 2rem;
-  --size-2xl: 3rem;
-  --size-3xl: 4rem;
-  --size-4xl: 6rem;
-  --size-5xl: 8rem;
+  --size-2xl: 2.5rem;
+  --size-3xl: 3rem;
+  --size-4xl: 4rem;
+  --size-5xl: 5rem;
+  --size-6xl: 6rem;
 
   /* Line (border) */
   --line-sm: 0.0625rem;
@@ -115,8 +116,8 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
 
     font-family: var(--font-sans);
-    background: #EEF1F3;
-    color: #1a1a1b;
+    background: var(--background);
+    color: var(--text);
     line-height: 1.5;
   }
 
@@ -147,7 +148,42 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
     border: none;
     background: none;
+    font-family: var(--font-sans);
+    font-size: var(--font-16);
+
+    padding: var(--spacer-xs) var(--spacer-sm);
+
+    transition: background 0.2s, color 0.2s, border 0.2s;
   }
+  
+  button {
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    font-weight: 600;
+
+    text-wrap: nowrap;
+
+    &:hover {
+      opacity: 0.95;
+    }
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  input {
+    border-radius: var(--radius-lg);
+    &:active,
+    &:focus {
+      border: var(--line-md) solid ${({ theme }) =>
+        theme.colors.secondaryLight};
+    }
+    &:hover {
+      background: ${({ theme }) => theme.colors.grayHover};
+    }
+  }
+  
 
   /* 6. 이미지 반응형 */
   img {

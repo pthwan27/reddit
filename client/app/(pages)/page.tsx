@@ -6,10 +6,10 @@ import MainContainer from "../container/mainContainer";
 
 const Home = () => {
   return (
-    <PageContainer>
+    <>
       <HeaderContainer />
       <MainContainer />
-    </PageContainer>
+    </>
   );
 };
 
@@ -22,7 +22,6 @@ const PageContainer = styled.main`
   background: ${({ theme }) => theme.colors.background};
   width: 100%;
   margin: 0 auto;
-  padding: var(--spacer-lg);
 `;
 
 export default Home;

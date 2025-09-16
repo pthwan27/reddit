@@ -5,6 +5,8 @@ declare module "styled-components" {
     colors: {
       primary: string;
       primaryDark: string;
+      primaryDarkHover: string;
+
       secondaryLight: string;
       secondary: string;
       secondaryDark: string;
@@ -15,22 +17,26 @@ declare module "styled-components" {
       background: string;
       grayBackground: string;
       grayHover: string;
+      border: string;
+      naturalBorder: string;
 
       contentBackground: string;
       contendHover: string;
-      border: string;
       text: string;
       textMuted: string;
       link: string;
       linkHover: string;
       comment: string;
       gold: string;
+
       error: string;
       success: string;
       warning: string;
-      overlay: string;
+
       disabled: string;
       disabledText: string;
+
+      overlay: string;
     };
   }
 }
@@ -39,6 +45,7 @@ export const theme = {
     // Reddit 공식 색상
     primary: "#FF4500", // Reddit 오렌지
     primaryDark: "#D93A00", // Reddit 오렌지 (hover)
+    primaryDarkHover: "#AE2C00", // Reddit 오렌지 (hover)
 
     secondaryLight: "#0060DF", // Reddit 블루 (hover)
     secondary: "#0A449B", // Reddit 블루
@@ -52,11 +59,11 @@ export const theme = {
 
     grayBackground: "#E5EBEE", // 회색 배경
     grayHover: "#DBE4E9", // 회색 배경 hover
+    border: "#EDEFF1", // 경계선
+    naturalBorder: "#00000033", // 자연스러운 경계선
 
     contentBackground: "#FFFFFF", // 카드/포스트 등 하얀색 배경
     contendHover: "#EEF1F3", // 카드/포스트 등 하얀색 배경 hover
-
-    border: "#EDEFF1", // 경계선
 
     text: "#1A1A1B", // 기본 텍스트
     textMuted: "#878A8C", // 서브 텍스트
@@ -67,9 +74,9 @@ export const theme = {
     comment: "#F6F7F8", // 댓글 배경
 
     gold: "#FFD635", // 골드(어워드)
-    error: "#FF585B", // 에러/경고
 
     // 추가 색상
+    error: "#FF585B", // 에러/경고
     success: "#46D160",
     warning: "#FFB000",
 
@@ -77,7 +84,7 @@ export const theme = {
     disabledText: "#B7B7B7",
     // 기타
 
-    overlay: "rgba(0,0,0,0.6)",
+    overlay: "rgb(0 0 0/1)",
   },
 };
 export type Theme = typeof theme;
