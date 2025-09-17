@@ -1,21 +1,21 @@
+import { serverAxiosInstance } from "@/app/utils/axios";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
+  const { email, username, password } = await req.json();
 
-  console.log(body);
-  // try {
-  //   const { data, status } = await api.post("/auth/register", {
-  //     email,
-  //     username,
-  //     password,
-  //   });
-  //   return NextResponse.json(data, { status });
-  // } catch (error: any) {
-  //   return NextResponse.json(
-  //     { error: error.response?.data || "Server error" },
-  //     { status: error.response?.status || 500 }
-  //   );
-  // }
-  return NextResponse.json({ ok: true, body }, { status: 200 });
+  console.log(email, username, password);
+  try {
+    const { data, status } = await serverAxiosInstance.post("/auth/register", {
+      email: email,
+      username: username,
+      password: password,
+    });
+    return NextResponse.json(data, { status });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.response?.data || "Server error" },
+      { status: error.response?.status || 500 }
+    );
+  }
 }

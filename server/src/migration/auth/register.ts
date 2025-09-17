@@ -1,27 +1,37 @@
+import { RequestHandler } from "express";
 import { User } from "../../entities/User";
 
-export const register = async (req: Request, res: Response) => {
+export const RegisterHandler: RequestHandler = async (req, res) => {
+  console.log("Register request received");
   const { email, username, password } = req.body;
 
   try {
-    const user = new User();
+    // 이메일 중복 검사
+    const existingEmail = await User.findOne({ where: { email } });
+    if (existingEmail) {
+      return res.status(409).json({ error: "Email already exists" });
+    }
 
+    // 사용자명 중복 검사
+    const existingUsername = await User.findOne({ where: { username } });
+    if (existingUsername) {
+      return res.status(409).json({ error: "Username already exists" });
+    }
+
+    const user = new User();
     user.email = email;
     user.username = username;
     user.password = password;
 
     await user.save();
 
-    return res.status().json({
-      success: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        createdAt: user.createdAt,
-      },
-    });
+    console.log("User saved successfully");
+
+    return res
+      .status(201)
+      .json({ message: "User created successfully", userId: user.id });
   } catch (error) {
-    return res.status(500).json({ error: error.message || "회원가입 실패" });
+    console.error("Error saving user:", error);
+    return res.status(500).json({ error: "Failed to create user" });
   }
 };

@@ -2,14 +2,14 @@ import express, { Request, Response } from "express";
 
 import morgan from "morgan";
 import { AppDataSource } from "./data-source";
-import registerRoutes from "./routes/auth/registerRoutes";
+import registerRouter from "./routes/auth/registerRoutes";
 
 const app = express();
 
 app.use(express.json());
 app.use(morgan("dev"));
 
-// app.use("/auth", registerRoutes);
+app.use("/auth", registerRouter);
 
 app.get("/", (_: Request, res: Response) => {
   res.send("running");

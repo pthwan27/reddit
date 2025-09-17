@@ -59,11 +59,11 @@ const StyledButton = styled.button`
 
   width: 88%;
 
-  background: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.primaryDark};
   color: ${({ theme }) => theme.colors.white};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.primaryDark};
+    background: ${({ theme }) => theme.colors.primaryDarkHover};
   }
 
   &:disabled {
