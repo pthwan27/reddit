@@ -1,15 +1,16 @@
 import express, { Request, Response } from "express";
-
+import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { AppDataSource } from "./data-source";
-import registerRouter from "./routes/auth/registerRoutes";
+import authRoutes from "./routes/auth/authRoutes";
 
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(morgan("dev"));
 
-app.use("/auth", registerRouter);
+app.use("/auth", authRoutes);
 
 app.get("/", (_: Request, res: Response) => {
   res.send("running");

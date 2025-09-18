@@ -1,39 +1,31 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthModalContainer from "./authModalConatainer";
 import { useModalState } from "../context/modalContext";
-import styled, { useTheme } from "styled-components";
+import SearchIcon from "../components/svgs/SearchIcon";
+import styled from "styled-components";
+import { useAuth } from "../context/authContext";
 
 const HeaderContainer = () => {
   const [userName, setUserName] = useState<string | undefined>(undefined);
 
+  const { user } = useAuth();
   const { open } = useModalState();
-  const theme = useTheme();
+
+  useEffect(() => {
+    if (user) {
+      setUserName(user.username);
+    }
+  }, [user]);
 
   return (
     <>
       <StyledHeaderContainer>
         <StyledNav>
           <SearchInputWrapper>
-            <SearchIcon>
-              <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
-                <circle
-                  cx="9"
-                  cy="9"
-                  r="7"
-                  stroke={theme.colors.text}
-                  strokeWidth="2"
-                />
-                <line
-                  x1="14"
-                  y1="14"
-                  x2="19"
-                  y2="19"
-                  stroke={theme.colors.text}
-                  strokeWidth="2"
-                />
-              </svg>
-            </SearchIcon>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
             <StyledSearchInput placeholder="Search" />
           </SearchInputWrapper>
           {userName ? (
@@ -72,7 +64,7 @@ const SearchInputWrapper = styled.div`
   align-items: center;
   gap: var(--spacer-xs);
 `;
-const SearchIcon = styled.span`
+const SearchIconWrapper = styled.span`
   position: absolute;
   left: 1rem;
   top: 50%;

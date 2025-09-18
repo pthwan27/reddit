@@ -1,21 +1,21 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { clientAxiosInstance } from "../utils/axios";
-import axios from "axios";
-
+import { useAuth } from "../../context/authContext";
+import AuthInput from "../../components/auth/AuthInput";
+import AuthButton from "../../components/auth/AuthButton";
 const RegisterContainer = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const register = async () => {
+  const { register, isLoading } = useAuth();
+
+  const handleRegister = async () => {
     try {
-      await clientAxiosInstance.post("/api/auth/register", {
-        email,
-        username,
-        password,
-      });
+      setError("");
+      await register(email, username, password);
 
       alert("회원가입이 완료되었습니다!");
 
@@ -24,13 +24,14 @@ const RegisterContainer = () => {
       setPassword("");
     } catch (error: any) {
       console.error("Registration failed:", error);
+
       const status = error.response?.status;
       const errorMessage = error.response?.data?.error;
 
       let koreanMessage = "";
 
+      // 409 Conflict - 중복 오류
       if (status === 409) {
-        // 409 Conflict - 중복 오류
         if (errorMessage === "Email already exists") {
           koreanMessage = "이미 사용 중인 이메일입니다.";
         } else if (errorMessage === "Username already exists") {
@@ -42,8 +43,11 @@ const RegisterContainer = () => {
         koreanMessage = "입력 정보를 확인해주세요.";
       } else if (status === 500) {
         koreanMessage = "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+      } else {
+        koreanMessage = "회원가입에 실패했습니다.";
       }
 
+      setError(koreanMessage);
       alert(koreanMessage);
     }
   };
@@ -52,24 +56,37 @@ const RegisterContainer = () => {
 
   return (
     <StyledRegisterContainer>
-      <StyledInput
+      <AuthInput
         value={email}
         placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setEmail(e.target.value)
+        }
       />
-      <StyledInput
+
+      <AuthInput
         value={username}
         placeholder="Username"
-        onChange={(e) => setUsername(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setUsername(e.target.value)
+        }
       />
-      <StyledInput
+      <AuthInput
         value={password}
+        type="password"
         placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setPassword(e.target.value)
+        }
       />
-      <StyledButton type="button" onClick={register} disabled={!isFilled}>
-        회원가입
-      </StyledButton>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <AuthButton
+        type="button"
+        onClick={handleRegister}
+        disabled={!isFilled || isLoading}
+      >
+        {isLoading ? "회원가입 중..." : "회원가입"}
+      </AuthButton>
     </StyledRegisterContainer>
   );
 };
@@ -78,33 +95,15 @@ const StyledRegisterContainer = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  gap: var(--spacer-xs);
 `;
 
-const StyledInput = styled.input`
-  border: var(--line-md) solid ${({ theme }) => theme.colors.grayBackground};
-
+const ErrorMessage = styled.div`
+  color: ${({ theme }) => theme.colors.error || "#ff6b6b"};
+  font-size: 0.875rem;
+  text-align: center;
   margin: var(--spacer-xs) 0;
-
-  width: 88%;
-
-  background: ${({ theme }) => theme.colors.grayBackground};
-`;
-
-const StyledButton = styled.button`
-  border: var(--line-md) solid ${({ theme }) => theme.colors.border};
-
-  width: 88%;
-
-  background: ${({ theme }) => theme.colors.primaryDark};
-  color: ${({ theme }) => theme.colors.white};
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.primaryDarkHover};
-  }
-  &:disabled {
-    background: ${({ theme }) => theme.colors.disabled};
-    color: ${({ theme }) => theme.colors.disabledText};
-  }
 `;
 
 export default RegisterContainer;

@@ -172,14 +172,6 @@ const GlobalStyle = createGlobalStyle`
 
   input {
     border-radius: var(--radius-lg);
-    &:active,
-    &:focus {
-      border: var(--line-md) solid ${({ theme }) =>
-        theme.colors.secondaryLight};
-    }
-    &:hover {
-      background: ${({ theme }) => theme.colors.grayHover};
-    }
   }
   
 

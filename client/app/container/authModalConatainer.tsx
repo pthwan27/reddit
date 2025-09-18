@@ -1,13 +1,24 @@
-import { useState } from "react";
-import RegisterContainer from "./registerContainer";
-import LoginContainer from "./loginContainer";
+import { useEffect, useState } from "react";
+import RegisterContainer from "./auth/registerContainer";
+import LoginContainer from "./auth/loginContainer";
 import { useModalState } from "../context/modalContext";
 import styled from "styled-components";
 import { createPortal } from "react-dom";
+import { useAuth } from "../context/authContext";
 
 const AuthModalContainer = () => {
-  const [mode, setMode] = useState<"login" | "register">("register");
+  const [mode, setMode] = useState<"login" | "register">("login");
   const { isOpen, open, close } = useModalState();
+
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      setMode("login");
+    } else {
+      setMode("register");
+    }
+  }, [user]);
 
   return (
     <>
@@ -71,6 +82,11 @@ const StyledModalContent = styled.div`
     min-height: 100vh;
     border-radius: 0;
     padding: var(--spacer-md);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 `;
 

@@ -2,14 +2,14 @@
 
 import { createContext, useCallback, useContext, useState } from "react";
 
-type ModalContextType = {
+export type modalContextType = {
   isOpen: boolean;
   open: () => void;
   close: () => void;
   toggle: () => void;
 };
 
-const ModalContext = createContext<ModalContextType>({
+const ModalContext = createContext<modalContextType>({
   isOpen: false,
   open: () => {},
   close: () => {},
