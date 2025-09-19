@@ -5,36 +5,53 @@ import { useModalState } from "../context/modalContext";
 import SearchIcon from "../components/svgs/SearchIcon";
 import styled from "styled-components";
 import { useAuth } from "../context/authContext";
+import LogoIcon from "../components/svgs/LogoIcon";
+import Dropdown from "../components/header/dropdown";
+import SearchInput from "../components/header/searchInput";
 
 const HeaderContainer = () => {
-  const [userName, setUserName] = useState<string | undefined>(undefined);
-
   const { user } = useAuth();
   const { open } = useModalState();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      setUserName(user.username);
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   // 드롭다운이 열려있을 때 외부 클릭 시 닫기
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     const target = event.target as Element;
+  //     if (!target.closest("[data-dropdown]")) {
+  //       setIsDropdownOpen(false);
+  //     }
+  //   };
+
+  //   if (isDropdownOpen) {
+  //     document.addEventListener("mousedown", handleClickOutside);
+  //   }
+
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [isDropdownOpen]);
 
   return (
     <>
       <StyledHeaderContainer>
         <StyledNav>
-          <SearchInputWrapper>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledSearchInput placeholder="Search" />
-          </SearchInputWrapper>
-          {userName ? (
-            userName
-          ) : (
-            <StyledButton onClick={open}>로그인</StyledButton>
-          )}
+          <StyledLeftNav>
+            <StyledLogo>
+              <LogoIcon />
+            </StyledLogo>
+          </StyledLeftNav>
+          <StyledCenterNav>
+            <SearchInput />
+          </StyledCenterNav>
+          <StyledRightNav>
+            {user ? (
+              <Dropdown isOpen={isDropdownOpen} setIsOpen={setIsDropdownOpen} />
+            ) : (
+              <StyledButton onClick={open}>로그인</StyledButton>
+            )}
+          </StyledRightNav>
         </StyledNav>
-        {/* logo */}
       </StyledHeaderContainer>
       <AuthModalContainer />
     </>
@@ -53,34 +70,37 @@ const StyledHeaderContainer = styled.header`
 
 const StyledNav = styled.nav`
   display: flex;
-
-  gap: var(--spacer-md);
+  width: 100%;
   padding: var(--spacer-xs) 0;
 `;
 
-const SearchInputWrapper = styled.div`
-  position: relative;
+const StyledLeftNav = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--spacer-xs);
+`;
+
+const StyledCenterNav = styled.div`
+  display: flex;
+  flex: 7;
+  align-items: center;
+  gap: var(--spacer-xs);
+`;
+
+const StyledRightNav = styled.div`
+  display: flex;
+  flex: 2;
+  align-items: center;
+  gap: var(--spacer-xs);
+`;
+
+const StyledLogo = styled.div`
   display: flex;
   align-items: center;
   gap: var(--spacer-xs);
 `;
-const SearchIconWrapper = styled.span`
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  pointer-events: cursor;
-`;
 
-const StyledSearchInput = styled.input`
-  background: ${({ theme }) => theme.colors.grayBackground};
-  border: var(--line-md) solid ${({ theme }) => theme.colors.grayBackground};
-
-  padding-left: 2.5rem;
-  border-radius: var(--radius-xl);
-`;
 const StyledButton = styled.button`
   background: ${({ theme }) => theme.colors.primaryDark};
   color: ${({ theme }) => theme.colors.white};
@@ -92,4 +112,5 @@ const StyledButton = styled.button`
     color: ${({ theme }) => theme.colors.disabledText};
   }
 `;
+
 export default HeaderContainer;
