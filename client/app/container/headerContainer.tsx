@@ -1,36 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
 import AuthModalContainer from "./authModalConatainer";
 import { useModalState } from "../context/modalContext";
-import SearchIcon from "../components/svgs/SearchIcon";
 import styled from "styled-components";
 import { useAuth } from "../context/authContext";
 import LogoIcon from "../components/svgs/LogoIcon";
-import Dropdown from "../components/header/dropdown";
+import ProfileDropdown from "../components/header/profileDropdown";
 import SearchInput from "../components/header/searchInput";
 
 const HeaderContainer = () => {
   const { user } = useAuth();
   const { open } = useModalState();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  // useEffect(() => {
-  //   // 드롭다운이 열려있을 때 외부 클릭 시 닫기
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     const target = event.target as Element;
-  //     if (!target.closest("[data-dropdown]")) {
-  //       setIsDropdownOpen(false);
-  //     }
-  //   };
-
-  //   if (isDropdownOpen) {
-  //     document.addEventListener("mousedown", handleClickOutside);
-  //   }
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, [isDropdownOpen]);
 
   return (
     <>
@@ -46,7 +25,7 @@ const HeaderContainer = () => {
           </StyledCenterNav>
           <StyledRightNav>
             {user ? (
-              <Dropdown isOpen={isDropdownOpen} setIsOpen={setIsDropdownOpen} />
+              <ProfileDropdown />
             ) : (
               <StyledButton onClick={open}>로그인</StyledButton>
             )}

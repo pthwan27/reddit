@@ -1,19 +1,35 @@
 import { useAuth } from "@/app/context/authContext";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-type DropdownProps = {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-};
-
-const Dropdown = ({ isOpen, setIsOpen }: DropdownProps) => {
+const ProfileDropdown = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { user, logout } = useAuth();
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+
+      if (!target.closest("[data-dropdown]")) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
   return (
     <StyledDropdownContainer data-dropdown>
-      <StyledProfileButton onClick={() => setIsOpen(!isOpen)}>
+      <StyledProfileButton onClick={() => setIsDropdownOpen((e) => !e)}>
         {user?.username}
       </StyledProfileButton>
-      {isOpen && (
+      {isDropdownOpen && (
         <StyledDropdownMenu>
           <StyledDropdownItem>
             <span>프로필</span>
@@ -84,4 +100,4 @@ const StyledDropdownDivider = styled.div`
   background: ${({ theme }) => theme.colors.naturalBorder};
   margin: var(--spacer-xs) 0;
 `;
-export default Dropdown;
+export default ProfileDropdown;

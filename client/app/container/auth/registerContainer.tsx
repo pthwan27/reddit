@@ -95,13 +95,12 @@ const StyledRegisterContainer = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   gap: var(--spacer-xs);
 `;
 
 const ErrorMessage = styled.div`
   color: ${({ theme }) => theme.colors.error || "#ff6b6b"};
-  font-size: 0.875rem;
+  font-size: var(--font-14);
   text-align: center;
   margin: var(--spacer-xs) 0;
 `;

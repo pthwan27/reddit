@@ -9,25 +9,52 @@ import CloseIcon from "../components/svgs/CloseIcon";
 
 const AuthModalContainer = () => {
   const [mode, setMode] = useState<"login" | "register">("login");
-  const { isOpen, open, close } = useModalState();
-
+  const { isOpen, close } = useModalState();
   const { user } = useAuth();
 
   useEffect(() => {
-    if (!user) {
-      setMode("login");
-    } else {
-      setMode("register");
+    if (user && isOpen) {
+      close();
     }
-  }, [user]);
+  }, [user, isOpen, close]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+
+      if (!target.closest("[data-modal]")) {
+        close();
+      }
+    };
+
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        close();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleEscapeKey);
+      // 스크롤 방지
+      document.body.style.overflow = "hidden";
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscapeKey);
+      // 스크롤 복원
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen, close]);
 
   return (
     <>
       {isOpen && (
         <>
           {createPortal(
-            <StyledModalContainer>
-              <StyledModalBackground />
+            <StyledModalContainer data-modal>
+              <StyledModalBackground onClick={close} />
               <StyledModal>
                 <StyledModalContentHeader>
                   <StyledModalCloseButton onClick={() => close()}>

@@ -62,10 +62,10 @@ const StyledLoginContainer = styled.form`
 `;
 
 const ErrorMessage = styled.div`
-  color: red;
-  font-size: 14px;
+  color: ${({ theme }) => theme.colors.error || "#ff6b6b"};
+  font-size: var(--font-14);
   text-align: center;
-  margin-bottom: 8px;
+  margin: var(--spacer-xs) 0;
 `;
 
 export default LoginContainer;
