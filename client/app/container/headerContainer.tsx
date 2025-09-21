@@ -78,6 +78,19 @@ const StyledLogo = styled.div`
   display: flex;
   align-items: center;
   gap: var(--spacer-xs);
+  height: var(--size-2xl);
+  width: var(--size-2xl);
+  cursor: pointer;
+
+  svg {
+    width: auto;
+    height: auto;
+    border-radius: 2rem 1.4rem 2rem 1.2rem;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const StyledButton = styled.button`
