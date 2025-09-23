@@ -43,7 +43,7 @@ const GlobalStyle = createGlobalStyle`
   --size-lg: 1.5rem;
   --size-xl: 2rem;
   --size-2xl: 2.5rem;
-  --size-3xl: 3rem;
+  --size-3xl: 3.5rem;
   --size-4xl: 4rem;
   --size-5xl: 5rem;
   --size-6xl: 6rem;
@@ -55,9 +55,9 @@ const GlobalStyle = createGlobalStyle`
 
   /* Radius */
   --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 1rem;
-  --radius-xl: 2rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
   --radius-full: 624.9375rem;
 
   /* Font Styles */
@@ -150,7 +150,6 @@ const GlobalStyle = createGlobalStyle`
     font-size: var(--font-16);
 
     padding: var(--spacer-xs) var(--spacer-sm);
-
     transition: background 0.2s, color 0.2s, border 0.2s;
   }
   

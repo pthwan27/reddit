@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useAuth } from "../../context/authContext";
 import AuthInput from "../../components/auth/AuthInput";
 import AuthButton from "../../components/auth/AuthButton";
+import AuthInputFloatingLabel from "@/app/components/auth/AuthInputFloatingLabel";
 const RegisterContainer = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -59,6 +60,7 @@ const RegisterContainer = () => {
       <AuthInput
         value={email}
         placeholder="Email"
+        type="email"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setEmail(e.target.value)
         }
@@ -73,8 +75,8 @@ const RegisterContainer = () => {
       />
       <AuthInput
         value={password}
-        type="password"
         placeholder="Password"
+        type="password"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setPassword(e.target.value)
         }

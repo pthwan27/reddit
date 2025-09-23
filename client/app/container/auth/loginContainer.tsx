@@ -3,6 +3,8 @@ import styled from "styled-components";
 import AuthInput from "../../components/auth/AuthInput";
 import AuthButton from "../../components/auth/AuthButton";
 import { useAuth } from "../../context/authContext";
+import PlaceHolderInput from "@/app/components/common/placeholderInput";
+import SearchIcon from "@/app/components/svgs/SearchIcon";
 
 const LoginContainer = () => {
   const [email, setEmail] = useState("");
@@ -35,16 +37,19 @@ const LoginContainer = () => {
   return (
     <StyledLoginContainer>
       {error && <ErrorMessage>{error}</ErrorMessage>}
-      <AuthInput
+      <PlaceHolderInput
+        label="이메일을 입력하세요"
         value={email}
-        placeholder="Email"
         type="email"
+        required={true}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <AuthInput
+
+      <PlaceHolderInput
+        label="비밀번호를 입력하세요"
         value={password}
-        placeholder="Password"
         type="password"
+        required={true}
         onChange={(e) => setPassword(e.target.value)}
       />
       <AuthButton onClick={handleLogin} disabled={!isFilled || isLoading}>
