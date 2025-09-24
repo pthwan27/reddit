@@ -9,7 +9,7 @@ import CloseIcon from "../components/svgs/CloseIcon";
 
 const AuthModalContainer = () => {
   const { isOpen, close } = useModalState();
-  const { user, mode, setMode } = useAuth();
+  const { user, mode } = useAuth();
 
   useEffect(() => {
     if (user && isOpen) {

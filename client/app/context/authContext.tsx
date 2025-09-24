@@ -47,6 +47,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [mode, setMode] = useState<"login" | "register">("login");
+
   // 사용자 정보 새로고침 (쿠키 기반)
   const refreshUser = useCallback(async () => {
     try {
