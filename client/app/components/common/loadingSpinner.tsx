@@ -14,11 +14,14 @@ const StyledLoadingSpinner = styled.div`
   align-items: center;
   justify-content: center;
 
+  width: 100%;
+  height: 100vh;
+
   div {
     width: 16px;
     height: 16px;
     margin: 0 4px;
-    background-color: var(--green-color-40);
+    background: ${({ theme }) => theme.colors?.primary || "#FF4500"};
     border-radius: 50%;
     animation: loading-bounce 0.6s infinite alternate;
   }

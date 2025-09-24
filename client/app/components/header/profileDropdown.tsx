@@ -82,7 +82,7 @@ const StyledDropdownItem = styled.div`
   display: flex;
   align-items: center;
   padding: var(--spacer-sm) var(--spacer-md);
-  font-size: var(--font-14);
+  font: var(--font-14);
   cursor: pointer;
 
   &:hover {

@@ -22,6 +22,8 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  mode: "login" | "register";
+  setMode: React.Dispatch<React.SetStateAction<"login" | "register">>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   register: (
@@ -44,7 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [mode, setMode] = useState<"login" | "register">("login");
   // 사용자 정보 새로고침 (쿠키 기반)
   const refreshUser = useCallback(async () => {
     try {
@@ -139,6 +141,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     user,
     isAuthenticated: !!user,
     isLoading,
+    mode,
+    setMode,
     login,
     logout,
     register,

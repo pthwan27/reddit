@@ -14,6 +14,7 @@ const SearchInput = () => {
 
 const SearchInputWrapper = styled.div`
   position: relative;
+  width: 77%;
 `;
 
 const SearchIconWrapper = styled.span`
@@ -27,6 +28,8 @@ const SearchIconWrapper = styled.span`
 `;
 
 const StyledSearchInput = styled.input`
+  width: 100%;
+
   background: ${({ theme }) => theme.colors.grayBackground};
   border: var(--line-md) solid ${({ theme }) => theme.colors.grayBackground};
   padding-left: var(--spacer-2xl);

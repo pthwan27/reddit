@@ -1,18 +1,15 @@
 import { useState } from "react";
 import styled from "styled-components";
-import AuthInput from "../../components/auth/AuthInput";
 import AuthButton from "../../components/auth/AuthButton";
 import { useAuth } from "../../context/authContext";
 import PlaceHolderInput from "@/app/components/common/placeholderInput";
-import SearchIcon from "@/app/components/svgs/SearchIcon";
-
 const LoginContainer = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { login } = useAuth();
+  const { login, setMode } = useAuth();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -24,7 +21,6 @@ const LoginContainer = () => {
       setError("");
       setIsLoading(true);
       await login(email, password);
-      // 로그인 성공 시 모달 닫기 등의 로직은 상위 컴포넌트에서 처리
     } catch (err: any) {
       setError(err.response?.data?.error || "로그인에 실패했습니다.");
     } finally {
@@ -36,7 +32,7 @@ const LoginContainer = () => {
 
   return (
     <StyledLoginContainer>
-      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <h2>로그인</h2>
       <PlaceHolderInput
         label="이메일을 입력하세요"
         value={email}
@@ -52,6 +48,17 @@ const LoginContainer = () => {
         required={true}
         onChange={(e) => setPassword(e.target.value)}
       />
+
+      <StyledHelper>
+        <a>비밀 번호를 잊으셨나요?</a>
+        <p>
+          처음 이용하시나요?
+          <a onClick={() => setMode("register")}> 가입하세요</a>
+        </p>
+      </StyledHelper>
+
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+
       <AuthButton
         type="button"
         onClick={handleLogin}
@@ -67,14 +74,25 @@ const StyledLoginContainer = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--spacer-xs);
+  gap: var(--spacer-md);
 `;
 
 const ErrorMessage = styled.div`
   color: ${({ theme }) => theme.colors.error || "#ff6b6b"};
-  font-size: var(--font-14);
+  font: var(--font-14);
   text-align: center;
   margin: var(--spacer-xs) 0;
+`;
+
+const StyledHelper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  font: var(--font-14);
+  gap: var(--spacer-xs);
+  margin-top: var(--spacer-2xs);
+  margin-bottom: var(--spacer-sm);
 `;
 
 export default LoginContainer;

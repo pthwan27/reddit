@@ -3,9 +3,9 @@ const LogoIcon = () => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       version="1.1"
-      width="1024"
-      height="1024"
       viewBox="0 0 1024 1024"
+      width="2.5rem"
+      height="2.5rem"
     >
       <path
         d="M0 0 C337.92 0 675.84 0 1024 0 C1024 337.92 1024 675.84 1024 1024 C686.08 1024 348.16 1024 0 1024 C0 686.08 0 348.16 0 0 Z "

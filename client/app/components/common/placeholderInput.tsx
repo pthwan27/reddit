@@ -162,8 +162,7 @@ const PlaceHolderSpan = styled.span<{ isFloated: boolean }>`
   position: ${({ isFloated }) => (isFloated ? "relative" : "absolute")};
   top: ${({ isFloated }) => (isFloated ? "0" : "50%")};
   transform: ${({ isFloated }) => (isFloated ? "none" : "translateY(-50%)")};
-  font-size: ${({ isFloated }) =>
-    isFloated ? "var(--rem-12)" : "var(--rem-16)"};
+  font: ${({ isFloated }) => (isFloated ? "var(--font-12)" : "var(--font-16)")};
   padding: 0 var(--spacer-md);
   color: ${({ theme }) => theme.colors.textMuted};
   z-index: 1;
@@ -179,7 +178,7 @@ const RequiredAsterisk = styled.span`
 const StyledInput = styled.input<{ isFloated: boolean }>`
   width: 100%;
   padding: 0 var(--spacer-md);
-  font-size: var(--font-16);
+  font: var(--font-16);
   background: transparent;
   z-index: 2;
 `;

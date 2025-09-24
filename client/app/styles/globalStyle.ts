@@ -121,13 +121,15 @@ const GlobalStyle = createGlobalStyle`
 
   /* 3. 링크 스타일 */
   a {
-    color: #0079D3;
+    color: ${({ theme }) => theme.colors.link};
+    
     text-decoration: none;
+    cursor: pointer;
     transition: color 0.2s;
   }
   a:hover {
-    color: #005999;
-    text-decoration: underline;
+    color: ${({ theme }) => theme.colors.linkHover};
+    text-decoration: none;
   }
 
   /* 4. 스크롤바 스타일 */
@@ -146,9 +148,7 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
     border: none;
     background: none;
-    font-family: var(--font-sans);
-    font-size: var(--font-16);
-
+    font: var(--font-16);
     padding: var(--spacer-xs) var(--spacer-sm);
     transition: background 0.2s, color 0.2s, border 0.2s;
   }

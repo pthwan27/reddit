@@ -8,10 +8,8 @@ import { useAuth } from "../context/authContext";
 import CloseIcon from "../components/svgs/CloseIcon";
 
 const AuthModalContainer = () => {
-  const [mode, setMode] = useState<"login" | "register">("login");
-
   const { isOpen, close } = useModalState();
-  const { user } = useAuth();
+  const { user, mode, setMode } = useAuth();
 
   useEffect(() => {
     if (user && isOpen) {
@@ -131,7 +129,7 @@ const StyledModal = styled.div`
 const StyledModalContentHeader = styled.div`
   display: flex;
   align-items: center;
-  padding: var(--spacer-xs);
+  margin: var(--spacer-xs);
   margin-left: auto;
 `;
 
@@ -149,6 +147,8 @@ const StyledModalContentMain = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  margin-bottom: var(--spacer-xs);
 `;
 
 export default AuthModalContainer;

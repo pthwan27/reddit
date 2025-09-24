@@ -1,27 +1,30 @@
 "use client";
 
-import styled from "styled-components";
 import HeaderContainer from "../container/headerContainer";
 import MainContainer from "../container/mainContainer";
+import { useEffect, useState } from "react";
+import LoadingSpinner from "../components/common/loadingSpinner";
 
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
-      <HeaderContainer />
-      <MainContainer />
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <HeaderContainer />
+          <MainContainer />
+        </>
+      )}
     </>
   );
 };
-
-const PageContainer = styled.main`
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: ${({ theme }) => theme.colors.background};
-  width: 100%;
-  margin: 0 auto;
-`;
 
 export default Home;

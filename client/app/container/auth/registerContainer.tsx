@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "../../context/authContext";
-import AuthInput from "../../components/auth/AuthInput";
 import AuthButton from "../../components/auth/AuthButton";
 import PlaceHolderInput from "@/app/components/common/placeholderInput";
 
@@ -12,7 +11,7 @@ const RegisterContainer = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const { register, isLoading } = useAuth();
+  const { register, isLoading, setMode } = useAuth();
 
   const handleRegister = async () => {
     try {
@@ -58,6 +57,7 @@ const RegisterContainer = () => {
 
   return (
     <StyledRegisterContainer>
+      <h2>회원가입</h2>
       <PlaceHolderInput
         label="이메일을 입력하세요"
         value={email}
@@ -79,7 +79,14 @@ const RegisterContainer = () => {
         required={true}
         onChange={(e) => setPassword(e.target.value)}
       />
+      <StyledHelper>
+        <p>
+          이미 아이디가 있으신가요?
+          <a onClick={() => setMode("login")}> 로그인하세요</a>
+        </p>
+      </StyledHelper>
       {error && <ErrorMessage>{error}</ErrorMessage>}
+
       <AuthButton
         type="button"
         onClick={handleRegister}
@@ -95,14 +102,25 @@ const StyledRegisterContainer = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--spacer-xs);
+  gap: var(--spacer-md);
 `;
 
 const ErrorMessage = styled.div`
   color: ${({ theme }) => theme.colors.error || "#ff6b6b"};
-  font-size: var(--font-14);
+  font: var(--font-14);
   text-align: center;
   margin: var(--spacer-xs) 0;
 `;
 
+const StyledHelper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  font: var(--font-14);
+  gap: var(--spacer-xs);
+
+  margin-top: var(--spacer-2xs);
+  margin-bottom: var(--spacer-sm);
+`;
 export default RegisterContainer;

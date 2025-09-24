@@ -62,6 +62,7 @@ const StyledCenterNav = styled.div`
   display: flex;
   flex: 7;
   align-items: center;
+  justify-content: center;
   gap: var(--spacer-xs);
 `;
 
@@ -69,6 +70,7 @@ const StyledRightNav = styled.div`
   display: flex;
   flex: 2;
   align-items: center;
+  justify-content: flex-end;
   gap: var(--spacer-xs);
 `;
 
@@ -81,8 +83,6 @@ const StyledLogo = styled.div`
   cursor: pointer;
 
   svg {
-    width: auto;
-    height: auto;
     border-radius: 2rem 1.4rem 2rem 1.2rem;
   }
 
