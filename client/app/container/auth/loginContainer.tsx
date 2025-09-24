@@ -52,7 +52,11 @@ const LoginContainer = () => {
         required={true}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <AuthButton onClick={handleLogin} disabled={!isFilled || isLoading}>
+      <AuthButton
+        type="button"
+        onClick={handleLogin}
+        disabled={!isFilled || isLoading}
+      >
         {isLoading ? "로그인 중..." : "로그인"}
       </AuthButton>
     </StyledLoginContainer>

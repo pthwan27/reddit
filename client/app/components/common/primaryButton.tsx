@@ -8,6 +8,7 @@ const PrimaryButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
 const StyledButton = styled.button`
   background: ${({ theme }) => theme.colors.primaryDark};
   color: ${({ theme }) => theme.colors.white};
+
   &:hover {
     background: ${({ theme }) => theme.colors.primaryDarkHover};
   }

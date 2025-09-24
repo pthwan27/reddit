@@ -6,10 +6,8 @@ const AuthInput = (props: InputHTMLAttributes<HTMLInputElement>) => {
 };
 
 const StyledInput = styled.input`
-  border: var(--line-md) solid ${({ theme }) => theme.colors.grayBackground};
-
   width: 88%;
-
+  border: var(--line-md) solid ${({ theme }) => theme.colors.grayBackground};
   background: ${({ theme }) => theme.colors.grayBackground};
 
   &:active,

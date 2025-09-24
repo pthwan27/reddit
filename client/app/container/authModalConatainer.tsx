@@ -106,11 +106,9 @@ const StyledModalBackground = styled.div`
 const StyledModal = styled.div`
   position: relative;
   z-index: 2;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   background: ${({ theme }) => theme.colors.background};
   border-radius: var(--radius-lg);
   padding: var(--spacer-md);
@@ -123,7 +121,6 @@ const StyledModal = styled.div`
     min-height: 100vh;
     border-radius: 0;
     padding: var(--spacer-md);
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -139,8 +136,8 @@ const StyledModalContentHeader = styled.div`
 `;
 
 const StyledModalCloseButton = styled.button`
-  padding: var(--spacer-xs);
   background: ${({ theme }) => theme.colors.grayBackground};
+  padding: var(--spacer-xs);
 
   &:hover {
     background: ${({ theme }) => theme.colors.grayHover};

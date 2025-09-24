@@ -17,12 +17,9 @@ const StyledLoadingSpinner = styled.div`
   div {
     width: 16px;
     height: 16px;
-
     margin: 0 4px;
-
     background-color: var(--green-color-40);
     border-radius: 50%;
-
     animation: loading-bounce 0.6s infinite alternate;
   }
 

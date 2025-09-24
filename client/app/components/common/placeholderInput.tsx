@@ -130,25 +130,23 @@ const StyledLabel = styled.label`
   display: block;
   --left-label-position: 0px;
 `;
+
 const PlaceHolderInputContainer = styled.div<{ isFloated: boolean }>`
   position: relative;
-
-  background: ${({ theme }) => theme.colors.grayBackground};
   border: var(--line-md) solid ${({ theme }) => theme.colors.grayBackground};
   border-radius: var(--radius-lg);
+  background: ${({ theme }) => theme.colors.grayBackground};
 
   &:focus-within {
-    border-color: ${({ theme }) => theme.colors?.secondaryLight};
     background: ${({ theme }) => theme.colors?.grayHover};
+    border-color: ${({ theme }) => theme.colors?.secondaryLight};
   }
 `;
 
 const BoundaryBox = styled.span<{ isFloated: boolean }>`
   position: relative;
   display: inline-flex;
-
   flex-direction: center;
-
   height: var(--size-3xl);
 `;
 
@@ -162,41 +160,35 @@ const InputContainer = styled.span<{ hasLeadingIcon: boolean }>`
 
 const PlaceHolderSpan = styled.span<{ isFloated: boolean }>`
   position: ${({ isFloated }) => (isFloated ? "relative" : "absolute")};
-
   top: ${({ isFloated }) => (isFloated ? "0" : "50%")};
   transform: ${({ isFloated }) => (isFloated ? "none" : "translateY(-50%)")};
-  font-size: ${({ isFloated }) => (isFloated ? "12px" : "16px")};
-
+  font-size: ${({ isFloated }) =>
+    isFloated ? "var(--rem-12)" : "var(--rem-16)"};
   padding: 0 var(--spacer-md);
-
   color: ${({ theme }) => theme.colors.textMuted};
-
   z-index: 1;
-
   transition: all 0.2s;
 `;
 
 const RequiredAsterisk = styled.span`
   color: #dc3545;
   padding-top: var(--spacer-xs);
-  margin-left: 2px;
+  margin-left: var(--spacer-4xs);
 `;
 
 const StyledInput = styled.input<{ isFloated: boolean }>`
   width: 100%;
-  font-size: var(--font-16);
-
   padding: 0 var(--spacer-md);
+  font-size: var(--font-16);
   background: transparent;
-
   z-index: 2;
 `;
 
 const TrailingIconsContainer = styled.span`
   display: flex;
   align-items: center;
-  gap: 8px;
-  min-width: 40px;
+  gap: var(--rem-8);
+  min-width: var(--rem-40);
 `;
 
 const TrailingIconsValidation = styled.span`
@@ -207,19 +199,19 @@ const TrailingIconsValidation = styled.span`
 const TrailingIconsGeneral = styled.span`
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--spacer-2xs);
 `;
 
 const ClearButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: var(--spacer-2xs);
+  border: none;
+  border-radius: 50%;
+  background: none;
   color: ${({ theme }) => theme.colors?.textMuted || "#666"};
+  cursor: pointer;
 
   &:hover {
     background: ${({ theme }) => theme.colors?.grayHover || "#f0f0f0"};

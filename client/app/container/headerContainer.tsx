@@ -39,11 +39,9 @@ const HeaderContainer = () => {
 const StyledHeaderContainer = styled.header`
   display: flex;
   overflow: hidden;
-
   width: 100%;
   border-bottom: var(--line-sm) solid
     ${({ theme }) => theme.colors.naturalBorder};
-
   padding: 0 var(--spacer-md);
 `;
 
@@ -78,8 +76,8 @@ const StyledLogo = styled.div`
   display: flex;
   align-items: center;
   gap: var(--spacer-xs);
-  height: var(--size-2xl);
   width: var(--size-2xl);
+  height: var(--size-2xl);
   cursor: pointer;
 
   svg {
@@ -96,6 +94,7 @@ const StyledLogo = styled.div`
 const StyledButton = styled.button`
   background: ${({ theme }) => theme.colors.primaryDark};
   color: ${({ theme }) => theme.colors.white};
+
   &:hover {
     background: ${({ theme }) => theme.colors.primaryDarkHover};
   }

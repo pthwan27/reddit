@@ -58,7 +58,6 @@ const StyledProfileButton = styled.button`
   padding: var(--spacer-xs) var(--spacer-sm);
   border-radius: var(--radius-md);
   cursor: pointer;
-  font-weight: 500;
 
   &:hover {
     background: ${({ theme }) => theme.colors.grayBackground};
@@ -70,21 +69,21 @@ const StyledDropdownMenu = styled.div`
   top: 100%;
   right: 0;
   margin-top: var(--spacer-xs);
+  min-width: 160px;
   background: ${({ theme }) => theme.colors.background};
   border: var(--line-sm) solid ${({ theme }) => theme.colors.naturalBorder};
   border-radius: var(--radius-md);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  min-width: 160px;
   z-index: 1000;
   overflow: hidden;
 `;
 
 const StyledDropdownItem = styled.div`
-  padding: var(--spacer-sm) var(--spacer-md);
-  cursor: pointer;
   display: flex;
   align-items: center;
-  font-size: 0.875rem;
+  padding: var(--spacer-sm) var(--spacer-md);
+  font-size: var(--font-14);
+  cursor: pointer;
 
   &:hover {
     background: ${({ theme }) => theme.colors.grayBackground};
@@ -96,8 +95,8 @@ const StyledDropdownItem = styled.div`
 `;
 
 const StyledDropdownDivider = styled.div`
-  height: 1px;
-  background: ${({ theme }) => theme.colors.naturalBorder};
+  height: var(--line-sm);
   margin: var(--spacer-xs) 0;
+  background: ${({ theme }) => theme.colors.naturalBorder};
 `;
 export default ProfileDropdown;

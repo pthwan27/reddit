@@ -6,12 +6,9 @@ const AuthButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
 };
 
 const StyledButton = styled.button`
-  border: var(--line-md) solid ${({ theme }) => theme.colors.border};
-
-  width: 88%;
-
+  width: 100%;
   margin-top: var(--spacer-xs);
-
+  border: var(--line-md) solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.primaryDark};
   color: ${({ theme }) => theme.colors.white};
 
