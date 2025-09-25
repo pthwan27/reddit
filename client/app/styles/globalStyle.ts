@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -13,6 +13,7 @@ const GlobalStyle = createGlobalStyle`
   --rem-144: 9rem;
   --rem-128: 8rem;
   --rem-96: 6rem;
+  --rem-80: 5rem;
   --rem-64: 4rem;
   --rem-48: 3rem;
   --rem-40: 2.5rem;
@@ -32,8 +33,10 @@ const GlobalStyle = createGlobalStyle`
   --spacer-sm: 0.75rem;
   --spacer-md: 1rem;
   --spacer-lg: 1.5rem;
-  --spacer-xl: 2rem;
-  --spacer-2xl: 3rem;
+  --spacer-2xl: 2rem;
+  --spacer-3xl: 3rem;
+  --spacer-4xl: 4rem;
+  --spacer-5xl: 5rem;
 
   /* Sizes */
   --size-2xs: 0.25rem;

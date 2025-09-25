@@ -1,51 +1,55 @@
-"use client";
-import React, { useState } from "react";
-import styled from "styled-components";
-import { useAuth } from "../../context/authContext";
-import AuthButton from "../../components/auth/AuthButton";
-import PlaceHolderInput from "@/app/components/common/placeholderInput";
+'use client';
+
+import React, { useState } from 'react';
+
+import styled from 'styled-components';
+
+import PlaceHolderInput from '@/app/components/common/placeholderInput';
+
+import AuthButton from '../../components/auth/AuthButton';
+import { useAuth } from '../../context/authContext';
 
 const RegisterContainer = () => {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const { register, isLoading, setMode } = useAuth();
 
   const handleRegister = async () => {
     try {
-      setError("");
+      setError('');
       await register(email, username, password);
 
-      alert("회원가입이 완료되었습니다!");
+      alert('회원가입이 완료되었습니다!');
 
-      setEmail("");
-      setUsername("");
-      setPassword("");
+      setEmail('');
+      setUsername('');
+      setPassword('');
     } catch (error: any) {
-      console.error("Registration failed:", error);
+      console.error('Registration failed:', error);
 
       const status = error.response?.status;
       const errorMessage = error.response?.data?.error;
 
-      let koreanMessage = "";
+      let koreanMessage = '';
 
       // 409 Conflict - 중복 오류
       if (status === 409) {
-        if (errorMessage === "Email already exists") {
-          koreanMessage = "이미 사용 중인 이메일입니다.";
-        } else if (errorMessage === "Username already exists") {
-          koreanMessage = "이미 사용 중인 사용자명입니다.";
+        if (errorMessage === 'Email already exists') {
+          koreanMessage = '이미 사용 중인 이메일입니다.';
+        } else if (errorMessage === 'Username already exists') {
+          koreanMessage = '이미 사용 중인 사용자명입니다.';
         } else {
-          koreanMessage = "이미 존재하는 정보입니다.";
+          koreanMessage = '이미 존재하는 정보입니다.';
         }
       } else if (status === 400) {
-        koreanMessage = "입력 정보를 확인해주세요.";
+        koreanMessage = '입력 정보를 확인해주세요.';
       } else if (status === 500) {
-        koreanMessage = "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+        koreanMessage = '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
       } else {
-        koreanMessage = "회원가입에 실패했습니다.";
+        koreanMessage = '회원가입에 실패했습니다.';
       }
 
       setError(koreanMessage);
@@ -62,6 +66,7 @@ const RegisterContainer = () => {
         label="이메일을 입력하세요"
         value={email}
         type="email"
+        maxLength={33}
         required={true}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -69,6 +74,7 @@ const RegisterContainer = () => {
         label="이름을 입력하세요"
         value={username}
         type="text"
+        maxLength={20}
         required={true}
         onChange={(e) => setUsername(e.target.value)}
       />
@@ -76,13 +82,14 @@ const RegisterContainer = () => {
         label="비밀번호를 입력하세요"
         value={password}
         type="password"
+        maxLength={20}
         required={true}
         onChange={(e) => setPassword(e.target.value)}
       />
       <StyledHelper>
         <p>
           이미 아이디가 있으신가요?
-          <a onClick={() => setMode("login")}> 로그인하세요</a>
+          <a onClick={() => setMode('login')}> 로그인하세요</a>
         </p>
       </StyledHelper>
       {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -92,21 +99,22 @@ const RegisterContainer = () => {
         onClick={handleRegister}
         disabled={!isFilled || isLoading}
       >
-        {isLoading ? "회원가입 중..." : "회원가입"}
+        {isLoading ? '회원가입 중...' : '회원가입'}
       </AuthButton>
     </StyledRegisterContainer>
   );
 };
-const StyledRegisterContainer = styled.form`
+const StyledRegisterContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--spacer-md);
+  width: 100%;
 `;
 
 const ErrorMessage = styled.div`
-  color: ${({ theme }) => theme.colors.error || "#ff6b6b"};
+  color: ${({ theme }) => theme.colors.error || '#ff6b6b'};
   font: var(--font-14);
   text-align: center;
   margin: var(--spacer-xs) 0;

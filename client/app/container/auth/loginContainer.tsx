@@ -1,28 +1,32 @@
-import { useState } from "react";
-import styled from "styled-components";
-import AuthButton from "../../components/auth/AuthButton";
-import { useAuth } from "../../context/authContext";
-import PlaceHolderInput from "@/app/components/common/placeholderInput";
+import { useState } from 'react';
+
+import styled from 'styled-components';
+
+import PlaceHolderInput from '@/app/components/common/placeholderInput';
+
+import AuthButton from '../../components/auth/AuthButton';
+import { useAuth } from '../../context/authContext';
+
 const LoginContainer = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const { login, setMode } = useAuth();
 
   const handleLogin = async () => {
     if (!email || !password) {
-      setError("이메일과 비밀번호를 입력해주세요.");
+      setError('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
-      setError("");
+      setError('');
       setIsLoading(true);
       await login(email, password);
     } catch (err: any) {
-      setError(err.response?.data?.error || "로그인에 실패했습니다.");
+      setError(err.response?.data?.error || '로그인에 실패했습니다.');
     } finally {
       setIsLoading(false);
     }
@@ -37,6 +41,7 @@ const LoginContainer = () => {
         label="이메일을 입력하세요"
         value={email}
         type="email"
+        maxLength={33}
         required={true}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -45,6 +50,7 @@ const LoginContainer = () => {
         label="비밀번호를 입력하세요"
         value={password}
         type="password"
+        maxLength={20}
         required={true}
         onChange={(e) => setPassword(e.target.value)}
       />
@@ -53,7 +59,7 @@ const LoginContainer = () => {
         <a>비밀 번호를 잊으셨나요?</a>
         <p>
           처음 이용하시나요?
-          <a onClick={() => setMode("register")}> 가입하세요</a>
+          <a onClick={() => setMode('register')}> 가입하세요</a>
         </p>
       </StyledHelper>
 
@@ -64,21 +70,22 @@ const LoginContainer = () => {
         onClick={handleLogin}
         disabled={!isFilled || isLoading}
       >
-        {isLoading ? "로그인 중..." : "로그인"}
+        {isLoading ? '로그인 중...' : '로그인'}
       </AuthButton>
     </StyledLoginContainer>
   );
 };
-const StyledLoginContainer = styled.form`
+const StyledLoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--spacer-md);
+  width: 100%;
 `;
 
 const ErrorMessage = styled.div`
-  color: ${({ theme }) => theme.colors.error || "#ff6b6b"};
+  color: ${({ theme }) => theme.colors.error || '#ff6b6b'};
   font: var(--font-14);
   text-align: center;
   margin: var(--spacer-xs) 0;

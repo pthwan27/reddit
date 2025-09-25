@@ -5,7 +5,8 @@ import styled, { css } from 'styled-components';
 import ErrorIcon from '../svgs/ErrorIcon';
 import ValidIcon from '../svgs/ValidIcon';
 
-interface PlaceHolderInputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface PlaceHolderInputProps
+  extends InputHTMLAttributes<HTMLTextAreaElement> {
   label: string;
   required?: boolean;
   leadingIcon?: ReactNode;
@@ -14,7 +15,7 @@ interface PlaceHolderInputProps extends InputHTMLAttributes<HTMLInputElement> {
   isExtraContainerVisible?: boolean;
 }
 
-const PlaceHolderInput = ({
+const PlaceHolderTextarea = ({
   value,
   required = false,
   label,
@@ -80,7 +81,7 @@ const PlaceHolderInput = ({
     if (onChange) {
       onChange({
         target: { value: '' },
-      } as React.ChangeEvent<HTMLInputElement>);
+      } as React.ChangeEvent<HTMLTextAreaElement>);
     }
   };
 
@@ -89,7 +90,6 @@ const PlaceHolderInput = ({
       <PlaceHolderInputContainer
         onFocus={() => setIsFloated(true)}
         onBlur={() => setIsFloated(false)}
-        isFloated={isFloated}
       >
         <BoundaryBox>
           <InputContainer $hasLeadingIcon={!!leadingIcon}>
@@ -99,33 +99,29 @@ const PlaceHolderInput = ({
                 <RequiredAsterisk aria-hidden="true">*</RequiredAsterisk>
               )}
             </PlaceHolderSpan>
-            <StyledInput
+            <StyledTextarea
               id={`input-` + type}
-              type={type}
               value={value}
               maxLength={maxLength}
               onChange={onChange}
             />
           </InputContainer>
           {isExtraContainerVisible && (
-            <ExtraIconsContainer id="Extra-icons-container">
+            <ExtraIconContainer id="Extra-icons-container">
               <ExtraIconsValidation id="Extra-icons-validation">
                 {isValidationState === 'invalid' && <ErrorIcon />}
 
                 {isValidationState === 'valid' && <ValidIcon />}
 
-                {isValidationState === 'none' && (
-                  <div style={{ width: 20, height: 20 }} />
-                )}
+                {<div style={{ width: 20, height: 20 }} />}
               </ExtraIconsValidation>
-
               <ExtraIconsGeneral id="Extra-icons-general">
                 {ExtraIcon}
                 {clearButton && (
                   <ClearButton onClick={handleClear}>✕</ClearButton>
                 )}
               </ExtraIconsGeneral>
-            </ExtraIconsContainer>
+            </ExtraIconContainer>
           )}
         </BoundaryBox>
       </PlaceHolderInputContainer>
@@ -139,7 +135,7 @@ const StyledLabel = styled.label`
   width: 100%;
 `;
 
-const PlaceHolderInputContainer = styled.div<{ isFloated: boolean }>`
+const PlaceHolderInputContainer = styled.div`
   position: relative;
   border: var(--line-md) solid ${({ theme }) => theme.colors.grayBackground};
   border-radius: var(--radius-lg);
@@ -185,18 +181,18 @@ const RequiredAsterisk = styled.span`
   margin-left: var(--spacer-4xs);
 `;
 
-const StyledInput = styled.input`
+const StyledTextarea = styled.textarea`
   padding: 0 var(--spacer-md);
   font: var(--font-16);
   background: transparent;
   z-index: 2;
+  resize: none;
 `;
 
-const ExtraIconsContainer = styled.span`
+const ExtraIconContainer = styled.span`
   display: flex;
   align-items: center;
   gap: var(--rem-8);
-  min-width: var(--rem-40);
 `;
 
 const ExtraIconsValidation = styled.span`
@@ -226,4 +222,4 @@ const ClearButton = styled.button`
   }
 `;
 
-export default PlaceHolderInput;
+export default PlaceHolderTextarea;

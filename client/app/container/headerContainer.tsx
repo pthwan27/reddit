@@ -1,39 +1,40 @@
-"use client";
-import AuthModalContainer from "./authModalConatainer";
-import { useModalState } from "../context/modalContext";
-import styled from "styled-components";
-import { useAuth } from "../context/authContext";
-import LogoIcon from "../components/svgs/LogoIcon";
-import ProfileDropdown from "../components/header/profileDropdown";
-import SearchInput from "../components/header/searchInput";
+'use client';
+
+import styled from 'styled-components';
+
+import ProfileDropdown from '../components/header/profileDropdown';
+import SearchInput from '../components/header/searchInput';
+import LogoIcon from '../components/svgs/LogoIcon';
+import { useAuth } from '../context/authContext';
+import { ModalKey, useModalState } from '../context/modalContext';
+import AuthModal from './modal/authModal';
 
 const HeaderContainer = () => {
   const { user } = useAuth();
   const { open } = useModalState();
 
+  const modalKey: ModalKey = 'authModal';
   return (
-    <>
-      <StyledHeaderContainer>
-        <StyledNav>
-          <StyledLeftNav>
-            <StyledLogo>
-              <LogoIcon />
-            </StyledLogo>
-          </StyledLeftNav>
-          <StyledCenterNav>
-            <SearchInput />
-          </StyledCenterNav>
-          <StyledRightNav>
-            {user ? (
-              <ProfileDropdown />
-            ) : (
-              <StyledButton onClick={open}>로그인</StyledButton>
-            )}
-          </StyledRightNav>
-        </StyledNav>
-      </StyledHeaderContainer>
-      <AuthModalContainer />
-    </>
+    <StyledHeaderContainer>
+      <StyledNav>
+        <StyledLeftNav>
+          <StyledLogo>
+            <LogoIcon />
+          </StyledLogo>
+        </StyledLeftNav>
+        <StyledCenterNav>
+          <SearchInput />
+        </StyledCenterNav>
+        <StyledRightNav>
+          {user ? (
+            <ProfileDropdown />
+          ) : (
+            <StyledButton onClick={() => open(modalKey)}>로그인</StyledButton>
+          )}
+        </StyledRightNav>
+      </StyledNav>
+      <AuthModal />
+    </StyledHeaderContainer>
   );
 };
 const StyledHeaderContainer = styled.header`
