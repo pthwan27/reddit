@@ -1,9 +1,22 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const MainContainer = () => {
-  return <StyledMainContainer></StyledMainContainer>;
+  return (
+    <StyledMainContainer>
+      asdfasdfsadfasd
+      <div
+        style={{
+          height: '2500px',
+          backgroundColor: 'blue',
+        }}
+      ></div>
+    </StyledMainContainer>
+  );
 };
 
-const StyledMainContainer = styled.main``;
+const StyledMainContainer = styled.main`
+  height: 100%;
+  overflow-y: auto;
+`;
 
 export default MainContainer;

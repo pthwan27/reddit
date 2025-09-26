@@ -76,23 +76,27 @@ const GlobalStyle = createGlobalStyle`
   --font-64: normal 400 4rem/4rem var(--font-sans);
 
   /* Font Titles */
-  --font-title-h0: var(--font-64);
-  --font-title-h1: var(--font-32);
-  --font-title-h2: var(--font-24);
-  --font-title-h3: var(--font-18);
-  --font-title-h4: var(--font-16);
-  --font-title-h5: var(--font-14);
-  --font-title-h6: var(--font-12);
+  --font-title-h0: normal 700 4rem/4rem var(--font-sans);  
+  --font-title-h1: normal 700 2rem/2.25rem var(--font-sans);
+  --font-title-h2: normal 700 1.5rem/1.75rem var(--font-sans);
+  --font-title-h3: normal 700 1.125rem/1.5rem var(--font-sans);
+  --font-title-h4: normal 700 1rem/1.25rem var(--font-sans);
+  --font-title-h5: normal 700 0.875rem/1.25rem var(--font-sans);
+  --font-title-h6: normal 700 0.75rem/1rem var(--font-sans);
 
   /* Font Utility */
-  --font-14-20-regular: normal 400 0.875rem/1.25rem var(--font-sans);
-  --font-14-20-semibold: normal 600 0.875rem/1.25rem var(--font-sans);
-  --font-16-20-regular: normal 400 1rem/1.25rem var(--font-sans);
+  --font-12-16-light: normal 300 0.75rem/1rem var(--font-sans);
   --font-12-16-regular: normal 400 0.75rem/1rem var(--font-sans);
   --font-12-16-semibold: normal 600 0.75rem/1rem var(--font-sans);
+  --font-14-20-light: normal 300 0.875rem/1.25rem var(--font-sans);
+  --font-14-20-regular: normal 400 0.875rem/1.25rem var(--font-sans);
+  --font-14-20-semibold: normal 600 0.875rem/1.25rem var(--font-sans);
+  --font-16-20-light: normal 300 1rem/1.25rem var(--font-sans);  
+  --font-16-20-regular: normal 400 1rem/1.25rem var(--font-sans);  
+  --font-16-20-semibold: normal 600 1rem/1.25rem var(--font-sans);
 
   /* Button Font */
-  --font-button-lg: var(--font-14-20-semibold);
+  --font-button-lg: var(--font-16-20-semibold);
   --font-button-md: var(--font-14-20-semibold);
   --font-button-sm: var(--font-12-16-semibold);
 
@@ -151,7 +155,7 @@ const GlobalStyle = createGlobalStyle`
     outline: none;
     border: none;
     background: none;
-    font: var(--font-16);
+    font: var(--font-button-md);
     padding: var(--spacer-xs) var(--spacer-sm);
     transition: background 0.2s, color 0.2s, border 0.2s;
   }
@@ -159,7 +163,6 @@ const GlobalStyle = createGlobalStyle`
   button {
     border-radius: var(--radius-xl);
     cursor: pointer;
-    font-weight: 600;
 
     text-wrap: nowrap;
 

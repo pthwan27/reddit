@@ -21,6 +21,9 @@ const StyledLeftNavContainer = styled.nav`
   border-right: var(--line-sm) solid
     ${({ theme }) => theme.colors.naturalBorder};
 
+  height: 100%;
+  overflow-y: auto;
+
   @media (max-width: 1199px) {
     display: none;
   }

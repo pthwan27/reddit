@@ -38,9 +38,17 @@ const HeaderContainer = () => {
   );
 };
 const StyledHeaderContainer = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+
   display: flex;
   overflow: hidden;
   width: 100%;
+
+  background-color: ${({ theme }) => theme.colors.background};
   border-bottom: var(--line-sm) solid
     ${({ theme }) => theme.colors.naturalBorder};
   padding: 0 var(--spacer-md);

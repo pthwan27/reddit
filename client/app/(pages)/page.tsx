@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
-import styled from "styled-components";
-import HeaderContainer from "../container/headerContainer";
-import MainContainer from "../container/mainContainer";
-import LeftNaveContainer from "../container/leftNavContainer";
+import styled from 'styled-components';
+
+import HeaderContainer from '../container/headerContainer';
+import LeftNaveContainer from '../container/leftNavContainer';
+import MainContainer from '../container/mainContainer';
 
 const Home = () => {
   return (
@@ -21,6 +22,7 @@ const MainPageContainer = styled.main`
   display: grid;
   grid-template-columns: 272px 1fr;
 
+  padding-top: 56px;
   height: 100vh;
 
   transition: grid-template-columns 250ms cubic-bezier(0.65, 0, 0.35, 1);

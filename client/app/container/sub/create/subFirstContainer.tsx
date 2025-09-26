@@ -1,30 +1,38 @@
-import { use, useState } from 'react';
-
 import styled from 'styled-components';
 
 import PlaceHolderInput from '@/app/components/common/placeholderInput';
 import PlaceHolderTextarea from '@/app/components/common/placeholderTextarea';
 
-const CreateSubSecContainer = () => {
-  const [c, setC] = useState('');
+type CreateSubFirstContainerProps = {
+  subName: string;
+  setSubName: React.Dispatch<React.SetStateAction<string>>;
+  desc: string;
+  setDesc: React.Dispatch<React.SetStateAction<string>>;
+};
+const CreateSubSecContainer = ({
+  subName,
+  setSubName,
+  desc,
+  setDesc,
+}: CreateSubFirstContainerProps) => {
   return (
     <InputBox>
       <PlaceHolderInput
         label="커뮤니티 이름"
-        value={c}
+        value={subName}
         type="text"
         maxLength={21}
         required={true}
         isExtraContainerVisible={false}
-        onChange={(e) => setC(e.target.value)}
+        onChange={(e) => setSubName(e.target.value)}
       />
       <PlaceHolderTextarea
         label="커뮤니티 설명"
-        value={c}
+        value={desc}
         maxLength={300}
         required={false}
         isExtraContainerVisible={false}
-        onChange={(e) => setC(e.target.value)}
+        onChange={(e) => setDesc(e.target.value)}
       />
     </InputBox>
   );

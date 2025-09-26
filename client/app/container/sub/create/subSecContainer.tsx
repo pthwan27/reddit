@@ -3,27 +3,44 @@ import styled from 'styled-components';
 import PlaceHolderInput from '@/app/components/common/placeholderInput';
 import PlaceHolderTextarea from '@/app/components/common/placeholderTextarea';
 
-const CreateSubFirstContainer = () => {
+type CreateSubSecContainerProps = {
+  banner: string;
+  setBanner: React.Dispatch<React.SetStateAction<string>>;
+  icon: string;
+  setIcon: React.Dispatch<React.SetStateAction<string>>;
+};
+const CreateSubSecContainer = ({
+  banner,
+  setBanner,
+  icon,
+  setIcon,
+}: CreateSubSecContainerProps) => {
   return (
     <InputBox>
       <PlaceHolderInput
-        label="커뮤니티 이름"
-        value=""
+        label="배너로 등록할 이미지를 선택해주세요."
+        value={banner}
         type="text"
+        maxLength={300}
         required={true}
-        onChange={(e) => {}}
+        isExtraContainerVisible={false}
+        onChange={(e) => setBanner(e.target.value)}
       />
-      <PlaceHolderTextarea
-        label="커뮤니티 설명"
-        value=""
+      <PlaceHolderInput
+        label="아이콘으로 등록할 이미지를 선택해주세요."
+        value={icon}
+        maxLength={300}
         required={false}
-        onChange={(e) => {}}
+        isExtraContainerVisible={false}
+        onChange={(e) => setIcon(e.target.value)}
       />
     </InputBox>
   );
 };
 const InputBox = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: var(--spacer-md);
 `;
 
-export default CreateSubFirstContainer;
+export default CreateSubSecContainer;

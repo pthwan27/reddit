@@ -61,7 +61,11 @@ const RegisterContainer = () => {
 
   return (
     <StyledRegisterContainer>
-      <h2>회원가입</h2>
+      <StyledTitle>회원가입</StyledTitle>
+      <StyledDesc>
+        계속 진행할 경우 서비스 이용 약관에 동의하고
+        <p>개인정보 처리방침을 이해하는 것으로 간주됩니다.</p>
+      </StyledDesc>
       <PlaceHolderInput
         label="이메일을 입력하세요"
         value={email}
@@ -111,6 +115,13 @@ const StyledRegisterContainer = styled.div`
   justify-content: center;
   gap: var(--spacer-md);
   width: 100%;
+`;
+const StyledTitle = styled.h2`
+  font: var(--font-title-h2);
+`;
+const StyledDesc = styled.p`
+  font: var(--font-14-20-regular);
+  text-align: center;
 `;
 
 const ErrorMessage = styled.div`

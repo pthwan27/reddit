@@ -89,7 +89,6 @@ const PlaceHolderInput = ({
       <PlaceHolderInputContainer
         onFocus={() => setIsFloated(true)}
         onBlur={() => setIsFloated(false)}
-        isFloated={isFloated}
       >
         <BoundaryBox>
           <InputContainer $hasLeadingIcon={!!leadingIcon}>
@@ -139,7 +138,7 @@ const StyledLabel = styled.label`
   width: 100%;
 `;
 
-const PlaceHolderInputContainer = styled.div<{ isFloated: boolean }>`
+const PlaceHolderInputContainer = styled.div`
   position: relative;
   border: var(--line-md) solid ${({ theme }) => theme.colors.grayBackground};
   border-radius: var(--radius-lg);

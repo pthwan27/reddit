@@ -36,7 +36,11 @@ const LoginContainer = () => {
 
   return (
     <StyledLoginContainer>
-      <h2>로그인</h2>
+      <StyledTitle>로그인</StyledTitle>
+      <StyledDesc>
+        계속 진행할 경우 서비스 이용 약관에 동의하고
+        <p>개인정보 처리방침을 이해하는 것으로 간주됩니다.</p>
+      </StyledDesc>
       <PlaceHolderInput
         label="이메일을 입력하세요"
         value={email}
@@ -83,7 +87,13 @@ const StyledLoginContainer = styled.div`
   gap: var(--spacer-md);
   width: 100%;
 `;
-
+const StyledTitle = styled.h2`
+  font: var(--font-title-h2);
+`;
+const StyledDesc = styled.p`
+  font: var(--font-14-20-light);
+  text-align: center;
+`;
 const ErrorMessage = styled.div`
   color: ${({ theme }) => theme.colors.error || '#ff6b6b'};
   font: var(--font-14);

@@ -3,12 +3,14 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { AppDataSource } from "./data-source";
 import authRoutes from "./routes/auth/authRoutes";
+import path from "path";
 
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
+app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 app.use("/auth", authRoutes);
 
