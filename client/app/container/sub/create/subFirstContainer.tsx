@@ -30,7 +30,7 @@ const CreateSubSecContainer = ({
         label="커뮤니티 설명"
         value={desc}
         maxLength={300}
-        required={false}
+        required={true}
         isExtraContainerVisible={false}
         onChange={(e) => setDesc(e.target.value)}
       />

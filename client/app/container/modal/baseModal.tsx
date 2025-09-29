@@ -135,14 +135,15 @@ const StyledModal = styled.div<{ $width?: string }>`
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
 
   @media (max-width: 528px) {
-    width: 100vw;
-    min-height: 100vh;
-    border-radius: 0;
-    padding: var(--spacer-md);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    border-radius: 0;
+    padding: var(--spacer-md);
+    width: 100vw;
+    min-height: 100vh;
   }
 `;
 
@@ -152,6 +153,7 @@ const StyledModalContentHeader = styled.div`
   justify-content: space-between;
 
   padding: var(--spacer-lg) var(--spacer-lg) var(--spacer-xs);
+
   width: 100%;
 `;
 

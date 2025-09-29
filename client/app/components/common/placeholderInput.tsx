@@ -85,7 +85,7 @@ const PlaceHolderInput = ({
   };
 
   return (
-    <StyledLabel>
+    <StyledInputContainer>
       <PlaceHolderInputContainer
         onFocus={() => setIsFloated(true)}
         onBlur={() => setIsFloated(false)}
@@ -128,10 +128,10 @@ const PlaceHolderInput = ({
           )}
         </BoundaryBox>
       </PlaceHolderInputContainer>
-    </StyledLabel>
+    </StyledInputContainer>
   );
 };
-const StyledLabel = styled.label`
+const StyledInputContainer = styled.label`
   position: relative;
   display: block;
   --left-label-position: 0px;

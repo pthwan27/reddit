@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 
-import PlaceHolderInput from '@/app/components/common/placeholderInput';
-import PlaceHolderTextarea from '@/app/components/common/placeholderTextarea';
+import ImageInput from '@/app/components/common/imageInput';
 
 type CreateSubSecContainerProps = {
-  banner: string;
-  setBanner: React.Dispatch<React.SetStateAction<string>>;
-  icon: string;
-  setIcon: React.Dispatch<React.SetStateAction<string>>;
+  banner: File | null;
+  setBanner: React.Dispatch<React.SetStateAction<File | null>>;
+  icon: File | null;
+  setIcon: React.Dispatch<React.SetStateAction<File | null>>;
 };
 const CreateSubSecContainer = ({
   banner,
@@ -17,22 +16,17 @@ const CreateSubSecContainer = ({
 }: CreateSubSecContainerProps) => {
   return (
     <InputBox>
-      <PlaceHolderInput
+      <ImageInput
         label="배너로 등록할 이미지를 선택해주세요."
-        value={banner}
-        type="text"
-        maxLength={300}
-        required={true}
-        isExtraContainerVisible={false}
-        onChange={(e) => setBanner(e.target.value)}
+        value={banner?.name}
+        type="file"
+        onFileChange={setBanner}
       />
-      <PlaceHolderInput
+      <ImageInput
         label="아이콘으로 등록할 이미지를 선택해주세요."
-        value={icon}
-        maxLength={300}
-        required={false}
-        isExtraContainerVisible={false}
-        onChange={(e) => setIcon(e.target.value)}
+        value={icon?.name}
+        type="file"
+        onFileChange={setIcon}
       />
     </InputBox>
   );
