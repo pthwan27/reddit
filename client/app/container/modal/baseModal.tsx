@@ -171,9 +171,7 @@ const StyledModalContentMain = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  padding: 0 var(--spacer-5xl);
-  padding-bottom: 1.5rem;
+  padding: var(--spacer-lg) 0;
 
   width: 100%;
 `;

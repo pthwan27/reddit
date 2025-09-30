@@ -35,11 +35,13 @@ const LoginContainer = () => {
 
   return (
     <StyledLoginContainer>
-      <StyledTitle>로그인</StyledTitle>
-      <StyledDesc>
-        계속 진행할 경우 서비스 이용 약관에 동의하고
-        <p>개인정보 처리방침을 이해하는 것으로 간주됩니다.</p>
-      </StyledDesc>
+      <StyledHeader>
+        <StyledTitle>로그인</StyledTitle>
+        <StyledDesc>
+          계속 진행할 경우 서비스 이용 약관에 동의하고
+          <p>개인정보 처리방침을 이해하는 것으로 간주됩니다.</p>
+        </StyledDesc>
+      </StyledHeader>
       <PlaceHolderInput
         label="이메일을 입력하세요"
         value={email}
@@ -85,6 +87,15 @@ const StyledLoginContainer = styled.div`
   justify-content: center;
   gap: var(--spacer-md);
   width: 100%;
+  padding: 0 var(--spacer-5xl);
+`;
+const StyledHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacer-md);
+
+  padding: var(--spacer-sm) 0;
 `;
 const StyledTitle = styled.h2`
   font: var(--font-title-h2);
@@ -107,8 +118,11 @@ const StyledHelper = styled.div`
 
   font: var(--font-14);
   gap: var(--spacer-xs);
+
   margin-top: var(--spacer-2xs);
   margin-bottom: var(--spacer-sm);
+
+  padding-top: var(--spacer-sm);
 `;
 
 export default LoginContainer;

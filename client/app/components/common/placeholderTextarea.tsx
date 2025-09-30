@@ -151,7 +151,7 @@ const BoundaryBox = styled.span`
   position: relative;
   display: inline-flex;
   flex-direction: center;
-  height: var(--size-3xl);
+  height: var(--rem-192);
   width: 100%;
 `;
 
@@ -165,7 +165,7 @@ const InputContainer = styled.span<{ $hasLeadingIcon: boolean }>`
 
 const PlaceHolderSpan = styled.span<{ $isFloated: boolean }>`
   position: ${({ $isFloated }) => ($isFloated ? 'relative' : 'absolute')};
-  top: ${({ $isFloated }) => ($isFloated ? '0' : '50%')};
+  top: ${({ $isFloated }) => ($isFloated ? '0' : '14%')};
   transform: ${({ $isFloated }) => ($isFloated ? 'none' : 'translateY(-50%)')};
   font: ${({ $isFloated }) =>
     $isFloated ? 'var(--font-12)' : 'var(--font-16)'};
@@ -187,6 +187,7 @@ const StyledTextarea = styled.textarea`
   background: transparent;
   z-index: 2;
   resize: none;
+  height: var(--rem-192);
 `;
 
 const ExtraIconContainer = styled.span`

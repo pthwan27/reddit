@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -28,17 +28,50 @@ const CreateSubContainer = () => {
     />,
   ];
 
+  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+  const [iconPreview, setIconPreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!banner) {
+      setBannerPreview(null);
+      return;
+    }
+
+    const objectURL = URL.createObjectURL(banner);
+    setBannerPreview(objectURL);
+
+    return () => URL.revokeObjectURL(objectURL);
+  }, [banner]);
+
+  useEffect(() => {
+    if (!icon) {
+      setIconPreview(null);
+      return;
+    }
+
+    const objectURL = URL.createObjectURL(icon);
+    setIconPreview(objectURL);
+
+    return () => URL.revokeObjectURL(objectURL);
+  }, [icon]);
+
   return (
     <StyledCreateSubContainer>
-      <CreateInputBox>{inputBoxes[curInputBoxNum]}</CreateInputBox>
-      <CreateSubInfoBox>
-        <div>{banner?.name}</div>
-        <span>
-          <>{icon?.name}</>
-          r/{subName}
-        </span>
-        <div>{description}</div>
-      </CreateSubInfoBox>
+      <CreateSubMainContainer>
+        <CreateInputBox>{inputBoxes[curInputBoxNum]}</CreateInputBox>
+        <CreateSubInfoBox>
+          <StyledBanner>
+            {bannerPreview && <img src={bannerPreview} alt="banner" />}
+          </StyledBanner>
+          <StyledIconSub>
+            {iconPreview && (
+              <img src={iconPreview} width="fill" height="fill" alt="icon" />
+            )}
+            <span>r/{subName}</span>
+          </StyledIconSub>
+          <div>{description}</div>
+        </CreateSubInfoBox>
+      </CreateSubMainContainer>
 
       <CreateSubCarousel>
         <div>indicator</div>
@@ -57,29 +90,76 @@ const CreateSubContainer = () => {
 
 const StyledCreateSubContainer = styled.div`
   display: flex;
-  padding: var(--spacer-md);
+  flex-direction: column;
+
+  padding: 0 var(--spacer-lg);
   width: 100%;
+`;
+
+const CreateSubMainContainer = styled.div`
+  display: flex;
 `;
 const CreateInputBox = styled.div`
   display: flex;
-  flex-basis: 50%;
   justify-content: center;
+  flex: 1 1 60%;
 `;
 const CreateSubInfoBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-basis: 50%;
+  flex: 1 1 40%;
+
+  height: var(--rem-192);
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  margin: 0 var(--rem-16);
+  border-radius: var(--radius-lg);
+`;
+
+const StyledBanner = styled.div`
+  width: 100%;
+  height: 2rem;
+
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const StyledIconSub = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  gap: var(--spacer-xs);
+  padding: var(--spacer-xs) 0;
+
+  overflow: hidden;
+
+  img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius-full);
+
+    object-fit: cover;
+  }
+  span {
+    font: var(--font-16);
+  }
 `;
 
 const CreateSubCarousel = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
   display: flex;
   justify-content: space-between;
 
-  padding: var(--spacer-xs) var(--spacer-lg) var(--spacer-lg);
+  padding: var(--spacer-lg) var(--spacer-xs) var(--spacer-xs);
 
   width: 100%;
 `;

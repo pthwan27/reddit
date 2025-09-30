@@ -2,17 +2,17 @@ import { InputHTMLAttributes, useRef, useState } from 'react';
 
 import styled from 'styled-components';
 
+import ImageIcon from '../svgs/ImageIcon';
+
 interface ImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   onFileChange: (file: File | null) => void;
   value?: string;
   accept?: string;
-  preview?: boolean;
 }
 const ImageInput = ({
   label,
   onFileChange,
-  preview = false,
   value,
   accept,
 }: ImageInputProps) => {
@@ -35,8 +35,8 @@ const ImageInput = ({
   };
   return (
     <StyledInputContainer>
-      <StyledLabel>{label}</StyledLabel>
       <InputContainer onClick={handleClick}>
+        <StyledLabel>{label}</StyledLabel>
         {value ? (
           <SelectedFile>
             <FileName>{value}</FileName>
@@ -50,7 +50,10 @@ const ImageInput = ({
             </RemoveButton>
           </SelectedFile>
         ) : (
-          <PlaceholderText>클릭하여 이미지를 선택하세요</PlaceholderText>
+          <PlaceholderText>
+            <ImageIcon />
+            <span>선택</span>
+          </PlaceholderText>
         )}
       </InputContainer>
 
@@ -66,24 +69,39 @@ const ImageInput = ({
 
 const StyledInputContainer = styled.div`
   display: flex;
-  flex-direction: column;
   gap: var(--space-sm);
-`;
-const StyledLabel = styled.label`
-  display: flex;
-  flex-direction: column;
-  font: var(--font-14);
 `;
 
 const InputContainer = styled.div`
   display: flex;
+  justify-content: space-between;
+  padding: var(--spacer-lg) var(--spacer-md);
+
+  border-radius: var(--radius-lg);
+  font: var(--font-16);
+  cursor: pointer;
+
+  width: 100%;
+  height: var(--rem-80);
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.contendHover};
+  }
+`;
+const StyledLabel = styled.label`
+  display: flex;
   flex-direction: column;
+  justify-content: center;
   font: var(--font-16);
 
   cursor: pointer;
 `;
 
-const SelectedFile = styled.div``;
+const SelectedFile = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const FileName = styled.span`
   font: var(--font-16);
@@ -92,11 +110,28 @@ const FileName = styled.span`
   white-space: nowrap;
 `;
 
-const RemoveButton = styled.button``;
+const RemoveButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
-const PlaceholderText = styled.span`
+const PlaceholderText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   font: var(--font-16);
-  color: ${({ theme }) => theme.colors.textMuted};
+  padding: 0 var(--spacer-sm);
+  background: ${({ theme }) => theme.colors.grayHover};
+  color: ${({ theme }) => theme.colors.text};
+
+  border-radius: var(--radius-lg);
+
+  span {
+    padding-top: 0.25rem;
+    padding-left: 0.25rem;
+  }
 `;
 
 const HiddenInput = styled.input`
