@@ -75,7 +75,7 @@ const StyledInputContainer = styled.div`
 const InputContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: var(--spacer-lg) var(--spacer-md);
+  padding: var(--spacer-md) var(--spacer-md);
 
   border-radius: var(--radius-lg);
   font: var(--font-16);
@@ -122,7 +122,7 @@ const PlaceholderText = styled.div`
   align-items: center;
 
   font: var(--font-16);
-  padding: 0 var(--spacer-sm);
+  padding: var(--spacer-2xs) var(--spacer-sm);
   background: ${({ theme }) => theme.colors.grayHover};
   color: ${({ theme }) => theme.colors.text};
 

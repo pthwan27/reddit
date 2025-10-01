@@ -131,7 +131,11 @@ const CreateSubContainer = () => {
       return;
     }
 
-    setCurInputBoxNum(idx);
+    if (idx === inputBoxes.length - 1) {
+      console.log('저장하기');
+    } else {
+      setCurInputBoxNum(idx);
+    }
   };
 
   return (
@@ -162,7 +166,9 @@ const CreateSubContainer = () => {
               <span>1 멤버 ·온라인 접속자 1명</span>
             </InfoBox>
           </StyledMain>
-          <StyledDesc>{description}</StyledDesc>
+          <StyledDesc>
+            {description ? description : '내 커뮤니티 설명'}
+          </StyledDesc>
         </CreateSubInfoBox>
       </CreateSubMainContainer>
 
@@ -172,14 +178,14 @@ const CreateSubContainer = () => {
             <CarouselItem
               key={idx}
               $isSelected={idx === curInputBoxNum}
-              onClick={() => moveToSlide(idx)}
+              onClick={() => moveToSlide(idx, true)}
             />
           ))}
         </CarouselContainer>
-        <div>
+        <ButtonContainer>
           <button onClick={() => prevSlice()}>{`취소`}</button>
           <button onClick={() => nextSlice()}>{`다음`}</button>
-        </div>
+        </ButtonContainer>
       </CreateSubCarousel>
     </StyledCreateSubContainer>
   );
@@ -208,6 +214,8 @@ const CreateSubInfoBox = styled.div`
   align-items: center;
   flex: 0 0 40%;
 
+  height: 100%;
+
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
   border-radius: var(--radius-lg);
@@ -234,15 +242,15 @@ const StyledMain = styled.div`
   align-items: center;
   justify-content: flex-start;
 
-  gap: var(--spacer-xs);
+  gap: var(--spacer-md);
   padding: var(--spacer-md) var(--spacer-md) 0;
 
   width: 100%;
   overflow: hidden;
 `;
 const IconBox = styled.div<{ $isSelected: boolean }>`
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
 
   background: ${({ $isSelected, theme }) =>
     $isSelected ? theme.colors.primary : 'transparent'};
@@ -282,7 +290,7 @@ const StyledDesc = styled.div`
   width: 100%;
   inline-size: 100%;
 
-  font: var(--font-12);
+  font: var(--font-14);
 `;
 const CreateSubCarousel = styled.div`
   display: flex;
@@ -315,5 +323,26 @@ const CarouselItem = styled.div<{ $isSelected: boolean }>`
   }
 
   transition: all 0.4s;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: var(--spacer-xs);
+
+  button:nth-child(1) {
+    background: ${({ theme }) => theme.colors.grayBackground};
+
+    &:hover {
+      background: ${({ theme }) => theme.colors.darkgrayBackground};
+    }
+  }
+  button:nth-child(2) {
+    background: ${({ theme }) => theme.colors.secondaryLight};
+    color: ${({ theme }) => theme.colors.white};
+
+    &:hover {
+      background: ${({ theme }) => theme.colors.secondary};
+    }
+  }
 `;
 export default CreateSubContainer;
