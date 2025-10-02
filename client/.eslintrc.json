@@ -1,3 +1,50 @@
 {
-  "extends": "next/core-web-vitals"
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "unused-imports"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next",
+    "prettier"
+  ],
+  "root": true,
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "rules": {
+    //사용되지 않은 변수에 대한 경고.
+    "no-unused-vars": "warn",
+    // 사용되지 않은 import에 대한 에러를 활성화
+    "unused-imports/no-unused-imports": "error",
+    // >> import 경로가 잘못된 경우 경고를 활성화
+    "import/no-unresolved": "off",
+    //import 중복 X
+    "import/no-duplicates": "error",
+    "import/order": "off",
+
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
+    ],
+    "no-unsafe-optional-chaining": 1,
+    "no-console": ["error", { "allow": ["warn", "error"] }]
+  },
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "app/types/supabase.ts",
+    "scripts/generate-about-image-script",
+    "scripts/generate-project-image-script"
+  ]
 }
