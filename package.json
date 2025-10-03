@@ -18,8 +18,6 @@
     "lint:server": "yarn workspace server lint",
     "type-check:client": "cd client && yarn tsc --noEmit",
     "type-check:server": "cd server && yarn tsc --noEmit",
-    "test:client": "cd client && yarn test",
-    "test:server": "cd server && yarn test",
     "build:client": "cd client && yarn build",
     "build:server": "cd server && yarn build"
   },

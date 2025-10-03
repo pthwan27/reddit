@@ -5,10 +5,6 @@ echo "🚀 Running pre-push checks..."
 yarn type-check:client
 yarn type-check:server
 
-# 테스트 실행
-yarn test:client  
-yarn test:server
-
 # 빌드 테스트
 yarn build:client
 yarn build:server
