@@ -16,12 +16,12 @@
     "lint": "yarn workspace client lint && yarn workspace server lint",
     "lint:client": "yarn workspace client lint",
     "lint:server": "yarn workspace server lint",
-    "type-check": "yarn workspace client type-check && yarn workspace server type-check",
-    "type-check:client": "yarn workspace client type-check",
-    "type-check:server": "yarn workspace server type-check",
-    "test": "yarn workspace client test && yarn workspace server test",
-    "test:client": "yarn workspace client test",
-    "test:server": "yarn workspace server test"
+    "type-check:client": "cd client && yarn tsc --noEmit",
+    "type-check:server": "cd server && yarn tsc --noEmit",
+    "test:client": "cd client && yarn test",
+    "test:server": "cd server && yarn test",
+    "build:client": "cd client && yarn build",
+    "build:server": "cd server && yarn build"
   },
   "devDependencies": {
     "husky": "^8.0.0",
