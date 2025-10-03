@@ -11,6 +11,28 @@
   "license": "ISC",
   "scripts": {
     "client": "yarn workspace client dev",
-    "server": "yarn workspace server dev"
+    "server": "yarn workspace server dev",
+    "prepare": "husky",
+    "lint": "yarn workspace client lint && yarn workspace server lint",
+    "lint:client": "yarn workspace client lint",
+    "lint:server": "yarn workspace server lint",
+    "type-check": "yarn workspace client type-check && yarn workspace server type-check",
+    "type-check:client": "yarn workspace client type-check",
+    "type-check:server": "yarn workspace server type-check",
+    "test": "yarn workspace client test && yarn workspace server test",
+    "test:client": "yarn workspace client test",
+    "test:server": "yarn workspace server test"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.0"
+  },
+  "lint-staged": {
+    "client/**/*.{js,jsx,ts,tsx}": [
+      "yarn --cwd client lint --fix"
+    ],
+    "server/**/*.{js,ts}": [
+      "yarn --cwd server lint --fix"
+    ]
   }
 }

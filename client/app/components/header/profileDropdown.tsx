@@ -1,6 +1,8 @@
-import { useAuth } from "@/app/context/authContext";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
+import { useEffect, useState } from 'react';
+
+import styled from 'styled-components';
+
+import { useAuth } from '@/app/context/authContext';
 
 const ProfileDropdown = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -10,17 +12,17 @@ const ProfileDropdown = () => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;
 
-      if (!target.closest("[data-dropdown]")) {
+      if (!target.closest('[data-dropdown]')) {
         setIsDropdownOpen(false);
       }
     };
 
     if (isDropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isDropdownOpen]);
 
@@ -50,6 +52,7 @@ const ProfileDropdown = () => {
 const StyledDropdownContainer = styled.div`
   position: absolute;
   display: inline-block;
+  z-index: 1000;
 `;
 
 const StyledProfileButton = styled.button`
@@ -74,7 +77,6 @@ const StyledDropdownMenu = styled.div`
   border: var(--line-sm) solid ${({ theme }) => theme.colors.naturalBorder};
   border-radius: var(--radius-md);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
   overflow: hidden;
 `;
 

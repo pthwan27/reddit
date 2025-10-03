@@ -1,6 +1,6 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "unused-imports"],
+  "plugins": ["unused-imports"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -14,16 +14,11 @@
     }
   },
   "rules": {
-    //사용되지 않은 변수에 대한 경고.
     "no-unused-vars": "warn",
-    // 사용되지 않은 import에 대한 에러를 활성화
     "unused-imports/no-unused-imports": "error",
-    // >> import 경로가 잘못된 경우 경고를 활성화
     "import/no-unresolved": "off",
-    //import 중복 X
     "import/no-duplicates": "error",
     "import/order": "off",
-
     "unused-imports/no-unused-vars": [
       "warn",
       {

@@ -102,6 +102,9 @@ const GlobalStyle = createGlobalStyle`
 
   /* Label */
   --font-label-default: var(--font-12-16-regular);
+
+  /* Box shadow */
+  --box-shadow : 0 0.0625rem 0.25rem 0 #00000026, 0 0.25rem 0.25rem 0 #00000026;
   }
 
   /* 1. CSS Reset */
@@ -116,6 +119,7 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     min-height: 100vh;
     width: 100%;
+    min-width: 100vw;
 
     margin: 0;
     padding: 0;

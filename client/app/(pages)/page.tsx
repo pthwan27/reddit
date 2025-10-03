@@ -3,22 +3,22 @@
 import styled from 'styled-components';
 
 import HeaderContainer from '../container/headerContainer';
-import LeftNaveContainer from '../container/leftNavContainer';
+import LeftNavContainer from '../container/leftNavContainer';
 import MainContainer from '../container/mainContainer';
 
 const Home = () => {
   return (
     <>
       <HeaderContainer />
-      <MainPageContainer>
-        <LeftNaveContainer />
+      <MainContentContainer>
+        <LeftNavContainer />
         <MainContainer />
-      </MainPageContainer>
+      </MainContentContainer>
     </>
   );
 };
 
-const MainPageContainer = styled.main`
+const MainContentContainer = styled.main`
   display: grid;
   grid-template-columns: 272px 1fr;
 

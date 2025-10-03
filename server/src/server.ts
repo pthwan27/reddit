@@ -13,6 +13,7 @@ app.use(morgan("dev"));
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 app.use("/auth", authRoutes);
+app.use("/sub", authRoutes);
 
 app.get("/", (_: Request, res: Response) => {
   res.send("running");

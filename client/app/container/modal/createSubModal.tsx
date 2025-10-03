@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import BaseModal from '@/app/container/modal/baseModal';
 
 import { ModalKey } from '@/app/context/modalContext';
@@ -9,7 +7,7 @@ import CreateSubContainer from '../sub/createSubContainer';
 const CreateSubModal = () => {
   const modalKey: ModalKey = 'createSubModal';
 
-  const [inputPageNum, setInputPageNum] = useState(1);
+  // const [inputPageNum, setInputPageNum] = useState(1);
 
   return (
     <BaseModal

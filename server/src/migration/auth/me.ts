@@ -4,7 +4,6 @@ import { User } from "../../entities/User";
 
 export const MeHandler: RequestHandler = async (req, res) => {
   try {
-    // 쿠키에서 토큰 읽기, 없으면 Authorization 헤더에서 읽기 (하위 호환성)
     let token = req.cookies?.auth_token;
 
     if (!token) {

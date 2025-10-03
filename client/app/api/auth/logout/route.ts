@@ -1,14 +1,17 @@
-import { serverAxiosInstance } from "@/app/utils/axios";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
+
+import { serverAxiosInstance } from '@/app/utils/axios';
+
+import { CustomError } from '@/app/types';
 
 export async function POST(req: NextRequest) {
   try {
     const { data, status } = await serverAxiosInstance.post(
-      "/auth/logout",
+      '/auth/logout',
       {},
       {
         headers: {
-          Cookie: req.headers.get("cookie") || "",
+          Cookie: req.headers.get('cookie') || '',
         },
       }
     );
@@ -16,19 +19,20 @@ export async function POST(req: NextRequest) {
     const response = NextResponse.json(data, { status });
 
     // 클라이언트 쿠키도 제거
-    response.cookies.set("auth_token", "", {
+    response.cookies.set('auth_token', '', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
       maxAge: 0,
-      path: "/",
+      path: '/',
     });
 
     return response;
-  } catch (error: any) {
-    console.error("Logout API error:", error.response?.data || error.message);
+  } catch (err: unknown) {
+    const error = err as CustomError;
+    console.error('Logout API error:', error.response?.data || error.message);
     return NextResponse.json(
-      { error: error.response?.data?.error || "Logout failed" },
+      { error: error.response?.data?.error || 'Logout failed' },
       { status: error.response?.status || 500 }
     );
   }

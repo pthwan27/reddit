@@ -1,37 +1,44 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-import { error } from 'console';
+import { clientAxiosInstance } from '@/app/utils/axios';
+
 import styled from 'styled-components';
 
-import { ValidationRule } from '@/app/types';
+import LoadingSpinner from '@/app/components/common/loadingSpinner';
+
+import { useAuth } from '@/app/context/authContext';
+import { CustomError, ValidationRule } from '@/app/types';
 
 import CreateSubFirstContainer from './create/subFirstContainer';
 import CreateSubSecContainer from './create/subSecContainer';
 
 const CreateSubContainer = () => {
+  const { user, isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+
   const [subName, setSubName] = useState<string>('');
   const [description, setDescription] = useState('');
   const [banner, setBanner] = useState<File | null>(null);
   const [icon, setIcon] = useState<File | null>(null);
 
-  const [subject, setSubject] = useState<string>('');
-
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
   const [iconPreview, setIconPreview] = useState<string | null>(null);
 
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [error, setError] = useState('');
 
   const [curInputBoxNum, setCurInputBoxNum] = useState<number>(0);
-  const carouselRef = useRef<HTMLDivElement>(null);
 
   const inputBoxes = [
     <CreateSubFirstContainer
+      key={'create-sub-first'}
       subName={subName}
       setSubName={setSubName}
       desc={description}
       setDesc={setDescription}
     />,
     <CreateSubSecContainer
+      key={'create-sub-sec'}
       banner={banner}
       setBanner={setBanner}
       icon={icon}
@@ -39,31 +46,43 @@ const CreateSubContainer = () => {
     />,
   ];
 
-  useEffect(() => {
-    if (!banner) {
-      setBannerPreview(null);
+  const handleCreateSub = async () => {
+    if (!isAuthenticated || !user) {
+      setError('로그인이 필요합니다.');
       return;
     }
+    try {
+      setError('');
 
-    const objectURL = URL.createObjectURL(banner);
-    setBannerPreview(objectURL);
+      const formData = new FormData();
+      formData.append('subName', subName);
+      formData.append('description', description);
 
-    return () => URL.revokeObjectURL(objectURL);
-  }, [banner]);
+      if (banner) {
+        formData.append('banner', banner);
+      }
+      if (icon) {
+        formData.append('icon', icon);
+      }
 
-  useEffect(() => {
-    if (!icon) {
-      setIconPreview(null);
-      return;
+      await clientAxiosInstance.post('/api/sub/create', formData);
+    } catch (err: unknown) {
+      const error = err as CustomError;
+      console.error('Create Sub failed:', error);
+
+      setError(error.response?.data?.error || '커뮤니티 생성을 실패했습니다');
     }
 
-    const objectURL = URL.createObjectURL(icon);
-    setIconPreview(objectURL);
+    if (isLoading) {
+      return <LoadingSpinner />;
+    }
 
-    return () => URL.revokeObjectURL(objectURL);
-  }, [icon]);
+    if (!isAuthenticated) {
+      return router.push('/login');
+    }
+  };
 
-  const validationStep = (stepIdx: number): ValidationRule[] => {
+  const validationCheck = (stepIdx: number): ValidationRule[] => {
     switch (stepIdx) {
       case 0:
         return [
@@ -122,7 +141,7 @@ const CreateSubContainer = () => {
       return;
     }
 
-    const rules = validationStep(curInputBoxNum);
+    const rules = validationCheck(curInputBoxNum);
 
     const faildRule = rules.find((rule) => rule.condition);
 
@@ -132,12 +151,35 @@ const CreateSubContainer = () => {
     }
 
     if (idx === inputBoxes.length - 1) {
-      console.log('저장하기');
+      handleCreateSub();
     } else {
       setCurInputBoxNum(idx);
     }
   };
 
+  useEffect(() => {
+    if (!banner) {
+      setBannerPreview(null);
+      return;
+    }
+
+    const objectURL = URL.createObjectURL(banner);
+    setBannerPreview(objectURL);
+
+    return () => URL.revokeObjectURL(objectURL);
+  }, [banner]);
+
+  useEffect(() => {
+    if (!icon) {
+      setIconPreview(null);
+      return;
+    }
+
+    const objectURL = URL.createObjectURL(icon);
+    setIconPreview(objectURL);
+
+    return () => URL.revokeObjectURL(objectURL);
+  }, [icon]);
   return (
     <StyledCreateSubContainer>
       <CreateSubMainContainer>
@@ -187,6 +229,8 @@ const CreateSubContainer = () => {
           <button onClick={() => nextSlice()}>{`다음`}</button>
         </ButtonContainer>
       </CreateSubCarousel>
+
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </StyledCreateSubContainer>
   );
 };
@@ -345,4 +389,12 @@ const ButtonContainer = styled.div`
     }
   }
 `;
+
+const ErrorMessage = styled.div`
+  color: ${({ theme }) => theme.colors.error || '#ff6b6b'};
+  font: var(--font-14);
+  text-align: center;
+  margin: var(--spacer-xs) 0;
+`;
+
 export default CreateSubContainer;

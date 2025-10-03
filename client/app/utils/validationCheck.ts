@@ -1,0 +1,46 @@
+export const validaionCheck = (value: string, type: string) => {
+  if (!value) return 'none';
+
+  switch (type) {
+    case 'name': {
+      const nameRegex = /^[a-zA-Z가-힣\s]{2,}$/;
+      return nameRegex.test(value) ? 'valid' : 'invalid';
+    }
+
+    case 'email': {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(value) ? 'valid' : 'invalid';
+    }
+
+    case 'password': {
+      const passwordRegex =
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+      return passwordRegex.test(value) ? 'valid' : 'invalid';
+    }
+
+    case 'tel': {
+      const phoneRegex = /^01[016789]-?\d{3,4}-?\d{4}$/;
+      return phoneRegex.test(value.replace(/[^0-9]/g, ''))
+        ? 'valid'
+        : 'invalid';
+    }
+
+    case 'url': {
+      try {
+        new URL(value);
+        return 'valid';
+      } catch {
+        return 'invalid';
+      }
+    }
+
+    case 'number': {
+      const num = Number(value);
+      return !isNaN(num) && isFinite(num) ? 'valid' : 'invalid';
+    }
+
+    case 'text':
+    default:
+      return value.length >= 2 ? 'valid' : 'invalid';
+  }
+};

@@ -1,6 +1,8 @@
 import { InputHTMLAttributes, ReactNode, useEffect, useState } from 'react';
 
-import styled, { css } from 'styled-components';
+import { validaionCheck } from '@/app/utils/validationCheck';
+
+import styled from 'styled-components';
 
 import ErrorIcon from '../svgs/ErrorIcon';
 import ValidIcon from '../svgs/ValidIcon';
@@ -33,46 +35,9 @@ const PlaceHolderTextarea = ({
     'valid' | 'invalid' | 'none'
   >('none');
 
-  const validationCheck = (value: string, type: string) => {
-    if (!value) return 'none';
-
-    switch (type) {
-      case 'email':
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(value) ? 'valid' : 'invalid';
-
-      case 'password':
-        const passwordRegex =
-          /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-        return passwordRegex.test(value) ? 'valid' : 'invalid';
-
-      case 'tel':
-        const phoneRegex = /^01[016789]-?\d{3,4}-?\d{4}$/;
-        return phoneRegex.test(value.replace(/[^0-9]/g, ''))
-          ? 'valid'
-          : 'invalid';
-
-      case 'url':
-        try {
-          new URL(value);
-          return 'valid';
-        } catch {
-          return 'invalid';
-        }
-
-      case 'number':
-        const num = Number(value);
-        return !isNaN(num) && isFinite(num) ? 'valid' : 'invalid';
-
-      case 'text':
-      default:
-        return value.length >= 2 ? 'valid' : 'invalid';
-    }
-  };
-
   useEffect(() => {
     if (type) {
-      const validationResult = validationCheck(value as string, type);
+      const validationResult = validaionCheck(value as string, type);
       setIsValidationState(validationResult);
     }
   }, [value, type]);

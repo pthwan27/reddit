@@ -24,8 +24,9 @@ const BaseModal = ({
 }: BaseModalProps) => {
   const { modals, close } = useModalState();
   const { user } = useAuth();
+
   useEffect(() => {
-    if (user && modals[modalkey]) {
+    if (modalkey === 'authModal' && user) {
       close(modalkey);
     }
   }, [user, modals[modalkey], close]);
@@ -89,11 +90,7 @@ const BaseModal = ({
     </>
   );
 };
-const StyledHeaderInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacer-xs);
-`;
+
 const StyledModalContainer = styled.div`
   position: fixed;
   top: 0;
@@ -114,7 +111,7 @@ const StyledModalBackground = styled.div`
   height: 100vh;
   background: ${({ theme }) => theme.colors.overlay || 'rgba(0,0,0,0.3)'};
   backdrop-filter: blur(0.25rem);
-  opacity: 0.3;
+  opacity: 0.25;
   z-index: 1;
 `;
 
@@ -127,12 +124,13 @@ const StyledModal = styled.div<{ $width?: string }>`
   background: ${({ theme }) => theme.colors.background};
   border-radius: var(--radius-lg);
 
-  min-width: 320px;
-  width: ${({ $width }) => $width};
+  width: 100%;
   max-width: ${({ $width }) => $width};
+
+  min-width: 320px;
   min-height: 400px;
 
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--box-shadow);
 
   @media (max-width: 528px) {
     display: flex;
@@ -142,6 +140,7 @@ const StyledModal = styled.div<{ $width?: string }>`
 
     border-radius: 0;
     padding: var(--spacer-md);
+
     width: 100vw;
     min-height: 100vh;
   }
@@ -155,6 +154,11 @@ const StyledModalContentHeader = styled.div`
   padding: var(--spacer-lg) var(--spacer-lg) var(--spacer-xs);
 
   width: 100%;
+`;
+const StyledHeaderInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-xs);
 `;
 
 const StyledModalCloseButton = styled.button`
@@ -171,9 +175,9 @@ const StyledModalContentMain = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--spacer-lg) 0;
 
   width: 100%;
+  padding: var(--spacer-xs) 0 var(--spacer-lg) 0;
 `;
 
 export default BaseModal;

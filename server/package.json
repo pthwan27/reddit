@@ -1,38 +1,48 @@
 {
-   "name": "server",
-   "version": "1.0.0",
-   "description": "",
-   "main": "server.ts",
-   "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "dev": "nodemon --exec ts-node ./src/server.ts",
-      "start": "ts-node src/index.ts",
-      "typeorm": "typeorm-ts-node-commonjs"
-   },
-   "author": "",
-   "license": "ISC",
-   "dependencies": {
-      "@types/jsonwebtoken": "^9.0.10",
-      "bcryptjs": "^3.0.2",
-      "class-transformer": "^0.5.1",
-      "class-validator": "^0.14.2",
-      "cookie-parser": "^1.4.7",
-      "dotenv": "^16.5.0",
-      "express": "^5.1.0",
-      "jsonwebtoken": "^9.0.2",
-      "morgan": "^1.10.0",
-      "nodemon": "^3.1.10",
-      "pg": "^8.14.1",
-      "reflect-metadata": "^0.2.2",
-      "typeorm": "0.3.25"
-   },
-   "devDependencies": {
-      "@types/bcryptjs": "^3.0.0",
-      "@types/cookie-parser": "^1.4.9",
-      "@types/express": "^5.0.3",
-      "@types/morgan": "^1.9.10",
-      "@types/node": "^24.0.1",
-      "ts-node": "^10.9.2",
-      "typescript": "^5.8.3"
-   }
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --exec ts-node ./src/server.ts",
+    "start": "ts-node src/index.ts",
+    "lint": "eslint src --ext .ts,.js",
+    "type-check": "tsc --noEmit",
+    "typeorm": "typeorm-ts-node-commonjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "bcryptjs": "^3.0.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.10",
+    "pg": "^8.14.1",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "0.3.25",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.0",
+    "@types/bcryptjs": "^3.0.0",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/express": "^5.0.3",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "eslint": "9.29.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "prettier": "^3.4.2",
+    "ts-node": "^10.9.2"
+  }
 }

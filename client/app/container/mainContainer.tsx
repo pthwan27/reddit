@@ -7,7 +7,7 @@ const MainContainer = () => {
       <div
         style={{
           height: '2500px',
-          backgroundColor: 'blue',
+          backgroundColor: 'beige',
         }}
       ></div>
     </StyledMainContainer>

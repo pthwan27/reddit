@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
 import React, {
   createContext,
-  useContext,
-  useState,
-  useEffect,
   useCallback,
-} from "react";
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
-import { clientAxiosInstance } from "../utils/axios";
+import { CustomError } from '../types';
+import { clientAxiosInstance } from '../utils/axios';
 
 // 사용자 타입 정의
 export interface User {
@@ -22,8 +23,8 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  mode: "login" | "register";
-  setMode: React.Dispatch<React.SetStateAction<"login" | "register">>;
+  mode: 'login' | 'register';
+  setMode: React.Dispatch<React.SetStateAction<'login' | 'register'>>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   register: (
@@ -31,14 +32,12 @@ interface AuthContextType {
     username: string,
     password: string
   ) => Promise<void>;
+  refreshToken: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
 
 // AuthContext 생성
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// 쿠키 기반 인증을 사용하므로 별도 토큰 관리 불필요
-// 서버에서 HttpOnly 쿠키로 토큰을 관리함
 
 // AuthProvider 컴포넌트
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -46,15 +45,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [mode, setMode] = useState<"login" | "register">("login");
+  const [mode, setMode] = useState<'login' | 'register'>('login');
+
+  const refreshToken = useCallback(async () => {
+    try {
+      await clientAxiosInstance.post('/api/auth/refresh');
+    } catch (error) {
+      console.error('Token refresh failed: ', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   // 사용자 정보 새로고침 (쿠키 기반)
   const refreshUser = useCallback(async () => {
     try {
-      const response = await clientAxiosInstance.get("/api/auth/me");
+      const response = await clientAxiosInstance.get('/api/auth/me');
       setUser(response.data.user);
     } catch (error) {
-      console.error("Failed to refresh user:", error);
+      console.error('Failed to refresh user:', error);
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -65,15 +75,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = useCallback(async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      const response = await clientAxiosInstance.post("/api/auth/login", {
+      const response = await clientAxiosInstance.post('/api/auth/login', {
         email,
         password,
       });
 
       const { user: userData } = response.data;
       setUser(userData);
-    } catch (error: any) {
-      console.error("Login failed:", error);
+    } catch (err: unknown) {
+      const error = err as CustomError;
+      console.error('Login failed:', error);
       throw error;
     } finally {
       setIsLoading(false);
@@ -84,9 +95,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const logout = useCallback(async () => {
     try {
       // 서버에서 쿠키 삭제 요청
-      await clientAxiosInstance.post("/api/auth/logout");
+      await clientAxiosInstance.post('/api/auth/logout');
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error('Logout error:', error);
     } finally {
       setUser(null);
     }
@@ -97,7 +108,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     async (email: string, username: string, password: string) => {
       try {
         setIsLoading(true);
-        const response = await clientAxiosInstance.post("/api/auth/register", {
+        const response = await clientAxiosInstance.post('/api/auth/register', {
           email,
           username,
           password,
@@ -106,8 +117,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         // 서버에서 쿠키로 토큰을 설정하고 사용자 정보를 반환
         const { user: userData } = response.data;
         setUser(userData);
-      } catch (error: any) {
-        console.error("Registration failed:", error);
+      } catch (err: unknown) {
+        const error = err as CustomError;
+        console.error('Registration failed:', error);
         throw error;
       } finally {
         setIsLoading(false);
@@ -121,23 +133,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     refreshUser();
   }, [refreshUser]);
 
-  // axios 인터셉터 설정 (인증 실패 시 자동 로그아웃)
-  useEffect(() => {
-    const responseInterceptor = clientAxiosInstance.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (error.response?.status === 401) {
-          setUser(null);
-        }
-        return Promise.reject(error);
-      }
-    );
-
-    return () => {
-      clientAxiosInstance.interceptors.response.eject(responseInterceptor);
-    };
-  }, []);
-
   const value: AuthContextType = {
     user,
     isAuthenticated: !!user,
@@ -147,6 +142,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     login,
     logout,
     register,
+    refreshToken,
     refreshUser,
   };
 
@@ -157,7 +153,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };

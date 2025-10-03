@@ -1,17 +1,22 @@
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+import { validaionCheck } from '@/app/utils/validationCheck';
 
 import styled from 'styled-components';
 
 import PlaceHolderInput from '@/app/components/common/placeholderInput';
 
+import { CustomError } from '@/app/types';
+
 import AuthButton from '../../components/auth/AuthButton';
 import { useAuth } from '../../context/authContext';
 
 const LoginContainer = () => {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   const { login, setMode } = useAuth();
 
@@ -22,16 +27,34 @@ const LoginContainer = () => {
     }
     try {
       setError('');
-      setIsLoading(true);
       await login(email, password);
-    } catch (err: any) {
-      setError(err.response?.data?.error || '로그인에 실패했습니다.');
-    } finally {
-      setIsLoading(false);
+
+      if (
+        typeof window !== 'undefined' &&
+        window.location.pathname === '/login'
+      ) {
+        if (window.history.length > 1) {
+          router.back();
+        } else {
+          router.push('/');
+        }
+      }
+    } catch (err: unknown) {
+      const error = err as CustomError;
+      console.error('Login failed:', error);
+
+      setError(error.response?.data?.error || '로그인에 실패했습니다.');
     }
   };
 
-  const isFilled = email && password;
+  const [isFilled, setIsFilled] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsFilled(
+      validaionCheck(email, 'email') === 'valid' &&
+        validaionCheck(password, 'password') === 'valid'
+    );
+  }, [email, password]);
 
   return (
     <StyledLoginContainer>
@@ -39,7 +62,9 @@ const LoginContainer = () => {
         <StyledTitle>로그인</StyledTitle>
         <StyledDesc>
           계속 진행할 경우 서비스 이용 약관에 동의하고
-          <p>개인정보 처리방침을 이해하는 것으로 간주됩니다.</p>
+          <p>
+            <span>개인정보 처리방침을 이해하는 것으로 간주됩니다.</span>
+          </p>
         </StyledDesc>
       </StyledHeader>
       <PlaceHolderInput
@@ -70,12 +95,8 @@ const LoginContainer = () => {
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
-      <AuthButton
-        type="button"
-        onClick={handleLogin}
-        disabled={!isFilled || isLoading}
-      >
-        {isLoading ? '로그인 중...' : '로그인'}
+      <AuthButton type="button" onClick={handleLogin} disabled={!isFilled}>
+        로그인
       </AuthButton>
     </StyledLoginContainer>
   );
@@ -86,8 +107,9 @@ const StyledLoginContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: var(--spacer-md);
+
   width: 100%;
-  padding: 0 var(--spacer-5xl);
+  padding: 0 var(--spacer-4xl);
 `;
 const StyledHeader = styled.div`
   display: flex;
@@ -100,8 +122,8 @@ const StyledHeader = styled.div`
 const StyledTitle = styled.h2`
   font: var(--font-title-h2);
 `;
-const StyledDesc = styled.p`
-  font: var(--font-14-20-light);
+const StyledDesc = styled.span`
+  font: var(--font-14-20-regular);
   text-align: center;
 `;
 const ErrorMessage = styled.div`
@@ -121,7 +143,6 @@ const StyledHelper = styled.div`
 
   margin-top: var(--spacer-2xs);
   margin-bottom: var(--spacer-sm);
-
   padding-top: var(--spacer-sm);
 `;
 

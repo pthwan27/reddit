@@ -1,9 +1,11 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useAuth } from "../../context/authContext";
-import styled from "styled-components";
-import LoadingSpinner from "../common/loadingSpinner";
+import React from 'react';
+
+import styled from 'styled-components';
+
+import { useAuth } from '../../context/authContext';
+import LoadingSpinner from '../common/loadingSpinner';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -26,7 +28,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
         <UnauthorizedContainer>
           <div>
             <h2>로그인이 필요합니다</h2>
-            <p>이 페이지에 접근하려면 로그인해야 합니다.</p>
+            <p>
+              <span>이 페이지에 접근하려면 로그인해야 합니다.</span>
+            </p>
           </div>
         </UnauthorizedContainer>
       )

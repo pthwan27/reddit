@@ -27,7 +27,7 @@ export class Sub extends CoreEntity {
   description: string;
 
   @Column({ nullable: true })
-  imageUrn: string;
+  iconUrn: string;
 
   @Column({ nullable: true })
   bannerUrn: string;
@@ -47,8 +47,8 @@ export class Sub extends CoreEntity {
 
   @Expose()
   get imageUrl(): string {
-    return this.imageUrn
-      ? `${process.env.APP_URL}/images/${this.imageUrn}`
+    return this.iconUrn
+      ? `${process.env.APP_URL}/images/${this.iconUrn}`
       : "https://avatar.iran.liara.run/public";
   }
 

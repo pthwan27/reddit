@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, useRef, useState } from 'react';
+import { InputHTMLAttributes, useRef } from 'react';
 
 import styled from 'styled-components';
 
@@ -19,7 +19,6 @@ const ImageInput = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('e', e);
     const file = e.target.files?.[0] || null;
 
     onFileChange(file);

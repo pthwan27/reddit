@@ -9,7 +9,7 @@ import { useAuth } from '../context/authContext';
 import { ModalKey, useModalState } from '../context/modalContext';
 import AuthModal from './modal/authModal';
 
-const HeaderContainer = () => {
+const HeaderContainer = ({ noOption = false }) => {
   const { user } = useAuth();
   const { open } = useModalState();
 
@@ -22,16 +22,22 @@ const HeaderContainer = () => {
             <LogoIcon />
           </StyledLogo>
         </StyledLeftNav>
-        <StyledCenterNav>
-          <SearchInput />
-        </StyledCenterNav>
-        <StyledRightNav>
-          {user ? (
-            <ProfileDropdown />
-          ) : (
-            <StyledButton onClick={() => open(modalKey)}>로그인</StyledButton>
-          )}
-        </StyledRightNav>
+        {!noOption && (
+          <>
+            <StyledCenterNav>
+              <SearchInput />
+            </StyledCenterNav>
+            <StyledRightNav>
+              {user ? (
+                <ProfileDropdown />
+              ) : (
+                <StyledButton onClick={() => open(modalKey)}>
+                  로그인
+                </StyledButton>
+              )}
+            </StyledRightNav>
+          </>
+        )}
       </StyledNav>
       <AuthModal />
     </StyledHeaderContainer>
@@ -45,7 +51,6 @@ const StyledHeaderContainer = styled.header`
   z-index: 4;
 
   display: flex;
-  overflow: hidden;
   width: 100%;
 
   background-color: ${({ theme }) => theme.colors.background};
