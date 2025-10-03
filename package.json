@@ -29,10 +29,10 @@
   },
   "lint-staged": {
     "client/**/*.{js,jsx,ts,tsx}": [
-      "yarn --cwd client lint --fix"
+      "yarn workspace client lint --fix"
     ],
     "server/**/*.{js,ts}": [
-      "yarn --cwd server lint --fix"
+      "yarn workspace server lint --fix"
     ]
   }
 }

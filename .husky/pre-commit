@@ -1,2 +1,1 @@
-yarn lint:client
-yarn line:server
+yarn lint-staged
