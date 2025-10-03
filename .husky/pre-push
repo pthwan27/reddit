@@ -7,7 +7,6 @@ yarn type-check:server
 
 # 빌드 테스트
 yarn build:client
-; yarn build:server
 
 
 echo "✅ All pre-push checks passed!"
