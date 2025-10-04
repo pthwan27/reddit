@@ -332,7 +332,8 @@ const StyledDesc = styled.div`
   padding: var(--spacer-xs) var(--spacer-sm) var(--spacer-md);
 
   width: 100%;
-  inline-size: 100%;
+
+  word-break: break-all;
 
   font: var(--font-14);
 `;
