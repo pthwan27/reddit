@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -187,20 +188,13 @@ const CreateSubContainer = () => {
         <CreateSubInfoBox>
           {curInputBoxNum > 0 && (
             <StyledBanner $isSelected={!banner}>
-              {bannerPreview && <img src={bannerPreview} alt="banner" />}
+              {bannerPreview && <Image src={bannerPreview} alt="banner" />}
             </StyledBanner>
           )}
           <StyledMain>
             {curInputBoxNum > 0 && (
               <IconBox $isSelected={!icon}>
-                {iconPreview && (
-                  <img
-                    src={iconPreview}
-                    width="fill"
-                    height="fill"
-                    alt="icon"
-                  />
-                )}
+                {iconPreview && <Image src={iconPreview} alt="icon" fill />}
               </IconBox>
             )}
             <InfoBox>
