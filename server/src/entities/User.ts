@@ -37,7 +37,7 @@ export class User extends CoreEntity {
   subs: Sub[];
 
   @OneToMany(() => Comment, (comment) => comment.user)
-  Comments: Comment[];
+  comments: Comment[];
 
   @BeforeInsert()
   async hashPassword() {

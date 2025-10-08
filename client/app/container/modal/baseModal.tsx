@@ -177,7 +177,7 @@ const StyledModalContentMain = styled.div`
   justify-content: center;
 
   width: 100%;
-  padding: var(--spacer-xs) 0 var(--spacer-lg) 0;
+  padding: var(--spacer-xs) 0 var(--spacer-2xl) 0;
 `;
 
 export default BaseModal;

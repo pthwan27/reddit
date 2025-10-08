@@ -1,25 +1,26 @@
-import { Router } from "express";
-import { RegisterHandler } from "../../migration/auth/register";
-import { LoginHandler } from "../../migration/auth/login";
-import { MeHandler } from "../../migration/auth/me";
-import { LogoutHandler } from "../../migration/auth/logout";
-import { RefreshHandler } from "../../migration/auth/refresh";
+import { Router } from 'express';
 
-const router = Router();
+import { LoginHandler } from '../../migration/auth/login';
+import { LogoutHandler } from '../../migration/auth/logout';
+import { MeHandler } from '../../migration/auth/me';
+import { RefreshHandler } from '../../migration/auth/refresh';
+import { RegisterHandler } from '../../migration/auth/register';
+
+const AuthRouter = Router();
 
 // 회원가입
-router.post("/register", RegisterHandler);
+AuthRouter.post('/register', RegisterHandler);
 
 // 로그인
-router.post("/login", LoginHandler);
+AuthRouter.post('/login', LoginHandler);
 
 // 사용자 정보 조회 (토큰 필요)
-router.get("/me", MeHandler);
+AuthRouter.get('/me', MeHandler);
 
 // 로그아웃
-router.post("/logout", LogoutHandler);
+AuthRouter.post('/logout', LogoutHandler);
 
 // 토큰 새로고침
-router.post("/refresh", RefreshHandler);
+AuthRouter.post('/refresh', RefreshHandler);
 
-export default router;
+export default AuthRouter;

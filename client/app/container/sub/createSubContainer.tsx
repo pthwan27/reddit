@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import LoadingSpinner from '@/app/components/common/loadingSpinner';
 
 import { useAuth } from '@/app/context/authContext';
+import { ModalKey, useModalState } from '@/app/context/modalContext';
 import { CustomError, ValidationRule } from '@/app/types';
 
 import CreateSubFirstContainer from './create/subFirstContainer';
@@ -16,9 +17,12 @@ import CreateSubSecContainer from './create/subSecContainer';
 
 const CreateSubContainer = () => {
   const { user, isAuthenticated, isLoading } = useAuth();
+  const { close } = useModalState();
+  const modalKey: ModalKey = 'createSubModal';
+
   const router = useRouter();
 
-  const [subName, setSubName] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState('');
   const [banner, setBanner] = useState<File | null>(null);
   const [icon, setIcon] = useState<File | null>(null);
@@ -33,8 +37,8 @@ const CreateSubContainer = () => {
   const inputBoxes = [
     <CreateSubFirstContainer
       key={'create-sub-first'}
-      subName={subName}
-      setSubName={setSubName}
+      title={title}
+      setTitle={setTitle}
       desc={description}
       setDesc={setDescription}
     />,
@@ -56,17 +60,19 @@ const CreateSubContainer = () => {
       setError('');
 
       const formData = new FormData();
-      formData.append('subName', subName);
+      formData.append('title', title);
       formData.append('description', description);
 
       if (banner) {
-        formData.append('banner', banner);
+        formData.append('banner', banner.name);
       }
       if (icon) {
-        formData.append('icon', icon);
+        formData.append('icon', icon.name);
       }
 
       await clientAxiosInstance.post('/api/sub/create', formData);
+
+      close(modalKey);
     } catch (err: unknown) {
       const error = err as CustomError;
       console.error('Create Sub failed:', error);
@@ -88,7 +94,7 @@ const CreateSubContainer = () => {
       case 0:
         return [
           {
-            condition: !subName.trim(),
+            condition: !title.trim(),
             message: '커뮤니티 이름을 입력해주세요',
           },
           {
@@ -96,7 +102,7 @@ const CreateSubContainer = () => {
             message: '커뮤니티 설명을 입력해주세요',
           },
           {
-            condition: subName.trim().length < 3,
+            condition: title.trim().length < 3,
             message: '커뮤니티 이름은 3글자 이상이어야 합니다.',
           },
           {
@@ -151,7 +157,7 @@ const CreateSubContainer = () => {
       return;
     }
 
-    if (idx === inputBoxes.length - 1) {
+    if (curInputBoxNum === inputBoxes.length - 1) {
       handleCreateSub();
     } else {
       setCurInputBoxNum(idx);
@@ -188,7 +194,7 @@ const CreateSubContainer = () => {
         <CreateSubInfoBox>
           {curInputBoxNum > 0 && (
             <StyledBanner $isSelected={!banner}>
-              {bannerPreview && <Image src={bannerPreview} alt="banner" />}
+              {bannerPreview && <Image src={bannerPreview} alt="banner" fill />}
             </StyledBanner>
           )}
           <StyledMain>
@@ -198,7 +204,7 @@ const CreateSubContainer = () => {
               </IconBox>
             )}
             <InfoBox>
-              <span>r/{subName}</span>
+              <span>r/{title}</span>
               <span>1 멤버 ·온라인 접속자 1명</span>
             </InfoBox>
           </StyledMain>
@@ -260,6 +266,7 @@ const CreateSubInfoBox = styled.div`
 `;
 
 const StyledBanner = styled.div<{ $isSelected: boolean }>`
+  position: relative;
   width: 100%;
   height: 2rem;
 
@@ -287,6 +294,7 @@ const StyledMain = styled.div`
   overflow: hidden;
 `;
 const IconBox = styled.div<{ $isSelected: boolean }>`
+  position: relative;
   width: 3rem;
   height: 3rem;
 
@@ -335,7 +343,7 @@ const CreateSubCarousel = styled.div`
   display: flex;
   justify-content: space-between;
 
-  padding: var(--spacer-lg) var(--spacer-xs) var(--spacer-xs);
+  padding: var(--spacer-lg) var(--spacer-xs) 0;
 
   width: 100%;
 `;

@@ -18,9 +18,6 @@ import { Exclude, Expose } from "class-transformer";
 export class Sub extends CoreEntity {
   @Index()
   @Column({ unique: true })
-  name: string;
-
-  @Column()
   title: string;
 
   @Column({ type: "text", nullable: true })
@@ -31,9 +28,10 @@ export class Sub extends CoreEntity {
 
   @Column({ nullable: true })
   bannerUrn: string;
+  
 
   @Exclude()
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, (user) => user.subs)
   @JoinColumn({ name: "userId", referencedColumnName: "id" })
   user: User;
 

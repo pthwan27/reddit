@@ -88,6 +88,7 @@ const InputContainer = styled.div`
   }
 `;
 const StyledLabel = styled.label`
+  min-width: var(--rem-48);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -105,8 +106,11 @@ const SelectedFile = styled.div`
 const FileName = styled.span`
   font: var(--font-16);
   color: ${({ theme }) => theme.colors.text};
+
+  max-width: 23ch;
   text-overflow: ellipsis;
   white-space: nowrap;
+  overflow: hidden;
 `;
 
 const RemoveButton = styled.button`

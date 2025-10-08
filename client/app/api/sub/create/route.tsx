@@ -5,22 +5,25 @@ import { serverAxiosInstance } from '@/app/utils/axios';
 import { CustomError } from '@/app/types';
 
 export async function POST(req: NextRequest) {
-  const { userName, subName, description, banner, icon } = await req.json();
+  const { title, description, banner, icon } = await req.json();
 
   try {
-    const response = await serverAxiosInstance.post('/sub/create', {
-      userName,
-      subName,
-      description,
-      banner,
-      icon,
-    });
+    const { data, status } = await serverAxiosInstance.post(
+      '/sub/create',
+      {
+        title,
+        description,
+        banner,
+        icon,
+      },
+      {
+        headers: {
+          Cookie: req.headers.get('cookie') || '',
+        },
+      }
+    );
 
-    const nextResponse = NextResponse.json(response.data, {
-      status: response.status,
-    });
-
-    return nextResponse;
+    return NextResponse.json(data, { status });
   } catch (err: unknown) {
     const error = err as CustomError;
     console.error(

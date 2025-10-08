@@ -1,6 +1,9 @@
-import { Router } from "express";
-import { CreateHandler } from "../../migration/sub/create";
+import { Router } from 'express';
 
-const router = Router();
+import { CreateHandler } from '../../migration/sub/create';
 
-router.post("/create", CreateHandler);
+const SubRouter = Router();
+
+SubRouter.post('/create', CreateHandler);
+
+export default SubRouter;
