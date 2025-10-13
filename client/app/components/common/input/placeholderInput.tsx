@@ -1,6 +1,4 @@
-import { InputHTMLAttributes, ReactNode, useEffect, useState } from 'react';
-
-import { validaionCheck } from '@/app/utils/validationCheck';
+import { InputHTMLAttributes, ReactNode, useState } from 'react';
 
 import styled from 'styled-components';
 
@@ -14,6 +12,7 @@ interface PlaceHolderInputProps extends InputHTMLAttributes<HTMLInputElement> {
   ExtraIcon?: ReactNode;
   clearButton?: boolean;
   isExtraContainerVisible?: boolean;
+  validationState?: 'valid' | 'invalid' | 'none' | false;
 }
 
 const PlaceHolderInput = ({
@@ -27,19 +26,9 @@ const PlaceHolderInput = ({
   clearButton = false,
   isExtraContainerVisible = true,
   onChange,
+  validationState,
 }: PlaceHolderInputProps) => {
   const [isFloated, setIsFloated] = useState(false);
-
-  const [isValidationState, setIsValidationState] = useState<
-    'valid' | 'invalid' | 'none'
-  >('none');
-
-  useEffect(() => {
-    if (type) {
-      const validationResult = validaionCheck(value as string, type);
-      setIsValidationState(validationResult);
-    }
-  }, [value, type]);
 
   const handleClear = () => {
     if (onChange) {
@@ -75,11 +64,11 @@ const PlaceHolderInput = ({
           {isExtraContainerVisible && (
             <ExtraIconsContainer id="Extra-icons-container">
               <ExtraIconsValidation id="Extra-icons-validation">
-                {isValidationState === 'invalid' && <ErrorIcon />}
+                {validationState === 'invalid' && <ErrorIcon />}
 
-                {isValidationState === 'valid' && <ValidIcon />}
+                {validationState === 'valid' && <ValidIcon />}
 
-                {isValidationState === 'none' && (
+                {(validationState === 'none' || false) && (
                   <div style={{ width: 20, height: 20 }} />
                 )}
               </ExtraIconsValidation>

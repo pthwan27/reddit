@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { validaionCheck } from '@/app/utils/validationCheck';
 
@@ -20,6 +20,15 @@ const LoginContainer = () => {
 
   const { login, setMode } = useAuth();
 
+  const emailValidation = useMemo(
+    () => validaionCheck(email, 'email'),
+    [email]
+  );
+  const passwordValidation = useMemo(
+    () => validaionCheck(password, 'password'),
+    [password]
+  );
+
   const handleLogin = async () => {
     if (!email || !password) {
       setError('이메일과 비밀번호를 입력해주세요.');
@@ -27,7 +36,11 @@ const LoginContainer = () => {
     }
     try {
       setError('');
-      await login(email, password);
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('password', password);
+
+      await login(formData);
 
       if (
         typeof window !== 'undefined' &&
@@ -46,15 +59,6 @@ const LoginContainer = () => {
       setError(error.response?.data?.error || '로그인에 실패했습니다.');
     }
   };
-
-  const [isFilled, setIsFilled] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsFilled(
-      validaionCheck(email, 'email') === 'valid' &&
-        validaionCheck(password, 'password') === 'valid'
-    );
-  }, [email, password]);
 
   return (
     <StyledLoginContainer>
@@ -95,7 +99,13 @@ const LoginContainer = () => {
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
-      <AuthButton type="button" onClick={handleLogin} disabled={!isFilled}>
+      <AuthButton
+        type="button"
+        onClick={handleLogin}
+        disabled={
+          !(emailValidation === 'valid' && passwordValidation === 'valid')
+        }
+      >
         로그인
       </AuthButton>
     </StyledLoginContainer>

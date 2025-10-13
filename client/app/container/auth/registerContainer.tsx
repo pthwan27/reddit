@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { validaionCheck } from '@/app/utils/validationCheck';
 
@@ -23,6 +23,19 @@ const RegisterContainer = () => {
 
   const { register, setMode } = useAuth();
 
+  const emailValidation = useMemo(
+    () => validaionCheck(email, 'email'),
+    [email]
+  );
+  const usernameValidation = useMemo(
+    () => validaionCheck(username, 'name'),
+    [username]
+  );
+  const passwordValidation = useMemo(
+    () => validaionCheck(password, 'password'),
+    [password]
+  );
+
   const handleRegister = async () => {
     if (!email || !password || !username) {
       setError('이메일과 이름, 비밀번호를 입력해주세요.');
@@ -31,7 +44,12 @@ const RegisterContainer = () => {
 
     try {
       setError('');
-      await register(email, username, password);
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('username', username);
+      formData.append('password', password);
+
+      await register(formData);
 
       if (
         typeof window !== 'undefined' &&
@@ -54,16 +72,6 @@ const RegisterContainer = () => {
       setError(error.response?.data?.error || '회원가입을 실패했습니다.');
     }
   };
-
-  const [isFilled, setIsFilled] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsFilled(
-      validaionCheck(username, 'name') === 'valid' &&
-        validaionCheck(email, 'email') === 'valid' &&
-        validaionCheck(password, 'password') === 'valid'
-    );
-  }, [username, email, password]);
 
   return (
     <StyledRegisterContainer>
@@ -108,7 +116,17 @@ const RegisterContainer = () => {
       </StyledHelper>
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
-      <AuthButton type="button" onClick={handleRegister} disabled={!isFilled}>
+      <AuthButton
+        type="button"
+        onClick={handleRegister}
+        disabled={
+          !(
+            emailValidation === 'valid' &&
+            usernameValidation === 'valid' &&
+            passwordValidation === 'valid'
+          )
+        }
+      >
         회원가입
       </AuthButton>
     </StyledRegisterContainer>

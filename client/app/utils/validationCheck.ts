@@ -1,4 +1,6 @@
-export const validaionCheck = (value: string, type: string) => {
+import { throttle } from 'lodash';
+
+export const validaionCheck = throttle((value: string, type: string) => {
   if (!value) return 'none';
 
   switch (type) {
@@ -43,4 +45,4 @@ export const validaionCheck = (value: string, type: string) => {
     default:
       return value.length >= 2 ? 'valid' : 'invalid';
   }
-};
+}, 100);

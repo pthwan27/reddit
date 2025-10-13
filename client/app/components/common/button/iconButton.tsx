@@ -8,24 +8,23 @@ interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   backgroundColor?: string;
 }
 
-const IconButton = ({ icon, value }: IconButtonProps) => {
+const IconButton = ({ icon, value, onClick }: IconButtonProps) => {
   return (
-    <StyledButtonContainer>
+    <StyledButton onClick={onClick}>
       {icon}
       {value}
-    </StyledButtonContainer>
+    </StyledButton>
   );
 };
 
-const StyledButtonContainer = styled.div`
+const StyledButton = styled.button`
   display: flex;
+  align-items: center;
 
   gap: var(--spacer-xs);
   padding: var(--spacer-sm);
 
   border-radius: var(--radius-lg);
-
-  cursor: pointer;
 
   &:hover {
     background: ${({ theme }) => theme.colors.contendHover};

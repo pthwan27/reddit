@@ -10,12 +10,14 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@types/lodash": "^4.17.20",
     "@types/node": "24.0.1",
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
     "autoprefixer": "10.4.21",
     "axios": "^1.12.2",
     "express": "^5.1.0",
+    "lodash": "^4.17.21",
     "next": "15.3.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",

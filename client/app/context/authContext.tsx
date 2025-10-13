@@ -25,13 +25,9 @@ interface AuthContextType {
   isLoading: boolean;
   mode: 'login' | 'register';
   setMode: React.Dispatch<React.SetStateAction<'login' | 'register'>>;
-  login: (email: string, password: string) => Promise<void>;
+  login: (loginForm: FormData) => Promise<void>;
   logout: () => void;
-  register: (
-    email: string,
-    username: string,
-    password: string
-  ) => Promise<void>;
+  register: (registerForm: FormData) => Promise<void>;
   refreshToken: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -72,13 +68,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   // 로그인 함수 (쿠키 기반)
-  const login = useCallback(async (email: string, password: string) => {
+  const login = useCallback(async (loginForm: FormData) => {
     try {
       setIsLoading(true);
-      const response = await clientAxiosInstance.post('/api/auth/login', {
-        email,
-        password,
-      });
+      const response = await clientAxiosInstance.post(
+        '/api/auth/login',
+        loginForm
+      );
 
       const { user: userData } = response.data;
       setUser(userData);
@@ -104,29 +100,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   // 회원가입 함수 (쿠키 기반)
-  const register = useCallback(
-    async (email: string, username: string, password: string) => {
-      try {
-        setIsLoading(true);
-        const response = await clientAxiosInstance.post('/api/auth/register', {
-          email,
-          username,
-          password,
-        });
+  const register = useCallback(async (registerForm: FormData) => {
+    try {
+      setIsLoading(true);
+      const response = await clientAxiosInstance.post(
+        '/api/auth/register',
+        registerForm
+      );
 
-        // 서버에서 쿠키로 토큰을 설정하고 사용자 정보를 반환
-        const { user: userData } = response.data;
-        setUser(userData);
-      } catch (err: unknown) {
-        const error = err as CustomError;
-        console.error('Registration failed:', error);
-        throw error;
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    []
-  );
+      // 서버에서 쿠키로 토큰을 설정하고 사용자 정보를 반환
+      const { user: userData } = response.data;
+      setUser(userData);
+    } catch (err: unknown) {
+      const error = err as CustomError;
+      console.error('Registration failed:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   // 컴포넌트 마운트 시 사용자 정보 로드 (쿠키 기반)
   useEffect(() => {

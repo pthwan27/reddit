@@ -15,7 +15,9 @@ const LeftNaveContainer = () => {
         <CommonLeftNavMenu />
       </StyledMenuContainer>
       <StyledDivider />
-      {user ? <LoginNavMenu /> : <LogoutNavMenu />}
+      <StyledMenuContainer>
+        {user ? <LoginNavMenu /> : <LogoutNavMenu />}
+      </StyledMenuContainer>
       <StyledDivider />
 
       <CreateSubModal />

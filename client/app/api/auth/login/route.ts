@@ -17,7 +17,6 @@ export async function POST(req: NextRequest) {
       status: response.status,
     });
 
-    // 서버에서 설정된 쿠키를 클라이언트로 전달
     const setCookieHeader = response.headers['set-cookie'];
 
     if (setCookieHeader) {

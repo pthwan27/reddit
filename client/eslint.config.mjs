@@ -16,6 +16,11 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   globalIgnores([
+    '**/.next',
+    '**/.next/**',
+    '**/out',
+    '**/build',
+    '**/.cache',
     '**/dist',
     '**/node_modules',
     'app/types/supabase.ts',

@@ -35,7 +35,7 @@ export class Post extends CoreEntity {
   body: string;
 
   @Column()
-  subName: string;
+  subTitle: string;
 
   @Exclude()
   @ManyToOne(() => User, (user) => user.posts)
@@ -43,7 +43,7 @@ export class Post extends CoreEntity {
   user: User;
 
   @ManyToOne(() => Sub, (sub) => sub.posts)
-  @JoinColumn({ name: "subName", referencedColumnName: "name" })
+  @JoinColumn({ name: "subTitle", referencedColumnName: "title" })
   sub: Sub;
 
   @Exclude()
@@ -68,7 +68,7 @@ export class Post extends CoreEntity {
 
   @Expose()
   get url(): string {
-    return `/r/${this.subName}/${this.identifier}/${this.slug}`;
+    return `/r/${this.subTitle}/${this.identifier}/${this.slug}`;
   }
 
   @Expose()

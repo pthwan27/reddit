@@ -4,10 +4,10 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec ts-node ./src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/index.ts",
-    "lint": "eslint src --ext .ts,.js",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\"",
     "type-check": "tsc --noEmit",
     "typeorm": "typeorm-ts-node-commonjs"
   },

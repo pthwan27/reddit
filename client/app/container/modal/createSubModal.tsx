@@ -7,8 +7,6 @@ import CreateSubContainer from '../sub/createSubContainer';
 const CreateSubModal = () => {
   const modalKey: ModalKey = 'createSubModal';
 
-  // const [inputPageNum, setInputPageNum] = useState(1);
-
   return (
     <BaseModal
       modalkey={modalKey}
