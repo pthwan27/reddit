@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import ImageInput from '@/app/components/common/imageInput';
+import ImageInput from '@/app/components/common/input/imageInput';
 
 type CreateSubSecContainerProps = {
   banner: File | null;

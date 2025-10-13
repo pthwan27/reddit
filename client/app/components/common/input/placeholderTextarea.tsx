@@ -4,8 +4,8 @@ import { validaionCheck } from '@/app/utils/validationCheck';
 
 import styled from 'styled-components';
 
-import ErrorIcon from '../svgs/ErrorIcon';
-import ValidIcon from '../svgs/ValidIcon';
+import ErrorIcon from '../../svgs/ErrorIcon';
+import ValidIcon from '../../svgs/ValidIcon';
 
 interface PlaceHolderInputProps
   extends InputHTMLAttributes<HTMLTextAreaElement> {

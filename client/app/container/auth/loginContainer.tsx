@@ -5,7 +5,7 @@ import { validaionCheck } from '@/app/utils/validationCheck';
 
 import styled from 'styled-components';
 
-import PlaceHolderInput from '@/app/components/common/placeholderInput';
+import PlaceHolderInput from '@/app/components/common/input/placeholderInput';
 
 import { CustomError } from '@/app/types';
 

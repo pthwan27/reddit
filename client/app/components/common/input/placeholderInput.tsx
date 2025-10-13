@@ -4,8 +4,8 @@ import { validaionCheck } from '@/app/utils/validationCheck';
 
 import styled from 'styled-components';
 
-import ErrorIcon from '../svgs/ErrorIcon';
-import ValidIcon from '../svgs/ValidIcon';
+import ErrorIcon from '../../svgs/ErrorIcon';
+import ValidIcon from '../../svgs/ValidIcon';
 
 interface PlaceHolderInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -57,6 +57,7 @@ const PlaceHolderInput = ({
       >
         <BoundaryBox>
           <InputContainer $hasLeadingIcon={!!leadingIcon}>
+            <LeadingIcon>{leadingIcon}</LeadingIcon>
             <PlaceHolderSpan $isFloated={isFloated || Boolean(value)}>
               {label}
               {required && (
@@ -128,7 +129,16 @@ const InputContainer = styled.span<{ $hasLeadingIcon: boolean }>`
   flex: 1;
   flex-direction: column;
   justify-content: center;
-  padding-left: ${({ $hasLeadingIcon }) => ($hasLeadingIcon ? '0' : '0')};
+  padding-left: ${({ $hasLeadingIcon }) =>
+    $hasLeadingIcon ? 'var(--rem-28)' : '0'};
+`;
+const LeadingIcon = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  left: var(--rem-16);
 `;
 
 const PlaceHolderSpan = styled.span<{ $isFloated: boolean }>`

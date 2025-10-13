@@ -18,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
   --rem-48: 3rem;
   --rem-40: 2.5rem;
   --rem-32: 2rem;
+  --rem-28: 1.75rem;
   --rem-24: 1.5rem;
   --rem-20: 1.25rem;
   --rem-16: 1rem;

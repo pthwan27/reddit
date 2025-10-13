@@ -28,7 +28,6 @@ export class Sub extends CoreEntity {
 
   @Column({ nullable: true })
   bannerUrn: string;
-  
 
   @Exclude()
   @ManyToOne(() => User, (user) => user.subs)

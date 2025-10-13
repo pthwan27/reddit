@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import PlaceHolderInput from '@/app/components/common/placeholderInput';
-import PlaceHolderTextarea from '@/app/components/common/placeholderTextarea';
+import PlaceHolderInput from '@/app/components/common/input/placeholderInput';
+import PlaceHolderTextarea from '@/app/components/common/input/placeholderTextarea';
 
 type CreateSubFirstContainerProps = {
   title: string;

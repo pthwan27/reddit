@@ -1,16 +1,22 @@
 import styled from 'styled-components';
 
-import { ModalKey, useModalState } from '../context/modalContext';
+import CommonLeftNavMenu from '../components/nav/commonNavMenu';
+import LoginNavMenu from '../components/nav/loginNavMenu';
+import LogoutNavMenu from '../components/nav/logoutNavMenu';
+import { useAuth } from '../context/authContext';
 import CreateSubModal from './modal/createSubModal';
 
 const LeftNaveContainer = () => {
-  const { open } = useModalState();
-  const modalKey: ModalKey = 'createSubModal';
+  const { user } = useAuth();
 
   return (
     <StyledLeftNavContainer>
-      <button onClick={() => open(modalKey)}>create sub</button>
-      <StyledLeftNavDivider />
+      <StyledMenuContainer>
+        <CommonLeftNavMenu />
+      </StyledMenuContainer>
+      <StyledDivider />
+      {user ? <LoginNavMenu /> : <LogoutNavMenu />}
+      <StyledDivider />
 
       <CreateSubModal />
     </StyledLeftNavContainer>
@@ -29,8 +35,18 @@ const StyledLeftNavContainer = styled.nav`
   }
 `;
 
-const StyledLeftNavDivider = styled.div`
+const StyledMenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--spacer-2xs);
+
+  padding: var(--spacer-sm);
+`;
+
+const StyledDivider = styled.div`
   border-bottom: var(--line-sm) solid
     ${({ theme }) => theme.colors.naturalBorder};
 `;
+
 export default LeftNaveContainer;

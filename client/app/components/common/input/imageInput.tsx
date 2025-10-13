@@ -2,7 +2,7 @@ import { InputHTMLAttributes, useRef } from 'react';
 
 import styled from 'styled-components';
 
-import ImageIcon from '../svgs/ImageIcon';
+import ImageIcon from '../../svgs/ImageIcon';
 
 interface ImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
