@@ -21,9 +21,7 @@ const LoginNavMenu = () => {
         icon={<PlusIcon />}
         value={'커뮤니티 만들기'}
         onClick={() => onOpenCreateSubModal()}
-      >
-        create sub
-      </IconButton>
+      />
     </>
   );
 };
