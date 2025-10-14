@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
   } catch (err: unknown) {
     const error = err as CustomError;
     console.error(
-      'Create Sub API error:',
+      'Get my sub list API error:',
       error.response?.data || error.message
     );
     return NextResponse.json(

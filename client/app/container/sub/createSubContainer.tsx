@@ -2,37 +2,30 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { clientAxiosInstance } from '@/app/utils/axios';
+import { useCreateSub } from '@/app/hooks/useCreateSub';
 
 import styled from 'styled-components';
 
 import LoadingSpinner from '@/app/components/common/loadingSpinner';
 
-import { useAuth } from '@/app/context/authContext';
-import { ModalKey, useModalState } from '@/app/context/modalContext';
-import { CustomError, ValidationRule } from '@/app/types';
+import { ValidationRule } from '@/app/types';
 
 import CreateSubFirstContainer from './create/subFirstContainer';
 import CreateSubSecContainer from './create/subSecContainer';
 
 const CreateSubContainer = () => {
-  const { user, isAuthenticated, isLoading } = useAuth();
-  const { close } = useModalState();
-  const modalKey: ModalKey = 'createSubModal';
-
   const router = useRouter();
-
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState('');
   const [banner, setBanner] = useState<File | null>(null);
   const [icon, setIcon] = useState<File | null>(null);
+  const [curInputBoxNum, setCurInputBoxNum] = useState<number>(0);
+
+  const { createSub, error, isSubmitting, isLoading, isAuthenticated } =
+    useCreateSub();
 
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
   const [iconPreview, setIconPreview] = useState<string | null>(null);
-
-  const [error, setError] = useState('');
-
-  const [curInputBoxNum, setCurInputBoxNum] = useState<number>(0);
 
   const inputBoxes = [
     <CreateSubFirstContainer
@@ -52,35 +45,14 @@ const CreateSubContainer = () => {
   ];
 
   const handleCreateSub = async () => {
-    if (!isAuthenticated || !user) {
-      setError('로그인이 필요합니다.');
-      return;
-    }
-    try {
-      setError('');
+    await createSub({
+      title,
+      description,
+      banner,
+      icon,
+    });
 
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('description', description);
-
-      if (banner) {
-        formData.append('banner', banner.name);
-      }
-      if (icon) {
-        formData.append('icon', icon.name);
-      }
-
-      await clientAxiosInstance.post('/api/sub/create', formData);
-
-      close(modalKey);
-    } catch (err: unknown) {
-      const error = err as CustomError;
-      console.error('Create Sub failed:', error);
-
-      setError(error.response?.data?.error || '커뮤니티 생성을 실패했습니다');
-    }
-
-    if (isLoading) {
+    if (isSubmitting || isLoading) {
       return <LoadingSpinner />;
     }
 

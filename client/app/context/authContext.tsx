@@ -8,15 +8,8 @@ import React, {
   useState,
 } from 'react';
 
-import { CustomError } from '../types';
+import { CustomError, User } from '../types';
 import { clientAxiosInstance } from '../utils/axios';
-
-// 사용자 타입 정의
-export interface User {
-  id: string;
-  email: string;
-  username: string;
-}
 
 // 인증 상태 타입 정의
 interface AuthContextType {

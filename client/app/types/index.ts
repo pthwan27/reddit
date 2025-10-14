@@ -9,3 +9,44 @@ export interface CustomError extends Error {
     status?: number;
   };
 }
+export interface User {
+  id: string;
+  email: string;
+  username: string;
+}
+
+export interface Sub {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  title: string;
+  description: string | null;
+  imageUrl: string;
+  bannerUrl: string;
+  username: string;
+  posts?: Post[];
+}
+export interface CreateSubProps {
+  title: string;
+  description: string;
+  icon?: File | null;
+  banner?: File | null;
+}
+
+// Post 타입
+export interface Post {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  identifier: string;
+  title: string;
+  slug: string;
+  body: string;
+  subName: string;
+  username: string;
+  url: string;
+  voteScore: number;
+  commentCount: number;
+  userVote?: number;
+  sub?: Sub;
+}
