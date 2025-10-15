@@ -16,6 +16,7 @@ export const useCreateSub = () => {
   const [error, setError] = useState('');
 
   const createSub = async ({
+    slug,
     title,
     description,
     icon,
@@ -31,15 +32,18 @@ export const useCreateSub = () => {
       setIsSubmitting(true);
       setError('');
 
+      const encodedSlug = encodeURIComponent(slug.trim().replace(/ /g, '-'));
+
       const formData = new FormData();
+      formData.append('slug', encodedSlug);
       formData.append('title', title);
       formData.append('description', description);
 
       if (banner) {
-        formData.append('banner', banner.name);
+        formData.append('banner', banner);
       }
       if (icon) {
-        formData.append('icon', icon.name);
+        formData.append('icon', icon);
       }
 
       await clientAxiosInstance.post('/api/sub/create', formData);

@@ -36,7 +36,9 @@ const RegisterContainer = () => {
     [password]
   );
 
-  const handleRegister = async () => {
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     if (!email || !password || !username) {
       setError('이메일과 이름, 비밀번호를 입력해주세요.');
       return;
@@ -44,12 +46,7 @@ const RegisterContainer = () => {
 
     try {
       setError('');
-      const formData = new FormData();
-      formData.append('email', email);
-      formData.append('username', username);
-      formData.append('password', password);
-
-      await register(formData);
+      await register(email, username, password);
 
       if (
         typeof window !== 'undefined' &&
@@ -117,7 +114,7 @@ const RegisterContainer = () => {
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
       <AuthButton
-        type="button"
+        type="submit"
         onClick={handleRegister}
         disabled={
           !(
@@ -132,7 +129,7 @@ const RegisterContainer = () => {
     </StyledRegisterContainer>
   );
 };
-const StyledRegisterContainer = styled.div`
+const StyledRegisterContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;

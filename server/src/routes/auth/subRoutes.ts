@@ -1,11 +1,12 @@
 import { Router } from 'express';
 
-import { CreateHandler } from '../../migration/sub/create';
+import { AuthMiddleware } from '../../middleware/auth';
+import { CreateHandler, upload } from '../../migration/sub/create';
 import { GetMyListHandler } from '../../migration/sub/my-list';
 
 const SubRouter = Router();
 
-SubRouter.post('/create', CreateHandler);
-SubRouter.get('/my-list', GetMyListHandler);
+SubRouter.post('/create', AuthMiddleware, upload, CreateHandler);
+SubRouter.get('/my-list', AuthMiddleware, GetMyListHandler);
 
 export default SubRouter;

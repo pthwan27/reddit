@@ -1,4 +1,4 @@
-import BaseModal from '@/app/container/modal/baseModal';
+import BaseModal from '@/app/container/modal/base';
 
 import { ModalKey } from '@/app/context/modalContext';
 

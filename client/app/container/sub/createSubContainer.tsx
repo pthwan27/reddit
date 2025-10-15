@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import LoadingSpinner from '@/app/components/common/loadingSpinner';
 
+import { useSubs } from '@/app/context/subContext';
 import { ValidationRule } from '@/app/types';
 
 import CreateSubFirstContainer from './create/subFirstContainer';
@@ -21,6 +22,7 @@ const CreateSubContainer = () => {
   const [icon, setIcon] = useState<File | null>(null);
   const [curInputBoxNum, setCurInputBoxNum] = useState<number>(0);
 
+  const { getMySubs } = useSubs();
   const { createSub, error, isSubmitting, isLoading, isAuthenticated } =
     useCreateSub();
 
@@ -46,11 +48,14 @@ const CreateSubContainer = () => {
 
   const handleCreateSub = async () => {
     await createSub({
-      title,
+      slug: title,
+      title: title,
       description,
       banner,
       icon,
     });
+
+    getMySubs();
 
     if (isSubmitting || isLoading) {
       return <LoadingSpinner />;
@@ -82,17 +87,7 @@ const CreateSubContainer = () => {
             message: '커뮤니티 설명은 10글자 이상이어야 합니다.',
           },
         ];
-      case 1:
-        return [
-          {
-            condition: !banner,
-            message: '배너 이미지를 업로드해주세요.',
-          },
-          {
-            condition: !icon,
-            message: '아이콘 이미지를 업로드해주세요.',
-          },
-        ];
+
       default:
         return [];
     }

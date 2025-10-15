@@ -21,12 +21,13 @@ export interface Sub {
   updatedAt: string;
   title: string;
   description: string | null;
-  imageUrl: string;
+  iconUrl: string;
   bannerUrl: string;
   username: string;
   posts?: Post[];
 }
 export interface CreateSubProps {
+  slug: string;
   title: string;
   description: string;
   icon?: File | null;

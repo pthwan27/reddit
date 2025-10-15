@@ -1,9 +1,10 @@
-import { useSubs } from '@/app/hooks/useSubs';
+import Image from 'next/image';
 
 import styled from 'styled-components';
 
 import { useAuth } from '@/app/context/authContext';
 import { ModalKey, useModalState } from '@/app/context/modalContext';
+import { useSubs } from '@/app/context/subContext';
 
 import IconButton from '../common/button/iconButton';
 import PlusIcon from '../svgs/PlusIcon';
@@ -32,7 +33,12 @@ const LoginNavMenu = () => {
       <StyledDivider />
       <ul>
         {subs.map((sub, idx) => (
-          <li key={sub.title + idx}>{sub.title}</li>
+          <li key={sub.title + idx}>
+            {sub.title}
+
+            <Image src={sub.bannerUrl} alt={sub.title} width={32} height={32} />
+            <Image src={sub.iconUrl} alt={sub.title} width={32} height={32} />
+          </li>
         ))}
       </ul>
     </>

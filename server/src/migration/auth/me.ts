@@ -1,59 +1,23 @@
-import { RequestHandler } from "express";
-import jwt from "jsonwebtoken";
-import { User } from "../../entities/User";
+import { RequestHandler } from 'express';
+
+import { User } from '../../entities/User';
 
 export const MeHandler: RequestHandler = async (req, res) => {
   try {
-    let token = req.cookies?.auth_token;
+    const user: User = res.locals.user;
 
-    if (!token) {
-      const authHeader = req.headers.authorization;
-      if (authHeader && authHeader.startsWith("Bearer ")) {
-        token = authHeader.substring(7);
-      }
-    }
-
-    if (!token) {
-      res.status(401).json({ error: "No token provided" });
-      return;
-    }
-
-    // JWT 토큰 검증
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || "your-secret-key"
-    ) as any;
-
-    if (!decoded.userId) {
-      res.status(401).json({ error: "Invalid token structure" });
-      return;
-    }
-
-    // 사용자 정보 조회
-    const user = await User.findOne({ where: { id: decoded.userId } });
     if (!user) {
-      res.status(401).json({ error: "User not found" });
-      return;
+      return res.status(401).json({ error: 'User not found in context' });
     }
 
-    // 비밀번호 제외하고 사용자 정보 반환
     const { password: _, ...userWithoutPassword } = user;
 
-    res.status(200).json({
+    return res.status(200).json({
       user: userWithoutPassword,
     });
-    return;
   } catch (error) {
-    console.error("Error getting user info:", error);
-    if (error instanceof jwt.JsonWebTokenError) {
-      res.status(401).json({ error: "Invalid token" });
-      return;
-    }
-    if (error instanceof jwt.TokenExpiredError) {
-      res.status(401).json({ error: "Token expired" });
-      return;
-    }
-    res.status(500).json({ error: "Failed to get user info" });
-    return;
+    // 이 핸들러 내에서 발생할 수 있는 예기치 못한 에러 처리
+    console.error('Error in MeHandler:', error);
+    return res.status(500).json({ error: 'Failed to get user info' });
   }
 };

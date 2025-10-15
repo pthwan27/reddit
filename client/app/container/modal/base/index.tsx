@@ -3,9 +3,9 @@ import { createPortal } from 'react-dom';
 
 import styled from 'styled-components';
 
-import CloseIcon from '../../components/svgs/CloseIcon';
-import { useAuth } from '../../context/authContext';
-import { useModalState } from '../../context/modalContext';
+import CloseIcon from '../../../components/svgs/CloseIcon';
+import { useAuth } from '../../../context/authContext';
+import { useModalState } from '../../../context/modalContext';
 
 type BaseModalProps = {
   children: React.ReactNode;

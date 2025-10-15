@@ -29,18 +29,16 @@ const LoginContainer = () => {
     [password]
   );
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     if (!email || !password) {
       setError('이메일과 비밀번호를 입력해주세요.');
       return;
     }
     try {
       setError('');
-      const formData = new FormData();
-      formData.append('email', email);
-      formData.append('password', password);
-
-      await login(formData);
+      await login(email, password);
 
       if (
         typeof window !== 'undefined' &&
@@ -100,7 +98,7 @@ const LoginContainer = () => {
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
       <AuthButton
-        type="button"
+        type="submit"
         onClick={handleLogin}
         disabled={
           !(emailValidation === 'valid' && passwordValidation === 'valid')
@@ -111,7 +109,7 @@ const LoginContainer = () => {
     </StyledLoginContainer>
   );
 };
-const StyledLoginContainer = styled.div`
+const StyledLoginContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;

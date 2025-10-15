@@ -1,10 +1,9 @@
-import { instanceToPlain } from 'class-transformer';
 import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { Sub } from '../../entities/Sub';
+import { User } from '../entities/User';
 
-export const GetMyListHandler: RequestHandler = async (req, res) => {
+export const AuthMiddleware: RequestHandler = async (req, res, next) => {
   try {
     let token = req.cookies?.auth_token;
 
@@ -31,13 +30,19 @@ export const GetMyListHandler: RequestHandler = async (req, res) => {
       return;
     }
 
-    const subs = await Sub.find({ where: { user: { id: decoded.userId } } });
+    // 사용자 정보 조회
+    const user = await User.findOneBy({ id: decoded.userId });
 
-    return res.status(200).json({ subs: instanceToPlain(subs) });
+    if (!user) {
+      res.status(401).json({ error: 'User not found' });
+      return;
+    }
+
+    res.locals.user = user;
+
+    return next();
   } catch (error) {
-    console.error('Error getting my sub-list:', error);
-
-    res.status(500).json({ error: 'Failed to get my sub-list' });
-    return;
+    console.error(error);
+    return res.status(401).json({ error: 'Unauthenticated' });
   }
 };

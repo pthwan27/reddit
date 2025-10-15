@@ -20,6 +20,10 @@ export class Sub extends CoreEntity {
   @Column({ unique: true })
   title: string;
 
+  @Index()
+  @Column({ unique: true })
+  slug: string;
+
   @Column({ type: "text", nullable: true })
   description: string;
 
@@ -43,16 +47,18 @@ export class Sub extends CoreEntity {
   }
 
   @Expose()
-  get imageUrl(): string {
+  get iconUrl(): string {
+
     return this.iconUrn
-      ? `${process.env.APP_URL}/images/${this.iconUrn}`
+      ? `${process.env.APP_URL}/images/subs/${this.slug}/icon/${this.iconUrn}`
       : "https://avatar.iran.liara.run/public";
   }
 
   @Expose()
   get bannerUrl(): string {
+
     return this.bannerUrn
-      ? `${process.env.APP_URL}/images/${this.bannerUrn}`
+      ? `${process.env.APP_URL}/images/subs/${this.slug}/banner/${this.bannerUrn}`
       : "";
   }
 }
