@@ -3,7 +3,6 @@ import styled from 'styled-components';
 const MainContainer = () => {
   return (
     <StyledMainContainer>
-      asdfasdfsadfasd
       <div
         style={{
           height: '2500px',

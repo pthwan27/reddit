@@ -8,7 +8,7 @@ type CreateSubSecContainerProps = {
   icon: File | null;
   setIcon: React.Dispatch<React.SetStateAction<File | null>>;
 };
-const CreateSubSecContainer = ({
+const SecCreateSubContainer = ({
   banner,
   setBanner,
   icon,
@@ -38,4 +38,4 @@ const InputBox = styled.div`
   width: 100%;
 `;
 
-export default CreateSubSecContainer;
+export default SecCreateSubContainer;

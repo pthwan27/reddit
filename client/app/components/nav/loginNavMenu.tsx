@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import styled from 'styled-components';
 
@@ -10,6 +11,7 @@ import IconButton from '../common/button/iconButton';
 import PlusIcon from '../svgs/PlusIcon';
 
 const LoginNavMenu = () => {
+  const router = useRouter();
   const { user } = useAuth();
 
   const { open } = useModalState();
@@ -23,6 +25,10 @@ const LoginNavMenu = () => {
     open(modalKey);
   };
 
+  const goToSubDetail = (subId: number) => {
+    router.push(`/sub/${subId}`);
+  };
+
   return (
     <>
       <IconButton
@@ -34,7 +40,10 @@ const LoginNavMenu = () => {
 
       <StyledSubList>
         {subs.map((sub, idx) => (
-          <StyledSubItem key={sub.title + idx}>
+          <StyledSubItem
+            key={sub.title + idx}
+            onClick={() => goToSubDetail(sub.id)}
+          >
             <IconBox>
               <Image src={sub.iconUrl} alt={sub.title} width={32} height={32} />
             </IconBox>

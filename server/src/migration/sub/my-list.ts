@@ -1,37 +1,18 @@
 import { instanceToPlain } from 'class-transformer';
 import { RequestHandler } from 'express';
-import jwt from 'jsonwebtoken';
 
 import { Sub } from '../../entities/Sub';
+import { User } from '../../entities/User';
 
 export const GetMyListHandler: RequestHandler = async (req, res) => {
   try {
-    let token = req.cookies?.auth_token;
+    const user: User = res.locals.user;
 
-    if (!token) {
-      const authHeader = req.headers.authorization;
-      if (authHeader && authHeader.startsWith('Bearer ')) {
-        token = authHeader.substring(7);
-      }
+    if (!user) {
+      return res.status(401).json({ error: 'User not found in context' });
     }
 
-    if (!token) {
-      res.status(401).json({ error: 'No token provided' });
-      return;
-    }
-
-    // JWT 토큰 검증
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || 'your-secret-key'
-    ) as any;
-
-    if (!decoded.userId) {
-      res.status(401).json({ error: 'Invalid token structure' });
-      return;
-    }
-
-    const subs = await Sub.find({ where: { user: { id: decoded.userId } } });
+    const subs = await Sub.find({ where: { user: { id: user.id } } });
 
     return res.status(200).json({ subs: instanceToPlain(subs) });
   } catch (error) {

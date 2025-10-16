@@ -11,8 +11,8 @@ import LoadingSpinner from '@/app/components/common/loadingSpinner';
 import { useSubs } from '@/app/context/subContext';
 import { ValidationRule } from '@/app/types';
 
-import CreateSubFirstContainer from './create/subFirstContainer';
-import CreateSubSecContainer from './create/subSecContainer';
+import FirstCreateSubContainer from './subFirstContainer';
+import SecCreateSubContainer from './subSecContainer';
 
 const CreateSubContainer = () => {
   const router = useRouter();
@@ -30,14 +30,14 @@ const CreateSubContainer = () => {
   const [iconPreview, setIconPreview] = useState<string | null>(null);
 
   const inputBoxes = [
-    <CreateSubFirstContainer
+    <FirstCreateSubContainer
       key={'create-sub-first'}
       title={title}
       setTitle={setTitle}
       desc={description}
       setDesc={setDescription}
     />,
-    <CreateSubSecContainer
+    <SecCreateSubContainer
       key={'create-sub-sec'}
       banner={banner}
       setBanner={setBanner}

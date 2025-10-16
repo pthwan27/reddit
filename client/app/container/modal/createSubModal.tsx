@@ -2,7 +2,7 @@ import BaseModal from '@/app/container/modal/base';
 
 import { ModalKey } from '@/app/context/modalContext';
 
-import CreateSubContainer from '../sub/createSubContainer';
+import CreateSubContainer from '../sub/create';
 
 const CreateSubModal = () => {
   const modalKey: ModalKey = 'createSubModal';

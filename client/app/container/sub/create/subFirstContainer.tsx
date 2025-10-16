@@ -9,7 +9,7 @@ type CreateSubFirstContainerProps = {
   desc: string;
   setDesc: React.Dispatch<React.SetStateAction<string>>;
 };
-const CreateSubSecContainer = ({
+const FirstCreateSubContainer = ({
   title,
   setTitle,
   desc,
@@ -44,4 +44,4 @@ const InputBox = styled.div`
   width: 100%;
 `;
 
-export default CreateSubSecContainer;
+export default FirstCreateSubContainer;

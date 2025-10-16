@@ -4,15 +4,18 @@ import styled from 'styled-components';
 
 import HeaderContainer from '../container/headerContainer';
 import LeftNavContainer from '../container/leftNavContainer';
-import MainContainer from '../container/mainContainer';
 
-const Home = () => {
+interface MainLayoutProps {
+  children: React.ReactNode;
+}
+
+const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <>
       <HeaderContainer />
       <MainContentContainer>
         <LeftNavContainer />
-        <MainContainer />
+        <MainContentWrapper>{children}</MainContentWrapper>
       </MainContentContainer>
     </>
   );
@@ -31,4 +34,10 @@ const MainContentContainer = styled.main`
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 `;
-export default Home;
+
+const MainContentWrapper = styled.div`
+  width: 100%;
+  overflow-y: auto;
+`;
+
+export default MainLayout;

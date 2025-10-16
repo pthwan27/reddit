@@ -137,7 +137,6 @@ const StyledRegisterContainer = styled.form`
   gap: var(--spacer-md);
 
   width: 100%;
-  padding: 0 var(--spacer-4xl);
 `;
 const StyledHeader = styled.div`
   display: flex;
