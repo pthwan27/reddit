@@ -55,7 +55,7 @@ const CreateSubContainer = () => {
       icon,
     });
 
-    getMySubs();
+    await getMySubs();
 
     if (isSubmitting || isLoading) {
       return <LoadingSpinner />;

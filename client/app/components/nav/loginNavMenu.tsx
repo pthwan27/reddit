@@ -31,16 +31,17 @@ const LoginNavMenu = () => {
         onClick={() => onOpenCreateSubModal()}
       />
       <StyledDivider />
-      <ul>
-        {subs.map((sub, idx) => (
-          <li key={sub.title + idx}>
-            {sub.title}
 
-            <Image src={sub.bannerUrl} alt={sub.title} width={32} height={32} />
-            <Image src={sub.iconUrl} alt={sub.title} width={32} height={32} />
-          </li>
+      <StyledSubList>
+        {subs.map((sub, idx) => (
+          <StyledSubItem key={sub.title + idx}>
+            <IconBox>
+              <Image src={sub.iconUrl} alt={sub.title} width={32} height={32} />
+            </IconBox>
+            {sub.title}
+          </StyledSubItem>
         ))}
-      </ul>
+      </StyledSubList>
     </>
   );
 };
@@ -49,6 +50,49 @@ const StyledDivider = styled.div`
 
   border-bottom: var(--line-sm) solid
     ${({ theme }) => theme.colors.naturalBorder};
+`;
+
+const StyledSubList = styled.div``;
+
+const StyledSubItem = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  gap: var(--spacer-xs);
+  padding: var(--spacer-sm);
+
+  border-radius: var(--radius-lg);
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.contendHover};
+  }
+
+  font: var(--font-14);
+`;
+
+const IconBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  width: var(--rem-20);
+  height: var(--rem-20);
+
+  border-radius: var(--radius-full);
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+
+    border-radius: var(--radius-full);
+    object-fit: cover;
+
+    background: transparent;
+  }
 `;
 
 export default LoginNavMenu;

@@ -7,6 +7,7 @@ import styled from 'styled-components';
 
 import PlaceHolderInput from '@/app/components/common/input/placeholderInput';
 
+import { useSubs } from '@/app/context/subContext';
 import { CustomError } from '@/app/types';
 
 import AuthButton from '../../components/auth/AuthButton';
@@ -19,6 +20,7 @@ const LoginContainer = () => {
   const [error, setError] = useState('');
 
   const { login, setMode } = useAuth();
+  const { getMySubs } = useSubs();
 
   const emailValidation = useMemo(
     () => validaionCheck(email, 'email'),
@@ -39,6 +41,8 @@ const LoginContainer = () => {
     try {
       setError('');
       await login(email, password);
+
+      await getMySubs();
 
       if (
         typeof window !== 'undefined' &&
