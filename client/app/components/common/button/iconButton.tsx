@@ -4,59 +4,136 @@ import styled from 'styled-components';
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon: ReactNode;
-  color?: string;
-  backgroundColor?: string;
+  value?: string;
+  isSolid?: boolean;
+  bgColor?: string;
+  hoverColor?: string;
+  borderColor?: string;
+  hoverBorderColor?: string;
+  font?: string;
+  fontColor?: string;
 }
 
-const IconButton = ({ icon, value, onClick }: IconButtonProps) => {
+const IconButton = ({
+  icon,
+  value,
+  onClick,
+  isSolid = false,
+  bgColor,
+  hoverColor,
+  borderColor = 'darkBorder',
+  hoverBorderColor = 'dark',
+  font = '14',
+  fontColor = 'text',
+  ...rest
+}: IconButtonProps) => {
   return (
-    <StyledButton onClick={onClick}>
+    <StyledButton
+      onClick={onClick}
+      $isSolid={isSolid}
+      $bgColor={bgColor}
+      $hoverColor={hoverColor}
+      $borderColor={borderColor}
+      $hoverBorderColor={hoverBorderColor}
+      $font={font}
+      $fontColor={fontColor}
+      {...rest}
+    >
       <IconBox>{icon}</IconBox>
-      {value}
+      {value && <span>{value}</span>}
     </StyledButton>
   );
 };
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<{
+  $isSolid?: boolean;
+  $bgColor?: string;
+  $hoverColor?: string;
+  $borderColor?: string;
+  $hoverBorderColor?: string;
+  $font?: string;
+  $fontColor?: string;
+}>`
   display: flex;
   align-items: center;
-
   gap: var(--spacer-xs);
   padding: var(--spacer-sm);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
 
-  border-radius: var(--radius-lg);
+  /* 기본 폰트 색상*/
+  color: ${({ theme, $fontColor }) =>
+    $fontColor
+      ? theme.colors[$fontColor as keyof typeof theme.colors]
+      : theme.colors.text};
 
+  /* 기본 테두리 스타일 */
+  border: ${({ $isSolid, $borderColor, theme }) =>
+    $isSolid
+      ? `var(--line-sm) solid ${theme.colors[$borderColor as keyof typeof theme.colors] || theme.colors.darkBorder}`
+      : 'none'};
+
+  /* 기본 배경색 */
+  background: ${({ $bgColor, theme }) => {
+    if (!$bgColor) return 'transparent';
+    return theme.colors[$bgColor as keyof typeof theme.colors] || 'transparent';
+  }};
+
+  /* 호버 스타일 */
   &:hover {
-    background: ${({ theme }) => theme.colors.contendHover};
+    /* 호버 배경색 */
+    background: ${({ $hoverColor, theme }) => {
+      if (!$hoverColor) return theme.colors.contentHover;
+      return (
+        theme.colors[$hoverColor as keyof typeof theme.colors] ||
+        theme.colors.contentHover
+      );
+    }};
+
+    /* 호버 테두리 */
+    border: ${({ $isSolid, $hoverBorderColor, theme }) =>
+      $isSolid
+        ? `var(--line-sm) solid ${
+            theme.colors[$hoverBorderColor as keyof typeof theme.colors] ||
+            theme.colors.dark
+          }`
+        : 'none'};
   }
+
+  /* 비활성화 스타일 */
   &:disabled {
     background: ${({ theme }) => theme.colors.disabled};
     color: ${({ theme }) => theme.colors.disabledText};
+    border-color: ${({ theme }) => theme.colors.disabled};
+    cursor: not-allowed;
   }
 
-  font: var(--font-14);
+  /* 글꼴 */
+  font: ${({ $font }) => `var(--font-${$font})`};
+
+  span {
+    display: flex;
+    line-height: 1.25rem;
+    white-space: nowrap;
+    height: var(--rem-20);
+  }
 `;
 
 const IconBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   position: relative;
-
   width: var(--rem-20);
   height: var(--rem-20);
-
   border-radius: var(--radius-full);
   overflow: hidden;
 
   svg {
     width: 100%;
     height: 100%;
-
     border-radius: var(--radius-full);
     object-fit: cover;
-
     background: transparent;
   }
 `;

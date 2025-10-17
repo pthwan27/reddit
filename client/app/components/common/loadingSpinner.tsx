@@ -1,8 +1,16 @@
-'use client";';
+import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
 const LoadingSpinner = () => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <StyledLoadingSpinner>
       <div></div>

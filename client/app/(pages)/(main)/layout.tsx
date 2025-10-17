@@ -37,12 +37,12 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       ) : (
         <>
           <HeaderContainer />
-          <MainContentContainer isNavVisible={isNavVisible}>
-            <LeftNaveContainer isVisible={isNavVisible} />
+          <MainContentContainer $isNavVisible={isNavVisible}>
+            <LeftNaveContainer isNavVisible={isNavVisible} />
 
             <MainContentWrapper>{children}</MainContentWrapper>
             <StyledButton
-              isNavVisible={isNavVisible}
+              $isNavVisible={isNavVisible}
               onClick={handleNavVisible}
             >
               <span>
@@ -56,10 +56,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   );
 };
 
-const MainContentContainer = styled.main<{ isNavVisible: boolean }>`
+const MainContentContainer = styled.main<{ $isNavVisible: boolean }>`
   display: grid;
-  grid-template-columns: ${({ isNavVisible }) =>
-    isNavVisible ? '272px 1fr' : '48px 1fr'};
+  grid-template-columns: ${({ $isNavVisible }) =>
+    $isNavVisible ? '272px 1fr' : '36px 1fr'};
 
   height: 100vh;
   padding-top: var(--rem-56);
@@ -82,14 +82,14 @@ const MainContentWrapper = styled.div`
   padding: 0 var(--spacer-lg);
 `;
 
-const StyledButton = styled.button<{ isNavVisible: boolean }>`
+const StyledButton = styled.button<{ $isNavVisible: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
 
   position: absolute;
 
-  left: ${({ isNavVisible }) => (isNavVisible ? '256px' : '32px')};
+  left: ${({ $isNavVisible }) => ($isNavVisible ? '256px' : '20px')};
   top: 72px;
 
   z-index: 10;
@@ -98,12 +98,17 @@ const StyledButton = styled.button<{ isNavVisible: boolean }>`
   height: var(--rem-32);
 
   background: ${({ theme }) => theme.colors.white};
-  border: var(--line-md) solid ${({ theme }) => theme.colors.darkBorder};
+  border: var(--line-sm) solid ${({ theme }) => theme.colors.darkBorder};
   border-radius: var(--radius-full);
 
   transition: left 250ms cubic-bezier(0.65, 0, 0.35, 1);
+
   span {
     display: flex;
+  }
+
+  @media (max-width: 1199px) {
+    display: none;
   }
 `;
 

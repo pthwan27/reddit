@@ -14,6 +14,7 @@ declare module 'styled-components' {
       downvote: string;
 
       white: string;
+      dark: string;
       background: string;
       grayBackground: string;
       grayHover: string;
@@ -25,7 +26,7 @@ declare module 'styled-components' {
       darkBorder: string;
 
       contentBackground: string;
-      contendHover: string;
+      contentHover: string;
       text: string;
       textMuted: string;
       link: string;
@@ -59,6 +60,7 @@ export const theme = {
     downvote: '#7193FF', // 투표 화살표 색상
 
     white: '#FFFFFF',
+    dark: '#000000ba',
     background: '#FFFFFF',
 
     grayBackground: '#E5EBEE', // 회색 배경
@@ -72,7 +74,7 @@ export const theme = {
     darkBorder: '#0000006f', // 어두운 경계선
 
     contentBackground: '#FFFFFF', // 카드/포스트 등 하얀색 배경
-    contendHover: '#EEF1F3', // 카드/포스트 등 하얀색 배경 hover
+    contentHover: '#EEF1F3', // 카드/포스트 등 하얀색 배경 hover
 
     text: '#1A1A1B', // 기본 텍스트
     textMuted: '#878A8C', // 서브 텍스트

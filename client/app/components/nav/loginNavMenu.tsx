@@ -74,7 +74,7 @@ const StyledSubItem = styled.button`
   border-radius: var(--radius-lg);
 
   &:hover {
-    background: ${({ theme }) => theme.colors.contendHover};
+    background: ${({ theme }) => theme.colors.contentHover};
   }
 
   font: var(--font-14);

@@ -6,11 +6,11 @@ import LogoutNavMenu from '../components/nav/logoutNavMenu';
 import { useAuth } from '../context/authContext';
 import CreateSubModal from './modal/createSubModal';
 
-const LeftNaveContainer = ({ isVisible }: { isVisible: boolean }) => {
+const LeftNavContainer = ({ isNavVisible }: { isNavVisible: boolean }) => {
   const { user } = useAuth();
 
   return (
-    <LeftNavContainer isVisible={isVisible}>
+    <StyledLeftNavContainer $isNavVisible={isNavVisible}>
       <StyledMenuContainer>
         <CommonLeftNavMenu />
       </StyledMenuContainer>
@@ -21,11 +21,11 @@ const LeftNaveContainer = ({ isVisible }: { isVisible: boolean }) => {
       <StyledDivider />
 
       <CreateSubModal />
-    </LeftNavContainer>
+    </StyledLeftNavContainer>
   );
 };
 
-const LeftNavContainer = styled.nav<{ isVisible: boolean }>`
+const StyledLeftNavContainer = styled.nav<{ $isNavVisible: boolean }>`
   position: relative;
 
   border-right: var(--line-sm) solid
@@ -37,7 +37,7 @@ const LeftNavContainer = styled.nav<{ isVisible: boolean }>`
   z-index: 10;
 
   & > * {
-    opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+    opacity: ${({ $isNavVisible }) => ($isNavVisible ? 1 : 0)};
     transition: opacity 250ms ease;
   }
 
@@ -60,4 +60,4 @@ const StyledDivider = styled.div`
     ${({ theme }) => theme.colors.naturalBorder};
 `;
 
-export default LeftNaveContainer;
+export default LeftNavContainer;
