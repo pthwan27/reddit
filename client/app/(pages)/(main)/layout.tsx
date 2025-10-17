@@ -7,6 +7,7 @@ import { useAuthInterceptor } from '@/app/hooks/useAuthInterceptor';
 import styled from 'styled-components';
 
 import LoadingSpinner from '@/app/components/common/loadingSpinner';
+import MenuIcon from '@/app/components/svgs/MenuIcon';
 
 import HeaderContainer from '@/app/container/headerContainer';
 import LeftNaveContainer from '@/app/container/leftNavContainer';
@@ -23,6 +24,12 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     const timer = setTimeout(() => setIsLoading(false), 1000);
     return () => clearTimeout(timer);
   }, []);
+
+  const [isNavVisible, setIsNavVisible] = useState(true);
+
+  const handleNavVisible = () => {
+    setIsNavVisible((prev) => !prev);
+  };
   return (
     <>
       {isLoading ? (
@@ -30,9 +37,18 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       ) : (
         <>
           <HeaderContainer />
-          <MainContentContainer>
-            <LeftNaveContainer />
+          <MainContentContainer isNavVisible={isNavVisible}>
+            <LeftNaveContainer isVisible={isNavVisible} />
+
             <MainContentWrapper>{children}</MainContentWrapper>
+            <StyledButton
+              isNavVisible={isNavVisible}
+              onClick={handleNavVisible}
+            >
+              <span>
+                <MenuIcon />
+              </span>
+            </StyledButton>
           </MainContentContainer>
         </>
       )}
@@ -40,12 +56,13 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   );
 };
 
-const MainContentContainer = styled.main`
+const MainContentContainer = styled.main<{ isNavVisible: boolean }>`
   display: grid;
-  grid-template-columns: 272px 1fr;
+  grid-template-columns: ${({ isNavVisible }) =>
+    isNavVisible ? '272px 1fr' : '48px 1fr'};
 
-  padding-top: 56px;
   height: 100vh;
+  padding-top: var(--rem-56);
 
   transition: grid-template-columns 250ms cubic-bezier(0.65, 0, 0.35, 1);
 
@@ -55,8 +72,39 @@ const MainContentContainer = styled.main`
 `;
 
 const MainContentWrapper = styled.div`
+  position: relative;
   width: 100%;
+
   overflow-y: auto;
+
+  z-index: 1;
+
+  padding: 0 var(--spacer-lg);
+`;
+
+const StyledButton = styled.button<{ isNavVisible: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+
+  left: ${({ isNavVisible }) => (isNavVisible ? '256px' : '32px')};
+  top: 72px;
+
+  z-index: 10;
+
+  width: var(--rem-32);
+  height: var(--rem-32);
+
+  background: ${({ theme }) => theme.colors.white};
+  border: var(--line-md) solid ${({ theme }) => theme.colors.darkBorder};
+  border-radius: var(--radius-full);
+
+  transition: left 250ms cubic-bezier(0.65, 0, 0.35, 1);
+  span {
+    display: flex;
+  }
 `;
 
 export default MainLayout;

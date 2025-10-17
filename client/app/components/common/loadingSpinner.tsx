@@ -1,4 +1,6 @@
-import styled from "styled-components";
+'use client";';
+
+import styled from 'styled-components';
 
 const LoadingSpinner = () => {
   return (
@@ -21,7 +23,7 @@ const StyledLoadingSpinner = styled.div`
     width: 16px;
     height: 16px;
     margin: 0 4px;
-    background: ${({ theme }) => theme.colors?.primary || "#FF4500"};
+    background: ${({ theme }) => theme.colors?.primary || '#FF4500'};
     border-radius: 50%;
     animation: loading-bounce 0.6s infinite alternate;
   }

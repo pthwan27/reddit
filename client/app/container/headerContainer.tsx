@@ -52,6 +52,7 @@ const StyledHeaderContainer = styled.header`
 
   display: flex;
   width: 100%;
+  height: var(--rem-56);
 
   background-color: ${({ theme }) => theme.colors.background};
   border-bottom: var(--line-sm) solid

@@ -6,11 +6,11 @@ import LogoutNavMenu from '../components/nav/logoutNavMenu';
 import { useAuth } from '../context/authContext';
 import CreateSubModal from './modal/createSubModal';
 
-const LeftNaveContainer = () => {
+const LeftNaveContainer = ({ isVisible }: { isVisible: boolean }) => {
   const { user } = useAuth();
 
   return (
-    <StyledLeftNavContainer>
+    <LeftNavContainer isVisible={isVisible}>
       <StyledMenuContainer>
         <CommonLeftNavMenu />
       </StyledMenuContainer>
@@ -21,16 +21,25 @@ const LeftNaveContainer = () => {
       <StyledDivider />
 
       <CreateSubModal />
-    </StyledLeftNavContainer>
+    </LeftNavContainer>
   );
 };
 
-const StyledLeftNavContainer = styled.nav`
+const LeftNavContainer = styled.nav<{ isVisible: boolean }>`
+  position: relative;
+
   border-right: var(--line-sm) solid
     ${({ theme }) => theme.colors.naturalBorder};
 
   height: 100%;
   overflow-y: auto;
+
+  z-index: 10;
+
+  & > * {
+    opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+    transition: opacity 250ms ease;
+  }
 
   @media (max-width: 1199px) {
     display: none;
