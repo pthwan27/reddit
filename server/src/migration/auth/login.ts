@@ -14,7 +14,8 @@ export const LoginHandler: RequestHandler = async (req, res) => {
     }
 
     // 이메일로 사용자 찾기
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOneBy({ email });
+
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }

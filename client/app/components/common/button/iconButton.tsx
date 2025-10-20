@@ -3,7 +3,7 @@ import { ButtonHTMLAttributes, ReactNode } from 'react';
 import styled from 'styled-components';
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  icon: ReactNode;
+  icon?: ReactNode;
   value?: string;
   isSolid?: boolean;
   bgColor?: string;
@@ -39,7 +39,7 @@ const IconButton = ({
       $fontColor={fontColor}
       {...rest}
     >
-      <IconBox>{icon}</IconBox>
+      {icon && <IconBox>{icon}</IconBox>}
       {value && <span>{value}</span>}
     </StyledButton>
   );

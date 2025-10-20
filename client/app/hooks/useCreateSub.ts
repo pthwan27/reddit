@@ -13,6 +13,7 @@ export const useCreateSub = () => {
   const { user, isAuthenticated, isLoading } = useAuth();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [error, setError] = useState('');
 
   const createSub = async ({

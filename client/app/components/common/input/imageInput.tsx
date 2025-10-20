@@ -10,12 +10,7 @@ interface ImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
   value?: string;
   accept?: string;
 }
-const ImageInput = ({
-  label,
-  onFileChange,
-  value,
-  accept,
-}: ImageInputProps) => {
+const ImageInput = ({ label, onFileChange, value }: ImageInputProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,8 +54,8 @@ const ImageInput = ({
       <HiddenInput
         ref={fileInputRef}
         type="file"
-        accept={accept}
         onChange={handleFileChange}
+        accept="image/*"
       />
     </StyledInputContainer>
   );
@@ -84,7 +79,7 @@ const InputContainer = styled.div`
   height: var(--rem-80);
 
   &:hover {
-    background: ${({ theme }) => theme.colors.contendHover};
+    background: ${({ theme }) => theme.colors.contentHover};
   }
 `;
 const StyledLabel = styled.label`

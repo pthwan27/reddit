@@ -18,7 +18,7 @@ export const RefreshHandler: RequestHandler = async (req, res) => {
     ) as { userId: number };
 
     // 사용자 정보 조회
-    const user = await User.findOne({ where: { id: decoded.userId } });
+    const user = await User.findOneBy({ id: decoded.userId });
     if (!user) {
       return res.status(401).json({ error: 'User not found' });
     }

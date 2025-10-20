@@ -34,6 +34,11 @@ export interface CreateSubProps {
   banner?: File | null;
 }
 
+export interface ChangeSubProps {
+  id: number;
+  icon?: File | null;
+  banner?: File | null;
+}
 // Post 타입
 export interface Post {
   id: number;

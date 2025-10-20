@@ -14,7 +14,7 @@ export const GetSubDetailHandler: RequestHandler = async (req, res) => {
 
     const subId: number = parseInt(req.params.id, 10);
 
-    const sub = await Sub.findOne({ where: { id: subId } });
+    const sub = await Sub.findOneBy({ id: subId });
 
     if (!sub) {
       return res.status(404).json({ error: '커뮤니티를 찾을 수 없습니다.' });

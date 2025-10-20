@@ -41,6 +41,12 @@ export class Sub extends CoreEntity {
   @OneToMany(() => Post, (post) => post.sub)
   posts: Post[];
 
+
+  @Expose()
+  get userId(): number {
+    return this.user?.id;
+  }
+
   @Expose()
   get username(): string {
     return this.user?.username;
@@ -48,7 +54,7 @@ export class Sub extends CoreEntity {
 
   @Expose()
   get iconUrl(): string {
-
+    
     return this.iconUrn
       ? `${process.env.APP_URL}/images/subs/${this.slug}/icon/${this.iconUrn}`
       : "https://avatar.iran.liara.run/public";
@@ -56,7 +62,7 @@ export class Sub extends CoreEntity {
 
   @Expose()
   get bannerUrl(): string {
-
+    
     return this.bannerUrn
       ? `${process.env.APP_URL}/images/subs/${this.slug}/banner/${this.bannerUrn}`
       : "";
