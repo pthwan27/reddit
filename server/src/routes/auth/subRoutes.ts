@@ -5,7 +5,11 @@ import { CreateHandler } from '../../migration/sub/create';
 import { upload } from '../../migration/sub/create/fileUpload';
 import { GetSubDetailHandler } from '../../migration/sub/detail';
 import { GetMyListHandler } from '../../migration/sub/my-list';
-import { iconUpload } from '../../migration/sub/upload/fileUpload';
+import { BannerUploadHandler } from '../../migration/sub/upload/banner';
+import {
+  bannerUpload,
+  iconUpload,
+} from '../../migration/sub/upload/fileUpload';
 import { IconUploadHandler } from '../../migration/sub/upload/icon';
 
 const SubRouter = Router();
@@ -19,5 +23,11 @@ SubRouter.patch(
   iconUpload,
   AuthMiddleware,
   IconUploadHandler
+);
+SubRouter.patch(
+  '/:id/uploadImage/banner',
+  bannerUpload,
+  AuthMiddleware,
+  BannerUploadHandler
 );
 export default SubRouter;

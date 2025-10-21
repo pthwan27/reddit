@@ -49,3 +49,8 @@ export const iconUpload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 },
 }).single('icon');
+
+export const bannerUpload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 },
+}).single('banner');

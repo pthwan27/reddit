@@ -12,6 +12,8 @@ interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   hoverBorderColor?: string;
   font?: string;
   fontColor?: string;
+  width?: string;
+  height?: string;
 }
 
 const IconButton = ({
@@ -25,6 +27,8 @@ const IconButton = ({
   hoverBorderColor = 'dark',
   font = '14',
   fontColor = 'text',
+  width = 'auto',
+  height = 'auto',
   ...rest
 }: IconButtonProps) => {
   return (
@@ -37,6 +41,8 @@ const IconButton = ({
       $hoverBorderColor={hoverBorderColor}
       $font={font}
       $fontColor={fontColor}
+      $width={width}
+      $height={height}
       {...rest}
     >
       {icon && <IconBox>{icon}</IconBox>}
@@ -53,6 +59,8 @@ const StyledButton = styled.button<{
   $hoverBorderColor?: string;
   $font?: string;
   $fontColor?: string;
+  $width?: string;
+  $height?: string;
 }>`
   display: flex;
   align-items: center;
@@ -60,6 +68,12 @@ const StyledButton = styled.button<{
   padding: var(--spacer-sm);
   border-radius: var(--radius-xl);
   cursor: pointer;
+
+  /* 높이 설정 */
+  height: ${({ $height }) => $height || 'auto'};
+
+  /* 넓이 설정 */
+  width: ${({ $width }) => $width || 'auto'};
 
   /* 기본 폰트 색상*/
   color: ${({ theme, $fontColor }) =>

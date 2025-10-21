@@ -79,7 +79,9 @@ const MainContentWrapper = styled.div`
 
   z-index: 1;
 
-  padding: 0 var(--spacer-lg);
+  @media (min-width: 768px) {
+    padding: 0 var(--spacer-lg);
+  }
 `;
 
 const StyledButton = styled.button<{ $isNavVisible: boolean }>`

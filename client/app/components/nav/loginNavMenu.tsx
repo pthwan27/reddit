@@ -61,7 +61,11 @@ const StyledDivider = styled.div`
     ${({ theme }) => theme.colors.naturalBorder};
 `;
 
-const StyledSubList = styled.div``;
+const StyledSubList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-4xs);
+`;
 
 const StyledSubItem = styled.button`
   width: 100%;
