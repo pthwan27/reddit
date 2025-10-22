@@ -20,7 +20,7 @@ const LoginNavMenu = () => {
   const { open } = useModalState();
   const modalKey: ModalKey = 'createSubModal';
 
-  const { subs, loading } = useGetSubs();
+  const { subs, loading } = useGetSubs({ subsOnly: true });
 
   const onOpenCreateSubModal = () => {
     if (!user) return;

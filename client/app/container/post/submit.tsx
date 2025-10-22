@@ -33,7 +33,7 @@ const SubmitPostContainer = ({ identifier }: SubmitPostContainerProps) => {
       );
       setSelectedSub(currentSub);
     }
-  }, [subs, identifier]);
+  }, [user, subs, identifier]);
 
   const handleSubSelect = (sub: Sub) => {
     setSelectedSub(sub);
