@@ -54,17 +54,15 @@ export class Sub extends CoreEntity {
 
   @Expose()
   get iconUrl(): string {
-    
     return this.iconUrn
       ? `${process.env.APP_URL}/images/subs/${this.slug}/icon/${this.iconUrn}`
-      : "https://avatar.iran.liara.run/public";
+      : ``;
   }
 
   @Expose()
   get bannerUrl(): string {
-    
     return this.bannerUrn
       ? `${process.env.APP_URL}/images/subs/${this.slug}/banner/${this.bannerUrn}`
-      : "";
+      : ``;
   }
 }

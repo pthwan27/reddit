@@ -1,4 +1,4 @@
-import { Exclude } from "class-transformer";
+import { Exclude, Expose } from "class-transformer";
 import { IsEmail, Length } from "class-validator";
 import { Column, Index, BeforeInsert, OneToMany, Entity } from "typeorm";
 import bcrypt from "bcryptjs";
@@ -27,6 +27,9 @@ export class User extends CoreEntity {
   @Length(6, 20, { message: "must be at least 6 characters long" })
   password: string;
 
+  @Column({ nullable: true })
+  profileUrn: string;
+
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
 
@@ -43,4 +46,10 @@ export class User extends CoreEntity {
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 6);
   }
+  @Expose()
+  get profileUrl(): string {
+    return this.profileUrn
+      ? `${process.env.APP_URL}/images/user/${this.id}/profile/${this.profileUrn}`
+      : `${process.env.APP_URL}/images/default_profile.png`;
+  }  
 }

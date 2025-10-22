@@ -1,11 +1,11 @@
 import { Router } from 'express';
 
-import { AuthMiddleware } from '../../middleware/auth';
-import { LoginHandler } from '../../migration/auth/login';
-import { LogoutHandler } from '../../migration/auth/logout';
-import { MeHandler } from '../../migration/auth/me';
-import { RefreshHandler } from '../../migration/auth/refresh';
-import { RegisterHandler } from '../../migration/auth/register';
+import { AuthMiddleware } from '../middleware/auth';
+import { LoginHandler } from '../migration/auth/login';
+import { LogoutHandler } from '../migration/auth/logout';
+import { MeHandler } from '../migration/auth/me';
+import { RefreshHandler } from '../migration/auth/refresh';
+import { RegisterHandler } from '../migration/auth/register';
 
 const AuthRouter = Router();
 

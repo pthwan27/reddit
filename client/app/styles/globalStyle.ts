@@ -7,6 +7,12 @@ const GlobalStyle = createGlobalStyle`
   --font-sans: "Reddit Sans", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
 
   /* Spacing (rem) */
+  --rem-1440: 90rem;
+  --rem-1080: 67.5rem;
+  --rem-720: 45rem;
+  --rem-640: 40rem;
+  --rem-480: 30rem;
+  --rem-400: 25rem; 
   --rem-360: 22.5rem;
   --rem-320: 20rem;
   --rem-192: 12rem;
@@ -38,6 +44,7 @@ const GlobalStyle = createGlobalStyle`
   --spacer-md: 1rem;
   --spacer-lg: 1.5rem;
   --spacer-2xl: 2rem;
+  --spacer-2-5xl: 2.5rem;
   --spacer-3xl: 3rem;
   --spacer-4xl: 4rem;
   --spacer-5xl: 5rem;
@@ -61,7 +68,8 @@ const GlobalStyle = createGlobalStyle`
   --line-lg: 0.25rem;
 
   /* Radius */
-  --radius-sm: 0.25rem;
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1.25rem;
   --radius-xl: 1.75rem;
@@ -108,8 +116,13 @@ const GlobalStyle = createGlobalStyle`
   --font-label-default: var(--font-12-16-regular);
 
   /* Box shadow */
-  --box-shadow : 0 0.0625rem 0.25rem 0 #00000026, 0 0.25rem 0.25rem 0 #00000026;
+  --box-shadow : 0 1px 1px rgba(0,0,0,0.11), 
+              0 2px 2px rgba(0,0,0,0.11), 
+              0 4px 4px rgba(0,0,0,0.11), 
+              0 6px 8px rgba(0,0,0,0.11),
+              0 8px 16px rgba(0,0,0,0.11);
   }
+
 
   /* 1. CSS Reset */
   *, *::before, *::after {
@@ -197,6 +210,18 @@ const GlobalStyle = createGlobalStyle`
   /* 7. 기타 유틸리티 */
   ul, ol {
     list-style: none;
+  }
+
+  h1, h2, h3, h4, h5, h6, span, p {
+    color: #21272A;
+  }
+
+  hr { 
+    border: 0;
+    border-bottom: 0.0625rem solid #00000019;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    margin: 0.75rem 0;
   }
 `;
 

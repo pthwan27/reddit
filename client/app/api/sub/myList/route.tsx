@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         Cookie: req.headers.get('cookie') || '',
       },
     });
-    return NextResponse.json(data, { status });
+    return NextResponse.json(data.subs, { status });
   } catch (err: unknown) {
     const error = err as CustomError;
     console.error(

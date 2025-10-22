@@ -6,8 +6,8 @@ import { useUploadImage } from '@/app/hooks/useUploadImage';
 
 import styled from 'styled-components';
 
-import SubBanner from '@/app/components/sub/banner';
-import SubInfo from '@/app/components/sub/info';
+import SubBanner from '@/app/components/sub/detail/banner';
+import SubInfos from '@/app/components/sub/detail/info';
 
 import { Sub } from '@/app/types';
 
@@ -76,10 +76,11 @@ const SubDetailContainer = ({ sub }: { sub: Sub }) => {
           isBanner={!!bannerImage}
         />
 
-        <SubInfo
+        <SubInfos
           sub={sub}
           iconImage={iconImage}
           onEditClick={() => handleClick('icon')}
+          isIcon={!!iconImage}
         />
       </SubDetailHeader>
       <SubDetailMain></SubDetailMain>
@@ -104,12 +105,12 @@ const StyledSubDetailContainer = styled.div`
   flex-direction: column;
   height: 100%;
 
-  max-width: calc(100vw - 272px);
+  max-width: calc(100vw - (272px, 0px));
 
   margin: 0 auto;
 
   @media (min-width: 1200px) {
-    width: 1120px;
+    max-width: 1120px;
   }
 `;
 

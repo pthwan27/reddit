@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import SearchIcon from "../svgs/SearchIcon";
+import styled from 'styled-components';
+
+import SearchIcon from '../svgs/SearchIcon';
 
 const SearchInput = () => {
   return (
@@ -31,8 +32,8 @@ const StyledSearchInput = styled.input`
   width: 100%;
 
   background: ${({ theme }) => theme.colors.grayBackground};
-  border: var(--line-md) solid ${({ theme }) => theme.colors.grayBackground};
-  padding-left: var(--spacer-2xl);
+  border: var(--line-md) solid transparent;
+  padding-left: var(--spacer-2-5xl);
   border-radius: var(--radius-xl);
 
   &:active,

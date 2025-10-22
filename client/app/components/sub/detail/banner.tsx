@@ -24,7 +24,7 @@ const SubBanner = ({
   return (
     <HeaderTopSection $isBanner={isBanner}>
       <BannerBox>
-        <Image src={bannerImage} alt={sub.title} fill />
+        {isBanner && <Image src={bannerImage} alt={sub.title} fill />}
       </BannerBox>
       <EditIcon onClick={onEditClick}>
         <PencilIcon />
@@ -43,6 +43,8 @@ const HeaderTopSection = styled.section<{ $isBanner: boolean }>`
 const BannerBox = styled.div`
   width: 100%;
   height: 100%;
+
+  background-color: ${({ theme }) => theme.colors.darkgrayBackground};
 
   background-repeat: no-repeat;
   background-size: cover;
@@ -86,7 +88,7 @@ const EditIcon = styled.div`
   z-index: 10;
 
   background-color: ${({ theme }) => theme.colors.background};
-  mix-blend-mode: difference;
+  mix-blend-mode: normal;
 
   &:hover {
     filter: brightness(0.7); /* 이미지를 어둡게 만듭니다 */

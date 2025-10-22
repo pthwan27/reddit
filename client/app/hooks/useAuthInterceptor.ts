@@ -59,6 +59,8 @@ export const useAuthInterceptor = () => {
             processQueue(axiosRefreshError);
 
             await logout();
+            window.location.href = '/login';
+
             throw refreshError;
           } finally {
             isRefreshing = false;

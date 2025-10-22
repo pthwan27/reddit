@@ -3,12 +3,12 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { useCreateSub } from '@/app/hooks/useCreateSub';
+import { useGetSubs } from '@/app/hooks/useGetSubs';
 
 import styled from 'styled-components';
 
 import LoadingSpinner from '@/app/components/common/loadingSpinner';
 
-import { useSubs } from '@/app/context/subContext';
 import { ValidationRule } from '@/app/types';
 
 import FirstCreateSubContainer from './subFirstContainer';
@@ -22,7 +22,7 @@ const CreateSubContainer = () => {
   const [icon, setIcon] = useState<File | null>(null);
   const [curInputBoxNum, setCurInputBoxNum] = useState<number>(0);
 
-  const { getMySubs } = useSubs();
+  const { getMySubs } = useGetSubs();
   const { createSub, error, isSubmitting, isLoading, isAuthenticated } =
     useCreateSub();
 

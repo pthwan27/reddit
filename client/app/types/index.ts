@@ -19,6 +19,7 @@ export interface Sub {
   id: number;
   createdAt: string;
   updatedAt: string;
+  slug: string;
   title: string;
   description: string | null;
   iconUrl: string;

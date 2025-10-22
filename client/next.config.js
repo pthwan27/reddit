@@ -10,6 +10,10 @@ const nextConfig = {
         hostname: 'localhost',
         port: '4000',
       },
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+      },
     ],
   },
 };

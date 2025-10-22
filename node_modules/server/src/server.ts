@@ -5,8 +5,8 @@ import path from 'path';
 
 // ...
 import { AppDataSource } from './data-source';
-import AuthRouter from './routes/auth/authRoutes';
-import SubRouter from './routes/auth/subRoutes';
+import AuthRouter from './routes/authRoutes';
+import SubRouter from './routes/subRoutes';
 
 const app = express();
 

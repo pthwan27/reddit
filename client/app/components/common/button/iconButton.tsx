@@ -66,7 +66,7 @@ const StyledButton = styled.button<{
   align-items: center;
   gap: var(--spacer-xs);
   padding: var(--spacer-sm);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-md);
   cursor: pointer;
 
   /* 높이 설정 */
@@ -138,14 +138,14 @@ const IconBox = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-  width: var(--rem-20);
-  height: var(--rem-20);
+  width: var(--rem-32);
+  height: var(--rem-32);
   border-radius: var(--radius-full);
   overflow: hidden;
 
   svg {
-    width: 100%;
-    height: 100%;
+    width: var(--rem-20);
+    height: var(--rem-20);
     border-radius: var(--radius-full);
     object-fit: cover;
     background: transparent;

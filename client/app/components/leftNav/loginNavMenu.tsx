@@ -1,14 +1,17 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+import { useGetSubs } from '@/app/hooks/useGetSubs';
+
 import styled from 'styled-components';
 
 import { useAuth } from '@/app/context/authContext';
 import { ModalKey, useModalState } from '@/app/context/modalContext';
-import { useSubs } from '@/app/context/subContext';
 
 import IconButton from '../common/button/iconButton';
+import LoadingSpinner from '../common/loadingSpinner';
 import PlusIcon from '../svgs/PlusIcon';
+import CollapsibleList from './collapsibleList';
 
 const LoginNavMenu = () => {
   const router = useRouter();
@@ -17,7 +20,7 @@ const LoginNavMenu = () => {
   const { open } = useModalState();
   const modalKey: ModalKey = 'createSubModal';
 
-  const { subs } = useSubs();
+  const { subs, loading } = useGetSubs();
 
   const onOpenCreateSubModal = () => {
     if (!user) return;
@@ -30,36 +33,35 @@ const LoginNavMenu = () => {
   };
 
   return (
-    <>
+    <CollapsibleList title="커뮤니티">
       <IconButton
         icon={<PlusIcon />}
         value={'커뮤니티 만들기'}
         onClick={() => onOpenCreateSubModal()}
       />
-      <StyledDivider />
 
       <StyledSubList>
-        {subs.map((sub, idx) => (
-          <StyledSubItem
-            key={sub.title + idx}
-            onClick={() => goToSubDetail(sub.id)}
-          >
-            <IconBox>
-              <Image src={sub.iconUrl} alt={sub.title} width={32} height={32} />
-            </IconBox>
-            {sub.title}
-          </StyledSubItem>
-        ))}
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          subs.map((sub, idx) => (
+            <StyledSubItem
+              key={sub.title + idx}
+              onClick={() => goToSubDetail(sub.id)}
+            >
+              <IconBox $isIcon={!!sub.iconUrl}>
+                {sub.iconUrl && (
+                  <Image src={sub.iconUrl} alt={sub.title} fill />
+                )}
+              </IconBox>
+              {sub.title}
+            </StyledSubItem>
+          ))
+        )}
       </StyledSubList>
-    </>
+    </CollapsibleList>
   );
 };
-const StyledDivider = styled.div`
-  position: absolute;
-
-  border-bottom: var(--line-sm) solid
-    ${({ theme }) => theme.colors.naturalBorder};
-`;
 
 const StyledSubList = styled.div`
   display: flex;
@@ -75,7 +77,7 @@ const StyledSubItem = styled.button`
   gap: var(--spacer-xs);
   padding: var(--spacer-sm);
 
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
 
   &:hover {
     background: ${({ theme }) => theme.colors.contentHover};
@@ -84,15 +86,18 @@ const StyledSubItem = styled.button`
   font: var(--font-14);
 `;
 
-const IconBox = styled.div`
+const IconBox = styled.div<{ $isIcon?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
 
   position: relative;
 
-  width: var(--rem-20);
-  height: var(--rem-20);
+  width: var(--rem-32);
+  height: var(--rem-32);
+
+  background-color: ${({ $isIcon, theme }) =>
+    $isIcon ? 'transparent' : theme.colors.dark};
 
   border-radius: var(--radius-full);
   overflow: hidden;

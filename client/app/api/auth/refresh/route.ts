@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     console.error('Refresh API error:', error.response?.data || error.message);
     return NextResponse.json(
       { error: error.response?.data?.error || 'Token refresh failed' },
-      { status: error.response?.status || 500 }
+      { status: error.response?.status || 401 }
     );
   }
 }

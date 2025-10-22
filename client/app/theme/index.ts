@@ -29,6 +29,7 @@ declare module 'styled-components' {
       contentHover: string;
       text: string;
       textMuted: string;
+      secondaryText: string;
       link: string;
       linkHover: string;
       comment: string;
@@ -76,8 +77,9 @@ export const theme = {
     contentBackground: '#FFFFFF', // 카드/포스트 등 하얀색 배경
     contentHover: '#EEF1F3', // 카드/포스트 등 하얀색 배경 hover
 
-    text: '#1A1A1B', // 기본 텍스트
+    text: '#21272A', // 기본 텍스트
     textMuted: '#878A8C', // 서브 텍스트
+    secondaryText: '#576F76',
 
     link: '#0079D3', // 링크
     linkHover: '#005999', // 링크 hover

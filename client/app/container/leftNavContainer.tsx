@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-import CommonLeftNavMenu from '../components/nav/commonNavMenu';
-import LoginNavMenu from '../components/nav/loginNavMenu';
-import LogoutNavMenu from '../components/nav/logoutNavMenu';
+import CommonLeftNavMenu from '../components/leftNav/commonNavMenu';
+import LoginNavMenu from '../components/leftNav/loginNavMenu';
+import LogoutNavMenu from '../components/leftNav/logoutNavMenu';
 import { useAuth } from '../context/authContext';
 import CreateSubModal from './modal/createSubModal';
 
@@ -14,11 +14,11 @@ const LeftNavContainer = ({ isNavVisible }: { isNavVisible: boolean }) => {
       <StyledMenuContainer>
         <CommonLeftNavMenu />
       </StyledMenuContainer>
-      <StyledDivider />
+      <hr />
       <StyledMenuContainer>
         {user ? <LoginNavMenu /> : <LogoutNavMenu />}
       </StyledMenuContainer>
-      <StyledDivider />
+      <hr />
 
       <CreateSubModal />
     </StyledLeftNavContainer>
@@ -32,6 +32,9 @@ const StyledLeftNavContainer = styled.nav<{ $isNavVisible: boolean }>`
     ${({ theme }) => theme.colors.naturalBorder};
 
   height: 100%;
+
+  padding: 0 var(--spacer-md);
+
   overflow-y: auto;
 
   z-index: 10;
@@ -53,11 +56,6 @@ const StyledMenuContainer = styled.div`
   gap: var(--spacer-2xs);
 
   padding: var(--spacer-sm);
-`;
-
-const StyledDivider = styled.div`
-  border-bottom: var(--line-sm) solid
-    ${({ theme }) => theme.colors.naturalBorder};
 `;
 
 export default LeftNavContainer;

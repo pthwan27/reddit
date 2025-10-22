@@ -1,27 +1,38 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import styled from 'styled-components';
 
 import { Sub } from '@/app/types';
 
-import IconButton from '../common/button/iconButton';
-import EtcIcon from '../svgs/EtcIcon';
-import PencilIcon from '../svgs/PencilIcon';
-import PlusIcon from '../svgs/PlusIcon';
+import IconButton from '../../common/button/iconButton';
+import EtcIcon from '../../svgs/EtcIcon';
+import PencilIcon from '../../svgs/PencilIcon';
+import PlusIcon from '../../svgs/PlusIcon';
 
 interface InfoProps {
   sub: Sub;
   iconImage: string;
   onEditClick: () => void;
+  isIcon?: boolean;
 }
 
-const SubInfo = ({ sub, iconImage, onEditClick }: InfoProps) => {
+const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
+  const router = useRouter();
+
+  const goToCreatePost = () => {
+    router.push(`/r/${sub.title}/submit`);
+  };
   return (
     <HeaderBottomSection>
       <ActionsBar>
         <TitleInfo>
-          <IconBox onClick={onEditClick}>
-            <Image src={iconImage} alt={sub.title} width={32} height={32} />
+          <IconBox onClick={onEditClick} $isIcon={isIcon}>
+            {isIcon ? (
+              <Image src={iconImage} alt={sub.title} fill />
+            ) : (
+              <span></span>
+            )}
             <EditOverlay>
               <PencilIcon />
             </EditOverlay>
@@ -43,9 +54,10 @@ const SubInfo = ({ sub, iconImage, onEditClick }: InfoProps) => {
             value="게시물 만들기"
             isSolid={true}
             height="38px"
+            onClick={() => goToCreatePost()}
           />
           <IconButton
-            value="게시물 만들기"
+            value="임시 버튼"
             isSolid={false}
             bgColor="secondaryLight"
             hoverColor="secondaryDark"
@@ -123,7 +135,7 @@ const TitleInfo = styled.span`
   }
 `;
 
-const IconBox = styled.div`
+const IconBox = styled.div<{ $isIcon?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -146,6 +158,14 @@ const IconBox = styled.div`
     width: 90%;
     height: 90%;
     border-radius: var(--radius-full);
+  }
+
+  span {
+    width: 90%;
+    height: 90%;
+    border-radius: var(--radius-full);
+    background-color: ${({ $isIcon, theme }) =>
+      $isIcon ? 'transparent' : theme.colors.dark};
   }
 
   &:hover {
@@ -178,7 +198,7 @@ const EditOverlay = styled.div`
   opacity: 0;
   transition: opacity 0.2s ease;
 
-  mix-blend-mode: difference;
+  mix-blend-mode: hard-light;
 
   svg {
     fill: ${({ theme }) => theme.colors.white};
@@ -217,4 +237,4 @@ const Buttons = styled.span`
   gap: var(--spacer-sm);
 `;
 
-export default SubInfo;
+export default SubInfos;
