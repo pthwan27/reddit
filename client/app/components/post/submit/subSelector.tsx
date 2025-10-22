@@ -167,6 +167,7 @@ const SearchInput = styled.input`
     background: ${({ theme }) => theme.colors.grayHover};
   }
 `;
+
 const SelectedTagWrapper = styled.div<{ $isSearching: boolean }>`
   position: absolute;
   width: 100%;
@@ -230,9 +231,9 @@ const DropdownMenu = styled.ul<{ $isSearching: boolean }>`
   position: absolute;
   top: calc(100% + 8px);
   left: 5%;
-  width: 50%;
+  width: 40%;
 
-  transform-origin: top center;
+  transform-origin: top left;
 
   transform: ${({ $isSearching }) => ($isSearching ? 'scale(1)' : 'scale(0)')};
   opacity: ${({ $isSearching }) => ($isSearching ? 1 : 0)};

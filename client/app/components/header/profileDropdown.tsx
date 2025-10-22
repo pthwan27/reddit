@@ -74,7 +74,7 @@ const StyledDropdownMenu = styled.div<{ $isDropdownOpen: boolean }>`
   background: ${({ theme }) => theme.colors.background};
   border: var(--line-sm) solid ${({ theme }) => theme.colors.border};
   border-radius: var(--radius-md);
-  box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
 
   transform-origin: top right;
 
