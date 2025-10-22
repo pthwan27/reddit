@@ -238,7 +238,9 @@ const DropdownMenu = styled.ul<{ $isSearching: boolean }>`
   transform: ${({ $isSearching }) => ($isSearching ? 'scale(1)' : 'scale(0)')};
   opacity: ${({ $isSearching }) => ($isSearching ? 1 : 0)};
   visibility: ${({ $isSearching }) => ($isSearching ? 'visible' : 'hidden')};
+
   overflow-y: auto;
+
   background: ${({ theme }) => theme.colors.background};
   border: var(--line-sm) solid ${({ theme }) => theme.colors.border};
 
@@ -262,6 +264,10 @@ const DropdownItem = styled.li`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayHover};
+  }
+
+  span {
+    font: var(--font-14);
   }
 `;
 export default SubSelector;

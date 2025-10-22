@@ -1,6 +1,6 @@
 import { Exclude, Expose } from "class-transformer";
 import { IsEmail, Length } from "class-validator";
-import { Column, Index, BeforeInsert, OneToMany, Entity } from "typeorm";
+import { Column, Index, BeforeInsert, OneToMany, Entity, OneToOne, JoinColumn } from "typeorm";
 import bcrypt from "bcryptjs";
 
 import CoreEntity from "./CoreEntity";
@@ -37,7 +37,11 @@ export class User extends CoreEntity {
   votes: Vote[];
 
   @OneToMany(() => Sub, (sub) => sub.user)
-  subs: Sub[];
+  subs: Sub[]; 
+
+  @OneToOne(() => Sub, (sub) => sub.profileUser, { cascade: true })
+  @JoinColumn() 
+  profileSub: Sub;
 
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment[];
@@ -46,6 +50,7 @@ export class User extends CoreEntity {
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 6);
   }
+  
   @Expose()
   get profileUrl(): string {
     return this.profileUrn

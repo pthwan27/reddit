@@ -7,6 +7,7 @@ import {
   OneToMany,
   JoinColumn,
   Index,
+  OneToOne,
 } from "typeorm";
 
 import CoreEntity from "./CoreEntity";
@@ -41,6 +42,8 @@ export class Sub extends CoreEntity {
   @OneToMany(() => Post, (post) => post.sub)
   posts: Post[];
 
+  @OneToOne(() => User, (user) => user.profileSub, { nullable: true })
+  profileUser: User;
 
   @Expose()
   get userId(): number {
@@ -65,4 +68,5 @@ export class Sub extends CoreEntity {
       ? `${process.env.APP_URL}/images/subs/${this.slug}/banner/${this.bannerUrn}`
       : ``;
   }
+  
 }

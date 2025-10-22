@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import SubSelector from '@/app/components/post/submit/subSelector';
 
+import { useAuth } from '@/app/context/authContext';
 import { Sub } from '@/app/types';
 
 interface SubmitPostContainerProps {
@@ -16,11 +17,16 @@ interface SubmitPostContainerProps {
 }
 
 const SubmitPostContainer = ({ identifier }: SubmitPostContainerProps) => {
+  const { user } = useAuth();
   const { subs } = useGetSubs();
 
   const [selectedSub, setSelectedSub] = useState<Sub>();
 
   useEffect(() => {
+    if (!user) return;
+
+    subs.push();
+
     if (subs.length > 0) {
       const currentSub = subs.find(
         (sub) => sub.title === decodeURIComponent(identifier)
@@ -35,17 +41,17 @@ const SubmitPostContainer = ({ identifier }: SubmitPostContainerProps) => {
 
   return (
     <StyledSubmitPostContainer>
-      <Header>
+      <SubmitPostHeader>
         <span>Submit Post</span>
-      </Header>
+      </SubmitPostHeader>
 
-      <Main>
+      <SubmitPostMain>
         <SubSelector
           allSubs={subs}
           selectedSub={selectedSub}
           onSubSelect={handleSubSelect}
         />
-      </Main>
+      </SubmitPostMain>
     </StyledSubmitPostContainer>
   );
 };
@@ -64,7 +70,7 @@ const StyledSubmitPostContainer = styled.div`
   }
 `;
 
-const Header = styled.header`
+const SubmitPostHeader = styled.header`
   padding: var(--rem-20) 0 0 var(--rem-20);
 
   span {
@@ -72,7 +78,7 @@ const Header = styled.header`
   }
 `;
 
-const Main = styled.main`
+const SubmitPostMain = styled.main`
   padding: var(--rem-16);
 `;
 

@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { RequestHandler } from 'express';
 
+import { Sub } from '../../entities/Sub';
 import { User } from '../../entities/User';
 
 export const RegisterHandler: RequestHandler = async (req, res) => {
@@ -28,14 +29,25 @@ export const RegisterHandler: RequestHandler = async (req, res) => {
     const user = new User();
     user.email = email;
     user.username = username;
-    user.password = await bcrypt.hash(password, 10); // 비밀번호 해싱
+    user.password = await bcrypt.hash(password, 10);
 
+    await user.save();
+
+    const profileSub = Sub.create({
+      title: user.username,
+      slug: user.username,
+      description: `${user.username}의 프로필 페이지입니다.`,
+      user: user,
+      profileUser: user,
+    });
+    await profileSub.save();
+
+    user.profileSub = profileSub;
     await user.save();
 
     // 비밀번호를 제외한 사용자 정보를 반환
     const { password: _, ...userWithoutPassword } = user;
 
-    // 201 Created 상태 코드와 함께 사용자 정보 반환
     return res.status(201).json({
       user: userWithoutPassword,
     });
