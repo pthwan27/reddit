@@ -48,14 +48,13 @@ const CreateSubContainer = () => {
 
   const handleCreateSub = async () => {
     await createSub({
-      slug: title,
       title: title,
       description,
       banner,
       icon,
     });
 
-    await getMySubs();
+    getMySubs();
 
     if (isSubmitting || isLoading) {
       return <LoadingSpinner />;

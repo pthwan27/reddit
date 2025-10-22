@@ -2,32 +2,15 @@ import fs from 'fs';
 import multer from 'multer';
 import path from 'path';
 
+const tempDir = path.join(__dirname, '../../../../public/images/temp');
+
+if (!fs.existsSync(tempDir)) {
+  fs.mkdirSync(tempDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    try {
-      const slug = req.body.slug;
-
-      const decodedSlug = decodeURIComponent(slug);
-
-      if (!slug) {
-        return cb(new Error('Slug is required'), '');
-      }
-
-      const destPath = path.join(
-        __dirname,
-        '../../../../public/images/subs',
-        decodedSlug,
-        file.fieldname
-      );
-
-      fs.mkdir(destPath, { recursive: true }, (err) => {
-        if (err) return cb(err, '');
-
-        cb(null, destPath);
-      });
-    } catch (error) {
-      cb(error as Error, '');
-    }
+    cb(null, tempDir);
   },
 
   filename: (req, file, cb) => {

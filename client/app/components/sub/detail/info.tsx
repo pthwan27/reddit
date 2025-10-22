@@ -54,6 +54,7 @@ const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
             value="게시물 만들기"
             isSolid={true}
             height="38px"
+            radius="var(--radius-lg)"
             onClick={() => goToCreatePost()}
           />
           <IconButton
@@ -62,12 +63,14 @@ const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
             bgColor="secondaryLight"
             hoverColor="secondaryDark"
             fontColor="white"
+            radius="var(--radius-lg)"
             height="38px"
           />
 
           <IconButton
             icon={<EtcIcon />}
             isSolid={true}
+            radius="var(--radius-lg)"
             width="40px"
             height="40px"
           />

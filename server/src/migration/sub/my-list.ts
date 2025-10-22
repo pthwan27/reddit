@@ -12,7 +12,10 @@ export const GetMyListHandler: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: 'User not found in context' });
     }
 
-    const subs = await Sub.find({ where: { user: { id: user.id } } });
+    const subs = await Sub.find({
+      where: { user: { id: user.id } },
+      order: { updatedAt: 'DESC' },
+    });
 
     return res.status(200).json({ subs: instanceToPlain(subs) });
   } catch (error) {

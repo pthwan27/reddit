@@ -1,11 +1,12 @@
 import { RequestHandler } from 'express';
+import fs from 'fs/promises';
+import path from 'path';
 
 import { Sub } from '../../../entities/Sub';
 import { User } from '../../../entities/User';
 
 export const CreateHandler: RequestHandler = async (req, res) => {
-  const { slug, title, description } = req.body;
-  const decodedSlug = decodeURIComponent(slug);
+  const { title, description } = req.body;
   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
   const user: User = res.locals.user;
@@ -19,16 +20,33 @@ export const CreateHandler: RequestHandler = async (req, res) => {
     }
 
     const sub = new Sub();
-    sub.slug = decodedSlug;
     sub.title = title;
     sub.description = description || title + '주제의 커뮤니티입니다.';
     sub.user = user;
 
+    await sub.save();
+
+    const moveFile = async (file: Express.Multer.File) => {
+      const oldPath = file.path;
+      const newDir = path.join(
+        __dirname,
+        '../../../../public/images/subs',
+        sub.slug,
+        file.fieldname
+      );
+      await fs.mkdir(newDir, { recursive: true });
+
+      const newPath = path.join(newDir, file.filename);
+      await fs.rename(oldPath, newPath);
+
+      return file.filename;
+    };
+
     if (files?.banner) {
-      sub.bannerUrn = files.banner[0].filename;
+      sub.bannerUrn = await moveFile(files.banner[0]);
     }
     if (files?.icon) {
-      sub.iconUrn = files.icon[0].filename;
+      sub.iconUrn = await moveFile(files.icon[0]);
     }
 
     await sub.save();

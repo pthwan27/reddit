@@ -212,7 +212,7 @@ const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
 
-  h1, h2, h3, h4, h5, h6, span, p {
+  h1, h2, h3, h4, h5, h6, p {
     color: #21272A;
   }
 

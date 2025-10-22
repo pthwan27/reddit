@@ -8,6 +8,7 @@ import React, {
   useState,
 } from 'react';
 
+import LoadingSpinner from '../components/common/loadingSpinner';
 import { CustomError, User } from '../types';
 import { clientAxiosInstance } from '../utils/axios';
 
@@ -134,6 +135,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     refreshUser,
   };
 
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <LoadingSpinner />
+      </div>
+    );
+  }
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

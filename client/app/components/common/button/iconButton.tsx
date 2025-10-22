@@ -14,6 +14,7 @@ interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fontColor?: string;
   width?: string;
   height?: string;
+  radius?: string;
 }
 
 const IconButton = ({
@@ -29,6 +30,7 @@ const IconButton = ({
   fontColor = 'text',
   width = 'auto',
   height = 'auto',
+  radius,
   ...rest
 }: IconButtonProps) => {
   return (
@@ -43,6 +45,7 @@ const IconButton = ({
       $fontColor={fontColor}
       $width={width}
       $height={height}
+      $radius={radius}
       {...rest}
     >
       {icon && <IconBox>{icon}</IconBox>}
@@ -61,12 +64,13 @@ const StyledButton = styled.button<{
   $fontColor?: string;
   $width?: string;
   $height?: string;
+  $radius?: string;
 }>`
   display: flex;
   align-items: center;
   gap: var(--spacer-xs);
   padding: var(--spacer-sm);
-  border-radius: var(--radius-md);
+
   cursor: pointer;
 
   /* 높이 설정 */
@@ -86,6 +90,9 @@ const StyledButton = styled.button<{
     $isSolid
       ? `var(--line-sm) solid ${theme.colors[$borderColor as keyof typeof theme.colors] || theme.colors.darkBorder}`
       : 'none'};
+
+  /* 테두리 반경 */
+  border-radius: ${({ $radius }) => $radius || 'var(--radius-md)'};
 
   /* 기본 배경색 */
   background: ${({ $bgColor, theme }) => {

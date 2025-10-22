@@ -8,6 +8,7 @@ import {
   JoinColumn,
   Index,
   OneToOne,
+  BeforeInsert,
 } from "typeorm";
 
 import CoreEntity from "./CoreEntity";
@@ -68,5 +69,11 @@ export class Sub extends CoreEntity {
       ? `${process.env.APP_URL}/images/subs/${this.slug}/banner/${this.bannerUrn}`
       : ``;
   }
-  
+
+  @BeforeInsert()
+  makeSlug() {
+    this.slug = this.title
+      .trim()
+      .replace(/ /g, "-")
+  }
 }

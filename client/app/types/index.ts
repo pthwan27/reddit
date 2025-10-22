@@ -28,7 +28,6 @@ export interface Sub {
   posts?: Post[];
 }
 export interface CreateSubProps {
-  slug: string;
   title: string;
   description: string;
   icon?: File | null;
