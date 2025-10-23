@@ -29,7 +29,7 @@ const BaseModal = ({
     if (modalkey === 'authModal' && user) {
       close(modalkey);
     }
-  }, [user, modals[modalkey], close]);
+  }, [user, close, modalkey]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

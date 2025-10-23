@@ -69,6 +69,7 @@ const StyledDropdownMenu = styled.div<{ $isDropdownOpen: boolean }>`
   top: 100%;
   right: -1rem;
   margin-top: var(--spacer-xs);
+  padding: var(--spacer-md) 0;
   width: 200px;
 
   background: ${({ theme }) => theme.colors.background};

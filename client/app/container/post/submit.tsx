@@ -1,8 +1,9 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { useGetSubs } from '@/app/hooks/useGetSubs';
+import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
@@ -17,15 +18,14 @@ interface SubmitPostContainerProps {
 }
 
 const SubmitPostContainer = ({ identifier }: SubmitPostContainerProps) => {
+  const router = useRouter();
   const { user } = useAuth();
-  const { subs } = useGetSubs();
+  const { subs } = useSubStore();
 
   const [selectedSub, setSelectedSub] = useState<Sub>();
 
   useEffect(() => {
     if (!user) return;
-
-    subs.push();
 
     if (subs.length > 0) {
       const currentSub = subs.find(
@@ -37,21 +37,29 @@ const SubmitPostContainer = ({ identifier }: SubmitPostContainerProps) => {
 
   const handleSubSelect = (sub: Sub) => {
     setSelectedSub(sub);
+
+    if (sub.profileUser) {
+      router.push(`/user/${sub.profileUser.username}/submit`);
+    } else {
+      router.push(`/r/${sub.title}/submit`);
+    }
   };
 
   return (
     <StyledSubmitPostContainer>
       <SubmitPostHeader>
-        <span>Submit Post</span>
-      </SubmitPostHeader>
+        <TitleSection>
+          <h1>게시물 만들기</h1>
+        </TitleSection>
 
-      <SubmitPostMain>
         <SubSelector
           allSubs={subs}
           selectedSub={selectedSub}
           onSubSelect={handleSubSelect}
         />
-      </SubmitPostMain>
+      </SubmitPostHeader>
+
+      <SubmitPostMain></SubmitPostMain>
     </StyledSubmitPostContainer>
   );
 };
@@ -71,11 +79,21 @@ const StyledSubmitPostContainer = styled.div`
 `;
 
 const SubmitPostHeader = styled.header`
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--spacer-md);
   padding: var(--rem-20) 0 0 var(--rem-20);
 
-  span {
-    font: var(--font-title-h1);
+  h1 {
+    padding: var(--spacer-4xs);
+    font: var(--font-title-h2);
+    color: ${({ theme }) => theme.colors.naturalText};
   }
+`;
+
+const TitleSection = styled.div`
+  display: flex;
 `;
 
 const SubmitPostMain = styled.main`

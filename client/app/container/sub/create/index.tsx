@@ -3,12 +3,14 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { useCreateSub } from '@/app/hooks/useCreateSub';
-import { useGetSubs } from '@/app/hooks/useGetSubs';
+
+import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
 import LoadingSpinner from '@/app/components/common/loadingSpinner';
 
+import { useAuth } from '@/app/context/authContext';
 import { ValidationRule } from '@/app/types';
 
 import FirstCreateSubContainer from './subFirstContainer';
@@ -16,13 +18,14 @@ import SecCreateSubContainer from './subSecContainer';
 
 const CreateSubContainer = () => {
   const router = useRouter();
+  const { user } = useAuth();
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState('');
   const [banner, setBanner] = useState<File | null>(null);
   const [icon, setIcon] = useState<File | null>(null);
   const [curInputBoxNum, setCurInputBoxNum] = useState<number>(0);
 
-  const { getMySubs } = useGetSubs();
+  const { getMySubs, addOptimisticSub } = useSubStore();
   const { createSub, error, isSubmitting, isLoading, isAuthenticated } =
     useCreateSub();
 
@@ -47,14 +50,29 @@ const CreateSubContainer = () => {
   ];
 
   const handleCreateSub = async () => {
-    await createSub({
+    addOptimisticSub({
+      id: Date.now(),
+      slug: title,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      title: title,
+      description: description,
+      bannerUrl: bannerPreview || '',
+      iconUrl: iconPreview || '',
+      username: user?.username || 'unknown',
+      profileUser: user || null,
+    });
+
+    const newSub = await createSub({
       title: title,
       description,
       banner,
       icon,
     });
 
-    getMySubs();
+    if (newSub) {
+      await getMySubs();
+    }
 
     if (isSubmitting || isLoading) {
       return <LoadingSpinner />;

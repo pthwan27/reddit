@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-import { useAuthInterceptor } from '@/app/hooks/useAuthInterceptor';
-
 import styled from 'styled-components';
 
 import LoadingSpinner from '@/app/components/common/loadingSpinner';
@@ -17,8 +15,6 @@ interface MainLayoutProps {
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
-  useAuthInterceptor();
-
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1000);

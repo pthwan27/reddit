@@ -107,10 +107,6 @@ const GlobalStyle = createGlobalStyle`
   --font-16-20-regular: normal 400 1rem/1.25rem var(--font-sans);  
   --font-16-20-semibold: normal 600 1rem/1.25rem var(--font-sans);
 
-  /* Button Font */
-  --font-button-lg: var(--font-16-20-semibold);
-  --font-button-md: var(--font-14-20-semibold);
-  --font-button-sm: var(--font-12-16-semibold);
 
   /* Label */
   --font-label-default: var(--font-12-16-regular);

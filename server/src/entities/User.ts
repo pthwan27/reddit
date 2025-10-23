@@ -1,6 +1,6 @@
 import { Exclude, Expose } from "class-transformer";
 import { IsEmail, Length } from "class-validator";
-import { Column, Index, BeforeInsert, OneToMany, Entity, OneToOne, JoinColumn } from "typeorm";
+import { Column, Index, BeforeInsert, OneToMany, Entity, OneToOne } from "typeorm";
 import bcrypt from "bcryptjs";
 
 import CoreEntity from "./CoreEntity";
@@ -38,7 +38,6 @@ export class User extends CoreEntity {
   subs: Sub[]; 
 
   @OneToOne(() => Sub, (sub) => sub.profileUser, { cascade: true })
-  @JoinColumn() 
   profileSub: Sub;
 
   @OneToMany(() => Comment, (comment) => comment.user)

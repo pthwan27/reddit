@@ -25,6 +25,7 @@ export interface Sub {
   iconUrl: string;
   bannerUrl: string;
   username: string;
+  profileUser: User | null;
   posts?: Post[];
 }
 export interface CreateSubProps {

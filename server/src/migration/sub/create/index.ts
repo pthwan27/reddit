@@ -16,7 +16,7 @@ export const CreateHandler: RequestHandler = async (req, res) => {
   }
   try {
     if (!title || title.trim() === '') {
-      return res.status(400).json({ error: 'Title is required' });
+      return res.status(400).json({ error: '커뮤니티 이름을 입력해주세요.' });
     }
 
     const sub = new Sub();

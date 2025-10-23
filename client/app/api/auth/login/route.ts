@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     return nextResponse;
   } catch (err: unknown) {
     const error = err as CustomError;
-    console.error('Login API error:', error.response?.data || error.message);
+
     return NextResponse.json(
       { error: error.response?.data?.error || 'Login failed' },
       { status: error.response?.status || 500 }

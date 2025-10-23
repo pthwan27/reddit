@@ -14,6 +14,7 @@ declare module 'styled-components' {
       downvote: string;
 
       white: string;
+      black: string;
       dark: string;
       background: string;
       grayBackground: string;
@@ -28,6 +29,7 @@ declare module 'styled-components' {
       contentBackground: string;
       contentHover: string;
       text: string;
+      naturalText: string;
       textMuted: string;
       secondaryText: string;
       link: string;
@@ -61,6 +63,7 @@ export const theme = {
     downvote: '#7193FF', // 투표 화살표 색상
 
     white: '#FFFFFF',
+    black: '#000000',
     dark: '#000000ba',
     background: '#FFFFFF',
 
@@ -78,6 +81,7 @@ export const theme = {
     contentHover: '#EEF1F3', // 카드/포스트 등 하얀색 배경 hover
 
     text: '#21272A', // 기본 텍스트
+    naturalText: '#333d42', // 자연스러운 텍스트
     textMuted: '#878A8C', // 서브 텍스트
     secondaryText: '#576F76',
 

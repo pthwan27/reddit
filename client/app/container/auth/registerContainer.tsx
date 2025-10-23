@@ -46,22 +46,22 @@ const RegisterContainer = () => {
 
     try {
       setError('');
-      await register(email, username, password);
-
-      if (
-        typeof window !== 'undefined' &&
-        window.location.pathname === '/login'
-      ) {
-        if (window.history.length > 1) {
-          router.back();
-        } else {
-          router.push('/');
+      await register(email, username, password, () => {
+        if (
+          typeof window !== 'undefined' &&
+          window.location.pathname === '/login'
+        ) {
+          if (window.history.length > 1) {
+            router.back();
+          } else {
+            router.push('/');
+          }
         }
-      }
 
-      setEmail('');
-      setUsername('');
-      setPassword('');
+        setEmail('');
+        setUsername('');
+        setPassword('');
+      });
     } catch (err: unknown) {
       const error = err as CustomError;
       console.error('Registration failed:', error);

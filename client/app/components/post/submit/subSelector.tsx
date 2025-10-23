@@ -157,7 +157,8 @@ const SearchInput = styled.input`
 
   border-radius: var(--radius-lg);
 
-  font: var(--font-button-md);
+  font: var(--font-14-20-semibold);
+  color: ${({ theme }) => theme.colors.dark};
 
   &:active,
   &:focus {
@@ -233,6 +234,8 @@ const DropdownMenu = styled.ul<{ $isSearching: boolean }>`
   left: 5%;
   width: 40%;
 
+  padding: var(--spacer-md) 0;
+
   transform-origin: top left;
 
   transform: ${({ $isSearching }) => ($isSearching ? 'scale(1)' : 'scale(0)')};
@@ -263,7 +266,7 @@ const DropdownItem = styled.li`
   cursor: pointer;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.grayHover};
+    background-color: ${({ theme }) => theme.colors.contentHover};
   }
 
   span {

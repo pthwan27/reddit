@@ -6,28 +6,24 @@ import { CustomError } from '@/app/types';
 
 export async function POST(req: NextRequest) {
   try {
-    const { data, status } = await serverAxiosInstance.post(
-      '/auth/logout',
-      {},
-      {
-        headers: {
-          Cookie: req.headers.get('cookie') || '',
-        },
-      }
-    );
-
-    const response = NextResponse.json(data, { status });
-
-    // 클라이언트 쿠키도 제거
-    response.cookies.set('auth_token', '', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 0,
-      path: '/',
+    const response = await serverAxiosInstance.post('/auth/logout', {
+      headers: {
+        Cookie: req.headers.get('cookie') || '',
+      },
     });
 
-    return response;
+    const nextResponse = NextResponse.json(response.data, {
+      status: response.status,
+    });
+
+    const setCookieHeader = response.headers['set-cookie'];
+
+    if (setCookieHeader) {
+      setCookieHeader.forEach((cookie: string) => {
+        nextResponse.headers.append('Set-Cookie', cookie);
+      });
+    }
+    return nextResponse;
   } catch (err: unknown) {
     const error = err as CustomError;
     console.error('Logout API error:', error.response?.data || error.message);

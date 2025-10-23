@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import { useGetSubs } from '@/app/hooks/useGetSubs';
+import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
@@ -20,7 +20,7 @@ const LoginNavMenu = () => {
   const { open } = useModalState();
   const modalKey: ModalKey = 'createSubModal';
 
-  const { subs, loading } = useGetSubs({ subsOnly: true });
+  const { filterdSub, loading } = useSubStore();
 
   const onOpenCreateSubModal = () => {
     if (!user) return;
@@ -29,7 +29,7 @@ const LoginNavMenu = () => {
   };
 
   const goToSubDetail = (subId: number) => {
-    router.push(`/sub/${subId}`);
+    router.push(`/sub/r/${subId}`);
   };
 
   return (
@@ -44,7 +44,7 @@ const LoginNavMenu = () => {
         {loading ? (
           <LoadingSpinner />
         ) : (
-          subs.map((sub, idx) => (
+          filterdSub.map((sub, idx) => (
             <StyledSubItem
               key={sub.title + idx}
               onClick={() => goToSubDetail(sub.id)}

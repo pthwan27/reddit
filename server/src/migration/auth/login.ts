@@ -10,20 +10,26 @@ export const LoginHandler: RequestHandler = async (req, res) => {
   try {
     // 입력 검증
     if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required' });
+      return res
+        .status(400)
+        .json({ error: '이메일과 비밀번호를 입력해주세요' });
     }
 
     // 이메일로 사용자 찾기
     const user = await User.findOneBy({ email });
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res
+        .status(402)
+        .json({ error: '이메일 또는 비밀번호가 유효하지 않습니다..' });
     }
 
     // 비밀번호 확인
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res
+        .status(402)
+        .json({ error: '이메일 또는 비밀번호가 유효하지 않습니다.' });
     }
 
     // JWT 토큰 생성 (액세스 토큰 - 짧은 만료시간)
@@ -64,7 +70,6 @@ export const LoginHandler: RequestHandler = async (req, res) => {
       path: '/',
     });
 
-    // me.ts와 동일하게 비밀번호를 제외한 사용자 정보를 반환
     const { password: _, ...userWithoutPassword } = user;
 
     return res.status(200).json({

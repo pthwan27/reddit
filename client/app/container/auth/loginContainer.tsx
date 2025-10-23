@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 
 import { validaionCheck } from '@/app/utils/validationCheck';
 
-import { useGetSubs } from '@/app/hooks/useGetSubs';
+import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
@@ -21,7 +21,8 @@ const LoginContainer = () => {
   const [error, setError] = useState('');
 
   const { login, setMode } = useAuth();
-  const { getMySubs } = useGetSubs();
+
+  const { getMySubs } = useSubStore();
 
   const emailValidation = useMemo(
     () => validaionCheck(email, 'email'),
@@ -39,22 +40,23 @@ const LoginContainer = () => {
       setError('이메일과 비밀번호를 입력해주세요.');
       return;
     }
+
     try {
-      setError('');
-      await login(email, password);
-
-      await getMySubs();
-
-      if (
-        typeof window !== 'undefined' &&
-        window.location.pathname === '/login'
-      ) {
-        if (window.history.length > 1) {
-          router.back();
-        } else {
-          router.push('/');
+      await login(email, password, () => {
+        if (
+          typeof window !== 'undefined' &&
+          window.location.pathname === '/login'
+        ) {
+          if (window.history.length > 1) {
+            router.back();
+          } else {
+            router.push('/');
+          }
         }
-      }
+        setError('');
+
+        getMySubs();
+      });
     } catch (err: unknown) {
       const error = err as CustomError;
       console.error('Login failed:', error);

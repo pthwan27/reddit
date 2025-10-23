@@ -25,7 +25,7 @@ const IconButton = ({
   bgColor,
   hoverColor,
   borderColor = 'darkBorder',
-  hoverBorderColor = 'dark',
+  hoverBorderColor = 'darkborder',
   font = '14',
   fontColor = 'text',
   width = 'auto',
@@ -69,7 +69,7 @@ const StyledButton = styled.button<{
   display: flex;
   align-items: center;
   gap: var(--spacer-xs);
-  padding: var(--spacer-sm);
+  padding: var(--spacer-xs) var(--spacer-sm);
 
   cursor: pointer;
 
@@ -116,7 +116,7 @@ const StyledButton = styled.button<{
       $isSolid
         ? `var(--line-sm) solid ${
             theme.colors[$hoverBorderColor as keyof typeof theme.colors] ||
-            theme.colors.dark
+            'transparent'
           }`
         : 'none'};
   }

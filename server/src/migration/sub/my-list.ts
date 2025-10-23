@@ -1,6 +1,5 @@
 import { instanceToPlain } from 'class-transformer';
 import { RequestHandler } from 'express';
-import { IsNull } from 'typeorm/find-options/operator/IsNull';
 
 import { Sub } from '../../entities/Sub';
 import { User } from '../../entities/User';
@@ -8,24 +7,18 @@ import { User } from '../../entities/User';
 export const GetMyListHandler: RequestHandler = async (req, res) => {
   try {
     const user: User = res.locals.user;
-    const { subsOnly } = req.query;
 
     if (!user) {
       return res.status(401).json({ error: 'User not found in context' });
     }
 
-    const whereConditions: any = { user: { id: user.id } };
-
-    if (subsOnly === 'true') {
-      whereConditions.profileUser = IsNull();
-    }
-
     const subs = await Sub.find({
-      where: whereConditions,
+      where: { user: { id: user.id } },
       order: {
         createdAt: 'DESC',
         updatedAt: 'DESC',
       },
+      relations: ['profileUser'],
     });
 
     return res.status(200).json({ subs: instanceToPlain(subs) });
