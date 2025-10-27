@@ -1,5 +1,7 @@
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+
+import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
@@ -19,9 +21,12 @@ interface InfoProps {
 
 const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const { setSelectedSub } = useSubStore();
 
   const goToCreatePost = () => {
-    router.push(`/r/${sub.title}/submit`);
+    setSelectedSub(sub);
+    router.push(`${pathname}/submit`);
   };
   return (
     <HeaderBottomSection>
@@ -147,6 +152,9 @@ const IconBox = styled.div<{ $isIcon?: boolean }>`
 
   width: var(--rem-48);
   height: var(--rem-48);
+
+  min-width: var(--rem-48);
+  min-height: var(--rem-48);
 
   flex-shrink: 0;
   aspect-ratio: 1 / 1;

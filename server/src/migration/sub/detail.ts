@@ -12,9 +12,9 @@ export const GetSubDetailHandler: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: 'User not found in context' });
     }
 
-    const subId: number = parseInt(req.params.id, 10);
+    const slug: string = req.params.slug;
 
-    const sub = await Sub.findOneBy({ id: subId });
+    const sub = await Sub.findOneBy({ slug: slug });
 
     if (!sub) {
       return res.status(404).json({ error: '커뮤니티를 찾을 수 없습니다.' });

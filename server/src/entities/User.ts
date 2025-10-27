@@ -8,9 +8,14 @@ import { Post } from "./Post";
 import { Vote } from "./Vote";
 import { Sub } from "./Sub";
 import { Comment } from "./Comment";
+import { nanoid } from "nanoid";
 
 @Entity("users")
 export class User extends CoreEntity {
+  @Index()
+  @Column({ unique: true })
+  uuid: string;
+
   @Index()
   @Column({ unique: true })
   @IsEmail(undefined, { message: "must be a valid email address" })
@@ -46,6 +51,11 @@ export class User extends CoreEntity {
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 6);
+  }
+
+  @BeforeInsert()
+  generateUuid() {
+    this.uuid = nanoid();
   }
   
   @Expose()

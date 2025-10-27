@@ -68,7 +68,7 @@ const StyledButton = styled.button<{
 }>`
   display: flex;
   align-items: center;
-  gap: var(--spacer-xs);
+  gap: var(--spacer-sm);
   padding: var(--spacer-xs) var(--spacer-sm);
 
   cursor: pointer;
@@ -147,6 +147,10 @@ const IconBox = styled.div`
   position: relative;
   width: var(--rem-32);
   height: var(--rem-32);
+
+  min-width: var(--rem-32);
+  min-height: var(--rem-32);
+
   border-radius: var(--radius-full);
   overflow: hidden;
 

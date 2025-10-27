@@ -8,13 +8,13 @@ import { Sub } from '../../../entities/Sub';
 const storage = multer.diskStorage({
   destination: async (req, file, cb) => {
     try {
-      const subId = parseInt(req.params.id, 10);
-      if (isNaN(subId)) {
-        return cb(new Error('Invalid community ID'), '');
-      }
+      const slug = req.params.slug;
 
+      if (!slug) {
+        return cb(new Error('Invalid community slug'), '');
+      }
       const sub = await AppDataSource.getRepository(Sub).findOneBy({
-        id: subId,
+        slug,
       });
 
       if (!sub) {

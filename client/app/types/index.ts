@@ -36,7 +36,7 @@ export interface CreateSubProps {
 }
 
 export interface ChangeSubProps {
-  id: number;
+  slug: string;
   icon?: File | null;
   banner?: File | null;
 }

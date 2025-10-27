@@ -75,6 +75,10 @@ export const theme = {
 
     border: '#EDEFF1', // 경계선
     naturalBorder: '#00000033', // 자연스러운 경계선
+
+    naturalHoverBorder: '#0000007F',
+    naturalHover: '#F6F8F9',
+
     darkBorder: '#0000006f', // 어두운 경계선
 
     contentBackground: '#FFFFFF', // 카드/포스트 등 하얀색 배경

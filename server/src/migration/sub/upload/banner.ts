@@ -15,13 +15,14 @@ export const BannerUploadHandler: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: 'User not found in context' });
     }
 
-    const subId: number = parseInt(req.params.id, 10);
-    if (isNaN(subId)) {
-      return res.status(400).json({ error: 'Invalid community ID' });
+    const slug = req.params.slug;
+
+    if (!slug) {
+      return res.status(400).json({ error: 'Invalid community slug' });
     }
 
     const sub = await AppDataSource.getRepository(Sub).findOne({
-      where: { id: subId },
+      where: { slug },
       relations: ['user'],
     });
 

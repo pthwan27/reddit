@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import { useCreateSub } from '@/app/hooks/useCreateSub';
+import { validaionCheck } from '@/app/utils/validationCheck';
 
 import { useSubStore } from '@/app/store/subStore';
 
@@ -11,26 +11,38 @@ import styled from 'styled-components';
 import LoadingSpinner from '@/app/components/common/loadingSpinner';
 
 import { useAuth } from '@/app/context/authContext';
-import { ValidationRule } from '@/app/types';
+import { useModalState } from '@/app/context/modalContext';
 
 import FirstCreateSubContainer from './subFirstContainer';
 import SecCreateSubContainer from './subSecContainer';
 
 const CreateSubContainer = () => {
   const router = useRouter();
+
   const { user } = useAuth();
+  const { close } = useModalState();
+  const modalkey = 'createSubModal';
+
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState('');
   const [banner, setBanner] = useState<File | null>(null);
   const [icon, setIcon] = useState<File | null>(null);
   const [curInputBoxNum, setCurInputBoxNum] = useState<number>(0);
 
-  const { getMySubs, addOptimisticSub } = useSubStore();
-  const { createSub, error, isSubmitting, isLoading, isAuthenticated } =
-    useCreateSub();
+  const [error, setError] = useState('');
+  const { createSub, loading, addOptimisticSub } = useSubStore();
 
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
   const [iconPreview, setIconPreview] = useState<string | null>(null);
+
+  const titleValidation = useMemo(
+    () => validaionCheck(title, 'subTitle'),
+    [title]
+  );
+  const descValidtiaon = useMemo(
+    () => validaionCheck(description, 'subDesc'),
+    [description]
+  );
 
   const inputBoxes = [
     <FirstCreateSubContainer
@@ -50,63 +62,39 @@ const CreateSubContainer = () => {
   ];
 
   const handleCreateSub = async () => {
-    addOptimisticSub({
-      id: Date.now(),
-      slug: title,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      title: title,
-      description: description,
-      bannerUrl: bannerPreview || '',
-      iconUrl: iconPreview || '',
-      username: user?.username || 'unknown',
-      profileUser: user || null,
-    });
-
-    const newSub = await createSub({
-      title: title,
-      description,
-      banner,
-      icon,
-    });
-
-    if (newSub) {
-      await getMySubs();
-    }
-
-    if (isSubmitting || isLoading) {
-      return <LoadingSpinner />;
-    }
-
-    if (!isAuthenticated) {
+    if (!user) {
       return router.push('/login');
     }
-  };
+    try {
+      addOptimisticSub({
+        id: Date.now(),
+        slug: title,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        title: title,
+        description: description,
+        bannerUrl: bannerPreview || '',
+        iconUrl: iconPreview || '',
+        username: user.username,
+        profileUser: null,
+      });
 
-  const validationCheck = (stepIdx: number): ValidationRule[] => {
-    switch (stepIdx) {
-      case 0:
-        return [
-          {
-            condition: !title.trim(),
-            message: '커뮤니티 이름을 입력해주세요',
-          },
-          {
-            condition: !description.trim(),
-            message: '커뮤니티 설명을 입력해주세요',
-          },
-          {
-            condition: title.trim().length < 3,
-            message: '커뮤니티 이름은 3글자 이상이어야 합니다.',
-          },
-          {
-            condition: description.trim().length < 10, //
-            message: '커뮤니티 설명은 10글자 이상이어야 합니다.',
-          },
-        ];
+      await createSub({
+        title: title,
+        description,
+        banner,
+        icon,
+      });
 
-      default:
-        return [];
+      close(modalkey);
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Create Sub failed:', error);
+      setError(error.message);
+    }
+
+    if (loading) {
+      return <LoadingSpinner />;
     }
   };
 
@@ -132,13 +120,20 @@ const CreateSubContainer = () => {
       return;
     }
 
-    const rules = validationCheck(curInputBoxNum);
-
-    const faildRule = rules.find((rule) => rule.condition);
-
-    if (faildRule?.condition) {
-      alert(faildRule.message);
-      return;
+    if (curInputBoxNum === 0) {
+      if (!title || title.trim() === '') {
+        return setError('커뮤니티 이름을 입력해주세요.');
+      } else if (title.length < 3) {
+        return setError('커뮤니티 이름을 3자 이상 입력해주세요.');
+      } else if (title.length > 20) {
+        return setError('커뮤니티 이름은 20자 이하여야 합니다.');
+      } else if (!description || description.trim() === '') {
+        return setError('커뮤니티 설명을 입력해주세요.');
+      } else if (description.length < 2) {
+        return setError('커뮤니티 설명은 2자 이상 입력해주세요.');
+      } else if (description.length > 100) {
+        return setError('커뮤니티 설명은 100자 이하여야 합니다.');
+      }
     }
 
     if (curInputBoxNum === inputBoxes.length - 1) {
@@ -209,8 +204,18 @@ const CreateSubContainer = () => {
           ))}
         </CarouselContainer>
         <ButtonContainer>
-          <button onClick={() => prevSlice()}>{`취소`}</button>
-          <button onClick={() => nextSlice()}>{`다음`}</button>
+          <button
+            onClick={() => prevSlice()}
+            disabled={curInputBoxNum === 0}
+          >{`취소`}</button>
+
+          <button
+            onClick={() => nextSlice()}
+            disabled={
+              curInputBoxNum === 0 &&
+              !(titleValidation === 'valid' && descValidtiaon === 'valid')
+            }
+          >{`다음`}</button>
         </ButtonContainer>
       </CreateSubCarousel>
 
@@ -279,8 +284,12 @@ const StyledMain = styled.div`
 `;
 const IconBox = styled.div<{ $isSelected: boolean }>`
   position: relative;
-  width: 3rem;
-  height: 3rem;
+
+  width: var(--rem-48);
+  height: var(--rem-48);
+
+  min-width: var(--rem-48);
+  min-height: var(--rem-48);
 
   background: ${({ $isSelected, theme }) =>
     $isSelected ? theme.colors.primary : 'transparent'};

@@ -1,5 +1,6 @@
-import { ButtonHTMLAttributes } from "react";
-import styled from "styled-components";
+import { ButtonHTMLAttributes } from 'react';
+
+import styled from 'styled-components';
 
 const AuthButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
   return <StyledButton {...props} />;

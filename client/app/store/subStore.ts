@@ -1,21 +1,63 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { Sub } from '../types';
+import { CreateSubProps, CustomError, Sub } from '../types';
 import { SubState } from '../types/store';
 import { clientAxiosInstance } from '../utils/axios';
 
+const initialState = {
+  subs: [],
+  filteredSubs: [],
+  selectedSub: null,
+  loading: false,
+};
+
 export const useSubStore = create(
   persist<SubState>(
-    (set) => ({
-      subs: [],
-      filterdSub: [],
-      loading: false,
-      error: null,
+    (set, get) => ({
+      ...initialState,
+
+      _hasHydrated: false,
+      setHasHydrated: (hydrated) => {
+        set({
+          _hasHydrated: hydrated,
+        });
+      },
+
+      createSub: async ({
+        title,
+        description,
+        icon,
+        banner,
+      }: CreateSubProps) => {
+        set({ loading: true });
+
+        try {
+          const formData = new FormData();
+          formData.append('title', title);
+          formData.append('description', description);
+          if (banner) formData.append('banner', banner);
+          if (icon) formData.append('icon', icon);
+
+          await clientAxiosInstance.post('/api/sub/create', formData);
+
+          get().getMySubs();
+          set({ loading: false });
+        } catch (err: unknown) {
+          const error = err as CustomError;
+          console.error('Create Sub failed:', error);
+          set({
+            loading: false,
+          });
+
+          throw error;
+        } finally {
+          set({ loading: false });
+        }
+      },
 
       getMySubs: async () => {
         set({ loading: true });
-        set({ error: null });
 
         try {
           const { data } =
@@ -23,25 +65,39 @@ export const useSubStore = create(
 
           set({
             subs: data,
-            filterdSub: data.filter((sub) => !sub.profileUser),
+            filteredSubs: data.filter((sub) => !sub.profileUser),
             loading: false,
           });
         } catch (error) {
           set({ loading: false });
-          set({ error: error as Error });
+          throw error;
+        } finally {
+          set({ loading: false });
         }
       },
+
+      setSelectedSub: (sub) => set({ selectedSub: sub || null }),
 
       addOptimisticSub: (newSub: Sub) => {
         set((state) => ({
           subs: [newSub, ...state.subs],
 
           filterdSub: !newSub.profileUser
-            ? [newSub, ...state.filterdSub]
-            : state.filterdSub,
+            ? [newSub, ...state.filteredSubs]
+            : state.filteredSubs,
         }));
       },
+      reset: () => {
+        set(initialState);
+      },
     }),
-    { name: 'sub-storage' }
+    {
+      name: 'sub-storage',
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.setHasHydrated(true);
+        }
+      },
+    }
   )
 );

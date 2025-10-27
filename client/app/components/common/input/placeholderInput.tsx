@@ -13,6 +13,13 @@ interface PlaceHolderInputProps extends InputHTMLAttributes<HTMLInputElement> {
   clearButton?: boolean;
   isExtraContainerVisible?: boolean;
   validationState?: 'valid' | 'invalid' | 'none' | false;
+
+  bgColor?: string;
+  hoverColor?: string;
+  borderColor?: string;
+  hoverBorderColor?: string;
+  focusBorderColor?: string;
+  lineWidth?: 'sm' | 'md' | 'lg';
 }
 
 const PlaceHolderInput = ({
@@ -25,8 +32,15 @@ const PlaceHolderInput = ({
   ExtraIcon,
   clearButton = false,
   isExtraContainerVisible = true,
-  onChange,
   validationState,
+  onChange,
+
+  bgColor,
+  hoverColor,
+  borderColor,
+  hoverBorderColor,
+  focusBorderColor,
+  lineWidth = 'md',
 }: PlaceHolderInputProps) => {
   const [isFloated, setIsFloated] = useState(false);
 
@@ -41,6 +55,12 @@ const PlaceHolderInput = ({
   return (
     <StyledInputContainer>
       <PlaceHolderInputContainer
+        $bgColor={bgColor}
+        $hoverColor={hoverColor}
+        $borderColor={borderColor}
+        $hoverBorderColor={hoverBorderColor}
+        $lineWidth={lineWidth}
+        $focusBorderColor={focusBorderColor}
         onFocus={() => setIsFloated(true)}
         onBlur={() => setIsFloated(false)}
       >
@@ -93,15 +113,53 @@ const StyledInputContainer = styled.label`
   width: 100%;
 `;
 
-const PlaceHolderInputContainer = styled.div`
+const PlaceHolderInputContainer = styled.div<{
+  $bgColor?: string;
+  $hoverColor?: string;
+  $borderColor?: string;
+  $hoverBorderColor?: string;
+  $focusBorderColor?: string;
+  $lineWidth: 'sm' | 'md' | 'lg';
+}>`
+  display: flex;
+  align-items: center;
   position: relative;
-  border: var(--line-md) solid ${({ theme }) => theme.colors.grayBackground};
+
   border-radius: var(--radius-lg);
-  background: ${({ theme }) => theme.colors.grayBackground};
+
+  border: var(--line-${({ $lineWidth }) => $lineWidth}) solid
+    ${({ theme, $borderColor }) =>
+      theme.colors[$borderColor as keyof typeof theme.colors] || 'transparent'};
+
+  background: ${({ $bgColor, theme }) => {
+    if (!$bgColor) return theme.colors.grayBackground;
+    return theme.colors[$bgColor as keyof typeof theme.colors] || 'transparent';
+  }};
+
+  &:hover {
+    border: var(--line-${({ $lineWidth }) => $lineWidth}) solid
+      ${({ theme, $hoverBorderColor }) =>
+        theme.colors[$hoverBorderColor as keyof typeof theme.colors] ||
+        'transparent'};
+
+    background: ${({ $hoverColor, theme }) => {
+      if (!$hoverColor) return theme.colors.grayHover;
+      return (
+        theme.colors[$hoverColor as keyof typeof theme.colors] || 'transparent'
+      );
+    }};
+  }
 
   &:focus-within {
-    background: ${({ theme }) => theme.colors?.grayHover};
-    border-color: ${({ theme }) => theme.colors?.secondaryLight};
+    background: ${({ $bgColor, theme }) => {
+      if (!$bgColor) return theme.colors.grayBackground;
+      return theme.colors[$bgColor as keyof typeof theme.colors];
+    }};
+
+    border: var(--line-md) solid
+      ${({ theme, $focusBorderColor }) =>
+        theme.colors[$focusBorderColor as keyof typeof theme.colors] ||
+        theme.colors.secondaryLight};
   }
 `;
 

@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
+
 import styled from 'styled-components';
 
 import ProfileDropdown from '../components/header/profileDropdown';
@@ -10,8 +12,30 @@ import { ModalKey, useModalState } from '../context/modalContext';
 import AuthModal from './modal/authModal';
 
 const HeaderContainer = ({ noOption = false }) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { open } = useModalState();
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   const modalKey: ModalKey = 'authModal';
   return (
@@ -29,11 +53,24 @@ const HeaderContainer = ({ noOption = false }) => {
             </StyledCenterNav>
             <StyledRightNav>
               {user ? (
-                <ProfileDropdown />
+                <StyledDropdownContainer
+                  ref={dropdownRef}
+                  style={{ position: 'relative' }}
+                >
+                  <StyledProfileButton
+                    onClick={() => setIsDropdownOpen((e) => !e)}
+                  >
+                    {user.username}
+                  </StyledProfileButton>
+                  <ProfileDropdown
+                    isDropdownOpen={isDropdownOpen}
+                    logout={logout}
+                  />
+                </StyledDropdownContainer>
               ) : (
-                <StyledButton onClick={() => open(modalKey)}>
+                <StyledLoginButton onClick={() => open(modalKey)}>
                   로그인
-                </StyledButton>
+                </StyledLoginButton>
               )}
             </StyledRightNav>
           </>
@@ -63,32 +100,15 @@ const StyledHeaderContainer = styled.header`
 const StyledNav = styled.nav`
   display: flex;
   width: 100%;
-  padding: var(--spacer-xs) 0;
 `;
 
 const StyledLeftNav = styled.div`
   display: flex;
-  flex: 1;
   align-items: center;
   gap: var(--spacer-xs);
-`;
 
-const StyledCenterNav = styled.div`
-  display: flex;
-  flex: 7;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacer-xs);
+  padding-inline-end: var(--spacer-lg);
 `;
-
-const StyledRightNav = styled.div`
-  display: flex;
-  flex: 2;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--spacer-xs);
-`;
-
 const StyledLogo = styled.div`
   display: flex;
   align-items: center;
@@ -106,16 +126,46 @@ const StyledLogo = styled.div`
   }
 `;
 
-const StyledButton = styled.button`
+const StyledCenterNav = styled.div`
+  display: flex;
+  flex: 1 1 0%;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacer-xs);
+`;
+
+const StyledRightNav = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacer-xs);
+
+  padding-inline-start: var(--spacer-lg);
+`;
+const StyledDropdownContainer = styled.div`
+  position: absolute;
+  display: inline-block;
+  z-index: 1000;
+`;
+
+const StyledProfileButton = styled.button`
+  background: none;
+  border: none;
+  padding: var(--spacer-xs) var(--spacer-sm);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.grayBackground};
+  }
+`;
+
+const StyledLoginButton = styled.button`
   background: ${({ theme }) => theme.colors.primaryDark};
   color: ${({ theme }) => theme.colors.white};
 
   &:hover {
     background: ${({ theme }) => theme.colors.primaryDarkHover};
-  }
-  &:disabled {
-    background: ${({ theme }) => theme.colors.disabled};
-    color: ${({ theme }) => theme.colors.disabledText};
   }
 `;
 

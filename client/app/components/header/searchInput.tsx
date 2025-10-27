@@ -15,7 +15,17 @@ const SearchInput = () => {
 
 const SearchInputWrapper = styled.div`
   position: relative;
-  width: 77%;
+
+  @media (min-width: 1200px) {
+    width: 560px;
+  }
+  @media (min-width: 1200px) {
+    display: block;
+  }
+  @media (min-width: 1200px) {
+    margin-left: auto;
+    margin-right: auto;
+  }
 `;
 
 const SearchIconWrapper = styled.span`

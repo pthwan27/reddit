@@ -10,6 +10,7 @@ import React, {
 
 import { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
+import { useSubStore } from '../store/subStore';
 import { CustomError, User } from '../types';
 import { clientAxiosInstance } from '../utils/axios';
 
@@ -98,6 +99,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error('Logout error:', error);
     } finally {
       setUser(null);
+      useSubStore.getState().reset();
     }
   }, []);
 

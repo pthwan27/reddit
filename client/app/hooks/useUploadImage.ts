@@ -10,7 +10,7 @@ export const useUploadImage = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState('');
 
-  const uploadIconImage = async ({ id, icon }: ChangeSubProps) => {
+  const uploadIconImage = async ({ slug, icon }: ChangeSubProps) => {
     if (!isAuthenticated || !user) {
       setError('로그인이 필요합니다.');
       return false;
@@ -29,7 +29,7 @@ export const useUploadImage = () => {
       }
 
       const response = await clientAxiosInstance.patch(
-        `/api/sub/${id}/uploadImage/icon`,
+        `/api/sub/${slug}/uploadImage/icon`,
         formData
       );
       return response.data.iconUrl;
@@ -46,7 +46,7 @@ export const useUploadImage = () => {
     }
   };
 
-  const uploadBannerImage = async ({ id, banner }: ChangeSubProps) => {
+  const uploadBannerImage = async ({ slug, banner }: ChangeSubProps) => {
     if (!isAuthenticated || !user) {
       setError('로그인이 필요합니다.');
       return false;
@@ -65,7 +65,7 @@ export const useUploadImage = () => {
       }
 
       const response = await clientAxiosInstance.patch(
-        `/api/sub/${id}/uploadImage/banner`,
+        `/api/sub/${slug}/uploadImage/banner`,
         formData
       );
       return response.data.bannerUrl;

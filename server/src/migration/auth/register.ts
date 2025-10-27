@@ -37,17 +37,15 @@ export const RegisterHandler: RequestHandler = async (req, res) => {
 
     await user.save();
 
-    const profileSub = Sub.create({
-      title: user.username,
-      slug: user.username,
-      description: `${user.username}의 프로필 페이지입니다.`,
-      user: user,
-      profileUser: user,
-    });
-    await profileSub.save();
+    const profileSub = new Sub();
 
-    user.profileSub = profileSub;
-    await user.save();
+    profileSub.title = user.uuid;
+    profileSub.slug = user.username;
+    profileSub.description = `${user.username}의 프로필 페이지입니다.`;
+    profileSub.user = user;
+    profileSub.profileUser = user;
+
+    await profileSub.save();
 
     // JWT 토큰 생성 (액세스 토큰 - 짧은 만료시간)
     const accessToken = jwt.sign(

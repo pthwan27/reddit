@@ -11,6 +11,8 @@ import SubInfos from '@/app/components/sub/detail/info';
 
 import { Sub } from '@/app/types';
 
+import RightSideBar from '../../../components/sub/detail/rightSideBar';
+
 const SubDetailContainer = ({ sub }: { sub: Sub }) => {
   const { uploadIconImage, uploadBannerImage } = useUploadImage();
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl);
@@ -38,7 +40,7 @@ const SubDetailContainer = ({ sub }: { sub: Sub }) => {
         };
 
         const newUrl = await uploadFunctions[uploadType]({
-          id: sub.id,
+          slug: sub.slug,
           [uploadType]: file,
         });
 
@@ -83,8 +85,10 @@ const SubDetailContainer = ({ sub }: { sub: Sub }) => {
           isIcon={!!iconImage}
         />
       </SubDetailHeader>
-      <SubDetailMain></SubDetailMain>
-      <SubDetailFooter></SubDetailFooter>
+      <SubDetailMain>
+        <div>MainContent</div>
+        <RightSideBar sub={sub} />
+      </SubDetailMain>
 
       <HiddenInput
         ref={bannerFileInputRef}
@@ -125,9 +129,17 @@ const SubDetailHeader = styled.header`
 const SubDetailMain = styled.main`
   display: flex;
   width: 100%;
-`;
-const SubDetailFooter = styled.footer`
-  width: 100%;
+
+  display: grid;
+  grid-template-columns: 1fr 312px;
+
+  @media (max-width: 959px) {
+    grid-template-columns: 1fr;
+
+    & > :nth-child(2) {
+      display: none;
+    }
+  }
 `;
 
 const HiddenInput = styled.input`

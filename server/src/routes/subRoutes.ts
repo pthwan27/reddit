@@ -13,18 +13,18 @@ const SubRouter = Router();
 
 SubRouter.post('/create', AuthMiddleware, upload, CreateHandler);
 SubRouter.get('/my-list', AuthMiddleware, GetMyListHandler);
-SubRouter.get('/:id', AuthMiddleware, GetSubDetailHandler);
+SubRouter.get('/:slug', AuthMiddleware, GetSubDetailHandler);
 
 SubRouter.patch(
-  '/:id/uploadImage/icon',
-  iconUpload,
+  '/:slug/uploadImage/icon',
   AuthMiddleware,
+  iconUpload,
   IconUploadHandler
 );
 SubRouter.patch(
-  '/:id/uploadImage/banner',
-  bannerUpload,
+  '/:slug/uploadImage/banner',
   AuthMiddleware,
+  bannerUpload,
   BannerUploadHandler
 );
 export default SubRouter;

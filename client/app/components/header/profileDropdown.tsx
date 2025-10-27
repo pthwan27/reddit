@@ -1,68 +1,24 @@
-import { useEffect, useState } from 'react';
-
 import styled from 'styled-components';
 
-import { useAuth } from '@/app/context/authContext';
-
-const ProfileDropdown = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { user, logout } = useAuth();
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-
-      if (!target.closest('[data-dropdown]')) {
-        setIsDropdownOpen(false);
-      }
-    };
-
-    if (isDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isDropdownOpen]);
-
+interface ProfileDropdownProps {
+  isDropdownOpen: boolean;
+  logout: () => void;
+}
+const ProfileDropdown = ({ isDropdownOpen, logout }: ProfileDropdownProps) => {
   return (
-    <StyledDropdownContainer data-dropdown>
-      <StyledProfileButton onClick={() => setIsDropdownOpen((e) => !e)}>
-        {user?.username}
-      </StyledProfileButton>
-      <StyledDropdownMenu $isDropdownOpen={isDropdownOpen}>
-        <StyledDropdownItem>
-          <span>프로필</span>
-        </StyledDropdownItem>
-        <StyledDropdownItem>
-          <span>설정</span>
-        </StyledDropdownItem>
-        <StyledDropdownItem onClick={logout}>
-          <span>로그아웃</span>
-        </StyledDropdownItem>
-      </StyledDropdownMenu>
-    </StyledDropdownContainer>
+    <StyledDropdownMenu $isDropdownOpen={isDropdownOpen}>
+      <StyledDropdownItem>
+        <span>프로필</span>
+      </StyledDropdownItem>
+      <StyledDropdownItem>
+        <span>설정</span>
+      </StyledDropdownItem>
+      <StyledDropdownItem onClick={logout}>
+        <span>로그아웃</span>
+      </StyledDropdownItem>
+    </StyledDropdownMenu>
   );
 };
-
-const StyledDropdownContainer = styled.div`
-  position: absolute;
-  display: inline-block;
-  z-index: 1000;
-`;
-
-const StyledProfileButton = styled.button`
-  background: none;
-  border: none;
-  padding: var(--spacer-xs) var(--spacer-sm);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.grayBackground};
-  }
-`;
 
 const StyledDropdownMenu = styled.div<{ $isDropdownOpen: boolean }>`
   position: absolute;

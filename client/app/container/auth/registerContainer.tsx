@@ -17,7 +17,7 @@ import { useAuth } from '../../context/authContext';
 const RegisterContainer = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
+  const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
@@ -27,9 +27,9 @@ const RegisterContainer = () => {
     () => validaionCheck(email, 'email'),
     [email]
   );
-  const usernameValidation = useMemo(
-    () => validaionCheck(username, 'name'),
-    [username]
+  const nicknameValidation = useMemo(
+    () => validaionCheck(nickname, 'nickname'),
+    [nickname]
   );
   const passwordValidation = useMemo(
     () => validaionCheck(password, 'password'),
@@ -39,14 +39,14 @@ const RegisterContainer = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password || !username) {
-      setError('이메일과 이름, 비밀번호를 입력해주세요.');
+    if (!email || !password || !nickname) {
+      setError('이메일과 닉네임, 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
       setError('');
-      await register(email, username, password, () => {
+      await register(email, nickname, password, () => {
         if (
           typeof window !== 'undefined' &&
           window.location.pathname === '/login'
@@ -59,7 +59,7 @@ const RegisterContainer = () => {
         }
 
         setEmail('');
-        setUsername('');
+        setNickname('');
         setPassword('');
       });
     } catch (err: unknown) {
@@ -90,12 +90,12 @@ const RegisterContainer = () => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <PlaceHolderInput
-        label="이름을 입력하세요"
-        value={username}
+        label="닉네임을 입력하세요"
+        value={nickname}
         type="text"
         maxLength={20}
         required={true}
-        onChange={(e) => setUsername(e.target.value)}
+        onChange={(e) => setNickname(e.target.value)}
       />
       <PlaceHolderInput
         label="비밀번호를 입력하세요"
@@ -119,7 +119,7 @@ const RegisterContainer = () => {
         disabled={
           !(
             emailValidation === 'valid' &&
-            usernameValidation === 'valid' &&
+            nicknameValidation === 'valid' &&
             passwordValidation === 'valid'
           )
         }

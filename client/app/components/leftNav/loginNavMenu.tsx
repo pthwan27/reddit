@@ -7,6 +7,7 @@ import styled from 'styled-components';
 
 import { useAuth } from '@/app/context/authContext';
 import { ModalKey, useModalState } from '@/app/context/modalContext';
+import { Sub } from '@/app/types';
 
 import IconButton from '../common/button/iconButton';
 import LoadingSpinner from '../common/loadingSpinner';
@@ -20,7 +21,7 @@ const LoginNavMenu = () => {
   const { open } = useModalState();
   const modalKey: ModalKey = 'createSubModal';
 
-  const { filterdSub, loading } = useSubStore();
+  const { filteredSubs, loading } = useSubStore();
 
   const onOpenCreateSubModal = () => {
     if (!user) return;
@@ -28,8 +29,8 @@ const LoginNavMenu = () => {
     open(modalKey);
   };
 
-  const goToSubDetail = (subId: number) => {
-    router.push(`/sub/r/${subId}`);
+  const goToSubDetail = (sub: Sub) => {
+    router.push(`/${sub.profileUser ? 'user' : 'r'}/${sub.slug}`);
   };
 
   return (
@@ -44,17 +45,17 @@ const LoginNavMenu = () => {
         {loading ? (
           <LoadingSpinner />
         ) : (
-          filterdSub.map((sub, idx) => (
+          filteredSubs.map((sub: Sub, idx: number) => (
             <StyledSubItem
               key={sub.title + idx}
-              onClick={() => goToSubDetail(sub.id)}
+              onClick={() => goToSubDetail(sub)}
             >
               <IconBox $isIcon={!!sub.iconUrl}>
                 {sub.iconUrl && (
                   <Image src={sub.iconUrl} alt={sub.title} fill />
                 )}
               </IconBox>
-              {sub.title}
+              <TitleBox>{sub.title}</TitleBox>
             </StyledSubItem>
           ))
         )}
@@ -74,7 +75,7 @@ const StyledSubItem = styled.button`
   display: flex;
   align-items: center;
 
-  gap: var(--spacer-xs);
+  gap: var(--spacer-sm);
   padding: var(--spacer-sm);
 
   border-radius: var(--radius-md);
@@ -96,6 +97,9 @@ const IconBox = styled.div<{ $isIcon?: boolean }>`
   width: var(--rem-32);
   height: var(--rem-32);
 
+  min-width: var(--rem-32);
+  min-height: var(--rem-32);
+
   background-color: ${({ $isIcon, theme }) =>
     $isIcon ? 'transparent' : theme.colors.dark};
 
@@ -112,5 +116,7 @@ const IconBox = styled.div<{ $isIcon?: boolean }>`
     background: transparent;
   }
 `;
+
+const TitleBox = styled.span``;
 
 export default LoginNavMenu;

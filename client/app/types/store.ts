@@ -1,8 +1,16 @@
-export interface SubState {
+import { CreateSubProps, Sub } from '../types';
+
+export type SubState = {
   subs: Sub[];
-  filterdSub: Sub[];
+  filteredSubs: Sub[];
+  selectedSub: Sub | null;
   loading: boolean;
-  error: Error | null;
   getMySubs: () => Promise<void>;
   addOptimisticSub: (newSub: Sub) => void;
-}
+  setSelectedSub: (sub: Sub | null) => void;
+  reset: () => void;
+  createSub: (subData: CreateSubProps) => Promise<void>;
+
+  _hasHydrated: boolean;
+  setHasHydrated: (hydrated: boolean) => void;
+};
