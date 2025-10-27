@@ -47,17 +47,20 @@ export const validaionCheck = throttle((value: string, type: string) => {
     }
 
     case 'subTitle': {
-      return (!value || value.trim() !== '') &&
-        (value.length > 2 || value.length <= 20)
-        ? 'valid'
-        : 'invalid';
+      if (value.length < 3) return '커뮤니티 이름을 3자 이상 입력해주세요.';
+
+      if (value.length > 20) return '커뮤니티 이름은 20자 이하여야 합니다.';
+
+      if (value.includes('-'))
+        return "커뮤니티 이름에 '-'를 포함할 수 없습니다.";
+
+      return 'valid';
     }
 
     case 'subDesc': {
-      return (!value || value.trim() !== '') &&
-        (value.length > 2 || value.length <= 100)
-        ? 'valid'
-        : 'invalid';
+      if (value.length < 5) return '커뮤니티 설명은 5자 이상 입력해주세요.';
+      if (value.length > 100) return '커뮤니티 설명은 100자 이하여야 합니다.';
+      return 'valid';
     }
 
     case 'text':

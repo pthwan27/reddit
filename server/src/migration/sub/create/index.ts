@@ -25,6 +25,12 @@ export const CreateHandler: RequestHandler = async (req, res) => {
         .json({ error: '커뮤니티 이름을 3자 이상 입력해주세요.' });
     }
 
+    if (title.includes('-')) {
+      return res
+        .status(400)
+        .json({ error: "커뮤니티 이름에 '-'를 포함할 수 없습니다." });
+    }
+
     if (title.length > 20) {
       return res
         .status(400)

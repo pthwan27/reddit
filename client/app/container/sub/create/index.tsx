@@ -121,18 +121,12 @@ const CreateSubContainer = () => {
     }
 
     if (curInputBoxNum === 0) {
-      if (!title || title.trim() === '') {
-        return setError('커뮤니티 이름을 입력해주세요.');
-      } else if (title.length < 3) {
-        return setError('커뮤니티 이름을 3자 이상 입력해주세요.');
-      } else if (title.length > 20) {
-        return setError('커뮤니티 이름은 20자 이하여야 합니다.');
-      } else if (!description || description.trim() === '') {
-        return setError('커뮤니티 설명을 입력해주세요.');
-      } else if (description.length < 2) {
-        return setError('커뮤니티 설명은 2자 이상 입력해주세요.');
-      } else if (description.length > 100) {
-        return setError('커뮤니티 설명은 100자 이하여야 합니다.');
+      if (titleValidation !== 'valid') {
+        return setError(titleValidation);
+      }
+
+      if (descValidtiaon !== 'valid') {
+        return setError(descValidtiaon);
       }
     }
 
@@ -213,9 +207,11 @@ const CreateSubContainer = () => {
             onClick={() => nextSlice()}
             disabled={
               curInputBoxNum === 0 &&
-              !(titleValidation === 'valid' && descValidtiaon === 'valid')
+              (titleValidation !== 'valid' || descValidtiaon !== 'valid')
             }
-          >{`다음`}</button>
+          >
+            {curInputBoxNum === inputBoxes.length - 1 ? '생성하기' : '다음'}
+          </button>
         </ButtonContainer>
       </CreateSubCarousel>
 
