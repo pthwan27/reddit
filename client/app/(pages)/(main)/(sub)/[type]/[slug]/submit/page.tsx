@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { clientAxiosInstance } from '@/app/utils/axios';
 
-import SubmitPostContainer from '@/app/container/sub/detail/submit';
+import SubmitPostContainer from '@/app/container/post/submit';
 
 import { Sub } from '@/app/types';
 

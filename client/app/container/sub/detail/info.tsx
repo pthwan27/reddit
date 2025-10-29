@@ -7,10 +7,10 @@ import styled from 'styled-components';
 
 import { Sub } from '@/app/types';
 
-import IconButton from '../../common/button/iconButton';
-import EtcIcon from '../../svgs/EtcIcon';
-import PencilIcon from '../../svgs/PencilIcon';
-import PlusIcon from '../../svgs/PlusIcon';
+import IconButton from '../../../components/common/button/iconButton';
+import EtcIcon from '../../../components/svgs/EtcIcon';
+import PencilIcon from '../../../components/svgs/PencilIcon';
+import PlusIcon from '../../../components/svgs/PlusIcon';
 
 interface InfoProps {
   sub: Sub;

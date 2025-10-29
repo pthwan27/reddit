@@ -1,36 +1,21 @@
-import { useRouter } from 'next/navigation';
-
 import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
-import SubSelector from '@/app/components/sub/detail/submit/subSelector';
-
-import { Sub } from '@/app/types';
+import SubSelector from './subSelector';
 
 interface SubmitPostHeaderProps {
   isTagLoading: boolean;
   setIsTagLoading: (loading: boolean) => void;
+  onSelectTag: (sub: Sub) => void;
 }
 
 const SubmitPostHeader = ({
   isTagLoading,
-  setIsTagLoading,
+  onSelectTag,
 }: SubmitPostHeaderProps) => {
-  const router = useRouter();
-  const { subs, selectedSub, setSelectedSub } = useSubStore();
+  const { selectedSub, subs } = useSubStore();
 
-  const handleSubSelect = (sub: Sub) => {
-    setSelectedSub(sub);
-
-    if (sub.id !== selectedSub?.id) {
-      setIsTagLoading(true);
-
-      setTimeout(() => {
-        router.push(`/${sub.profileUser ? 'user' : 'r'}/${sub.slug}/submit`);
-      }, 500);
-    }
-  };
   return (
     <StyledHeaderContainer>
       <TitleSection>
@@ -40,7 +25,7 @@ const SubmitPostHeader = ({
       <SubSelector
         allSubs={subs}
         selectedSub={selectedSub}
-        onSubSelect={handleSubSelect}
+        onSubSelect={onSelectTag}
         isTagLoading={isTagLoading}
       />
     </StyledHeaderContainer>

@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-import CommonLeftNavMenu from '../components/leftNav/commonNavMenu';
-import LoginNavMenu from '../components/leftNav/loginNavMenu';
-import LogoutNavMenu from '../components/leftNav/logoutNavMenu';
-import { useAuth } from '../context/authContext';
-import CreateSubModal from './modal/createSubModal';
+import { useAuth } from '../../context/authContext';
+import CreateSubModal from '../modal/createSubModal';
+import CommonLeftNavMenu from './commonNavMenu';
+import LoginNavMenu from './loginNavMenu';
+import LogoutNavMenu from './logoutNavMenu';
 
 const LeftNavContainer = ({ isNavVisible }: { isNavVisible: boolean }) => {
   const { user } = useAuth();

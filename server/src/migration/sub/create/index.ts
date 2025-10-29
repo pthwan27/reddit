@@ -14,44 +14,44 @@ export const CreateHandler: RequestHandler = async (req, res) => {
   if (!user) {
     return res.status(401).json({ error: 'User not found in context' });
   }
+  if (!title || title.trim() === '') {
+    return res.status(400).json({ error: '커뮤니티 이름을 입력해주세요.' });
+  }
+
+  if (title.length < 3) {
+    return res
+      .status(400)
+      .json({ error: '커뮤니티 이름을 3자 이상 입력해주세요.' });
+  }
+
+  if (title.includes('-')) {
+    return res
+      .status(400)
+      .json({ error: "커뮤니티 이름에 '-'를 포함할 수 없습니다." });
+  }
+
+  if (title.length > 20) {
+    return res
+      .status(400)
+      .json({ error: '커뮤니티 이름은 20자 이하여야 합니다.' });
+  }
+
+  if (!description || description.trim() === '') {
+    return res.status(400).json({ error: '커뮤니티 설명을 입력해주세요.' });
+  }
+  if (description.length < 2) {
+    return res
+      .status(400)
+      .json({ error: '커뮤니티 설명은 2자 이상 입력해주세요.' });
+  }
+
+  if (description.length > 100) {
+    return res
+      .status(400)
+      .json({ error: '커뮤니티 설명은 100자 이하여야 합니다.' });
+  }
+
   try {
-    if (!title || title.trim() === '') {
-      return res.status(400).json({ error: '커뮤니티 이름을 입력해주세요.' });
-    }
-
-    if (title.length < 3) {
-      return res
-        .status(400)
-        .json({ error: '커뮤니티 이름을 3자 이상 입력해주세요.' });
-    }
-
-    if (title.includes('-')) {
-      return res
-        .status(400)
-        .json({ error: "커뮤니티 이름에 '-'를 포함할 수 없습니다." });
-    }
-
-    if (title.length > 20) {
-      return res
-        .status(400)
-        .json({ error: '커뮤니티 이름은 20자 이하여야 합니다.' });
-    }
-
-    if (!description || description.trim() === '') {
-      return res.status(400).json({ error: '커뮤니티 설명을 입력해주세요.' });
-    }
-    if (description.length < 2) {
-      return res
-        .status(400)
-        .json({ error: '커뮤니티 설명은 2자 이상 입력해주세요.' });
-    }
-
-    if (description.length > 100) {
-      return res
-        .status(400)
-        .json({ error: '커뮤니티 설명은 100자 이하여야 합니다.' });
-    }
-
     const sub = new Sub();
     sub.title = title;
     sub.description = description || title + '주제의 커뮤니티입니다.';

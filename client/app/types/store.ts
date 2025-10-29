@@ -1,4 +1,4 @@
-import { CreateSubProps, Sub } from '../types';
+import { CreateSubProps, Post, Sub } from '../types';
 
 export type SubState = {
   subs: Sub[];
@@ -13,4 +13,13 @@ export type SubState = {
 
   _hasHydrated: boolean;
   setHasHydrated: (hydrated: boolean) => void;
+};
+
+export type PostStore = {
+  posts: Post[];
+  loading: boolean;
+  page: number;
+  hasMore: boolean;
+  fetchPosts: (slug: string) => Promise<void>;
+  clearPosts: () => void;
 };

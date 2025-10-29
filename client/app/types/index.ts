@@ -40,6 +40,13 @@ export interface ChangeSubProps {
   icon?: File | null;
   banner?: File | null;
 }
+
+export interface SubmitPostProps {
+  title: string;
+  setTitle: (title: string) => void;
+  content: string;
+  setContent: (content: string) => void;
+}
 // Post 타입
 export interface Post {
   id: number;

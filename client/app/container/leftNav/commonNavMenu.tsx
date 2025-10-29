@@ -1,6 +1,6 @@
-import IconButton from '../common/button/iconButton';
-import ArrowIcon from '../svgs/ArrowIcon';
-import HomeIcon from '../svgs/HomeIcon';
+import IconButton from '../../components/common/button/iconButton';
+import ArrowIcon from '../../components/svgs/ArrowIcon';
+import HomeIcon from '../../components/svgs/HomeIcon';
 
 const CommonLeftNavMenu = () => {
   return (

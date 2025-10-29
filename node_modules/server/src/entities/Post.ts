@@ -15,7 +15,7 @@ import { Sub } from "./Sub";
 import { Comment } from "./Comment";
 import { Vote } from "./Vote";
 import { Exclude, Expose } from "class-transformer";
-import { makeId, slugify } from "../utils/helpers";
+import { makeId } from "../utils/helpers";
 
 @Entity("posts")
 export class Post extends CoreEntity {
@@ -83,6 +83,8 @@ export class Post extends CoreEntity {
   @BeforeInsert()
   makeIdAndSlug() {
     this.identifier = makeId(7);
-    this.slug = slugify(this.title);
+    this.slug = this.title
+      .trim()
+      .replace(/ /g, "-");
   }
 }

@@ -9,10 +9,10 @@ import { useAuth } from '@/app/context/authContext';
 import { ModalKey, useModalState } from '@/app/context/modalContext';
 import { Sub } from '@/app/types';
 
-import IconButton from '../common/button/iconButton';
-import LoadingSpinner from '../common/loadingSpinner';
-import PlusIcon from '../svgs/PlusIcon';
-import CollapsibleList from './collapsibleList';
+import IconButton from '../../components/common/button/iconButton';
+import LoadingSpinner from '../../components/common/loadingSpinner';
+import CollapsibleList from '../../components/leftNav/collapsibleList';
+import PlusIcon from '../../components/svgs/PlusIcon';
 
 const LoginNavMenu = () => {
   const router = useRouter();

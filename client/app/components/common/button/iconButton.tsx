@@ -70,7 +70,6 @@ const StyledButton = styled.button<{
   align-items: center;
   gap: var(--spacer-sm);
   padding: var(--spacer-xs) var(--spacer-sm);
-
   cursor: pointer;
 
   /* 높이 설정 */

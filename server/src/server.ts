@@ -3,9 +3,9 @@ import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import path from 'path';
 
-// ...
 import { AppDataSource } from './data-source';
 import AuthRouter from './routes/authRoutes';
+import PostRouter from './routes/postRoutes';
 import SubRouter from './routes/subRoutes';
 
 const app = express();
@@ -26,6 +26,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use('/auth', AuthRouter);
 app.use('/sub', SubRouter);
+app.use('/post', PostRouter);
 
 app.get('/', (_: Request, res: Response) => {
   res.send('running');

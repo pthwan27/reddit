@@ -4,10 +4,16 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useUploadImage } from '@/app/hooks/useUploadImage';
 
+import { usePostStore } from '@/app/store/postStore';
+import { useSubStore } from '@/app/store/subStore';
+
 import styled from 'styled-components';
 
-import SubBanner from '@/app/components/sub/detail/banner';
-import SubInfos from '@/app/components/sub/detail/info';
+import LoadingSpinner from '@/app/components/common/loadingSpinner';
+import PostList from '@/app/components/post/list';
+
+import SubBanner from '@/app/container/sub/detail/banner';
+import SubInfos from '@/app/container/sub/detail/info';
 
 import { Sub } from '@/app/types';
 
@@ -18,8 +24,13 @@ const SubDetailContainer = ({ sub }: { sub: Sub }) => {
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl);
   const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl);
 
+  const { posts, loading, hasMore, fetchPosts, clearPosts } = usePostStore();
+  const { selectedSub } = useSubStore();
+
   const iconFileInputRef = useRef<HTMLInputElement>(null);
   const bannerFileInputRef = useRef<HTMLInputElement>(null);
+
+  const observerRef = useRef<HTMLDivElement>(null);
 
   const handleFileChange =
     (uploadType: 'icon' | 'banner') =>
@@ -68,6 +79,38 @@ const SubDetailContainer = ({ sub }: { sub: Sub }) => {
     setBannerImage(sub.bannerUrl);
   }, [sub.bannerUrl]);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !loading && hasMore) {
+          fetchPosts(sub.slug);
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    const currentObserverRef = observerRef.current;
+    if (currentObserverRef) {
+      observer.observe(currentObserverRef);
+    }
+
+    return () => {
+      if (currentObserverRef) {
+        observer.unobserve(currentObserverRef);
+      }
+    };
+  }, [loading, hasMore, sub.slug, fetchPosts]);
+
+  useEffect(() => {
+    clearPosts();
+
+    fetchPosts(sub.slug);
+
+    return () => {
+      clearPosts();
+    };
+  }, [selectedSub, sub.slug, fetchPosts, clearPosts]);
+
   return (
     <StyledSubDetailContainer>
       <SubDetailHeader>
@@ -86,7 +129,11 @@ const SubDetailContainer = ({ sub }: { sub: Sub }) => {
         />
       </SubDetailHeader>
       <SubDetailMain>
-        <div>MainContent</div>
+        <PostListWrapper>
+          {loading ? <LoadingSpinner /> : <PostList posts={posts} />}
+
+          <div ref={observerRef} style={{ height: '1px' }} />
+        </PostListWrapper>
         <RightSideBar sub={sub} />
       </SubDetailMain>
 
@@ -140,6 +187,12 @@ const SubDetailMain = styled.main`
       display: none;
     }
   }
+`;
+
+const PostListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-sm);
 `;
 
 const HiddenInput = styled.input`

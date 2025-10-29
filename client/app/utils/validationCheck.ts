@@ -63,6 +63,13 @@ export const validaionCheck = throttle((value: string, type: string) => {
       return 'valid';
     }
 
+    case 'postTitle': {
+      return value.trim().length > 2 ? 'valid' : 'invalid';
+    }
+    case 'postContent': {
+      return value.trim().length > 2 ? 'valid' : 'invalid';
+    }
+
     case 'text':
     default:
       return value.length >= 2 ? 'valid' : 'invalid';

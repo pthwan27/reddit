@@ -8,7 +8,7 @@ import LoadingSpinner from '@/app/components/common/loadingSpinner';
 import MenuIcon from '@/app/components/svgs/MenuIcon';
 
 import HeaderContainer from '@/app/container/headerContainer';
-import LeftNaveContainer from '@/app/container/leftNavContainer';
+import LeftNaveContainer from '@/app/container/leftNav';
 
 interface MainLayoutProps {
   children: React.ReactNode;
