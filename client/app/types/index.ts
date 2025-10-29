@@ -33,6 +33,8 @@ export interface CreateSubProps {
   description: string;
   icon?: File | null;
   banner?: File | null;
+  iconPreview?: string | null;
+  bannerPreview?: string | null;
 }
 
 export interface ChangeSubProps {

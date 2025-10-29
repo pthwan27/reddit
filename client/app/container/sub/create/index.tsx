@@ -30,7 +30,7 @@ const CreateSubContainer = () => {
   const [curInputBoxNum, setCurInputBoxNum] = useState<number>(0);
 
   const [error, setError] = useState('');
-  const { createSub, loading, addOptimisticSub } = useSubStore();
+  const { createSub, loading } = useSubStore();
 
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
   const [iconPreview, setIconPreview] = useState<string | null>(null);
@@ -66,24 +66,14 @@ const CreateSubContainer = () => {
       return router.push('/login');
     }
     try {
-      addOptimisticSub({
-        id: Date.now(),
-        slug: title,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        title: title,
-        description: description,
-        bannerUrl: bannerPreview || '',
-        iconUrl: iconPreview || '',
-        username: user.username,
-        profileUser: null,
-      });
-
       await createSub({
-        title: title,
+        title,
         description,
-        banner,
         icon,
+        banner,
+        bannerPreview,
+        iconPreview,
+        username: user.username,
       });
 
       close(modalkey);

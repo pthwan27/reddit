@@ -6,7 +6,6 @@ export type SubState = {
   selectedSub: Sub | null;
   loading: boolean;
   getMySubs: () => Promise<void>;
-  addOptimisticSub: (newSub: Sub) => void;
   setSelectedSub: (sub: Sub | null) => void;
   reset: () => void;
   createSub: (subData: CreateSubProps) => Promise<void>;

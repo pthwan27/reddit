@@ -29,8 +29,34 @@ export const useSubStore = create(
         description,
         icon,
         banner,
+        bannerPreview,
+        iconPreview,
+        username,
       }: CreateSubProps) => {
         set({ loading: true });
+
+        const originalSubs = get().subs;
+        const originalFilteredSubs = get().filteredSubs;
+
+        const optimisticSub: Sub = {
+          id: Date.now(),
+          slug: title, // 임시 slug
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          title,
+          description,
+          bannerUrl: bannerPreview || '',
+          iconUrl: iconPreview || '',
+          username,
+          profileUser: null,
+        };
+
+        set((state) => ({
+          subs: [optimisticSub, ...state.subs],
+          filteredSubs: !optimisticSub.profileUser
+            ? [optimisticSub, ...state.filteredSubs]
+            : state.filteredSubs,
+        }));
 
         try {
           const formData = new FormData();
@@ -39,16 +65,24 @@ export const useSubStore = create(
           if (banner) formData.append('banner', banner);
           if (icon) formData.append('icon', icon);
 
-          await clientAxiosInstance.post('/api/sub/create', formData);
+          const { data: newSub } = await clientAxiosInstance.post(
+            '/api/sub/create',
+            formData
+          );
 
-          get().getMySubs();
-          set({ loading: false });
+          set((state) => ({
+            subs: state.subs.map((sub) =>
+              sub.id === optimisticSub.id ? newSub : sub
+            ),
+            filteredSubs: state.filteredSubs.map((sub) =>
+              sub.id === optimisticSub.id ? newSub : sub
+            ),
+          }));
         } catch (err: unknown) {
           const error = err as CustomError;
           console.error('Create Sub failed:', error);
-          set({
-            loading: false,
-          });
+
+          set({ subs: originalSubs, filteredSubs: originalFilteredSubs });
 
           throw error;
         } finally {
@@ -78,15 +112,6 @@ export const useSubStore = create(
 
       setSelectedSub: (sub) => set({ selectedSub: sub || null }),
 
-      addOptimisticSub: (newSub: Sub) => {
-        set((state) => ({
-          subs: [newSub, ...state.subs],
-
-          filterdSub: !newSub.profileUser
-            ? [newSub, ...state.filteredSubs]
-            : state.filteredSubs,
-        }));
-      },
       reset: () => {
         set(initialState);
       },
