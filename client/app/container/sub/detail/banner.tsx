@@ -15,7 +15,7 @@ interface BannerProps {
   isBanner: boolean;
 }
 
-const SubBanner = ({
+const SubBannerContainer = ({
   sub,
   bannerImage,
   onEditClick,
@@ -96,4 +96,4 @@ const EditIcon = styled.div`
     opacity: 1;
   }
 `;
-export default SubBanner;
+export default SubBannerContainer;

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { clientAxiosInstance } from '@/app/utils/axios';
 
-import SubmitPostContainer from '@/app/container/post/submit';
+import PostSubmitContainer from '@/app/container/post/submit';
 
 import { Sub } from '@/app/types';
 
@@ -33,7 +33,7 @@ const SubmitPostPage = async ({
 
   const data = await getSubData(slug);
 
-  return <SubmitPostContainer sub={data} />;
+  return <PostSubmitContainer sub={data} />;
 };
 
 export default SubmitPostPage;

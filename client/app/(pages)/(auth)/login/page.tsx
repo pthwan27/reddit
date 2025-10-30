@@ -2,20 +2,14 @@
 
 import styled from 'styled-components';
 
-import LoginContainer from '@/app/container/auth/loginContainer';
-import RegisterContainer from '@/app/container/auth/registerContainer';
+import AuthContainer from '@/app/container/auth';
 import HeaderContainer from '@/app/container/headerContainer';
 
-import { useAuth } from '@/app/context/authContext';
-
 const Login = () => {
-  const { mode } = useAuth();
   return (
     <StyledAuthPage>
       <HeaderContainer noOption={true} />
-      <AuthContainer>
-        {mode === 'login' ? <LoginContainer /> : <RegisterContainer />}
-      </AuthContainer>
+      <AuthContainer />
     </StyledAuthPage>
   );
 };
@@ -30,24 +24,6 @@ const StyledAuthPage = styled.div`
   align-items: center;
 
   background: ${({ theme }) => theme.colors.darkgrayBackground};
-`;
-
-const AuthContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: var(--radius-lg);
-
-  background: ${({ theme }) => theme.colors.background};
-
-  width: 528px;
-  min-width: 320px;
-  min-height: 400px;
-
-  padding: var(--spacer-3xl) var(--spacer-5xl);
-  box-shadow: var(--box-shadow);
 `;
 
 export default Login;

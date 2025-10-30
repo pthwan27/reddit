@@ -13,7 +13,7 @@ const SubRouter = Router();
 
 SubRouter.post('/create', AuthMiddleware, upload, CreateHandler);
 SubRouter.get('/my-list', AuthMiddleware, GetMyListHandler);
-SubRouter.get('/:slug', AuthMiddleware, GetSubDetailHandler);
+SubRouter.get('/:slug', GetSubDetailHandler);
 
 SubRouter.patch(
   '/:slug/uploadImage/icon',

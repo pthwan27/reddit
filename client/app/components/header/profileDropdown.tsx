@@ -7,15 +7,15 @@ interface ProfileDropdownProps {
 const ProfileDropdown = ({ isDropdownOpen, logout }: ProfileDropdownProps) => {
   return (
     <StyledDropdownMenu $isDropdownOpen={isDropdownOpen}>
-      <StyledDropdownItem>
+      <DropdownItem>
         <span>프로필</span>
-      </StyledDropdownItem>
-      <StyledDropdownItem>
+      </DropdownItem>
+      <DropdownItem>
         <span>설정</span>
-      </StyledDropdownItem>
-      <StyledDropdownItem onClick={logout}>
+      </DropdownItem>
+      <DropdownItem onClick={logout}>
         <span>로그아웃</span>
-      </StyledDropdownItem>
+      </DropdownItem>
     </StyledDropdownMenu>
   );
 };
@@ -47,7 +47,7 @@ const StyledDropdownMenu = styled.div<{ $isDropdownOpen: boolean }>`
     visibility 0.2s ease-out;
 `;
 
-const StyledDropdownItem = styled.div`
+const DropdownItem = styled.div`
   display: flex;
   align-items: center;
   padding: var(--spacer-sm) var(--spacer-md);

@@ -15,7 +15,7 @@ type BaseModalProps = {
   width?: string;
 };
 
-const BaseModal = ({
+const BaseModalContainer = ({
   children,
   modalkey,
   headerInfo,
@@ -64,25 +64,25 @@ const BaseModal = ({
       {modals[modalkey] && (
         <>
           {createPortal(
-            <StyledModalContainer data-modal>
-              <StyledModalBackground onClick={() => close(modalkey)} />
-              <StyledModal $width={width}>
-                <StyledModalContentHeader>
+            <BaseModal data-modal>
+              <ModalBackground onClick={() => close(modalkey)} />
+              <Modal $width={width}>
+                <ModalContentHeader>
                   {headerInfo ? (
-                    <StyledHeaderInfo>
+                    <HeaderInfo>
                       <h2>{headerInfo}</h2>
                       {headerSubInfo && <span>{headerSubInfo}</span>}
-                    </StyledHeaderInfo>
+                    </HeaderInfo>
                   ) : (
                     <div></div>
                   )}
-                  <StyledModalCloseButton onClick={() => close(modalkey)}>
+                  <ModalCloseButton onClick={() => close(modalkey)}>
                     <CloseIcon />
-                  </StyledModalCloseButton>
-                </StyledModalContentHeader>
-                <StyledModalContentMain>{children}</StyledModalContentMain>
-              </StyledModal>
-            </StyledModalContainer>,
+                  </ModalCloseButton>
+                </ModalContentHeader>
+                <ModalContentMain>{children}</ModalContentMain>
+              </Modal>
+            </BaseModal>,
             document.body
           )}
         </>
@@ -91,7 +91,7 @@ const BaseModal = ({
   );
 };
 
-const StyledModalContainer = styled.div`
+const BaseModal = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -103,7 +103,7 @@ const StyledModalContainer = styled.div`
   z-index: 1000;
 `;
 
-const StyledModalBackground = styled.div`
+const ModalBackground = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -115,7 +115,7 @@ const StyledModalBackground = styled.div`
   z-index: 1;
 `;
 
-const StyledModal = styled.div<{ $width?: string }>`
+const Modal = styled.div<{ $width?: string }>`
   position: relative;
   z-index: 2;
   display: flex;
@@ -146,7 +146,7 @@ const StyledModal = styled.div<{ $width?: string }>`
   }
 `;
 
-const StyledModalContentHeader = styled.div`
+const ModalContentHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -155,13 +155,13 @@ const StyledModalContentHeader = styled.div`
 
   width: 100%;
 `;
-const StyledHeaderInfo = styled.div`
+const HeaderInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--spacer-xs);
 `;
 
-const StyledModalCloseButton = styled.button`
+const ModalCloseButton = styled.button`
   background: ${({ theme }) => theme.colors.grayBackground};
   padding: var(--spacer-xs);
 
@@ -170,7 +170,7 @@ const StyledModalCloseButton = styled.button`
   }
 `;
 
-const StyledModalContentMain = styled.div`
+const ModalContentMain = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -180,4 +180,4 @@ const StyledModalContentMain = styled.div`
   padding: var(--spacer-xs) 0 var(--spacer-2xl) 0;
 `;
 
-export default BaseModal;
+export default BaseModalContainer;

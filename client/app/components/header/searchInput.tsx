@@ -4,16 +4,16 @@ import SearchIcon from '../svgs/SearchIcon';
 
 const SearchInput = () => {
   return (
-    <SearchInputWrapper>
+    <StyledSearchInputDiv>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
       <StyledSearchInput placeholder="Search" />
-    </SearchInputWrapper>
+    </StyledSearchInputDiv>
   );
 };
 
-const SearchInputWrapper = styled.div`
+const StyledSearchInputDiv = styled.div`
   position: relative;
 
   @media (min-width: 1200px) {

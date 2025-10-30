@@ -2,9 +2,9 @@ import BaseModal from '@/app/container/modal/base';
 
 import { ModalKey } from '@/app/context/modalContext';
 
-import CreateSubContainer from '../sub/create';
+import CreateSub from '../sub/create';
 
-const CreateSubModal = () => {
+const CreateSubModalContainer = () => {
   const modalKey: ModalKey = 'createSubModal';
 
   return (
@@ -14,9 +14,9 @@ const CreateSubModal = () => {
       headerInfo="Create a Community"
       headerSubInfo="커뮤니티를 만들어 보세요."
     >
-      <CreateSubContainer />
+      <CreateSub />
     </BaseModal>
   );
 };
 
-export default CreateSubModal;
+export default CreateSubModalContainer;

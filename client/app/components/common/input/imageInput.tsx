@@ -28,8 +28,8 @@ const ImageInput = ({ label, onFileChange, value }: ImageInputProps) => {
     onFileChange(null);
   };
   return (
-    <StyledInputContainer>
-      <InputContainer onClick={handleClick}>
+    <StyledInput>
+      <InputBox onClick={handleClick}>
         <StyledLabel>{label}</StyledLabel>
         {value ? (
           <SelectedFile>
@@ -49,7 +49,7 @@ const ImageInput = ({ label, onFileChange, value }: ImageInputProps) => {
             <span>선택</span>
           </PlaceholderText>
         )}
-      </InputContainer>
+      </InputBox>
 
       <HiddenInput
         ref={fileInputRef}
@@ -57,16 +57,16 @@ const ImageInput = ({ label, onFileChange, value }: ImageInputProps) => {
         onChange={handleFileChange}
         accept="image/*"
       />
-    </StyledInputContainer>
+    </StyledInput>
   );
 };
 
-const StyledInputContainer = styled.div`
+const StyledInput = styled.div`
   display: flex;
   gap: var(--space-sm);
 `;
 
-const InputContainer = styled.div`
+const InputBox = styled.div`
   display: flex;
   justify-content: space-between;
   padding: var(--spacer-md) var(--spacer-md);

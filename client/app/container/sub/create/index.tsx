@@ -151,7 +151,7 @@ const CreateSubContainer = () => {
     return () => URL.revokeObjectURL(objectURL);
   }, [icon]);
   return (
-    <StyledCreateSubContainer>
+    <CreateSub>
       <CreateSubMainContainer>
         <CreateInputBox>{inputBoxes[curInputBoxNum]}</CreateInputBox>
         <CreateSubInfoBox>
@@ -206,11 +206,11 @@ const CreateSubContainer = () => {
       </CreateSubCarousel>
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
-    </StyledCreateSubContainer>
+    </CreateSub>
   );
 };
 
-const StyledCreateSubContainer = styled.div`
+const CreateSub = styled.div`
   display: flex;
   flex-direction: column;
 

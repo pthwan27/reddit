@@ -54,8 +54,8 @@ const PlaceHolderTextarea = ({
   };
 
   return (
-    <StyledInputContainer>
-      <PlaceHolderInputContainer
+    <StyledInputLabel>
+      <PlaceHolderInputDiv
         $bgColor={bgColor}
         $hoverColor={hoverColor}
         $borderColor={borderColor}
@@ -100,18 +100,18 @@ const PlaceHolderTextarea = ({
             </ExtraIconContainer>
           )}
         </BoundaryBox>
-      </PlaceHolderInputContainer>
-    </StyledInputContainer>
+      </PlaceHolderInputDiv>
+    </StyledInputLabel>
   );
 };
-const StyledInputContainer = styled.label`
+const StyledInputLabel = styled.label`
   position: relative;
   display: block;
   --left-label-position: 0px;
   width: 100%;
 `;
 
-const PlaceHolderInputContainer = styled.div<{
+const PlaceHolderInputDiv = styled.div<{
   $bgColor?: string;
   $hoverColor?: string;
   $borderColor?: string;

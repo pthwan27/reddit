@@ -69,7 +69,7 @@ const SubSelector = ({
   }, [isTagLoading, selectedSub]);
 
   return (
-    <SelectorWrapper ref={wrapperRef}>
+    <StyledSubSelector ref={wrapperRef}>
       <SearchInputWrapper
         $isSearching={!isTagLoading && (isSearching || !selectedSub)}
       >
@@ -140,10 +140,10 @@ const SubSelector = ({
           )}
         </SelectedTag>
       </SelectedTagWrapper>
-    </SelectorWrapper>
+    </StyledSubSelector>
   );
 };
-const SelectorWrapper = styled.div`
+const StyledSubSelector = styled.div`
   position: relative;
   width: 77%;
   height: var(--rem-40);

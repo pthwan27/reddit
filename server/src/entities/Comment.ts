@@ -39,6 +39,14 @@ export class Comment extends CoreEntity {
   @OneToMany(() => Vote, (vote) => vote.post)
   votes: Vote[];
 
+  @ManyToOne(() => Comment, (comment) => comment.childComments, { nullable: true, onDelete: 'CASCADE' })
+  parentComment: Comment;
+
+  @Expose()
+  @OneToMany(() => Comment, (comment) => comment.parentComment)
+  childComments: Comment[];
+
+
   @Expose()
   get username(): string {
     return this.user?.username;

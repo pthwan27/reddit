@@ -8,12 +8,10 @@ interface PrimaryButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const PrimaryButton = ({ value, disabled }: PrimaryButtonProps) => {
-  return (
-    <StyledButtonContainer disabled={disabled}>{value}</StyledButtonContainer>
-  );
+  return <StyledButton disabled={disabled}>{value}</StyledButton>;
 };
 
-const StyledButtonContainer = styled.button`
+const StyledButton = styled.button`
   background: ${({ theme }) => theme.colors.primaryDark};
   color: ${({ theme }) => theme.colors.white};
 

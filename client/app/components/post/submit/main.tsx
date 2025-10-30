@@ -2,18 +2,23 @@ import styled from 'styled-components';
 
 import PlaceHolderInput from '@/app/components/common/input/placeholderInput';
 
-import { SubmitPostProps } from '@/app/types';
-
 import PlaceHolderTextarea from '../../common/input/placeholderTextarea';
 
-const SubmitPostMain = ({
+export interface PostSubmitMainProps {
+  title: string;
+  setTitle: (title: string) => void;
+  content: string;
+  setContent: (content: string) => void;
+}
+
+const PostSubmitMain = ({
   title,
   setTitle,
   content,
   setContent,
-}: SubmitPostProps) => {
+}: PostSubmitMainProps) => {
   return (
-    <StyledMainContainer>
+    <StyledPostSubmitMain>
       <PlaceHolderInput
         value={title}
         type="text"
@@ -40,11 +45,11 @@ const SubmitPostMain = ({
         lineWidth="sm"
         required={true}
       />
-    </StyledMainContainer>
+    </StyledPostSubmitMain>
   );
 };
 
-const StyledMainContainer = styled.main`
+const StyledPostSubmitMain = styled.main`
   display: flex;
   flex-direction: column;
 
@@ -53,4 +58,4 @@ const StyledMainContainer = styled.main`
   gap: var(--spacer-2xs);
 `;
 
-export default SubmitPostMain;
+export default PostSubmitMain;

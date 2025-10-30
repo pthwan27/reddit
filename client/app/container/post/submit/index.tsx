@@ -11,13 +11,13 @@ import { useSubStore } from '@/app/store/subStore';
 import styled from 'styled-components';
 
 import IconButton from '@/app/components/common/button/iconButton';
-import SubmitPostHeader from '@/app/components/post/submit/header';
-import SubmitPostMain from '@/app/components/post/submit/main';
+import PostSubmitHeader from '@/app/components/post/submit/header';
+import PostSubmitMain from '@/app/components/post/submit/main';
 
 import { useAuth } from '@/app/context/authContext';
 import { Sub } from '@/app/types';
 
-const SubmitPostContainer = ({ sub }: { sub: Sub }) => {
+const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
   const { user } = useAuth();
   const { selectedSub, setSelectedSub } = useSubStore();
 
@@ -89,13 +89,13 @@ const SubmitPostContainer = ({ sub }: { sub: Sub }) => {
 
   return (
     <GridWrapper>
-      <StyledSubmitPostContainer>
-        <SubmitPostHeader
+      <PostSubmit>
+        <PostSubmitHeader
           isTagLoading={isTagLoading}
           setIsTagLoading={setIsTagLoading}
           onSelectTag={handleSubSelect}
         />
-        <SubmitPostMain
+        <PostSubmitMain
           title={title}
           setTitle={setTitle}
           content={content}
@@ -116,7 +116,7 @@ const SubmitPostContainer = ({ sub }: { sub: Sub }) => {
           }
         />
         {error && <ErrorMessage>{error}</ErrorMessage>}
-      </StyledSubmitPostContainer>
+      </PostSubmit>
     </GridWrapper>
   );
 };
@@ -140,7 +140,7 @@ const GridWrapper = styled.div`
     }
   }
 `;
-const StyledSubmitPostContainer = styled.div`
+const PostSubmit = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -161,4 +161,4 @@ const ErrorMessage = styled.div`
   margin: var(--spacer-xs) 0;
 `;
 
-export default SubmitPostContainer;
+export default PostSubmitContainer;

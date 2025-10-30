@@ -7,6 +7,6 @@ import { SubmitHandler } from '../migration/post/submit';
 const PostRouter = Router();
 
 PostRouter.post('/submit', AuthMiddleware, SubmitHandler);
-PostRouter.get('/list/:slug', AuthMiddleware, ListBySubHandler);
+PostRouter.get('/list/:slug', ListBySubHandler);
 
 export default PostRouter;

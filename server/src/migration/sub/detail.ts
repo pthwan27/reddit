@@ -2,16 +2,9 @@ import { instanceToPlain } from 'class-transformer';
 import { RequestHandler } from 'express';
 
 import { Sub } from '../../entities/Sub';
-import { User } from '../../entities/User';
 
 export const GetSubDetailHandler: RequestHandler = async (req, res) => {
   try {
-    const user: User = res.locals.user;
-
-    if (!user) {
-      return res.status(401).json({ error: 'User not found in context' });
-    }
-
     const slug = req.params.slug;
 
     const sub = await Sub.findOneBy({ slug });

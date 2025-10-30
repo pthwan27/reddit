@@ -20,7 +20,7 @@ const CollapsibleList = ({
   const [isOpen, setIsOpen] = useState(initialOpen);
 
   return (
-    <Wrapper>
+    <StyledCollapsibleList>
       <Header onClick={() => setIsOpen(!isOpen)}>
         <span>{title}</span>
         <ArrowWrapper $isOpen={isOpen}>
@@ -29,11 +29,11 @@ const CollapsibleList = ({
       </Header>
 
       <ContentWrapper $isOpen={isOpen}>{children}</ContentWrapper>
-    </Wrapper>
+    </StyledCollapsibleList>
   );
 };
 
-const Wrapper = styled.div`
+const StyledCollapsibleList = styled.div`
   width: 100%;
 `;
 
@@ -43,7 +43,7 @@ const Header = styled.button`
   justify-content: space-between;
   align-items: center;
   font: var(--font-12);
-  color: ${({ theme }) => theme.colors.secondaryText};
+  color: ${({ theme }) => theme.colors.grayText};
   text-transform: uppercase;
 
   margin-bottom: var(--spacer-xs);

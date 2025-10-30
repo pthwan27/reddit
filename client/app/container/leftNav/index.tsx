@@ -2,30 +2,30 @@ import styled from 'styled-components';
 
 import { useAuth } from '../../context/authContext';
 import CreateSubModal from '../modal/createSubModal';
-import CommonLeftNavMenu from './commonNavMenu';
-import LoginNavMenu from './loginNavMenu';
-import LogoutNavMenu from './logoutNavMenu';
+import CommonLeftNavMenu from './common';
+import LoginNavMenu from './loggedIn';
+import LogoutNavMenu from './loggedOut';
 
 const LeftNavContainer = ({ isNavVisible }: { isNavVisible: boolean }) => {
   const { user } = useAuth();
 
   return (
-    <StyledLeftNavContainer $isNavVisible={isNavVisible}>
-      <StyledMenuContainer>
+    <LeftNav $isNavVisible={isNavVisible}>
+      <MenuContainer>
         <CommonLeftNavMenu />
-      </StyledMenuContainer>
+      </MenuContainer>
       <hr />
-      <StyledMenuContainer>
+      <MenuContainer>
         {user ? <LoginNavMenu /> : <LogoutNavMenu />}
-      </StyledMenuContainer>
+      </MenuContainer>
       <hr />
 
       <CreateSubModal />
-    </StyledLeftNavContainer>
+    </LeftNav>
   );
 };
 
-const StyledLeftNavContainer = styled.nav<{ $isNavVisible: boolean }>`
+const LeftNav = styled.nav<{ $isNavVisible: boolean }>`
   position: relative;
 
   border-right: var(--line-sm) solid
@@ -49,7 +49,7 @@ const StyledLeftNavContainer = styled.nav<{ $isNavVisible: boolean }>`
   }
 `;
 
-const StyledMenuContainer = styled.div`
+const MenuContainer = styled.div`
   display: flex;
   flex-direction: column;
 

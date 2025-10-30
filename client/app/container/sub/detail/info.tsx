@@ -19,7 +19,12 @@ interface InfoProps {
   isIcon?: boolean;
 }
 
-const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
+const SubInfosContainer = ({
+  sub,
+  iconImage,
+  onEditClick,
+  isIcon,
+}: InfoProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const { setSelectedSub } = useSubStore();
@@ -248,4 +253,4 @@ const Buttons = styled.span`
   gap: var(--spacer-sm);
 `;
 
-export default SubInfos;
+export default SubInfosContainer;

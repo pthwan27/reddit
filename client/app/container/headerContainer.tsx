@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 import styled from 'styled-components';
@@ -19,6 +20,8 @@ const HeaderContainer = ({ noOption = false }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!user) setIsDropdownOpen(false);
+
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
@@ -35,52 +38,52 @@ const HeaderContainer = ({ noOption = false }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isDropdownOpen]);
+  }, [isDropdownOpen, user]);
 
   const modalKey: ModalKey = 'authModal';
   return (
-    <StyledHeaderContainer>
-      <StyledNav>
-        <StyledLeftNav>
-          <StyledLogo>
+    <Header>
+      <Nav>
+        <LeftNav>
+          <Logo>
             <LogoIcon />
-          </StyledLogo>
-        </StyledLeftNav>
+          </Logo>
+        </LeftNav>
         {!noOption && (
           <>
-            <StyledCenterNav>
+            <CenterNav>
               <SearchInput />
-            </StyledCenterNav>
-            <StyledRightNav>
+            </CenterNav>
+            <RightNav>
               {user ? (
-                <StyledDropdownContainer
+                <DropdownContainer
                   ref={dropdownRef}
                   style={{ position: 'relative' }}
                 >
-                  <StyledProfileButton
-                    onClick={() => setIsDropdownOpen((e) => !e)}
-                  >
-                    {user.username}
-                  </StyledProfileButton>
+                  <ProfileButton onClick={() => setIsDropdownOpen((e) => !e)}>
+                    <IconBox $isIcon={!!user.profileUrl}>
+                      {user.profileUrl && (
+                        <Image src={user.profileUrl} alt={user.username} fill />
+                      )}
+                    </IconBox>
+                  </ProfileButton>
                   <ProfileDropdown
                     isDropdownOpen={isDropdownOpen}
                     logout={logout}
                   />
-                </StyledDropdownContainer>
+                </DropdownContainer>
               ) : (
-                <StyledLoginButton onClick={() => open(modalKey)}>
-                  로그인
-                </StyledLoginButton>
+                <LoginButton onClick={() => open(modalKey)}>로그인</LoginButton>
               )}
-            </StyledRightNav>
+            </RightNav>
           </>
         )}
-      </StyledNav>
+      </Nav>
       <AuthModal />
-    </StyledHeaderContainer>
+    </Header>
   );
 };
-const StyledHeaderContainer = styled.header`
+const Header = styled.header`
   position: fixed;
   top: 0;
   left: 0;
@@ -91,25 +94,27 @@ const StyledHeaderContainer = styled.header`
   width: 100%;
   height: var(--rem-56);
 
+  color: ${({ theme }) => theme.colors.naturalText};
+
   background-color: ${({ theme }) => theme.colors.background};
   border-bottom: var(--line-sm) solid
     ${({ theme }) => theme.colors.naturalBorder};
   padding: 0 var(--spacer-md);
 `;
 
-const StyledNav = styled.nav`
+const Nav = styled.nav`
   display: flex;
   width: 100%;
 `;
 
-const StyledLeftNav = styled.div`
+const LeftNav = styled.div`
   display: flex;
   align-items: center;
   gap: var(--spacer-xs);
 
   padding-inline-end: var(--spacer-lg);
 `;
-const StyledLogo = styled.div`
+const Logo = styled.div`
   display: flex;
   align-items: center;
   gap: var(--spacer-xs);
@@ -126,7 +131,7 @@ const StyledLogo = styled.div`
   }
 `;
 
-const StyledCenterNav = styled.div`
+const CenterNav = styled.div`
   display: flex;
   flex: 1 1 0%;
   align-items: center;
@@ -134,7 +139,7 @@ const StyledCenterNav = styled.div`
   gap: var(--spacer-xs);
 `;
 
-const StyledRightNav = styled.div`
+const RightNav = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -142,13 +147,19 @@ const StyledRightNav = styled.div`
 
   padding-inline-start: var(--spacer-lg);
 `;
-const StyledDropdownContainer = styled.div`
+const DropdownContainer = styled.div`
   position: absolute;
   display: inline-block;
   z-index: 1000;
 `;
 
-const StyledProfileButton = styled.button`
+const ProfileButton = styled.button`
+  display: flex;
+  gap: var(--spacer-4xs);
+
+  justify-content: center;
+  align-items: center;
+
   background: none;
   border: none;
   padding: var(--spacer-xs) var(--spacer-sm);
@@ -159,8 +170,34 @@ const StyledProfileButton = styled.button`
     background: ${({ theme }) => theme.colors.grayBackground};
   }
 `;
+const IconBox = styled.div<{ $isIcon?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 
-const StyledLoginButton = styled.button`
+  width: var(--rem-24);
+  height: var(--rem-24);
+
+  min-width: var(--rem-24);
+  min-height: var(--rem-24);
+
+  border-radius: var(--radius-full);
+  background-color: ${({ $isIcon, theme }) =>
+    $isIcon ? 'transparent' : theme.colors.dark};
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+
+    background: transparent;
+  }
+`;
+
+const LoginButton = styled.button`
   background: ${({ theme }) => theme.colors.primaryDark};
   color: ${({ theme }) => theme.colors.white};
 

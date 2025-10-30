@@ -4,20 +4,20 @@ import styled from 'styled-components';
 
 import SubSelector from './subSelector';
 
-interface SubmitPostHeaderProps {
+interface PostSubmitHeaderProps {
   isTagLoading: boolean;
   setIsTagLoading: (loading: boolean) => void;
   onSelectTag: (sub: Sub) => void;
 }
 
-const SubmitPostHeader = ({
+const PostSubmitHeader = ({
   isTagLoading,
   onSelectTag,
-}: SubmitPostHeaderProps) => {
+}: PostSubmitHeaderProps) => {
   const { selectedSub, subs } = useSubStore();
 
   return (
-    <StyledHeaderContainer>
+    <StyledPostSubmitHeader>
       <TitleSection>
         <h1>게시물 만들기</h1>
       </TitleSection>
@@ -28,11 +28,11 @@ const SubmitPostHeader = ({
         onSubSelect={onSelectTag}
         isTagLoading={isTagLoading}
       />
-    </StyledHeaderContainer>
+    </StyledPostSubmitHeader>
   );
 };
 
-const StyledHeaderContainer = styled.header`
+const StyledPostSubmitHeader = styled.header`
   display: flex;
   flex-direction: column;
 
@@ -49,4 +49,4 @@ const TitleSection = styled.div`
   display: flex;
 `;
 
-export default SubmitPostHeader;
+export default PostSubmitHeader;

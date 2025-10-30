@@ -1,5 +1,6 @@
-import { InputHTMLAttributes } from "react";
-import styled from "styled-components";
+import { InputHTMLAttributes } from 'react';
+
+import styled from 'styled-components';
 
 const AuthInput = (props: InputHTMLAttributes<HTMLInputElement>) => {
   return <StyledInput {...props} />;

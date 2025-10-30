@@ -25,14 +25,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (!isAuthenticated) {
     return (
       fallback || (
-        <UnauthorizedContainer>
+        <UnauthorizedDiv>
           <div>
             <h2>로그인이 필요합니다</h2>
             <p>
               <span>이 페이지에 접근하려면 로그인해야 합니다.</span>
             </p>
           </div>
-        </UnauthorizedContainer>
+        </UnauthorizedDiv>
       )
     );
   }
@@ -40,7 +40,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   return <>{children}</>;
 };
 
-const UnauthorizedContainer = styled.div`
+const UnauthorizedDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

@@ -10,13 +10,13 @@ import { useSubStore } from '@/app/store/subStore';
 import styled from 'styled-components';
 
 import LoadingSpinner from '@/app/components/common/loadingSpinner';
-import PostList from '@/app/components/post/list';
 
 import SubBanner from '@/app/container/sub/detail/banner';
 import SubInfos from '@/app/container/sub/detail/info';
 
 import { Sub } from '@/app/types';
 
+import PostListContainer from '../../../components/post/list';
 import RightSideBar from '../../../components/sub/detail/rightSideBar';
 
 const SubDetailContainer = ({ sub }: { sub: Sub }) => {
@@ -112,8 +112,8 @@ const SubDetailContainer = ({ sub }: { sub: Sub }) => {
   }, [selectedSub, sub.slug, fetchPosts, clearPosts]);
 
   return (
-    <StyledSubDetailContainer>
-      <SubDetailHeader>
+    <SubDetail>
+      <Header>
         <SubBanner
           sub={sub}
           bannerImage={bannerImage}
@@ -127,15 +127,15 @@ const SubDetailContainer = ({ sub }: { sub: Sub }) => {
           onEditClick={() => handleClick('icon')}
           isIcon={!!iconImage}
         />
-      </SubDetailHeader>
-      <SubDetailMain>
+      </Header>
+      <Main>
         <PostListWrapper>
-          {loading ? <LoadingSpinner /> : <PostList posts={posts} />}
+          {loading ? <LoadingSpinner /> : <PostListContainer posts={posts} />}
 
           <div ref={observerRef} style={{ height: '1px' }} />
         </PostListWrapper>
         <RightSideBar sub={sub} />
-      </SubDetailMain>
+      </Main>
 
       <HiddenInput
         ref={bannerFileInputRef}
@@ -147,11 +147,11 @@ const SubDetailContainer = ({ sub }: { sub: Sub }) => {
         type="file"
         onChange={handleFileChange('icon')}
       />
-    </StyledSubDetailContainer>
+    </SubDetail>
   );
 };
 
-const StyledSubDetailContainer = styled.div`
+const SubDetail = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -165,7 +165,7 @@ const StyledSubDetailContainer = styled.div`
   }
 `;
 
-const SubDetailHeader = styled.header`
+const Header = styled.header`
   width: 100%;
 
   @media (min-width: 768px) {
@@ -173,7 +173,7 @@ const SubDetailHeader = styled.header`
   }
 `;
 
-const SubDetailMain = styled.main`
+const Main = styled.main`
   display: flex;
   width: 100%;
 

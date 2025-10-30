@@ -54,11 +54,11 @@ export class Post extends CoreEntity {
   @OneToMany(() => Vote, (vote) => vote.post)
   votes: Vote[];
 
-  protected userVote: number;
+  protected userVoted: number;
 
   setUserVote(user: User) {
     const idx = this.votes?.findIndex((v) => v.username === user.username);
-    this.userVote = idx > -1 ? this.votes[idx].value : 0;
+    this.userVoted = idx > -1 ? this.votes[idx].value : 0;
   }
 
   @Expose()

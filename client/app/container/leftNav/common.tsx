@@ -4,7 +4,7 @@ import IconButton from '../../components/common/button/iconButton';
 import ArrowIcon from '../../components/svgs/ArrowIcon';
 import HomeIcon from '../../components/svgs/HomeIcon';
 
-const CommonLeftNavMenu = () => {
+const CommonContainer = () => {
   const router = useRouter();
 
   const goToHome = () => {
@@ -19,4 +19,4 @@ const CommonLeftNavMenu = () => {
   );
 };
 
-export default CommonLeftNavMenu;
+export default CommonContainer;

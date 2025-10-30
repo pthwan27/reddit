@@ -13,6 +13,7 @@ export interface User {
   id: string;
   email: string;
   username: string;
+  profileUrl: string | null;
 }
 
 export interface Sub {
@@ -28,27 +29,6 @@ export interface Sub {
   profileUser: User | null;
   posts?: Post[];
 }
-export interface CreateSubProps {
-  title: string;
-  description: string;
-  icon?: File | null;
-  banner?: File | null;
-  iconPreview?: string | null;
-  bannerPreview?: string | null;
-}
-
-export interface ChangeSubProps {
-  slug: string;
-  icon?: File | null;
-  banner?: File | null;
-}
-
-export interface SubmitPostProps {
-  title: string;
-  setTitle: (title: string) => void;
-  content: string;
-  setContent: (content: string) => void;
-}
 // Post 타입
 export interface Post {
   id: number;
@@ -63,6 +43,35 @@ export interface Post {
   url: string;
   voteScore: number;
   commentCount: number;
-  userVote?: number;
+  userVoted: number;
   sub?: Sub;
+  user: User;
+  comments: Comment[];
+}
+export interface Comment {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  identifier: string;
+  body: string;
+  postId: number;
+  username: string;
+  voteScore: number;
+  userVote: number;
+}
+
+export interface CreateSubProps {
+  title: string;
+  description: string;
+  icon?: File | null;
+  banner?: File | null;
+  iconPreview?: string | null;
+  bannerPreview?: string | null;
+  username: string;
+}
+
+export interface ChangeSubProps {
+  slug: string;
+  icon?: File | null;
+  banner?: File | null;
 }

@@ -12,14 +12,14 @@ const LoadingSpinner = () => {
   if (!mounted) return null;
 
   return (
-    <StyledLoadingSpinner>
+    <StyledDiv>
       <div></div>
       <div></div>
       <div></div>
-    </StyledLoadingSpinner>
+    </StyledDiv>
   );
 };
-const StyledLoadingSpinner = styled.div`
+const StyledDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

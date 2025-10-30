@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 
+import { Post } from '../types';
 import { PostStore } from '../types/store';
 import { clientAxiosInstance } from '../utils/axios';
 
 const initialState = {
-  posts: [],
+  posts: [] as Post[],
   loading: false,
   page: 0,
   hasMore: true,
@@ -37,4 +38,43 @@ export const usePostStore = create<PostStore>((set, get) => ({
   },
 
   clearPosts: () => set(initialState),
+
+  vote: async (identifier: string, slug: string, value: number) => {
+    const originPosts = get().posts;
+    const updatedPosts = originPosts.map((post) => {
+      if (post.identifier === identifier) {
+        const newUserVote = post.userVoted === value ? 0 : value;
+
+        let newVoteScore = post.voteScore;
+
+        if (newUserVote === 0) {
+          newVoteScore -= post.userVoted;
+        } else {
+          newVoteScore += newUserVote - (post.userVoted || 0) + newUserVote;
+        }
+
+        return { ...post, userVote: newUserVote, voteScore: newVoteScore };
+      }
+      return post;
+    });
+
+    set({ posts: updatedPosts });
+
+    try {
+      const targetPost = updatedPosts.find(
+        (post) => post.identifier === identifier
+      );
+
+      if (targetPost) {
+        await clientAxiosInstance.post('/api/votes', {
+          identifier,
+          slug,
+          value: targetPost.userVoted,
+        });
+      }
+    } catch (error) {
+      console.error('Vote failed, rolling back.', error);
+      set({ posts: originPosts });
+    }
+  },
 }));

@@ -14,7 +14,7 @@ import LoadingSpinner from '../../components/common/loadingSpinner';
 import CollapsibleList from '../../components/leftNav/collapsibleList';
 import PlusIcon from '../../components/svgs/PlusIcon';
 
-const LoginNavMenu = () => {
+const LoggedInContainer = () => {
   const router = useRouter();
   const { user } = useAuth();
 
@@ -41,36 +41,33 @@ const LoginNavMenu = () => {
         onClick={() => onOpenCreateSubModal()}
       />
 
-      <StyledSubList>
+      <SubList>
         {loading ? (
           <LoadingSpinner />
         ) : (
           filteredSubs.map((sub: Sub, idx: number) => (
-            <StyledSubItem
-              key={sub.title + idx}
-              onClick={() => goToSubDetail(sub)}
-            >
+            <SubItem key={sub.title + idx} onClick={() => goToSubDetail(sub)}>
               <IconBox $isIcon={!!sub.iconUrl}>
                 {sub.iconUrl && (
                   <Image src={sub.iconUrl} alt={sub.title} fill />
                 )}
               </IconBox>
               <TitleBox>{sub.title}</TitleBox>
-            </StyledSubItem>
+            </SubItem>
           ))
         )}
-      </StyledSubList>
+      </SubList>
     </CollapsibleList>
   );
 };
 
-const StyledSubList = styled.div`
+const SubList = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--spacer-4xs);
 `;
 
-const StyledSubItem = styled.button`
+const SubItem = styled.button`
   width: 100%;
   display: flex;
   align-items: center;
@@ -119,4 +116,4 @@ const IconBox = styled.div<{ $isIcon?: boolean }>`
 
 const TitleBox = styled.span``;
 
-export default LoginNavMenu;
+export default LoggedInContainer;

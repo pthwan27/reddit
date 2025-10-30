@@ -9,7 +9,7 @@ const rotate = keyframes`
   }
 `;
 
-const Spinner = styled.div`
+const StyledSpinner = styled.div`
   width: 20px;
   height: 20px;
   border: 3px solid ${({ theme }) => theme.colors.grayBackground}; /* 스피너의 기본 색상 */
@@ -19,7 +19,7 @@ const Spinner = styled.div`
 `;
 
 const SmallLoadingSpinner = () => {
-  return <Spinner />;
+  return <StyledSpinner />;
 };
 
 export default SmallLoadingSpinner;

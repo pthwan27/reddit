@@ -31,6 +31,9 @@ export class User extends CoreEntity {
   @Column()
   @Length(6, 20, { message: "must be at least 6 characters long" })
   password: string;
+  
+  @Column({ nullable: true })
+  profileUrn: string;
 
 
   @OneToMany(() => Post, (post) => post.user)
@@ -60,9 +63,6 @@ export class User extends CoreEntity {
   
   @Expose()
   get profileUrl(): string {
-    if (this.profileSub && this.profileSub.iconUrl) {
-      return this.profileSub.iconUrl;
-    }
-    return `${process.env.APP_URL}/images/default_profile.png`;
+    return this.profileUrn ? `${process.env.APP_URL}/images/user/${this.id}/${this.profileUrn}` : `${process.env.APP_URL}/images/default_profile.png`;
   }  
 }

@@ -6,13 +6,13 @@ import { Sub } from '@/app/types';
 
 const RightSideBar = ({ sub }: { sub: Sub }) => {
   return (
-    <StyledRightSideBarContainer>
+    <StyledRightSideBar>
       Right Side Bar Content for {sub.title}
-    </StyledRightSideBarContainer>
+    </StyledRightSideBar>
   );
 };
 
-const StyledRightSideBarContainer = styled.aside`
+const StyledRightSideBar = styled.aside`
   width: var(--rem-320);
   background-color: ${({ theme }) => theme.colors.primary};
 `;
