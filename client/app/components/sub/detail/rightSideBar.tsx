@@ -13,7 +13,6 @@ const RightSideBar = ({ sub }: { sub: Sub }) => {
 };
 
 const StyledRightSideBar = styled.aside`
-  width: var(--rem-320);
   background-color: ${({ theme }) => theme.colors.primary};
 `;
 

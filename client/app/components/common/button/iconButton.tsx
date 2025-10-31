@@ -15,6 +15,8 @@ interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   width?: string;
   height?: string;
   radius?: string;
+
+  justifyContent?: string;
 }
 
 const IconButton = ({
@@ -31,6 +33,7 @@ const IconButton = ({
   width = 'auto',
   height = 'auto',
   radius,
+  justifyContent,
   ...rest
 }: IconButtonProps) => {
   return (
@@ -46,6 +49,7 @@ const IconButton = ({
       $width={width}
       $height={height}
       $radius={radius}
+      $justifyContent={justifyContent}
       {...rest}
     >
       {icon && <IconBox>{icon}</IconBox>}
@@ -65,9 +69,11 @@ const StyledButton = styled.button<{
   $width?: string;
   $height?: string;
   $radius?: string;
+  $justifyContent?: string;
 }>`
   display: flex;
   align-items: center;
+  justify-content: ${({ $justifyContent }) => $justifyContent || ''};
   gap: var(--spacer-sm);
   padding: var(--spacer-xs) var(--spacer-sm);
   cursor: pointer;

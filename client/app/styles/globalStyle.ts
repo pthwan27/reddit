@@ -100,12 +100,15 @@ const GlobalStyle = createGlobalStyle`
   --font-12-16-light: normal 300 0.75rem/1rem var(--font-sans);
   --font-12-16-regular: normal 400 0.75rem/1rem var(--font-sans);
   --font-12-16-semibold: normal 600 0.75rem/1rem var(--font-sans);
+  --font-12-16-bold: normal 700 0.75rem/1rem var(--font-sans);
   --font-14-20-light: normal 300 0.875rem/1.25rem var(--font-sans);
   --font-14-20-regular: normal 400 0.875rem/1.25rem var(--font-sans);
   --font-14-20-semibold: normal 600 0.875rem/1.25rem var(--font-sans);
+  --font-14-20-bold: normal 700 0.875rem/1.25rem var(--font-sans);
   --font-16-20-light: normal 300 1rem/1.25rem var(--font-sans);  
   --font-16-20-regular: normal 400 1rem/1.25rem var(--font-sans);  
   --font-16-20-semibold: normal 600 1rem/1.25rem var(--font-sans);
+  --font-16-20-bold: normal 700 1rem/1.25rem var(--font-sans);
 
 
   /* Label */
@@ -117,7 +120,16 @@ const GlobalStyle = createGlobalStyle`
               0 4px 4px rgba(0,0,0,0.11), 
               0 6px 8px rgba(0,0,0,0.11),
               0 8px 16px rgba(0,0,0,0.11);
+
+              
+  /* Container Width */
+  --flex-nav-width : 272px;
+
+  /* Transition */
+  --transition-duration: 250ms;
+  --transition-curve: cubic-bezier(0.65, 0, 0.35, 1);
   }
+
 
 
   /* 1. CSS Reset */

@@ -30,11 +30,11 @@ const SubDetailPage = async ({
 }: {
   params: Promise<{ type: string; slug: string }>;
 }) => {
-  const { slug } = await params;
+  const { type, slug } = await params;
 
   const data = await getSubData(slug);
 
-  return <SubDetailContainer sub={data} />;
+  return <SubDetailContainer type={type} sub={data} />;
 };
 
 export default SubDetailPage;

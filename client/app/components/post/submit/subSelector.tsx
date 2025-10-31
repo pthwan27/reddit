@@ -44,10 +44,6 @@ const SubSelector = ({
     setIsSearching(false);
   };
 
-  const startSearching = () => {
-    setIsSearching(true);
-  };
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -110,7 +106,10 @@ const SubSelector = ({
       <SelectedTagWrapper
         $isSearching={!isTagLoading && (isSearching || !selectedSub)}
       >
-        <SelectedTag $isLoading={isTagLoading} onClick={startSearching}>
+        <SelectedTag
+          $isLoading={isTagLoading}
+          onClick={() => setIsSearching((e) => !e)}
+        >
           {isTagLoading ? (
             <LoadingSpinnerBox>
               <SmallLoadingSpinner />

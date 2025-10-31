@@ -10,16 +10,16 @@ import { useSubStore } from '@/app/store/subStore';
 import styled from 'styled-components';
 
 import LoadingSpinner from '@/app/components/common/loadingSpinner';
+import PostList from '@/app/components/post/list';
 
 import SubBanner from '@/app/container/sub/detail/banner';
 import SubInfos from '@/app/container/sub/detail/info';
 
 import { Sub } from '@/app/types';
 
-import PostListContainer from '../../../components/post/list';
 import RightSideBar from '../../../components/sub/detail/rightSideBar';
 
-const SubDetailContainer = ({ sub }: { sub: Sub }) => {
+const SubDetailContainer = ({ type, sub }: { type: string; sub: Sub }) => {
   const { uploadIconImage, uploadBannerImage } = useUploadImage();
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl);
   const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl);
@@ -122,6 +122,7 @@ const SubDetailContainer = ({ sub }: { sub: Sub }) => {
         />
 
         <SubInfos
+          type={type}
           sub={sub}
           iconImage={iconImage}
           onEditClick={() => handleClick('icon')}
@@ -129,11 +130,11 @@ const SubDetailContainer = ({ sub }: { sub: Sub }) => {
         />
       </Header>
       <Main>
-        <PostListWrapper>
-          {loading ? <LoadingSpinner /> : <PostListContainer posts={posts} />}
+        <ObserverWrapper>
+          {loading ? <LoadingSpinner /> : <PostList posts={posts} />}
 
           <div ref={observerRef} style={{ height: '1px' }} />
-        </PostListWrapper>
+        </ObserverWrapper>
         <RightSideBar sub={sub} />
       </Main>
 
@@ -154,15 +155,8 @@ const SubDetailContainer = ({ sub }: { sub: Sub }) => {
 const SubDetail = styled.div`
   display: flex;
   flex-direction: column;
+
   height: 100%;
-
-  max-width: calc(100vw - (272px, 0px));
-
-  margin: 0 auto;
-
-  @media (min-width: 1200px) {
-    max-width: 1120px;
-  }
 `;
 
 const Header = styled.header`
@@ -174,11 +168,12 @@ const Header = styled.header`
 `;
 
 const Main = styled.main`
-  display: flex;
-  width: 100%;
-
   display: grid;
-  grid-template-columns: 1fr 312px;
+  margin: 0 auto;
+
+  grid-template-columns: minmax(0, 756px) minmax(0, 316px);
+
+  gap: var(--spacer-lg);
 
   @media (max-width: 959px) {
     grid-template-columns: 1fr;
@@ -189,7 +184,7 @@ const Main = styled.main`
   }
 `;
 
-const PostListWrapper = styled.div`
+const ObserverWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--spacer-sm);

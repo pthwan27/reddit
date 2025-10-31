@@ -56,8 +56,6 @@ const BannerBox = styled.div`
   }
 
   @media (min-width: 768px) {
-    margin-top: 0.5rem;
-
     border-radius: var(--radius-md);
 
     img {

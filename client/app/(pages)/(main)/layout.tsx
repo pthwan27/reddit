@@ -34,8 +34,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         <>
           <HeaderContainer />
           <MainContentContainer $isNavVisible={isNavVisible}>
-            <LeftNaveContainer isNavVisible={isNavVisible} />
-
+            <LeftNaveContainer isNavVisible={isNavVisible} />{' '}
             <MainContentWrapper>{children}</MainContentWrapper>
             <StyledButton
               $isNavVisible={isNavVisible}
@@ -54,30 +53,40 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
 const MainContentContainer = styled.main<{ $isNavVisible: boolean }>`
   display: grid;
-  grid-template-columns: ${({ $isNavVisible }) =>
-    $isNavVisible ? '272px 1fr' : '36px 1fr'};
 
   height: 100vh;
   padding-top: var(--rem-56);
 
   transition: grid-template-columns 250ms cubic-bezier(0.65, 0, 0.35, 1);
 
-  @media (max-width: 1199px) {
+  grid-template-columns: ${({ $isNavVisible }) =>
+    $isNavVisible ? 'var(--flex-nav-width) 1fr' : '36px 1fr'};
+
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 `;
 
 const MainContentWrapper = styled.div`
-  position: relative;
-  width: 100%;
+  display: flex;
+  justify-content: stretch;
+  flex-direction: column;
 
   overflow-y: auto;
 
   z-index: 1;
 
+  @media (min-width: 1200px) {
+    width: 1120px;
+    max-width: calc(100vw - var(--flex-nav-width, 0px));
+    grid-column-start: 2;
+  }
+
   @media (min-width: 768px) {
     padding: 0 var(--spacer-lg);
   }
+
+  transition: max-width var(--transition-duration) var(--transition-curve);
 `;
 
 const StyledButton = styled.button<{ $isNavVisible: boolean }>`

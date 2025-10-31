@@ -58,6 +58,7 @@ export interface Comment {
   username: string;
   voteScore: number;
   userVote: number;
+  childComments?: Comment[];
 }
 
 export interface CreateSubProps {

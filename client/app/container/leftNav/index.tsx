@@ -31,6 +31,7 @@ const LeftNav = styled.nav<{ $isNavVisible: boolean }>`
   border-right: var(--line-sm) solid
     ${({ theme }) => theme.colors.naturalBorder};
 
+  max-width: var(--flex-nav-width);
   height: 100%;
 
   padding: 0 var(--spacer-md);
