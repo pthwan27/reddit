@@ -75,40 +75,44 @@ const GlobalStyle = createGlobalStyle`
   --radius-xl: 1.75rem;
   --radius-full: 624.9375rem;
 
-  /* Font Styles */
-  --font-10: normal 400 0.625rem/1rem var(--font-sans);
-  --font-12: normal 400 0.75rem/1rem var(--font-sans);
-  --font-14: normal 400 0.875rem/1.25rem var(--font-sans);
-  --font-16: normal 400 1rem/1.25rem var(--font-sans);
-  --font-18: normal 400 1.125rem/1.5rem var(--font-sans);
-  --font-20: normal 400 1.25rem/1.25rem var(--font-sans);
-  --font-24: normal 400 1.5rem/1.75rem var(--font-sans);
-  --font-32: normal 400 2rem/2.25rem var(--font-sans);
-  --font-48: normal 400 3rem/3rem var(--font-sans);
-  --font-64: normal 400 4rem/4rem var(--font-sans);
+/* Font Styles */
+  --font-10: normal 400 0.625rem var(--font-sans);
+  --font-12: normal 400 0.75rem var(--font-sans);
+  --font-14: normal 400 0.875rem var(--font-sans);
+  --font-16: normal 400 1rem var(--font-sans);
+  --font-18: normal 400 1.125rem var(--font-sans);
+  --font-20: normal 400 1.25rem var(--font-sans);
+  --font-24: normal 400 1.5rem var(--font-sans);
+  --font-32: normal 400 2rem var(--font-sans);
+  --font-48: normal 400 3rem var(--font-sans);
+  --font-64: normal 400 4rem var(--font-sans);
 
-  /* Font Titles */
-  --font-title-h0: normal 700 4rem/4rem var(--font-sans);  
-  --font-title-h1: normal 700 2rem/2.25rem var(--font-sans);
-  --font-title-h2: normal 700 1.5rem/1.75rem var(--font-sans);
-  --font-title-h3: normal 700 1.125rem/1.5rem var(--font-sans);
-  --font-title-h4: normal 700 1rem/1.25rem var(--font-sans);
-  --font-title-h5: normal 700 0.875rem/1.25rem var(--font-sans);
-  --font-title-h6: normal 700 0.75rem/1rem var(--font-sans);
+/* Font Titles */
+  --font-title-h0: normal 700 4rem var(--font-sans);  
+  --font-title-h1: normal 700 2rem var(--font-sans);
+  --font-title-h2: normal 700 1.5rem var(--font-sans);
+  --font-title-h3: normal 700 1.125rem var(--font-sans);
+  --font-title-h4: normal 700 1rem var(--font-sans);
+  --font-title-h5: normal 700 0.875rem var(--font-sans);
+  --font-title-h6: normal 700 0.75rem var(--font-sans);
 
-  /* Font Utility */
-  --font-12-16-light: normal 300 0.75rem/1rem var(--font-sans);
-  --font-12-16-regular: normal 400 0.75rem/1rem var(--font-sans);
-  --font-12-16-semibold: normal 600 0.75rem/1rem var(--font-sans);
-  --font-12-16-bold: normal 700 0.75rem/1rem var(--font-sans);
-  --font-14-20-light: normal 300 0.875rem/1.25rem var(--font-sans);
-  --font-14-20-regular: normal 400 0.875rem/1.25rem var(--font-sans);
-  --font-14-20-semibold: normal 600 0.875rem/1.25rem var(--font-sans);
-  --font-14-20-bold: normal 700 0.875rem/1.25rem var(--font-sans);
-  --font-16-20-light: normal 300 1rem/1.25rem var(--font-sans);  
-  --font-16-20-regular: normal 400 1rem/1.25rem var(--font-sans);  
-  --font-16-20-semibold: normal 600 1rem/1.25rem var(--font-sans);
-  --font-16-20-bold: normal 700 1rem/1.25rem var(--font-sans);
+/* Font Utility */
+  --font-12-16-light: normal 300 0.75rem var(--font-sans);
+  --font-12-16-regular: normal 400 0.75rem var(--font-sans);
+  --font-12-16-semibold: normal 600 0.75rem var(--font-sans);
+  --font-12-16-bold: normal 700 0.75rem var(--font-sans);
+  --font-14-20-light: normal 300 0.875rem var(--font-sans);
+  --font-14-20-regular: normal 400 0.875rem var(--font-sans);
+  --font-14-20-semibold: normal 600 0.875rem var(--font-sans);
+  --font-14-20-bold: normal 700 0.875rem var(--font-sans);
+  --font-16-20-light: normal 300 1rem var(--font-sans);  
+  --font-16-20-regular: normal 400 1rem var(--font-sans);  
+  --font-16-20-semibold: normal 600 1rem var(--font-sans);
+  --font-16-20-bold: normal 700 1rem var(--font-sans);
+  --font-18-20-light: normal 300 1.25rem var(--font-sans);  
+  --font-18-20-regular: normal 400 1.25rem var(--font-sans);  
+  --font-18-20-semibold: normal 600 1.25rem var(--font-sans);
+  --font-18-20-bold: normal 700 1.25rem var(--font-sans);
 
 
   /* Label */

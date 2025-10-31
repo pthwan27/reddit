@@ -6,52 +6,89 @@ import styled from 'styled-components';
 
 import { Post } from '@/app/types';
 
+import CommentIcon from '../svgs/CommentIcon';
 import EtcIcon from '../svgs/EtcIcon';
+import VoteDownIcon from '../svgs/VoteDownIcon';
+import VoteUpIcon from '../svgs/VoteUpIcon';
 
 const PostItem = ({ post }: { post: Post }) => {
   return (
     <StyledPostItem>
-      <TitleSection>
-        <UserInfo>
+      <UserInfo>
+        <div>
           <IconBox $isIcon={!!post.user.profileUrl}>
             {post.user.profileUrl && (
               <Image src={post.user.profileUrl} alt={post.user.username} fill />
             )}
           </IconBox>
-          <span>{post.user.username}</span>
+          <span>u/{post.user.username}</span>
           <span>•</span>
           <span>{formatTimeAgo(post.createdAt)}</span>
-        </UserInfo>
-        <EtcIcon />
-      </TitleSection>
+        </div>
+        <div>
+          <EtcIcon />
+        </div>
+      </UserInfo>
+      <TitleSection>{post.title}</TitleSection>
+
+      <ContentSection>{post.body}</ContentSection>
+
+      <ActionsSection>
+        <button>
+          <VoteUpIcon />
+          {post.voteScore || 0}
+          <VoteDownIcon />
+        </button>
+
+        <button>
+          <CommentIcon />
+        </button>
+      </ActionsSection>
     </StyledPostItem>
   );
 };
 
-const StyledPostItem = styled.div``;
+const StyledPostItem = styled.div`
+  border-radius: var(--radius-lg);
+  padding: 0 var(--spacer-md);
 
-const TitleSection = styled.section`
-  display: flex;
-  justify-content: space-between;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.contentHover};
+  }
 `;
 
 const UserInfo = styled.div`
   display: flex;
-  align-items: center;
+  justify-content: space-between;
 
-  gap: var(--spacer-2xs);
+  margin-bottom: var(--spacer-xs);
 
-  font: var(--font-12-16-regular);
+  height: var(--rem-32);
 
-  span:nth-child(2) {
-    font: var(--font-12-16-bold);
+  div {
+    display: flex;
+    align-items: center;
 
-    color: ${({ theme }) => theme.colors.secondaryText};
-  }
+    gap: var(--spacer-2xs);
 
-  span:nth-child(3),
-  span:nth-child(4) {
-    color: ${({ theme }) => theme.colors.grayText};
+    font: var(--font-12-16-regular);
+
+    cursor: pointer;
+
+    span:nth-child(2) {
+      font: var(--font-12-16-bold);
+
+      color: ${({ theme }) => theme.colors.secondaryText};
+    }
+
+    span:nth-child(3),
+    span:nth-child(4) {
+      color: ${({ theme }) => theme.colors.grayText};
+    }
+
+
+    svg{
+    fill : ${({ theme }) => theme.colors.secondaryText};
   }
 `;
 
@@ -79,6 +116,54 @@ const IconBox = styled.div<{ $isIcon?: boolean }>`
     object-fit: cover;
 
     background: transparent;
+  }
+`;
+
+const TitleSection = styled.section`
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: var(--spacer-xs);
+
+  font: var(--font-18-20-semibold);
+`;
+const ContentSection = styled.section`
+  margin-bottom: var(--spacer-md);
+
+  font: var(--font-14-20-regular);
+`;
+const ActionsSection = styled.section`
+  display: flex;
+
+  gap: var(--spacer-sm);
+
+  height: var(--rem-32);
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: ${({ theme }) => theme.colors.grayBackground};
+  }
+
+  button:nth-child(1) {
+    gap: var(--spacer-2xs);
+    svg:nth-child(1) {
+      &:hover {
+        fill: ${({ theme }) => theme.colors.upvote};
+      }
+    }
+    svg:nth-child(2) {
+      &:hover {
+        fill: ${({ theme }) => theme.colors.downvote};
+      }
+    }
+  }
+  button:nth-child(2) {
+    &:hover {
+      background: ${({ theme }) => theme.colors.grayHover};
+    }
   }
 `;
 
