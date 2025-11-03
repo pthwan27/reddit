@@ -128,6 +128,7 @@ const GlobalStyle = createGlobalStyle`
               
   /* Container Width */
   --flex-nav-width : 272px;
+  --expanded-nav-width : 272px;
 
   /* Transition */
   --transition-duration: 250ms;
@@ -228,9 +229,6 @@ const GlobalStyle = createGlobalStyle`
   hr { 
     border: 0;
     border-bottom: 0.0625rem solid #00000019;
-    margin-block-start: 0.5em;
-    margin-block-end: 0.5em;
-    margin: 0.75rem 0;
   }
 `;
 

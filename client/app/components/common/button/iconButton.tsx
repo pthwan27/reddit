@@ -74,8 +74,8 @@ const StyledButton = styled.button<{
   display: flex;
   align-items: center;
   justify-content: ${({ $justifyContent }) => $justifyContent || ''};
-  gap: var(--spacer-sm);
-  padding: var(--spacer-xs) var(--spacer-sm);
+  gap: var(--spacer-xs);
+  padding: var(--spacer-2xs) var(--spacer-md);
   cursor: pointer;
 
   /* 높이 설정 */

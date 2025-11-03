@@ -13,6 +13,7 @@ const RightSideBar = ({ sub }: { sub: Sub }) => {
 };
 
 const StyledRightSideBar = styled.aside`
+  padding: var(--spacer-md) 0;
   background-color: ${({ theme }) => theme.colors.primary};
 `;
 

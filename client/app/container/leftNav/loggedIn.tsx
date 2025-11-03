@@ -72,8 +72,8 @@ const SubItem = styled.button`
   display: flex;
   align-items: center;
 
-  gap: var(--spacer-sm);
-  padding: var(--spacer-sm);
+  gap: var(--spacer-xs);
+  padding: var(--spacer-2xs) var(--spacer-md);
 
   border-radius: var(--radius-md);
 

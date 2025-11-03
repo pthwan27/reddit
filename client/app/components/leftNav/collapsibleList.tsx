@@ -38,15 +38,20 @@ const StyledCollapsibleList = styled.div`
 `;
 
 const Header = styled.button`
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  padding: var(--spacer-2xs) var(--spacer-md);
+  letter-spacing: 0.1em;
+
+  width: 100%;
   font: var(--font-12);
   color: ${({ theme }) => theme.colors.grayText};
   text-transform: uppercase;
 
   margin-bottom: var(--spacer-xs);
+
   span {
     display: flex;
     align-items: center;

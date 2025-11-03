@@ -13,44 +13,52 @@ import VoteUpIcon from '../svgs/VoteUpIcon';
 
 const PostItem = ({ post }: { post: Post }) => {
   return (
-    <StyledPostItem>
-      <UserInfo>
-        <div>
-          <IconBox $isIcon={!!post.user.profileUrl}>
-            {post.user.profileUrl && (
-              <Image src={post.user.profileUrl} alt={post.user.username} fill />
-            )}
-          </IconBox>
-          <span>u/{post.user.username}</span>
-          <span>•</span>
-          <span>{formatTimeAgo(post.createdAt)}</span>
-        </div>
-        <div>
-          <EtcIcon />
-        </div>
-      </UserInfo>
-      <TitleSection>{post.title}</TitleSection>
+    <>
+      <hr />
+      <StyledPostItem>
+        <UserInfo>
+          <div>
+            <IconBox $isIcon={!!post.user.profileUrl}>
+              {post.user.profileUrl && (
+                <Image
+                  src={post.user.profileUrl}
+                  alt={post.user.username}
+                  fill
+                />
+              )}
+            </IconBox>
+            <span>u/{post.user.username}</span>
+            <span>•</span>
+            <span>{formatTimeAgo(post.createdAt)}</span>
+          </div>
+          <div>
+            <EtcIcon />
+          </div>
+        </UserInfo>
+        <TitleSection>{post.title}</TitleSection>
 
-      <ContentSection>{post.body}</ContentSection>
+        <ContentSection>{post.body}</ContentSection>
 
-      <ActionsSection>
-        <button>
-          <VoteUpIcon />
-          {post.voteScore || 0}
-          <VoteDownIcon />
-        </button>
+        <ActionsSection>
+          <button>
+            <VoteUpIcon />
+            {post.voteScore || 0}
+            <VoteDownIcon />
+          </button>
 
-        <button>
-          <CommentIcon />
-        </button>
-      </ActionsSection>
-    </StyledPostItem>
+          <button>
+            <CommentIcon />
+            {post.commentCount || 0}
+          </button>
+        </ActionsSection>
+      </StyledPostItem>
+    </>
   );
 };
 
 const StyledPostItem = styled.div`
   border-radius: var(--radius-lg);
-  padding: 0 var(--spacer-md);
+  padding: var(--spacer-2xs) var(--spacer-md);
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.contentHover};
@@ -88,6 +96,8 @@ const UserInfo = styled.div`
 
 
     svg{
+    width: var(--rem-16);
+    height: var(--rem-16);
     fill : ${({ theme }) => theme.colors.secondaryText};
   }
 `;
@@ -135,7 +145,7 @@ const ContentSection = styled.section`
 const ActionsSection = styled.section`
   display: flex;
 
-  gap: var(--spacer-sm);
+  gap: var(--spacer-xs);
 
   height: var(--rem-32);
 
@@ -161,6 +171,7 @@ const ActionsSection = styled.section`
     }
   }
   button:nth-child(2) {
+    gap: var(--spacer-2xs);
     &:hover {
       background: ${({ theme }) => theme.colors.grayHover};
     }

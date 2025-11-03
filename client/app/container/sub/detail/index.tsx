@@ -10,7 +10,6 @@ import { useSubStore } from '@/app/store/subStore';
 import styled from 'styled-components';
 
 import LoadingSpinner from '@/app/components/common/loadingSpinner';
-import PostList from '@/app/components/post/list';
 
 import SubBanner from '@/app/container/sub/detail/banner';
 import SubInfos from '@/app/container/sub/detail/info';
@@ -18,6 +17,7 @@ import SubInfos from '@/app/container/sub/detail/info';
 import { Sub } from '@/app/types';
 
 import RightSideBar from '../../../components/sub/detail/rightSideBar';
+import PostListContainer from '../../post/list';
 
 const SubDetailContainer = ({ type, sub }: { type: string; sub: Sub }) => {
   const { uploadIconImage, uploadBannerImage } = useUploadImage();
@@ -131,7 +131,7 @@ const SubDetailContainer = ({ type, sub }: { type: string; sub: Sub }) => {
       </Header>
       <Main>
         <ObserverWrapper>
-          {loading ? <LoadingSpinner /> : <PostList posts={posts} />}
+          {loading ? <LoadingSpinner /> : <PostListContainer posts={posts} />}
 
           <div ref={observerRef} style={{ height: '1px' }} />
         </ObserverWrapper>
@@ -156,6 +156,9 @@ const SubDetail = styled.div`
   display: flex;
   flex-direction: column;
 
+  gap: var(--spacer-sm);
+
+  width: 100%;
   height: 100%;
 `;
 
@@ -169,7 +172,6 @@ const Header = styled.header`
 
 const Main = styled.main`
   display: grid;
-  margin: 0 auto;
 
   grid-template-columns: minmax(0, 756px) minmax(0, 316px);
 
@@ -177,6 +179,8 @@ const Main = styled.main`
 
   @media (max-width: 959px) {
     grid-template-columns: 1fr;
+    & > :nth-child(1) {
+    }
 
     & > :nth-child(2) {
       display: none;
