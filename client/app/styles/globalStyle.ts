@@ -42,6 +42,7 @@ const GlobalStyle = createGlobalStyle`
   --spacer-xs: 0.5rem;
   --spacer-sm: 0.75rem;
   --spacer-md: 1rem;
+  --spacer-md-lg: 1.25rem;
   --spacer-lg: 1.5rem;
   --spacer-2xl: 2rem;
   --spacer-2-5xl: 2.5rem;
@@ -226,7 +227,19 @@ const GlobalStyle = createGlobalStyle`
   }
 
 
-  hr { 
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: nowrap;
+  }
+
+  span{
+    line-height: 1.2;
+    text-wrap: nowrap;
+  }
+
+  button {
+    text-wrap: nowrap;
+  }
+  hr {
     border: 0;
     border-bottom: 0.0625rem solid #00000019;
   }

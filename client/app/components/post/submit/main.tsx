@@ -53,9 +53,9 @@ const StyledPostSubmitMain = styled.main`
   display: flex;
   flex-direction: column;
 
-  padding: var(--rem-16);
-
-  gap: var(--spacer-2xs);
+  margin-left: var(--spacer-md);
+  margin-bottom: var(--spacer-sm);
+  gap: var(--spacer-lg);
 `;
 
 export default PostSubmitMain;

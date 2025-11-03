@@ -86,7 +86,7 @@ const MainContentWrapper = styled.div`
   }
 
   @media (min-width: 768px) {
-    padding: 0 var(--spacer-lg);
+    padding: 0 var(--spacer-md);
   }
 
   transition: max-width var(--transition-duration) var(--transition-curve);

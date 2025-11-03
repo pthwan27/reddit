@@ -31,8 +31,12 @@ declare module 'styled-components' {
 
       text: string;
       naturalText: string;
+
       secondaryText: string;
-      grayText: string;
+
+      neutralContent: string;
+      neutralContentDisabled: string;
+      neutralContentWeak: string;
 
       textMuted: string;
 
@@ -91,7 +95,10 @@ export const theme = {
     text: '#21272A',
     naturalText: '#181C1F',
     secondaryText: '#131313',
-    grayText: '#576F76',
+
+    neutralContent: '#2A3C42',
+    neutralContentDisabled: '#D6D6D6',
+    neutralContentWeak: '#576F76',
 
     textMuted: '#878A8C', // text Muted
     link: '#0079D3', // 링크

@@ -51,10 +51,10 @@ const SortButton = styled.button`
   align-items: center;
 
   font: var(--font-12-16-semibold);
-  color: ${({ theme }) => theme.colors.secondaryText};
+  color: ${({ theme }) => theme.colors.neutralContentWeak};
 
   svg {
-    fill: ${({ theme }) => theme.colors.secondaryText};
+    fill: ${({ theme }) => theme.colors.neutralContentWeak};
     width: var(--rem-16);
     height: var(--rem-16);
   }
@@ -95,7 +95,7 @@ const DropdownItem = styled.li`
   cursor: pointer;
 
   font: var(--font-12-16-semibold);
-  color: ${({ theme }) => theme.colors.naturalText};
+  color: ${({ theme }) => theme.colors.black};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.contentHover};

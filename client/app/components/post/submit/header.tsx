@@ -2,6 +2,8 @@ import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
+import { Sub } from '@/app/types';
+
 import SubSelector from './subSelector';
 
 interface PostSubmitHeaderProps {
@@ -37,7 +39,8 @@ const StyledPostSubmitHeader = styled.header`
   flex-direction: column;
 
   gap: var(--spacer-md);
-  padding: var(--rem-20) 0 0 var(--rem-20);
+  margin-left: var(--spacer-md);
+  margin-bottom: var(--spacer-2xl);
 
   h1 {
     padding: var(--spacer-4xs);

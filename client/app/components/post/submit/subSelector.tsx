@@ -9,6 +9,8 @@ import SearchIcon from '@/app/components/svgs/SearchIcon';
 
 import { Sub } from '@/app/types';
 
+import CloseIcon from '../../svgs/CloseIcon';
+
 interface SubSelectorProps {
   allSubs?: Sub[];
   selectedSub?: Sub | null;
@@ -44,6 +46,10 @@ const SubSelector = ({
     setIsSearching(false);
   };
 
+  const handleClear = () => {
+    setSearchTerm('');
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -65,8 +71,9 @@ const SubSelector = ({
   }, [isTagLoading, selectedSub]);
 
   return (
-    <StyledSubSelector ref={wrapperRef}>
+    <StyledSubSelector>
       <SearchInputWrapper
+        ref={wrapperRef}
         $isSearching={!isTagLoading && (isSearching || !selectedSub)}
       >
         <SearchIconWrapper>
@@ -79,6 +86,10 @@ const SubSelector = ({
           onChange={(e) => setSearchTerm(e.target.value)}
           onFocus={() => setIsSearching(true)}
         />
+
+        <ClearButtonWrapper onClick={handleClear}>
+          <CloseIcon />
+        </ClearButtonWrapper>
 
         <DropdownMenu $isSearching={isSearching && filteredSubs !== undefined}>
           {filteredSubs && filteredSubs.length > 0 ? (
@@ -104,6 +115,7 @@ const SubSelector = ({
         </DropdownMenu>
       </SearchInputWrapper>
       <SelectedTagWrapper
+        ref={wrapperRef}
         $isSearching={!isTagLoading && (isSearching || !selectedSub)}
       >
         <SelectedTag
@@ -144,13 +156,12 @@ const SubSelector = ({
 };
 const StyledSubSelector = styled.div`
   position: relative;
-  width: 77%;
   height: var(--rem-40);
 `;
 
 const SearchInputWrapper = styled.div<{ $isSearching: boolean }>`
   position: absolute;
-  width: 100%;
+  width: 58%;
 
   opacity: ${({ $isSearching }) => ($isSearching ? 1 : 0)};
   pointer-events: ${({ $isSearching }) => ($isSearching ? 'auto' : 'none')};
@@ -168,7 +179,7 @@ const SearchIconWrapper = styled.span`
 `;
 
 const SearchInput = styled.input`
-  width: 50%;
+  width: 100%;
   height: var(--rem-40);
 
   padding: var(--spacer-xs) var(--spacer-sm);
@@ -192,10 +203,35 @@ const SearchInput = styled.input`
     background: ${({ theme }) => theme.colors.grayHover};
   }
 `;
+const ClearButtonWrapper = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacer-4xs);
+
+  border-radius: 50%;
+  background: none;
+
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors?.grayHover || '#f0f0f0'};
+  }
+
+  svg {
+    width: var(--rem-12);
+    height: var(--rem-12);
+  }
+`;
 
 const SelectedTagWrapper = styled.div<{ $isSearching: boolean }>`
   position: absolute;
-  width: 100%;
+  width: 58%;
 
   opacity: ${({ $isSearching }) => ($isSearching ? 0 : 1)};
   pointer-events: ${({ $isSearching }) => ($isSearching ? 'none' : 'auto')};
@@ -260,7 +296,7 @@ const DropdownMenu = styled.ul<{ $isSearching: boolean }>`
   position: absolute;
   top: calc(100% + 8px);
   left: 5%;
-  width: 40%;
+  width: 90%;
 
   padding: var(--spacer-md) 0;
 

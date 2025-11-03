@@ -18,7 +18,8 @@ const HightlightPostList = ({
         onClick={() => setIsHighlightView((e) => !e)}
       >
         <div>
-          <PinIcon /> 커뮤니티 하이라이트
+          <PinIcon />
+          <span>커뮤니티 하이라이트</span>
         </div>
         <div>
           <DownArrowIcon />
@@ -53,7 +54,12 @@ const StyledHighlightToggle = styled.div<{ $isHighlightView: boolean }>`
     display: flex;
     align-items: center;
 
-    gap: var(--spacer-2xs);
+    gap: var(--spacer-xs);
+
+    span {
+      text-wrap: nowrap;
+      line-height: 1.2;
+    }
   }
   div:nth-child(2) {
     svg {
@@ -73,7 +79,7 @@ const StyledHighlightPostList = styled.div`
   height: 200px;
   background-color: lightgray;
 
-  margin-bottom: var(--spacer-2xs);
+  margin-bottom: var(--spacer-xs);
 `;
 
 export default HightlightPostList;

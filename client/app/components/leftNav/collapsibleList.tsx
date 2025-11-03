@@ -47,7 +47,7 @@ const Header = styled.button`
 
   width: 100%;
   font: var(--font-12);
-  color: ${({ theme }) => theme.colors.grayText};
+  color: ${({ theme }) => theme.colors.neutralContentWeak};
   text-transform: uppercase;
 
   margin-bottom: var(--spacer-xs);

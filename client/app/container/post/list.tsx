@@ -50,8 +50,9 @@ const PostListContainer = ({ posts }: { posts: Post[] }) => {
         setIsHighlightView={setIsHighlightView}
       />
 
+      <hr />
       {posts.map((post, idx) => (
-        <PostWrapper key={post.identifier}>
+        <PostWrapper key={post.id}>
           <PostItem post={post} />
           {idx < posts.length - 1 && <hr />}
         </PostWrapper>

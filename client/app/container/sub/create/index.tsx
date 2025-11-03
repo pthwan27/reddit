@@ -214,7 +214,7 @@ const CreateSub = styled.div`
   display: flex;
   flex-direction: column;
 
-  padding: 0 var(--spacer-lg);
+  padding: 0 var(--spacer-md);
   width: 100%;
 `;
 

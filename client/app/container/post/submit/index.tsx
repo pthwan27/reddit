@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import IconButton from '@/app/components/common/button/iconButton';
 import PostSubmitHeader from '@/app/components/post/submit/header';
 import PostSubmitMain from '@/app/components/post/submit/main';
+import RightSideBar from '@/app/components/sub/detail/rightSideBar';
 
 import { useAuth } from '@/app/context/authContext';
 import { Sub } from '@/app/types';
@@ -101,43 +102,49 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
           content={content}
           setContent={setContent}
         />
-        <IconButton
-          value="제출하기"
-          isSolid={false}
-          bgColor="secondaryLight"
-          hoverColor="secondaryDark"
-          fontColor="white"
-          radius="var(--radius-lg)"
-          height="38px"
-          width="fit-content"
-          onClick={handleSubmit}
-          disabled={
-            titleValidation !== 'valid' || contentValidation !== 'valid'
-          }
-        />
+        <PostSubmitButtons>
+          <IconButton
+            value="제출하기"
+            isSolid={false}
+            bgColor="secondaryLight"
+            hoverColor="secondaryDark"
+            fontColor="white"
+            radius="var(--radius-lg)"
+            height="38px"
+            width="fit-content"
+            onClick={handleSubmit}
+            disabled={
+              titleValidation !== 'valid' || contentValidation !== 'valid'
+            }
+          />
+        </PostSubmitButtons>
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </PostSubmit>
+      <RightSideBar sub={sub} />
     </GridWrapper>
   );
 };
 
 const GridWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 312px;
-  gap: 24px;
   width: 100%;
   max-width: 1120px;
   margin: 0 auto;
   padding-top: 16px;
 
-  @media (max-width: 959px) {
-    grid-template-columns: 1fr;
-    max-width: 100%;
-    padding: 16px;
+  gap: var(--spacer-lg);
 
+  grid-template-columns: minmax(0, 1fr);
+
+  & > :nth-child(2) {
+    display: none;
+  }
+  @media (min-width: 768px) {
     & > :nth-child(2) {
-      display: none; /* 사이드바 숨김 */
+      display: block;
     }
+
+    grid-template-columns: minmax(0, 756px) minmax(0, 316px);
   }
 `;
 const PostSubmit = styled.div`
@@ -146,14 +153,20 @@ const PostSubmit = styled.div`
   width: 100%;
   height: 100%;
 
-  margin: 0 auto;
+  padding: 
 
-  max-width: calc(100vw - 320px);
+  margin: 0 auto;
 
   @media (min-width: 1200px) {
     max-width: 1120px;
   }
 `;
+
+const PostSubmitButtons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 const ErrorMessage = styled.div`
   color: ${({ theme }) => theme.colors.error || '#ff6b6b'};
   font: var(--font-14);
