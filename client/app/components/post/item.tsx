@@ -2,6 +2,8 @@ import Image from 'next/image';
 
 import formatTimeAgo from '@/app/utils/formatTimeAgo';
 
+import { usePostStore } from '@/app/store/postStore';
+
 import styled from 'styled-components';
 
 import { Post } from '@/app/types';
@@ -12,6 +14,11 @@ import VoteDownIcon from '../svgs/VoteDownIcon';
 import VoteUpIcon from '../svgs/VoteUpIcon';
 
 const PostItem = ({ post }: { post: Post }) => {
+  const { vote } = usePostStore();
+
+  const voteHandler = (value: number) => {
+    vote(post.identifier, post.slug, value);
+  };
   return (
     <StyledPostItem>
       <UserInfo>
@@ -30,20 +37,25 @@ const PostItem = ({ post }: { post: Post }) => {
         </div>
       </UserInfo>
       <TitleSection>{post.title}</TitleSection>
-
       <ContentSection>{post.body}</ContentSection>
-
+      <>post.userVote : {post.userVote}</>
       <ActionsSection>
-        <button>
-          <VoteUpIcon />
+        <VoteButtons
+          $userVote={post.userVote === 1 ? 1 : post.userVote === -1 ? -1 : 0}
+        >
+          <button onClick={() => voteHandler(1)}>
+            <VoteUpIcon />
+          </button>
           {post.voteScore || 0}
-          <VoteDownIcon />
-        </button>
+          <button onClick={() => voteHandler(-1)}>
+            <VoteDownIcon />
+          </button>
+        </VoteButtons>
 
-        <button>
+        <CommentButton>
           <CommentIcon />
           {post.commentCount || 0}
-        </button>
+        </CommentButton>
       </ActionsSection>
     </StyledPostItem>
   );
@@ -54,7 +66,7 @@ const StyledPostItem = styled.div`
   margin: var(--spacer-2xs) 0;
   padding: var(--spacer-4xs) var(--spacer-md);
   &:hover {
-    background-color: ${({ theme }) => theme.colors.contentHover};
+    background-color: ${({ theme }) => theme.colors.neutralHover};
   }
 `;
 
@@ -87,11 +99,11 @@ const UserInfo = styled.div`
       color: ${({ theme }) => theme.colors.neutralContentWeak};
     }
 
-
-    svg{
-    width: var(--rem-16);
-    height: var(--rem-16);
-    fill : ${({ theme }) => theme.colors.secondaryText};
+    svg {
+      width: var(--rem-16);
+      height: var(--rem-16);
+      fill: ${({ theme }) => theme.colors.secondaryText};
+    }
   }
 `;
 
@@ -130,11 +142,13 @@ const TitleSection = styled.section`
 
   font: var(--font-18-20-semibold);
 `;
+
 const ContentSection = styled.section`
   margin-bottom: var(--spacer-md);
 
   font: var(--font-14-20-regular);
 `;
+
 const ActionsSection = styled.section`
   display: flex;
 
@@ -143,17 +157,31 @@ const ActionsSection = styled.section`
   height: var(--rem-32);
 
   font: var(--font-12-16-semibold);
+`;
+
+const VoteButtons = styled.div<{ $userVote: number }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: var(--spacer-2xs) var(--spacer-xs);
+  gap: var(--spacer-xs);
+
+  border-radius: var(--radius-lg);
+
+  background: ${({ $userVote, theme }) =>
+    $userVote === 1
+      ? theme.colors.upvote
+      : $userVote === -1
+        ? theme.colors.downvote
+        : theme.colors.grayBackground};
 
   button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 0;
 
-    background: ${({ theme }) => theme.colors.grayBackground};
-  }
+    height: var(--rem-16);
+    width: var(--rem-16);
 
-  button:nth-child(1) {
-    gap: var(--spacer-2xs);
     svg:nth-child(1) {
       &:hover {
         fill: ${({ theme }) => theme.colors.upvote};
@@ -165,12 +193,27 @@ const ActionsSection = styled.section`
       }
     }
   }
-  button:nth-child(2) {
-    gap: var(--spacer-2xs);
-    &:hover {
-      background: ${({ theme }) => theme.colors.grayHover};
-    }
-  }
 `;
 
+const CommentButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: var(--spacer-2xs) var(--spacer-xs);
+  gap: var(--spacer-2xs);
+
+  border-radius: var(--radius-lg);
+
+  svg {
+    height: var(--rem-16);
+    width: var(--rem-16);
+  }
+
+  background: ${({ theme }) => theme.colors.grayBackground};
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.grayHoverDark};
+  }
+`;
 export default PostItem;

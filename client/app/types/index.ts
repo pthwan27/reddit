@@ -43,7 +43,7 @@ export interface Post {
   url: string;
   voteScore: number;
   commentCount: number;
-  userVoted: number;
+  userVote: number;
   sub?: Sub;
   user: User;
   comments: Comment[];

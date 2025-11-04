@@ -7,6 +7,7 @@ import { AppDataSource } from './data-source';
 import AuthRouter from './routes/authRoutes';
 import PostRouter from './routes/postRoutes';
 import SubRouter from './routes/subRoutes';
+import VoteRouter from './routes/voteRoutes';
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/auth', AuthRouter);
 app.use('/sub', SubRouter);
 app.use('/post', PostRouter);
+app.use('/vote', VoteRouter);
 
 app.get('/', (_: Request, res: Response) => {
   res.send('running');

@@ -40,7 +40,7 @@ const StyledPostSubmitHeader = styled.header`
 
   gap: var(--spacer-md);
   margin-left: var(--spacer-md);
-  margin-bottom: var(--spacer-2xl);
+  margin-bottom: var(--spacer-2xs);
 
   h1 {
     padding: var(--spacer-4xs);

@@ -43,15 +43,10 @@ export const usePostStore = create<PostStore>((set, get) => ({
     const originPosts = get().posts;
     const updatedPosts = originPosts.map((post) => {
       if (post.identifier === identifier) {
-        const newUserVote = post.userVoted === value ? 0 : value;
+        const newUserVote = post.userVote === value ? 0 : value;
 
-        let newVoteScore = post.voteScore;
-
-        if (newUserVote === 0) {
-          newVoteScore -= post.userVoted;
-        } else {
-          newVoteScore += newUserVote - (post.userVoted || 0) + newUserVote;
-        }
+        const voteChange = newUserVote - (post.userVote || 0);
+        const newVoteScore = post.voteScore + voteChange;
 
         return { ...post, userVote: newUserVote, voteScore: newVoteScore };
       }
@@ -65,13 +60,18 @@ export const usePostStore = create<PostStore>((set, get) => ({
         (post) => post.identifier === identifier
       );
 
-      if (targetPost) {
-        await clientAxiosInstance.post('/api/votes', {
-          identifier,
-          slug,
-          value: targetPost.userVoted,
-        });
+      if (!targetPost) {
+        throw new Error('Post not found');
       }
+      const { data } = await clientAxiosInstance.patch('/api/vote', {
+        identifier,
+        slug,
+        value: targetPost.userVote,
+      });
+
+      set((state) => ({
+        posts: state.posts.map((p) => (p.identifier === identifier ? data : p)),
+      }));
     } catch (error) {
       console.error('Vote failed, rolling back.', error);
       set({ posts: originPosts });

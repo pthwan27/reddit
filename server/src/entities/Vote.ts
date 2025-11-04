@@ -1,11 +1,12 @@
-import { Entity, Column, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, Column, ManyToOne, JoinColumn, Unique } from "typeorm";
 
 import CoreEntity from "./CoreEntity";
 import { User } from "./User";
 import { Post } from "./Post";
 import { Comment } from "./Comment";
 import { Exclude, Expose } from "class-transformer";
-
+@Unique(["user", "post"])
+@Unique(["user", "comment"])
 @Entity("votes")
 export class Vote extends CoreEntity {
   @Column()

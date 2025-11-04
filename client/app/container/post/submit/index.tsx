@@ -165,6 +165,9 @@ const PostSubmit = styled.div`
 const PostSubmitButtons = styled.div`
   display: flex;
   justify-content: flex-end;
+  padding: 0 var(--spacer-md);
+
+  margin-top: -8px;
 `;
 
 const ErrorMessage = styled.div`

@@ -52,7 +52,7 @@ const LoggedInContainer = () => {
                   <Image src={sub.iconUrl} alt={sub.title} fill />
                 )}
               </IconBox>
-              <TitleBox>{sub.title}</TitleBox>
+              <TitleBox>{`r/${sub.title}`}</TitleBox>
             </SubItem>
           ))
         )}

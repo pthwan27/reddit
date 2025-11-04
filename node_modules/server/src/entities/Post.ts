@@ -37,7 +37,6 @@ export class Post extends CoreEntity {
   @Column()
   subTitle: string;
 
-  @Exclude()
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn({ name: "userId", referencedColumnName: "id" })
   user: User;
@@ -53,12 +52,13 @@ export class Post extends CoreEntity {
   @Exclude()
   @OneToMany(() => Vote, (vote) => vote.post)
   votes: Vote[];
-
-  protected userVoted: number;
+  
+  @Expose()
+  protected userVote: number;
 
   setUserVote(user: User) {
-    const idx = this.votes?.findIndex((v) => v.username === user.username);
-    this.userVoted = idx > -1 ? this.votes[idx].value : 0;
+    const idx = this.votes?.findIndex((v) => v.user.id === user.id);
+    this.userVote = idx > -1 ? this.votes[idx].value : 0;
   }
 
   @Expose()

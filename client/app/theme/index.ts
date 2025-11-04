@@ -19,12 +19,17 @@ declare module 'styled-components' {
       background: string;
       grayBackground: string;
       grayHover: string;
+      grayHoverDark: string;
+
       darkgrayBackground: string;
       darkgrayHover: string;
 
       border: string;
       naturalBorder: string;
       darkBorder: string;
+
+      neutralBorderHover: string;
+      neutralHover: string;
 
       contentBackground: string;
       contentHover: string;
@@ -77,17 +82,17 @@ export const theme = {
 
     grayBackground: '#E5EBEE', // 회색 배경
     grayHover: '#DBE4E9', // 회색 배경 hover
+    grayHoverDark: '#D4DCE0', // 회색 배경 hover
 
     darkgrayBackground: '#ABB3B8', // 어두운 회색
     darkgrayHover: '#878E91', // 어우둔 회색 hover
 
     border: '#EDEFF1', // 경계선
     naturalBorder: '#00000033', // 자연스러운 경계선
-
-    naturalHoverBorder: '#0000007F',
-    naturalHover: '#F6F8F9',
-
     darkBorder: '#0000006f', // 어두운 경계선
+
+    neutralBorderHover: '#0000007F',
+    neutralHover: '#F6F8F9',
 
     contentBackground: '#FFFFFF', // 카드/포스트 등 하얀색 배경
     contentHover: '#EEF1F3', // 카드/포스트 등 하얀색 배경 hover

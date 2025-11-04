@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import { User } from '../entities/User';
 
-export const AuthMiddleware: RequestHandler = async (req, res, next) => {
+export const UserMiddleware: RequestHandler = async (req, res, next) => {
   try {
     let token = req.cookies?.auth_token;
 
@@ -15,31 +15,26 @@ export const AuthMiddleware: RequestHandler = async (req, res, next) => {
     }
 
     if (!token) {
-      return res.status(401).json({ error: 'No token provided' });
+      return next();
     }
 
-    // JWT 토큰 검증
     const decoded = jwt.verify(
       token,
       process.env.JWT_SECRET || 'your-secret-key'
     ) as any;
 
-    if (!decoded.userId) {
-      return res.status(401).json({ error: 'Invalid token structure' });
-    }
-
-    // 사용자 정보 조회
     const user = await User.findOneBy({ id: decoded.userId });
 
     if (!user) {
-      return res.status(401).json({ error: 'User not found' });
+      return next(); // 유저가 없어도 그냥 다음으로 넘어감
     }
 
     res.locals.user = user;
 
     return next();
   } catch (error) {
-    console.error(error);
-    return res.status(401).json({ error: 'Unauthenticated' });
+    // 토큰이 유효하지 않아도 오류를 반환하지 않고 그냥 다음으로 넘어감
+    console.error('Optional auth error:', error);
+    return next();
   }
 };

@@ -1,11 +1,9 @@
 'use client';
 
-import MainContainer from '@/app/container/mainContainer';
-
 const Home = () => {
   return (
     <>
-      <MainContainer />
+      <div style={{ height: '1500px' }}></div>
     </>
   );
 };

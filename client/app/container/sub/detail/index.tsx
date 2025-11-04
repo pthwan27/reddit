@@ -14,12 +14,15 @@ import LoadingSpinner from '@/app/components/common/loadingSpinner';
 import SubBanner from '@/app/container/sub/detail/banner';
 import SubInfos from '@/app/container/sub/detail/info';
 
+import { useAuth } from '@/app/context/authContext';
 import { Sub } from '@/app/types';
 
 import RightSideBar from '../../../components/sub/detail/rightSideBar';
 import PostListContainer from '../../post/list';
 
 const SubDetailContainer = ({ type, sub }: { type: string; sub: Sub }) => {
+  const { user } = useAuth();
+
   const { uploadIconImage, uploadBannerImage } = useUploadImage();
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl);
   const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl);
@@ -109,7 +112,7 @@ const SubDetailContainer = ({ type, sub }: { type: string; sub: Sub }) => {
     return () => {
       clearPosts();
     };
-  }, [selectedSub, sub.slug, fetchPosts, clearPosts]);
+  }, [selectedSub, sub.slug, user]);
 
   return (
     <SubDetail>
@@ -133,7 +136,7 @@ const SubDetailContainer = ({ type, sub }: { type: string; sub: Sub }) => {
         <ObserverWrapper>
           {loading ? <LoadingSpinner /> : <PostListContainer posts={posts} />}
 
-          <div ref={observerRef} style={{ height: '1px' }} />
+          {/* <div ref={observerRef} style={{ height: '1px' }} /> */}
         </ObserverWrapper>
         <RightSideBar sub={sub} />
       </Main>

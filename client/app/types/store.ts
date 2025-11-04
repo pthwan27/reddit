@@ -21,4 +21,5 @@ export type PostStore = {
   hasMore: boolean;
   fetchPosts: (slug: string) => Promise<void>;
   clearPosts: () => void;
+  vote: (identifier: string, slug: string, value: number) => Promise<void>;
 };

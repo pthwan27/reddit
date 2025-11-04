@@ -19,32 +19,35 @@ const PostSubmitMain = ({
 }: PostSubmitMainProps) => {
   return (
     <StyledPostSubmitMain>
-      <PlaceHolderInput
-        value={title}
-        type="text"
-        label="제목"
-        onChange={(e) => setTitle(e.target.value)}
-        bgColor="transparent"
-        hoverColor="naturalHover"
-        borderColor="naturalBorder"
-        hoverBorderColor="naturalHoverBorder"
-        focusBorderColor="secondaryLight"
-        lineWidth="sm"
-        required={true}
-      />
-      <PlaceHolderTextarea
-        value={content}
-        type="text"
-        label="내용"
-        onChange={(e) => setContent(e.target.value)}
-        bgColor="transparent"
-        hoverColor="naturalHover"
-        borderColor="naturalBorder"
-        hoverBorderColor="naturalHoverBorder"
-        focusBorderColor="secondaryLight"
-        lineWidth="sm"
-        required={true}
-      />
+      <InputTypeSelector></InputTypeSelector>
+      <MainWrapper>
+        <PlaceHolderInput
+          value={title}
+          type="text"
+          label="제목"
+          onChange={(e) => setTitle(e.target.value)}
+          bgColor="transparent"
+          hoverColor="neutralHover"
+          borderColor="naturalBorder"
+          hoverBorderColor="neutralBorderHover"
+          focusBorderColor="secondaryLight"
+          lineWidth="sm"
+          required={true}
+        />
+        <PlaceHolderTextarea
+          value={content}
+          type="text"
+          label="내용"
+          onChange={(e) => setContent(e.target.value)}
+          bgColor="transparent"
+          hoverColor="neutralHover"
+          borderColor="naturalBorder"
+          hoverBorderColor="neutralBorderHover"
+          focusBorderColor="secondaryLight"
+          lineWidth="sm"
+          required={true}
+        />
+      </MainWrapper>
     </StyledPostSubmitMain>
   );
 };
@@ -52,10 +55,15 @@ const PostSubmitMain = ({
 const StyledPostSubmitMain = styled.main`
   display: flex;
   flex-direction: column;
-
-  margin-left: var(--spacer-md);
-  margin-bottom: var(--spacer-sm);
-  gap: var(--spacer-lg);
 `;
+const InputTypeSelector = styled.div`
+  height: var(--rem-48);
+`;
+const MainWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-lg);
 
+  padding: var(--spacer-md);
+`;
 export default PostSubmitMain;
