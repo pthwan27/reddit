@@ -83,6 +83,7 @@ export default defineConfig([
         },
       ],
 
+      '@typescript-eslint/no-empty-object-type': 'warn',
       '@typescript-eslint/no-empty-interface': 'warn',
     },
   },
