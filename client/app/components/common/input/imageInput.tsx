@@ -71,7 +71,7 @@ const InputBox = styled.div`
   justify-content: space-between;
   padding: var(--spacer-md) var(--spacer-md);
 
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   font: var(--font-16);
   cursor: pointer;
 
@@ -124,7 +124,7 @@ const PlaceholderText = styled.div`
   background: ${({ theme }) => theme.colors.grayHover};
   color: ${({ theme }) => theme.colors.text};
 
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
 
   span {
     padding-top: 0.25rem;

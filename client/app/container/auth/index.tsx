@@ -18,9 +18,9 @@ const Auth = styled.div`
   align-items: center;
   justify-content: center;
 
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
 
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.neutral.background};
 
   width: 528px;
   min-width: 320px;

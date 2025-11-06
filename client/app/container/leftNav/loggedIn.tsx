@@ -76,9 +76,11 @@ const SubItem = styled.button`
   padding: var(--spacer-2xs) var(--spacer-md);
 
   border-radius: var(--radius-md);
+  border: none;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.contentHover};
+    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
+    border: transparent;
   }
 
   font: var(--font-14);
@@ -97,8 +99,8 @@ const IconBox = styled.div<{ $isIcon?: boolean }>`
   min-width: var(--rem-32);
   min-height: var(--rem-32);
 
-  background-color: ${({ $isIcon, theme }) =>
-    $isIcon ? 'transparent' : theme.colors.dark};
+  background: ${({ $isIcon, theme }) =>
+    $isIcon ? 'transparent' : theme.colors.neutral.content};
 
   border-radius: var(--radius-full);
   overflow: hidden;

@@ -1,128 +1,297 @@
 'use client';
 
-declare module 'styled-components' {
-  export interface DefaultTheme {
-    colors: {
-      primary: string;
-      primaryDark: string;
-      primaryDarkHover: string;
-
-      secondaryLight: string;
-      secondary: string;
-      secondaryDark: string;
-      upvote: string;
-      downvote: string;
-
-      white: string;
-      black: string;
-      dark: string;
-      background: string;
-      grayBackground: string;
-      grayHover: string;
-      grayHoverDark: string;
-
-      darkgrayBackground: string;
-      darkgrayHover: string;
-
-      border: string;
-      naturalBorder: string;
-      darkBorder: string;
-
-      neutralBorderHover: string;
-      neutralHover: string;
-
-      contentBackground: string;
-      contentHover: string;
-
-      text: string;
-      naturalText: string;
-
-      secondaryText: string;
-
-      neutralContent: string;
-      neutralContentDisabled: string;
-      neutralContentWeak: string;
-
-      textMuted: string;
-
-      link: string;
-      linkHover: string;
-      comment: string;
-      gold: string;
-
-      error: string;
-      success: string;
-      warning: string;
-
-      disabled: string;
-      disabledText: string;
-
-      overlay: string;
-    };
-  }
-}
-export const theme = {
+export const newTheme = {
   colors: {
-    // Reddit 공식 색상
-    primary: '#FF4500', // Reddit 오렌지
-    primaryDark: '#D93A00', // Reddit 오렌지 (hover)
-    primaryDarkHover: '#AE2C00', // Reddit 오렌지 (hover)
-
-    secondaryLight: '#0060DF', // Reddit 블루 (hover)
-    secondary: '#0A449B', // Reddit 블루
-    secondaryDark: '#0A2F6C', // Reddit 블루 (hover)
-
-    upvote: '#FF4500', // 투표 화살표 색상
-    downvote: '#7193FF', // 투표 화살표 색상
-
-    white: '#FFFFFF',
-    black: '#000000',
-    dark: '#000000ba',
-    background: '#FFFFFF',
-
-    grayBackground: '#E5EBEE', // 회색 배경
-    grayHover: '#DBE4E9', // 회색 배경 hover
-    grayHoverDark: '#D4DCE0', // 회색 배경 hover
-
-    darkgrayBackground: '#ABB3B8', // 어두운 회색
-    darkgrayHover: '#878E91', // 어우둔 회색 hover
-
-    border: '#EDEFF1', // 경계선
-    naturalBorder: '#00000033', // 자연스러운 경계선
-    darkBorder: '#0000006f', // 어두운 경계선
-
-    neutralBorderHover: '#0000007F',
-    neutralHover: '#F6F8F9',
-
-    contentBackground: '#FFFFFF', // 카드/포스트 등 하얀색 배경
-    contentHover: '#EEF1F3', // 카드/포스트 등 하얀색 배경 hover
-
-    text: '#21272A',
-    naturalText: '#181C1F',
-    secondaryText: '#131313',
-
-    neutralContent: '#2A3C42',
-    neutralContentDisabled: '#D6D6D6',
-    neutralContentWeak: '#576F76',
-
-    textMuted: '#878A8C', // text Muted
-    link: '#0079D3', // 링크
-    linkHover: '#005999', // 링크 hover
-
-    comment: '#F6F7F8', // 댓글 배경
-
-    gold: '#FFD635', // 골드(어워드)
-
-    // 추가 색상
-    error: '#FF585B', // 에러/경고
-    success: '#46D160',
-    warning: '#FFB000',
-
-    disabled: '#F3F3F3',
-    disabledText: '#B7B7B7',
-    // 기타
-
-    overlay: 'rgb(0 0 0/1)',
+    action: {
+      downvote: '#6A5CFF',
+      upvote: '#D93900',
+    },
+    brand: {
+      background: '#D93900',
+      backgroundHover: '#AE2C00',
+      onBackground: '#FFFFFF',
+    },
+    caution: {
+      background: '#FFBF0B',
+      backgroundHover: '#D8A100',
+      onBackground: '#000000',
+      plain: '#785800',
+      plainHover: '#5B4200',
+    },
+    danger: {
+      background: '#EB001F',
+      backgroundHover: '#BC0117',
+      backgroundWeaker: '#FBDBD4',
+      content: '#BC0117',
+      contentHover: '#90000F',
+      onBackground: '#FFFFFF',
+      plain: '#BC0117',
+      plainHover: '#90000F',
+    },
+    downvote: {
+      background: '#6A5CFF',
+      backgroundHover: '#523DFF',
+      content: '#523DFF',
+      onBackground: '#FFFFFF',
+      plain: '#523DFF',
+    },
+    upvote: {
+      background: '#D93900',
+      backgroundHover: '#AE2C00',
+      content: '#AE2C00',
+      onBackground: '#FFFFFF',
+      plain: '#AE2C00',
+    },
+    global: {
+      black: '#000000',
+      white: '#FFFFFF',
+      orangered: '#FF4500',
+      gold: '#B78800',
+      moderator: '#008A10',
+      admin: '#D93900',
+      online: '#00C61C',
+      offline: '#667780',
+      pizzaRed: '#ef5350',
+      error: '#FF585B',
+    },
+    interactive: {
+      backgroundDisabled: '#0000000C',
+      contentDisabled: '#0000003F',
+      focused: '#007FAE',
+      pressed: '#00000026',
+    },
+    neutral: {
+      background: '#FFFFFF',
+      backgroundHover: '#F6F8F9',
+      backgroundContainer: '#F6F8F9',
+      backgroundSelected: '#E5EBEE',
+      border: '#00000033',
+      borderMedium: '#0000007F',
+      borderWeak: '#00000019',
+      borderStrong: '#181C1F',
+      content: '#333D42',
+      contentStrong: '#181C1F',
+      contentWeak: '#5C6C74',
+      contentDisabled: '#D6D6D6',
+    },
+    primary: {
+      background: '#0A449B',
+      backgroundHover: '#0A2F6C',
+      border: '#0A449B',
+      plain: '#0A449B',
+      plainHover: '#0A2F6C',
+      onBackground: '#FFFFFF',
+    },
+    secondary: {
+      weak: '#576F76',
+      background: '#E5EBEE',
+      backgroundHover: '#DBE4E9',
+      backgroundSelected: '#C9D7DE',
+      onBackground: '#000000',
+      plain: '#181C1F',
+      plainHover: '#000000',
+      plainWeak: '#5C6C74',
+    },
+    success: {
+      background: '#008A10',
+      backgroundHover: '#016E0B',
+      content: '#016E0B',
+      onBackground: '#FFFFFF',
+      plain: '#016E0B',
+      plainHover: '#005306',
+    },
+    warning: {
+      background: '#B78800',
+      backgroundHover: '#977000',
+      content: '#785800',
+      onBackground: '#000000',
+    },
+    default: {
+      primary: '#115BCA',
+      secondary: '#21272A',
+      scrim: '#00000099',
+    },
+  },
+  gradients: {
+    avatar: 'linear-gradient(0deg, #97AFBCff, #ffffffff 75%)',
+    brandActive:
+      'linear-gradient(180deg, #cd3700ff, #db3b00ff 68%, #D93900ff 100%)',
+    brandDefault:
+      'linear-gradient(180deg, #D93900ff, #db3b00ff 30%, #AE2C00ff 100%)',
+    media: 'linear-gradient(180deg, #00000000, #0000008a 60%, #00000099 100%)',
+  },
+  components: {
+    button: {
+      background: {
+        default: 'transparent',
+        focus: 'transparent',
+        hover: 'transparent',
+        active: 'linear-gradient(transparent, transparent)',
+        disabled: 'transparent',
+        activated: '#C9D7DE',
+      },
+      text: {
+        default: '#181C1F',
+        disabled: '#0000003F',
+        activated: '#181C1F',
+        hover: '#000000',
+      },
+      border: {
+        default: '#0000007F',
+        hover: '#181C1F',
+        active: '#181C1F',
+        activated: '#181C1F',
+        disabled: '#D6D6D6',
+      },
+      overlay: {
+        focus: 'transparent',
+        active: 'transparent',
+      },
+      borderWidth: {
+        default: '0.0625rem',
+        activated: '0.0625rem',
+      },
+      primary: {
+        background: {
+          hover: '#0A2F6C',
+          activated: '#0A1A3F',
+          disabled: '#0000000C',
+        },
+        border: {
+          hover: '#0A449B',
+          active: '#0A2F6C',
+          activated: '#0A449B',
+        },
+        text: {
+          disabled: '#0000003F',
+          activated: '#FFFFFF',
+        },
+      },
+      secondary: {
+        background: {
+          default: '#E5EBEE',
+          focus: '#E5EBEE',
+          hover: '#DBE4E9',
+          disabled: '#0000000C',
+          activated: '#C9D7DE',
+        },
+        border: {
+          default: 'transparent',
+          hover: '#E5EBEE',
+          active: '#DBE4E9',
+          activated: 'transparent',
+          disabled: 'transparent',
+        },
+        text: {
+          default: '#000000',
+          disabled: '#0000003F',
+          activated: '#000000',
+        },
+      },
+      tertiary: {
+        background: {
+          default: 'transparent',
+          focus: 'transparent',
+          hover: '#DBE4E9',
+          disabled: 'transparent',
+          activated: '#333D42',
+        },
+        border: {
+          hover: '#E5EBEE',
+          active: '#DBE4E9',
+        },
+        text: {
+          default: '#181C1F',
+          disabled: '#D6D6D6',
+          activated: '#FFFFFF',
+        },
+      },
+      plain: {
+        background: {
+          hover: '#DBE4E9',
+          disabled: 'transparent',
+          activated: '#C9D7DE',
+        },
+        border: {
+          hover: '#E5EBEE',
+          active: '#DBE4E9',
+        },
+        text: {
+          default: '#181C1F',
+          hover: '#000000',
+          disabled: '#0000003F',
+          activated: '#000000',
+          weak: '#5C6C74',
+        },
+      },
+      caution: {
+        background: {
+          default: '#FFBF0B',
+          hover: '#D8A100',
+          disabled: '#0000000C',
+        },
+        text: '#000000',
+      },
+    },
+    input: {
+      border: 'transparent',
+      pressed: '#00000026',
+      helperText: '#5C6C74',
+      secondary: {
+        default: '#E5EBEE',
+        hover: '#DBE4E9',
+        text: '#000000',
+      },
+      bordered: {
+        default: 'transparent',
+        hover: '#F6F8F9',
+        text: '#181C1F',
+      },
+      radio: {
+        default: '#5C6C74',
+        hover: '#181C1F',
+      },
+    },
+    switch: {
+      handle: '#FFFFFF',
+      handleDisabled: '#E5EBEE',
+      default: '#E5EBEE',
+      defaultHover: '#DBE4E9',
+      defaultDisabled: '#0000000C',
+      checked: '#0A449B',
+      checkedHover: '#0A2F6C',
+      checkedDisabled: '#0000003F',
+    },
+    tooltip: {
+      neutral: {
+        background: '#FFFFFF',
+        text: '#333D42',
+      },
+      inverted: {
+        background: '#333D42',
+        text: '#FFFFFF',
+      },
+      primary: {
+        background: '#0A449B',
+        text: '#FFFFFF',
+      },
+    },
+    divider: '#00000033',
+    label: '#5C6C74',
+    shimmer: {
+      background: '#00000008',
+      gradientOverlay:
+        'linear-gradient(to right, #00000000, #00000005 20%, #0000000f 50%, #00000008 70%, #00000000 100%)',
+    },
   },
 };
+
+type NewThemeType = typeof newTheme;
+
+declare module 'styled-components' {
+  export type DefaultTheme = NewThemeType
+}
+
+export const theme = newTheme;
+
 export type Theme = typeof theme;

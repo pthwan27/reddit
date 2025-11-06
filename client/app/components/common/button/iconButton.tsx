@@ -1,35 +1,26 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 
-import styled from 'styled-components';
+import styled, { DefaultTheme, css } from 'styled-components';
 
+type ButtonVariant = 'neutral' | 'primary' | 'outlined';
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: ReactNode;
   value?: string;
-  isSolid?: boolean;
-  bgColor?: string;
-  hoverColor?: string;
-  borderColor?: string;
-  hoverBorderColor?: string;
+  variant?: ButtonVariant;
   font?: string;
   fontColor?: string;
   width?: string;
   height?: string;
   radius?: string;
-
   justifyContent?: string;
 }
 
 const IconButton = ({
   icon,
   value,
-  onClick,
-  isSolid = false,
-  bgColor,
-  hoverColor,
-  borderColor = 'darkBorder',
-  hoverBorderColor = 'darkborder',
+  variant = 'neutral',
   font = '14',
-  fontColor = 'text',
+  fontColor,
   width = 'auto',
   height = 'auto',
   radius,
@@ -38,12 +29,7 @@ const IconButton = ({
 }: IconButtonProps) => {
   return (
     <StyledButton
-      onClick={onClick}
-      $isSolid={isSolid}
-      $bgColor={bgColor}
-      $hoverColor={hoverColor}
-      $borderColor={borderColor}
-      $hoverBorderColor={hoverBorderColor}
+      $variant={variant}
       $font={font}
       $fontColor={fontColor}
       $width={width}
@@ -58,12 +44,50 @@ const IconButton = ({
   );
 };
 
+const getVariantStyles = (
+  variant: ButtonVariant,
+  theme: DefaultTheme,
+  fontColor?: string
+) => {
+  switch (variant) {
+    case 'primary':
+      return css`
+        background-color: ${theme.colors.primary.background};
+        color: ${fontColor || theme.colors.primary.onBackground};
+        border: transparent;
+
+        &:hover {
+          background-color: ${theme.colors.primary.backgroundHover};
+          border: transparent;
+        }
+      `;
+    case 'outlined':
+      return css`
+        background-color: transparent;
+        color: ${fontColor || theme.colors.secondary.plain};
+        border: var(--line-sm) solid ${theme.components.button.border.default};
+
+        &:hover {
+          border-color: ${theme.components.button.border.hover};
+        }
+      `;
+    case 'neutral':
+    default:
+      return css`
+        background-color: ${theme.colors.neutral.background};
+        color: ${fontColor || theme.colors.neutral.contentStrong};
+        border: none;
+
+        &:hover {
+          border: none;
+          background-color: ${theme.colors.neutral.backgroundHover};
+        }
+      `;
+  }
+};
+
 const StyledButton = styled.button<{
-  $isSolid?: boolean;
-  $bgColor?: string;
-  $hoverColor?: string;
-  $borderColor?: string;
-  $hoverBorderColor?: string;
+  $variant: ButtonVariant;
   $font?: string;
   $fontColor?: string;
   $width?: string;
@@ -74,68 +98,30 @@ const StyledButton = styled.button<{
   display: flex;
   align-items: center;
   justify-content: ${({ $justifyContent }) => $justifyContent || ''};
+
   gap: var(--spacer-xs);
   padding: var(--spacer-2xs) var(--spacer-md);
   cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s;
 
-  /* 높이 설정 */
   height: ${({ $height }) => $height || 'auto'};
-
-  /* 넓이 설정 */
   width: ${({ $width }) => $width || 'auto'};
-
-  /* 기본 폰트 색상*/
-  color: ${({ theme, $fontColor }) =>
-    $fontColor
-      ? theme.colors[$fontColor as keyof typeof theme.colors]
-      : theme.colors.text};
-
-  /* 기본 테두리 스타일 */
-  border: ${({ $isSolid, $borderColor, theme }) =>
-    $isSolid
-      ? `var(--line-sm) solid ${theme.colors[$borderColor as keyof typeof theme.colors] || theme.colors.darkBorder}`
-      : 'none'};
-
-  /* 테두리 반경 */
   border-radius: ${({ $radius }) => $radius || 'var(--radius-md)'};
+  font: ${({ $font }) => `var(--font-${$font})`};
 
-  /* 기본 배경색 */
-  background: ${({ $bgColor, theme }) => {
-    if (!$bgColor) return 'transparent';
-    return theme.colors[$bgColor as keyof typeof theme.colors] || 'transparent';
-  }};
+  /* 5. variant에 따라 스타일을 동적으로 적용합니다. */
+  ${({ $variant, theme, $fontColor }) =>
+    getVariantStyles($variant, theme, $fontColor)}
 
-  /* 호버 스타일 */
-  &:hover {
-    /* 호버 배경색 */
-    background: ${({ $hoverColor, theme }) => {
-      if (!$hoverColor) return theme.colors.contentHover;
-      return (
-        theme.colors[$hoverColor as keyof typeof theme.colors] ||
-        theme.colors.contentHover
-      );
-    }};
-
-    /* 호버 테두리 */
-    border: ${({ $isSolid, $hoverBorderColor, theme }) =>
-      $isSolid
-        ? `var(--line-sm) solid ${
-            theme.colors[$hoverBorderColor as keyof typeof theme.colors] ||
-            'transparent'
-          }`
-        : 'none'};
-  }
-
-  /* 비활성화 스타일 */
   &:disabled {
-    background: ${({ theme }) => theme.colors.disabled};
-    color: ${({ theme }) => theme.colors.disabledText};
-    border-color: ${({ theme }) => theme.colors.disabled};
+    background: ${({ theme }) => theme.colors.interactive.backgroundDisabled};
+    color: ${({ theme }) => theme.colors.interactive.contentDisabled};
+    border-color: transparent;
     cursor: not-allowed;
   }
-
-  /* 글꼴 */
-  font: ${({ $font }) => `var(--font-${$font})`};
 
   span {
     display: flex;
@@ -150,6 +136,7 @@ const IconBox = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
+
   width: var(--rem-32);
   height: var(--rem-32);
 

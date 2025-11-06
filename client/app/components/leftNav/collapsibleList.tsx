@@ -21,12 +21,12 @@ const CollapsibleList = ({
 
   return (
     <StyledCollapsibleList>
-      <Header onClick={() => setIsOpen(!isOpen)}>
+      <ToggleButton onClick={() => setIsOpen(!isOpen)}>
         <span>{title}</span>
         <ArrowWrapper $isOpen={isOpen}>
           <DownArrowIcon />
         </ArrowWrapper>
-      </Header>
+      </ToggleButton>
 
       <ContentWrapper $isOpen={isOpen}>{children}</ContentWrapper>
     </StyledCollapsibleList>
@@ -37,7 +37,7 @@ const StyledCollapsibleList = styled.div`
   width: 100%;
 `;
 
-const Header = styled.button`
+const ToggleButton = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -46,8 +46,12 @@ const Header = styled.button`
   letter-spacing: 0.1em;
 
   width: 100%;
+  height: var(--rem-40);
   font: var(--font-12);
-  color: ${({ theme }) => theme.colors.neutralContentWeak};
+
+  border: none;
+
+  color: ${({ theme }) => theme.colors.secondary.weak};
   text-transform: uppercase;
 
   margin-bottom: var(--spacer-xs);
@@ -58,8 +62,10 @@ const Header = styled.button`
   }
 
   &:hover {
-    background: ${({ theme }) => theme.colors.contentHover};
+    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
     border-radius: var(--radius-md);
+
+    border: none;
   }
 `;
 

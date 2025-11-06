@@ -77,7 +77,7 @@ const StyledHighlightToggle = styled.div<{ $isHighlightView: boolean }>`
 `;
 const StyledHighlightPostList = styled.div`
   height: 200px;
-  background-color: lightgray;
+  background: lightgray;
 
   margin-bottom: var(--spacer-xs);
 `;

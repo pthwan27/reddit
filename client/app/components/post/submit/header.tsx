@@ -45,7 +45,7 @@ const StyledPostSubmitHeader = styled.header`
   h1 {
     padding: var(--spacer-4xs);
     font: var(--font-title-h2);
-    color: ${({ theme }) => theme.colors.naturalText};
+    color: ${({ theme }) => theme.colors.neutral.contentStrong};
   }
 `;
 const TitleSection = styled.div`

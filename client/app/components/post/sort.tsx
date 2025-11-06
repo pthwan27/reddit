@@ -20,8 +20,10 @@ const PostSort = ({
   return (
     <StyledSortDiv ref={wrapperRef}>
       <SortButton onClick={() => setIsSelecting((e) => !e)}>
-        {sortOption}
-        <DownArrowIcon />
+        <span>{sortOption}</span>
+        <span>
+          <DownArrowIcon />
+        </span>
       </SortButton>
 
       <DropdownMenu $isSelecting={isSelecting}>
@@ -48,19 +50,42 @@ const StyledSortDiv = styled.div`
 
 const SortButton = styled.button`
   display: flex;
-  align-items: center;
+
+  gap: var(--spacer-2xs);
 
   font: var(--font-12-16-semibold);
-  color: ${({ theme }) => theme.colors.neutralContentWeak};
+  color: ${({ theme }) => theme.colors.neutral.contentWeak};
 
-  svg {
-    fill: ${({ theme }) => theme.colors.neutralContentWeak};
-    width: var(--rem-16);
-    height: var(--rem-16);
+  border: none;
+
+  padding: 0 6px 0 10px;
+
+  span {
+    display: flex;
+    align-items: center;
+    height: var(--rem-32);
+
+    svg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: var(--rem-32);
+      fill: ${({ theme }) => theme.colors.neutral.contentWeak};
+      width: var(--rem-16);
+      height: var(--rem-16);
+    }
+  }
+
+  span:first-child {
+    padding-top: var(--spacer-4xs);
+  }
+
+  &:focus {
   }
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.contentHover};
+    border: none;
+    background: ${({ theme }) => theme.colors.secondary.backgroundHover};
   }
 `;
 
@@ -73,8 +98,8 @@ const DropdownMenu = styled.ul<{ $isSelecting: boolean }>`
 
   overflow-y: auto;
 
-  background: ${({ theme }) => theme.colors.background};
-  border: var(--line-sm) solid ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.neutral.background};
+  border: var(--line-sm) solid ${({ theme }) => theme.colors.neutral.border};
 
   border-radius: var(--radius-md);
   box-shadow: var(--box-shadow);
@@ -95,10 +120,10 @@ const DropdownItem = styled.li`
   cursor: pointer;
 
   font: var(--font-12-16-semibold);
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.global.black};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.contentHover};
+    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
   }
 
   span {

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
-import { validaionCheck } from '@/app/utils/validationCheck';
+import { validationCheck } from '@/app/utils/validationCheck';
 
 import { useSubStore } from '@/app/store/subStore';
 
@@ -36,11 +36,11 @@ const CreateSubContainer = () => {
   const [iconPreview, setIconPreview] = useState<string | null>(null);
 
   const titleValidation = useMemo(
-    () => validaionCheck(title, 'subTitle'),
+    () => validationCheck(title, 'subTitle'),
     [title]
   );
   const descValidtiaon = useMemo(
-    () => validaionCheck(description, 'subDesc'),
+    () => validationCheck(description, 'subDesc'),
     [description]
   );
 
@@ -237,7 +237,7 @@ const CreateSubInfoBox = styled.div`
 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
 `;
 
 const StyledBanner = styled.div<{ $isSelected: boolean }>`
@@ -247,7 +247,7 @@ const StyledBanner = styled.div<{ $isSelected: boolean }>`
 
   background: ${({ $isSelected }) => ($isSelected ? '#fceee8' : 'transparent')};
 
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   overflow: hidden;
 
   img {
@@ -364,7 +364,7 @@ const ButtonContainer = styled.div`
   }
   button:nth-child(2) {
     background: ${({ theme }) => theme.colors.secondaryLight};
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.global.white};
 
     &:hover {
       background: ${({ theme }) => theme.colors.secondary};
@@ -373,7 +373,7 @@ const ButtonContainer = styled.div`
 `;
 
 const ErrorMessage = styled.div`
-  color: ${({ theme }) => theme.colors.error || '#ff6b6b'};
+  color: ${({ theme }) => theme.colors.global.error || '#ff6b6b'};
   font: var(--font-14);
   text-align: center;
   margin: var(--spacer-xs) 0;

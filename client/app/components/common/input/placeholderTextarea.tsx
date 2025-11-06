@@ -120,7 +120,7 @@ const PlaceHolderInputDiv = styled.div<{
   $lineWidth: 'sm' | 'md' | 'lg';
 }>`
   position: relative;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
 
   border: var(--line-${({ $lineWidth }) => $lineWidth}) solid
     ${({ theme, $borderColor }) =>

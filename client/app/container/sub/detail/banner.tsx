@@ -44,11 +44,11 @@ const BannerBox = styled.div`
   width: 100%;
   height: 100%;
 
-  background-color: ${({ theme }) => theme.colors.darkgrayBackground};
+  background: ${({ theme }) => theme.colors.darkgrayBackground};
 
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 50%;
+  neutral.background-repeat: no-repeat;
+  neutral.background-size: cover;
+  neutral.background-position: 50%;
 
   img {
     width: 100%;
@@ -85,7 +85,7 @@ const EditIcon = styled.div`
   cursor: pointer;
   z-index: 10;
 
-  background-color: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.neutral.background};
   mix-blend-mode: normal;
 
   &:hover {

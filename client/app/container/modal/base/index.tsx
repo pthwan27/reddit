@@ -109,9 +109,9 @@ const ModalBackground = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: ${({ theme }) => theme.colors.overlay || 'rgba(0,0,0,0.3)'};
+  background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(0.25rem);
-  opacity: 0.25;
+  opacity: 0.5;
   z-index: 1;
 `;
 
@@ -121,8 +121,8 @@ const Modal = styled.div<{ $width?: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: ${({ theme }) => theme.colors.background};
-  border-radius: var(--radius-lg);
+  background: ${({ theme }) => theme.colors.neutral.background};
+  border-radius: var(--radius-xl);
 
   width: 100%;
   max-width: ${({ $width }) => $width};
@@ -162,11 +162,17 @@ const HeaderInfo = styled.div`
 `;
 
 const ModalCloseButton = styled.button`
-  background: ${({ theme }) => theme.colors.grayBackground};
+  display: flex;
+
+  border: none;
+  background: ${({ theme }) =>
+    theme.components.button.secondary.background.default};
   padding: var(--spacer-xs);
 
   &:hover {
-    background: ${({ theme }) => theme.colors.grayHover};
+    border: none;
+    background: ${({ theme }) =>
+      theme.components.button.secondary.background.hover};
   }
 `;
 

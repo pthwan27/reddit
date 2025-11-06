@@ -28,8 +28,8 @@ const StyledDropdownMenu = styled.div<{ $isDropdownOpen: boolean }>`
   padding: var(--spacer-md) 0;
   width: 200px;
 
-  background: ${({ theme }) => theme.colors.background};
-  border: var(--line-sm) solid ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.neutral.background};
+  border: var(--line-sm) solid ${({ theme }) => theme.colors.neutral.border};
   border-radius: var(--radius-md);
   box-shadow: var(--box-shadow);
 
@@ -56,11 +56,11 @@ const DropdownItem = styled.div`
   white-space: nowrap;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.grayBackground};
+    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
   }
 
   span {
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.default.secondary};
   }
 `;
 

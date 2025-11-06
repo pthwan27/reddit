@@ -23,6 +23,6 @@ const AuthModalContainer = () => {
 
 const AuthModal = styled.div`
   width: 100%;
-  padding: 0 var(--spacer-4xl);
+  padding: 0 var(--spacer-5xl);
 `;
 export default AuthModalContainer;

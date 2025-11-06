@@ -1,30 +1,15 @@
-import { useTheme } from "styled-components";
-
-interface SearchIconProps {
-  width?: number;
-  height?: number;
-}
-
-const SearchIcon = ({ width = 16, height = 16 }: SearchIconProps) => {
-  const theme = useTheme();
-
+const SearchIcon = () => {
   return (
-    <svg width={width} height={height} fill="none" viewBox="0 0 20 20">
-      <circle
-        cx="9"
-        cy="9"
-        r="7"
-        stroke={theme.colors.text}
-        strokeWidth="1.5"
-      />
-      <line
-        x1="14"
-        y1="14"
-        x2="19"
-        y2="19"
-        stroke={theme.colors.text}
-        strokeWidth="1.5"
-      />
+    <svg
+      aria-hidden="true"
+      fill="currentColor"
+      height="16"
+      icon-name="search-outline"
+      viewBox="0 0 20 20"
+      width="16"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M18.736 17.464l-3.483-3.483A7.961 7.961 0 0016.999 9 8 8 0 109 17a7.961 7.961 0 004.981-1.746l3.483 3.483a.9.9 0 101.272-1.273zM9 15.2A6.207 6.207 0 012.8 9c0-3.419 2.781-6.2 6.2-6.2s6.2 2.781 6.2 6.2-2.781 6.2-6.2 6.2z"></path>
     </svg>
   );
 };

@@ -84,11 +84,19 @@ const PlaceHolderInput = ({
           {isExtraContainerVisible && (
             <ExtraIconsContainer id="Extra-icons-container">
               <ExtraIconsValidation id="Extra-icons-validation">
-                {validationState === 'invalid' && <ErrorIcon />}
+                {validationState === 'invalid' && (
+                  <div style={{ width: 20, height: 20 }}>
+                    <ErrorIcon />
+                  </div>
+                )}
 
-                {validationState === 'valid' && <ValidIcon />}
+                {validationState === 'valid' && (
+                  <div style={{ width: 20, height: 20 }}>
+                    <ValidIcon />
+                  </div>
+                )}
 
-                {(validationState === 'none' || false) && (
+                {validationState === 'none' && (
                   <div style={{ width: 20, height: 20 }} />
                 )}
               </ExtraIconsValidation>
@@ -96,7 +104,9 @@ const PlaceHolderInput = ({
               <ExtraIconsGeneral id="Extra-icons-general">
                 {ExtraIcon}
                 {clearButton && (
-                  <ClearButton onClick={handleClear}>✕</ClearButton>
+                  <ClearButton type="button" onClick={() => handleClear()}>
+                    ✕
+                  </ClearButton>
                 )}
               </ExtraIconsGeneral>
             </ExtraIconsContainer>
@@ -125,14 +135,14 @@ const PlaceHolderInputDiv = styled.div<{
   align-items: center;
   position: relative;
 
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
 
   border: var(--line-${({ $lineWidth }) => $lineWidth}) solid
     ${({ theme, $borderColor }) =>
       theme.colors[$borderColor as keyof typeof theme.colors] || 'transparent'};
 
   background: ${({ $bgColor, theme }) => {
-    if (!$bgColor) return theme.colors.grayBackground;
+    if (!$bgColor) return theme.components.input.secondary.default;
     return theme.colors[$bgColor as keyof typeof theme.colors] || 'transparent';
   }};
 
@@ -143,7 +153,7 @@ const PlaceHolderInputDiv = styled.div<{
         'transparent'};
 
     background: ${({ $hoverColor, theme }) => {
-      if (!$hoverColor) return theme.colors.grayHover;
+      if (!$hoverColor) return theme.components.input.secondary.hover;
       return (
         theme.colors[$hoverColor as keyof typeof theme.colors] || 'transparent'
       );
@@ -152,14 +162,14 @@ const PlaceHolderInputDiv = styled.div<{
 
   &:focus-within {
     background: ${({ $bgColor, theme }) => {
-      if (!$bgColor) return theme.colors.grayBackground;
+      if (!$bgColor) return theme.components.input;
       return theme.colors[$bgColor as keyof typeof theme.colors];
     }};
 
     border: var(--line-md) solid
       ${({ theme, $focusBorderColor }) =>
         theme.colors[$focusBorderColor as keyof typeof theme.colors] ||
-        theme.colors.secondaryLight};
+        theme.colors.default.primary};
   }
 `;
 
@@ -195,7 +205,7 @@ const PlaceHolderSpan = styled.span<{ $isFloated: boolean }>`
   font: ${({ $isFloated }) =>
     $isFloated ? 'var(--font-12)' : 'var(--font-16)'};
   padding: 0 var(--spacer-md);
-  color: ${({ theme }) => theme.colors.textMuted};
+  color: ${({ theme }) => theme.components.label || '#5C6C74'};
   z-index: 1;
   transition: all 0.2s;
 `;
@@ -239,11 +249,12 @@ const ClearButton = styled.button`
   border: none;
   border-radius: 50%;
   background: none;
-  color: ${({ theme }) => theme.colors?.textMuted || '#666'};
+
+  color: ${({ theme }) => theme.colors?.secondary.plain || '#666'};
   cursor: pointer;
 
   &:hover {
-    background: ${({ theme }) => theme.colors?.grayHover || '#f0f0f0'};
+    border: none;
   }
 `;
 

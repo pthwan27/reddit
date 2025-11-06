@@ -72,8 +72,10 @@ const GlobalStyle = createGlobalStyle`
   --radius-xs: 0.25rem;
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
-  --radius-lg: 1.25rem;
-  --radius-xl: 1.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 1.75rem;
   --radius-full: 624.9375rem;
 
 /* Font Styles */
@@ -152,25 +154,23 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     min-width: 100vw;
 
-    margin: 0;
-    padding: 0;
+    margin: 0 auto;
+    padding: 0px !important;
 
     font-family: var(--font-sans);
-    background: var(--background);
+    background: #FFFFFF;
     color: var(--text);
     line-height: 1.5;
   }
 
   /* 3. 링크 스타일 */
   a {
-    color: ${({ theme }) => theme.colors.link};
     
     text-decoration: none;
     cursor: pointer;
     transition: color 0.2s;
   }
   a:hover {
-    color: ${({ theme }) => theme.colors.linkHover};
     text-decoration: none;
   }
 
@@ -196,14 +196,18 @@ const GlobalStyle = createGlobalStyle`
   }
   
   button {
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-3xl);
+    background: ${({ theme }) => theme.colors.global.white};
+    border: solid ${({ theme }) => theme.components.button.borderWidth.default} transparent;
+
     cursor: pointer;
 
     text-wrap: nowrap;
 
     &:hover {
-      opacity: 0.95;
+      border: solid ${({ theme }) => theme.components.button.borderWidth.default} ${({ theme }) => theme.components.button.border.hover};
     }
+
     &:disabled {
       opacity: 0.6;
       cursor: not-allowed;
@@ -211,9 +215,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   input {
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-xl);
   }
-  
+  label {
+    border-color : transparent;
+  }
 
   /* 6. 이미지 반응형 */
   img {
@@ -242,6 +248,9 @@ const GlobalStyle = createGlobalStyle`
   hr {
     border: 0;
     border-bottom: 0.0625rem solid #00000019;
+  }
+  a{
+    color: ${({ theme }) => theme.colors.default.primary || '#115BCA'};
   }
 `;
 

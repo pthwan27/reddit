@@ -95,11 +95,10 @@ const Header = styled.header`
   width: 100%;
   height: var(--rem-56);
 
-  color: ${({ theme }) => theme.colors.naturalText};
-
-  background-color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.neutral.contentStrong};
+  background: ${({ theme }) => theme.colors.neutral.background};
   border-bottom: var(--line-sm) solid
-    ${({ theme }) => theme.colors.naturalBorder};
+    ${({ theme }) => theme.colors.neutral.border};
   padding: 0 var(--spacer-md);
 `;
 
@@ -163,12 +162,13 @@ const ProfileButton = styled.button`
 
   background: none;
   border: none;
-  padding: var(--spacer-xs) var(--spacer-sm);
-  border-radius: var(--radius-md);
+  padding: var(--spacer-2xs) var(--spacer-2xs);
+  border-radius: var(--radius-full);
   cursor: pointer;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.grayBackground};
+    border: none;
+    background: ${({ theme }) => theme.colors.secondary.backgroundHover};
   }
 `;
 const IconBox = styled.div<{ $isIcon?: boolean }>`
@@ -177,15 +177,15 @@ const IconBox = styled.div<{ $isIcon?: boolean }>`
   justify-content: center;
   position: relative;
 
-  width: var(--rem-24);
-  height: var(--rem-24);
+  width: var(--rem-32);
+  height: var(--rem-32);
 
-  min-width: var(--rem-24);
-  min-height: var(--rem-24);
+  min-width: var(--rem-32);
+  min-height: var(--rem-32);
 
   border-radius: var(--radius-full);
-  background-color: ${({ $isIcon, theme }) =>
-    $isIcon ? 'transparent' : theme.colors.dark};
+  background: ${({ $isIcon, theme }) =>
+    $isIcon ? 'transparent' : theme.colors.neutral.content};
   overflow: hidden;
 
   img {
@@ -199,11 +199,13 @@ const IconBox = styled.div<{ $isIcon?: boolean }>`
 `;
 
 const LoginButton = styled.button`
-  background: ${({ theme }) => theme.colors.primaryDark};
-  color: ${({ theme }) => theme.colors.white};
+  border: none;
+  background: ${({ theme }) => theme.colors.brand.background};
+  color: ${({ theme }) => theme.colors.global.white};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.primaryDarkHover};
+    border: none;
+    background: ${({ theme }) => theme.colors.brand.backgroundHover};
   }
 `;
 

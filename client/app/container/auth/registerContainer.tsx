@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 
-import { validaionCheck } from '@/app/utils/validationCheck';
+import { validationCheck } from '@/app/utils/validationCheck';
 
 import styled from 'styled-components';
 
@@ -24,15 +24,15 @@ const RegisterContainer = () => {
   const { register, setMode } = useAuth();
 
   const emailValidation = useMemo(
-    () => validaionCheck(email, 'email'),
+    () => validationCheck(email, 'email'),
     [email]
   );
   const nicknameValidation = useMemo(
-    () => validaionCheck(nickname, 'nickname'),
+    () => validationCheck(nickname, 'nickname'),
     [nickname]
   );
   const passwordValidation = useMemo(
-    () => validaionCheck(password, 'password'),
+    () => validationCheck(password, 'password'),
     [password]
   );
 
@@ -88,6 +88,7 @@ const RegisterContainer = () => {
         maxLength={33}
         required={true}
         onChange={(e) => setEmail(e.target.value)}
+        validationState={emailValidation as 'valid' | 'invalid' | 'none'}
       />
       <PlaceHolderInput
         label="닉네임을 입력하세요"
@@ -96,6 +97,7 @@ const RegisterContainer = () => {
         maxLength={20}
         required={true}
         onChange={(e) => setNickname(e.target.value)}
+        validationState={nicknameValidation as 'valid' | 'invalid' | 'none'}
       />
       <PlaceHolderInput
         label="비밀번호를 입력하세요"
@@ -104,6 +106,7 @@ const RegisterContainer = () => {
         maxLength={20}
         required={true}
         onChange={(e) => setPassword(e.target.value)}
+        validationState={passwordValidation as 'valid' | 'invalid' | 'none'}
       />
       <StyledHelper>
         <p>
@@ -150,12 +153,15 @@ const StyledTitle = styled.h2`
   font: var(--font-title-h2);
 `;
 const StyledDesc = styled.span`
-  font: var(--font-14-20-regular);
+  font: var(--font-14);
+  line-height: 1.25rem;
   text-align: center;
+
+  color: ${({ theme }) => theme.components.tooltip.neutral.text || '#333D42'};
 `;
 
 const ErrorMessage = styled.div`
-  color: ${({ theme }) => theme.colors.error || '#ff6b6b'};
+  color: ${({ theme }) => theme.colors.global.error || '#ff6b6b'};
   font: var(--font-14);
   text-align: center;
   margin: var(--spacer-xs) 0;
@@ -167,10 +173,12 @@ const StyledHelper = styled.div`
   width: 100%;
 
   font: var(--font-14);
+  color: ${({ theme }) => theme.components.tooltip.neutral.text || '#333D42'};
+
   gap: var(--spacer-xs);
+  padding: 0 var(--spacer-md);
 
   margin-top: var(--spacer-2xs);
   margin-bottom: var(--spacer-sm);
-  padding-top: var(--spacer-sm);
 `;
 export default RegisterContainer;

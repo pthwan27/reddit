@@ -14,7 +14,7 @@ const RightSideBar = ({ sub }: { sub: Sub }) => {
 
 const StyledRightSideBar = styled.aside`
   padding: var(--spacer-md) 0;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.global.orangered};
 `;
 
 export default RightSideBar;

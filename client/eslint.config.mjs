@@ -82,6 +82,8 @@ export default defineConfig([
           allow: ['warn', 'error'],
         },
       ],
+
+      '@typescript-eslint/no-empty-interface': 'warn',
     },
   },
 ]);

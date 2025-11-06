@@ -18,11 +18,11 @@ const LeftNavContainer = ({ isNavVisible, onToggleNav }: LeftNavProps) => {
 
   return (
     <LeftNav $isNavVisible={isNavVisible}>
-      <StyledButton $isNavVisible={isNavVisible} onClick={onToggleNav}>
+      <ToggleButton $isNavVisible={isNavVisible} onClick={onToggleNav}>
         <span>
           <MenuIcon />
         </span>
-      </StyledButton>
+      </ToggleButton>
 
       <LeftNavWrapper $isNavVisible={isNavVisible}>
         <MenuContainer>
@@ -47,7 +47,7 @@ const LeftNav = styled.div<{ $isNavVisible: boolean }>`
   width: var(--flex-nav-width);
 
   border-right: var(--line-sm) solid
-    ${({ theme }) => theme.colors.naturalBorder};
+    ${({ theme }) => theme.colors.neutral.border};
 
   display: none;
 
@@ -92,7 +92,7 @@ const MenuContainer = styled.div`
   flex-direction: column;
 `;
 
-const StyledButton = styled.button<{ $isNavVisible: boolean }>`
+const ToggleButton = styled.button<{ $isNavVisible: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -109,8 +109,10 @@ const StyledButton = styled.button<{ $isNavVisible: boolean }>`
   width: var(--rem-32);
   height: var(--rem-32);
 
-  background: ${({ theme }) => theme.colors.white};
-  border: var(--line-sm) solid ${({ theme }) => theme.colors.darkBorder};
+  background: ${({ theme }) => theme.colors.global.white};
+  border: solid ${({ theme }) => theme.components.button.borderWidth.default}
+    ${({ theme }) => theme.components.button.border.default};
+
   border-radius: var(--radius-full);
 
   transition: left 250ms cubic-bezier(0.65, 0, 0.35, 1);
@@ -121,6 +123,11 @@ const StyledButton = styled.button<{ $isNavVisible: boolean }>`
 
   @media (max-width: 1199px) {
     display: none;
+  }
+
+  &:hover {
+    border: solid ${({ theme }) => theme.components.button.borderWidth.default}
+      ${({ theme }) => theme.components.button.border.hover};
   }
 `;
 export default LeftNavContainer;

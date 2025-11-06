@@ -4,16 +4,16 @@ import SearchIcon from '../svgs/SearchIcon';
 
 const SearchInput = () => {
   return (
-    <StyledSearchInputDiv>
+    <StyledSearchInput>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
-      <StyledSearchInput placeholder="Search" />
-    </StyledSearchInputDiv>
+      <Input id="search-input" name="search-input" placeholder="Search" />
+    </StyledSearchInput>
   );
 };
 
-const StyledSearchInputDiv = styled.div`
+const StyledSearchInput = styled.label`
   position: relative;
 
   @media (min-width: 1200px) {
@@ -35,23 +35,24 @@ const SearchIconWrapper = styled.span`
   transform: translateY(-50%);
   display: flex;
   align-items: center;
-  pointer-events: cursor;
 `;
 
-const StyledSearchInput = styled.input`
+const Input = styled.input`
   width: 100%;
 
-  background: ${({ theme }) => theme.colors.grayBackground};
+  background: ${({ theme }) => theme.colors.secondary.background};
   border: var(--line-md) solid transparent;
   padding-left: var(--spacer-2-5xl);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-3xl);
+
+  &:focus {
+    border: var(--line-md) solid ${({ theme }) => theme.colors.default.primary};
+    background: 0 0;
+  }
 
   &:active,
-  &:focus {
-    border: var(--line-md) solid ${({ theme }) => theme.colors.secondaryLight};
-  }
   &:hover {
-    background: ${({ theme }) => theme.colors.grayHover};
+    background: ${({ theme }) => theme.colors.secondary.backgroundHover};
   }
 `;
 

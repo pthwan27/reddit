@@ -13,7 +13,12 @@ const CommonContainer = () => {
 
   return (
     <>
-      <IconButton icon={<HomeIcon />} value={'홈'} onClick={goToHome} />
+      <IconButton
+        variant="neutral"
+        icon={<HomeIcon />}
+        value={'홈'}
+        onClick={goToHome}
+      />
       <IconButton icon={<ArrowIcon />} value={'인기'} />
     </>
   );

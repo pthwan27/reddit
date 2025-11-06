@@ -9,16 +9,23 @@ const AuthButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
 const StyledButton = styled.button`
   width: 100%;
   margin-top: var(--spacer-xs);
-  border: var(--line-md) solid ${({ theme }) => theme.colors.border};
-  background: ${({ theme }) => theme.colors.primaryDark};
-  color: ${({ theme }) => theme.colors.white};
+
+  border: var(--line-md) solid
+    ${({ theme }) => theme.colors.interactive.backgroundDisabled};
+  background: ${({ theme }) => theme.colors.brand.background};
+  color: ${({ theme }) => theme.colors.global.white};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.primaryDarkHover};
+    border: var(--line-md) solid
+      ${({ theme }) => theme.colors.brand.backgroundHover};
+    background: ${({ theme }) => theme.colors.brand.backgroundHover};
   }
+
   &:disabled {
-    background: ${({ theme }) => theme.colors.disabled};
-    color: ${({ theme }) => theme.colors.disabledText};
+    border: var(--line-md) solid
+      ${({ theme }) => theme.colors.interactive.backgroundDisabled};
+    background: ${({ theme }) => theme.colors.interactive.backgroundDisabled};
+    color: ${({ theme }) => theme.colors.interactive.contentDisabled};
   }
 `;
 

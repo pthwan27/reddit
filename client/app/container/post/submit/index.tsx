@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
 import { clientAxiosInstance } from '@/app/utils/axios';
-import { validaionCheck } from '@/app/utils/validationCheck';
+import { validationCheck } from '@/app/utils/validationCheck';
 
 import { useSubStore } from '@/app/store/subStore';
 
@@ -31,11 +31,11 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
   const [error, setError] = useState('');
 
   const titleValidation = useMemo(
-    () => validaionCheck(title, 'postTitle'),
+    () => validationCheck(title, 'postTitle'),
     [title]
   );
   const contentValidation = useMemo(
-    () => validaionCheck(content, 'postContent'),
+    () => validationCheck(content, 'postContent'),
     [content]
   );
 
@@ -105,11 +105,8 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
         <PostSubmitButtons>
           <IconButton
             value="제출하기"
-            isSolid={false}
-            bgColor="secondaryLight"
-            hoverColor="secondaryDark"
             fontColor="white"
-            radius="var(--radius-lg)"
+            radius="var(--radius-xl)"
             height="38px"
             width="fit-content"
             onClick={handleSubmit}
@@ -171,7 +168,7 @@ const PostSubmitButtons = styled.div`
 `;
 
 const ErrorMessage = styled.div`
-  color: ${({ theme }) => theme.colors.error || '#ff6b6b'};
+  color: ${({ theme }) => theme.colors.global.error || '#ff6b6b'};
   font: var(--font-14);
   text-align: center;
   margin: var(--spacer-xs) 0;

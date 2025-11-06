@@ -190,7 +190,7 @@ const SearchInput = styled.input`
 
   border: var(--line-md) solid ${({ theme }) => theme.colors.grayBackground};
 
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
 
   font: var(--font-14-20-regular);
   color: ${({ theme }) => theme.colors.dark};
@@ -252,7 +252,7 @@ const SelectedTag = styled.button<{ $isLoading: boolean }>`
   background: ${({ theme }) => theme.colors.grayBackground};
   border: var(--line-md) solid transparent;
 
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
 
   font: var(--font-14);
 
@@ -273,8 +273,8 @@ const IconBox = styled.div<{ $isIcon?: boolean }>`
   min-height: var(--rem-24);
 
   border-radius: var(--radius-full);
-  background-color: ${({ $isIcon, theme }) =>
-    $isIcon ? 'transparent' : theme.colors.dark};
+  background: ${({ $isIcon, theme }) =>
+    $isIcon ? 'transparent' : theme.colors.neutral.content};
   overflow: hidden;
 
   img {
@@ -308,8 +308,8 @@ const DropdownMenu = styled.ul<{ $isSearching: boolean }>`
 
   overflow-y: auto;
 
-  background: ${({ theme }) => theme.colors.background};
-  border: var(--line-sm) solid ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.neutral.background};
+  border: var(--line-sm) solid ${({ theme }) => theme.colors.neutral.border};
 
   border-radius: var(--radius-md);
   box-shadow: var(--box-shadow);
@@ -330,7 +330,7 @@ const DropdownItem = styled.li`
   cursor: pointer;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.contentHover};
+    background: ${({ theme }) => theme.colors.contentHover};
   }
 
   span {

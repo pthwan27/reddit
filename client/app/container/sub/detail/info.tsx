@@ -64,28 +64,26 @@ const SubInfosContainer = ({
           <IconButton
             icon={<PlusIcon />}
             value="게시물 만들기"
-            isSolid={true}
             height="38px"
-            radius="var(--radius-lg)"
+            radius="var(--radius-xl)"
             onClick={() => goToCreatePost()}
+            variant="outlined"
           />
           <IconButton
             value="임시 버튼"
-            isSolid={false}
-            bgColor="secondaryLight"
-            hoverColor="secondaryDark"
             fontColor="white"
-            radius="var(--radius-lg)"
+            radius="var(--radius-xl)"
             height="38px"
+            variant="primary"
           />
 
           <IconButton
             icon={<EtcIcon />}
-            isSolid={true}
-            radius="var(--radius-lg)"
+            radius="var(--radius-xl)"
             width="40px"
             height="40px"
             justifyContent="center"
+            variant="outlined"
           />
         </Buttons>
       </ActionsBar>
@@ -167,8 +165,8 @@ const IconBox = styled.div<{ $isIcon?: boolean }>`
   flex-shrink: 0;
   aspect-ratio: 1 / 1;
 
-  background-color: ${({ theme }) => theme.colors.background};
-  border: var(--line-lg) solid ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.neutral.background};
+  border: var(--line-lg) solid ${({ theme }) => theme.colors.global.white};
   border-radius: var(--radius-full);
 
   cursor: pointer;
@@ -183,12 +181,12 @@ const IconBox = styled.div<{ $isIcon?: boolean }>`
     width: 90%;
     height: 90%;
     border-radius: var(--radius-full);
-    background-color: ${({ $isIcon, theme }) =>
-      $isIcon ? 'transparent' : theme.colors.dark};
+    background: ${({ $isIcon, theme }) =>
+      $isIcon ? 'transparent' : theme.colors.neutral.content};
   }
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.darkgrayHover};
+    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
 
     img {
       filter: brightness(0.7);
@@ -220,7 +218,7 @@ const EditOverlay = styled.div`
   mix-blend-mode: hard-light;
 
   svg {
-    fill: ${({ theme }) => theme.colors.white};
+    fill: ${({ theme }) => theme.colors.global.white};
   }
 `;
 

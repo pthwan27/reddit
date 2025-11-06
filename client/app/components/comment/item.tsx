@@ -44,7 +44,7 @@ const SummaryInfo = styled.div`
 
   margin-left: var(--spacer-xs);
 
-  color: ${({ theme }) => theme.colors.naturalText};
+  color: ${({ theme }) => theme.colors.neutral.contentStrong};
   font: var(--font-12-16-semibold);
 
   span:nth-child(1) {
