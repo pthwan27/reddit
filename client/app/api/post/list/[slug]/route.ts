@@ -6,9 +6,9 @@ import { CustomError } from '@/app/types';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  context: { params: Promise<{ slug: string }> }
 ) {
-  const { slug } = await params;
+  const { slug } = await context.params;
 
   const searchParams = req.nextUrl.searchParams;
   const page = searchParams.get('page') || '0';
