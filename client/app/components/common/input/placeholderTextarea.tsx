@@ -127,7 +127,7 @@ const PlaceHolderInputDiv = styled.div<{
       theme.colors[$borderColor as keyof typeof theme.colors] || 'transparent'};
 
   background: ${({ $bgColor, theme }) => {
-    if (!$bgColor) return theme.colors.grayBackground;
+    if (!$bgColor) return theme.components.input.secondary.default;
     return theme.colors[$bgColor as keyof typeof theme.colors] || 'transparent';
   }};
 
@@ -138,7 +138,7 @@ const PlaceHolderInputDiv = styled.div<{
         'transparent'};
 
     background: ${({ $hoverColor, theme }) => {
-      if (!$hoverColor) return theme.colors.grayHover;
+      if (!$hoverColor) return theme.components.input.secondary.hover;
       return (
         theme.colors[$hoverColor as keyof typeof theme.colors] || 'transparent'
       );
@@ -147,14 +147,14 @@ const PlaceHolderInputDiv = styled.div<{
 
   &:focus-within {
     background: ${({ $bgColor, theme }) => {
-      if (!$bgColor) return theme.colors.grayBackground;
+      if (!$bgColor) return theme.components.input;
       return theme.colors[$bgColor as keyof typeof theme.colors];
     }};
 
     border: var(--line-md) solid
       ${({ theme, $focusBorderColor }) =>
         theme.colors[$focusBorderColor as keyof typeof theme.colors] ||
-        theme.colors.secondaryLight};
+        theme.colors.default.primary};
   }
 `;
 
@@ -181,7 +181,7 @@ const PlaceHolderSpan = styled.span<{ $isFloated: boolean }>`
   font: ${({ $isFloated }) =>
     $isFloated ? 'var(--font-12)' : 'var(--font-16)'};
   padding: 0 var(--spacer-md);
-  color: ${({ theme }) => theme.colors.textMuted};
+  color: ${({ theme }) => theme.components.label || '#5C6C74'};
   z-index: 1;
   transition: all 0.2s;
 `;
@@ -226,11 +226,12 @@ const ClearButton = styled.button`
   border: none;
   border-radius: 50%;
   background: none;
-  color: ${({ theme }) => theme.colors?.textMuted || '#666'};
+
+  color: ${({ theme }) => theme.colors?.secondary.plain || '#666'};
   cursor: pointer;
 
   &:hover {
-    background: ${({ theme }) => theme.colors?.grayHover || '#f0f0f0'};
+    border: none;
   }
 `;
 

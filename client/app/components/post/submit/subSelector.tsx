@@ -186,21 +186,19 @@ const SearchInput = styled.input`
 
   padding-left: var(--spacer-2-5xl);
 
-  background: ${({ theme }) => theme.colors.grayBackground};
+  background: ${({ theme }) => theme.colors.secondary.background};
 
-  border: var(--line-md) solid ${({ theme }) => theme.colors.grayBackground};
+  border: var(--line-md) solid
+    ${({ theme }) => theme.colors.secondary.background};
 
   border-radius: var(--radius-xl);
 
   font: var(--font-14-20-regular);
-  color: ${({ theme }) => theme.colors.dark};
+  color: ${({ theme }) => theme.components.button.secondary.text.default};
 
-  &:active,
   &:focus {
-    border: var(--line-md) solid ${({ theme }) => theme.colors.secondaryLight};
-  }
-  &:hover {
-    background: ${({ theme }) => theme.colors.grayHover};
+    border: var(--line-md) solid
+      ${({ theme }) => theme.colors.interactive.focused};
   }
 `;
 const ClearButtonWrapper = styled.button`
@@ -220,7 +218,7 @@ const ClearButtonWrapper = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: ${({ theme }) => theme.colors?.grayHover || '#f0f0f0'};
+    border: none;
   }
 
   svg {
@@ -249,15 +247,21 @@ const SelectedTag = styled.button<{ $isLoading: boolean }>`
   gap: var(--spacer-sm);
   padding: var(--spacer-xs) var(--spacer-sm);
 
-  background: ${({ theme }) => theme.colors.grayBackground};
-  border: var(--line-md) solid transparent;
+  background: ${({ theme }) => theme.colors.secondary.background};
+  border: var(--line-sm) solid transparent;
 
   border-radius: var(--radius-xl);
 
   font: var(--font-14);
 
   &:hover {
-    background: ${({ theme }) => theme.colors.grayHover};
+    border: var(--line-sm) solid
+      ${({ theme }) => theme.colors.secondary.backgroundHover};
+    background: ${({ theme }) => theme.colors.secondary.backgroundHover};
+  }
+
+  &:active {
+    background: ${({ theme }) => theme.gradients.pressed};
   }
 `;
 const IconBox = styled.div<{ $isIcon?: boolean }>`
@@ -330,7 +334,7 @@ const DropdownItem = styled.li`
   cursor: pointer;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.contentHover};
+    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
   }
 
   span {

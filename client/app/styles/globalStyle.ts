@@ -15,6 +15,8 @@ const GlobalStyle = createGlobalStyle`
   --rem-400: 25rem; 
   --rem-360: 22.5rem;
   --rem-320: 20rem;
+  --rem-304: 19rem;
+  --rem-288: 18rem;
   --rem-192: 12rem;
   --rem-144: 9rem;
   --rem-128: 8rem;
@@ -205,7 +207,7 @@ const GlobalStyle = createGlobalStyle`
     text-wrap: nowrap;
 
     &:hover {
-      border: solid ${({ theme }) => theme.components.button.borderWidth.default} ${({ theme }) => theme.components.button.border.hover};
+      border: solid ${({ theme }) => theme.components.button.borderWidth.default} transparent;
     }
 
     &:disabled {

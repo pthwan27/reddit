@@ -10,7 +10,7 @@ const CreateSubModalContainer = () => {
   return (
     <BaseModal
       modalkey={modalKey}
-      width="720px"
+      width="768px"
       headerInfo="Create a Community"
       headerSubInfo="커뮤니티를 만들어 보세요."
     >

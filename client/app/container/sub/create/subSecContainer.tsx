@@ -34,6 +34,7 @@ const SecCreateSubContainer = ({
 const InputBox = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: var(--spacer-md);
   width: 100%;
 `;

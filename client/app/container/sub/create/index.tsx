@@ -155,32 +155,39 @@ const CreateSubContainer = () => {
       <CreateSubMainContainer>
         <CreateInputBox>{inputBoxes[curInputBoxNum]}</CreateInputBox>
         <CreateSubInfoBox>
-          {curInputBoxNum > 0 && (
-            <StyledBanner $isSelected={!banner}>
-              {bannerPreview && <Image src={bannerPreview} alt="banner" fill />}
-            </StyledBanner>
-          )}
-          <StyledMain>
+          <InfoWrapper>
             {curInputBoxNum > 0 && (
-              <IconBox $isSelected={!icon}>
-                {iconPreview && <Image src={iconPreview} alt="icon" fill />}
-              </IconBox>
+              <StyledBanner $isSelected={!banner}>
+                {bannerPreview && (
+                  <Image src={bannerPreview} alt="banner" fill />
+                )}
+              </StyledBanner>
             )}
-            <InfoBox>
-              <span>r/{title}</span>
-              <span>1 멤버 ·온라인 접속자 1명</span>
-            </InfoBox>
-          </StyledMain>
-          <StyledDesc>
-            {description ? description : '내 커뮤니티 설명'}
-          </StyledDesc>
+            <StyledMain>
+              {curInputBoxNum > 0 && (
+                <IconBox $isSelected={!icon}>
+                  {iconPreview && <Image src={iconPreview} alt="icon" fill />}
+                </IconBox>
+              )}
+              <InfoBox>
+                <span>r/{title}</span>
+                <span>1 멤버 ·온라인 접속자 1명</span>
+              </InfoBox>
+            </StyledMain>
+            <StyledDesc>
+              {description ? description : '내 커뮤니티 설명'}
+            </StyledDesc>
+          </InfoWrapper>
         </CreateSubInfoBox>
       </CreateSubMainContainer>
+
+      <div style={{ marginBottom: '40px' }} />
 
       <CreateSubCarousel>
         <CarouselContainer>
           {inputBoxes.map((_, idx) => (
             <CarouselItem
+              type="button"
               key={idx}
               $isSelected={idx === curInputBoxNum}
               onClick={() => moveToSlide(idx, true)}
@@ -225,18 +232,27 @@ const CreateSubMainContainer = styled.div`
 const CreateInputBox = styled.div`
   display: flex;
   justify-content: center;
-  flex: 1 1 60%;
+
+  @media (min-width: 768px) {
+    flex: 0 0 404px;
+    width: 404px;
+  }
 `;
 const CreateSubInfoBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 0 0 40%;
 
   height: 100%;
 
+  @media (min-width: 768px) {
+    flex: 0 0 315px;
+    width: 315px;
+    padding: 0 var(--spacer-md);
+  }
+`;
+const InfoWrapper = styled.div`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
   border-radius: var(--radius-xl);
 `;
 
@@ -278,7 +294,7 @@ const IconBox = styled.div<{ $isSelected: boolean }>`
   min-height: var(--rem-48);
 
   background: ${({ $isSelected, theme }) =>
-    $isSelected ? theme.colors.primary : 'transparent'};
+    $isSelected ? theme.colors.global.moderator : 'transparent'};
 
   border-radius: var(--radius-full);
   overflow: hidden;
@@ -301,16 +317,19 @@ const InfoBox = styled.div`
   span:nth-child(1) {
     font: var(--font-20);
     margin-bottom: var(--spacer-xs);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: wrap;
   }
 
   span:nth-child(2) {
     font: var(--font-12);
-    color: ${({ theme }) => theme.colors.textMuted};
+    color: ${({ theme }) => theme.colors.secondary.plainWeak};
   }
 `;
 
 const StyledDesc = styled.div`
-  padding: var(--spacer-xs) var(--spacer-sm) var(--spacer-md);
+  padding: var(--spacer-sm) var(--spacer-sm) var(--spacer-md);
 
   width: 100%;
 
@@ -333,19 +352,23 @@ const CarouselContainer = styled.div`
   gap: var(--spacer-xs);
 `;
 
-const CarouselItem = styled.div<{ $isSelected: boolean }>`
+const CarouselItem = styled.button<{ $isSelected: boolean }>`
   width: var(--rem-8);
   height: var(--rem-8);
 
   background: ${({ $isSelected, theme }) =>
-    $isSelected ? theme.colors.text : theme.colors.darkgrayBackground};
+    $isSelected
+      ? theme.components.button.secondary.text.default
+      : theme.components.button.secondary.background.default};
 
   border-radius: var(--radius-full);
   cursor: pointer;
 
+  padding: 0;
+
   &:hover {
     background: ${({ $isSelected, theme }) =>
-      !$isSelected && theme.colors.darkgrayHover};
+      !$isSelected && theme.components.button.secondary.background.hover};
   }
 
   transition: all 0.4s;
@@ -356,18 +379,21 @@ const ButtonContainer = styled.div`
   gap: var(--spacer-xs);
 
   button:nth-child(1) {
-    background: ${({ theme }) => theme.colors.grayBackground};
+    background: ${({ theme }) =>
+      theme.components.button.secondary.background.default};
 
     &:hover {
-      background: ${({ theme }) => theme.colors.darkgrayBackground};
+      background: ${({ theme }) =>
+        theme.components.button.secondary.background.hover};
     }
   }
+
   button:nth-child(2) {
-    background: ${({ theme }) => theme.colors.secondaryLight};
+    background: ${({ theme }) => theme.colors.primary.background};
     color: ${({ theme }) => theme.colors.global.white};
 
     &:hover {
-      background: ${({ theme }) => theme.colors.secondary};
+      background: ${({ theme }) => theme.colors.primary.backgroundHover};
     }
   }
 `;

@@ -139,6 +139,8 @@ export const newTheme = {
     brandDefault:
       'linear-gradient(180deg, #D93900ff, #db3b00ff 30%, #AE2C00ff 100%)',
     media: 'linear-gradient(180deg, #00000000, #0000008a 60%, #00000099 100%)',
+    pressed:
+      'linear-gradient(#00000026, #00000026), linear-gradient(#dbe4e9, #dbe4e9)',
   },
   components: {
     button: {

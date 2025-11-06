@@ -7,23 +7,19 @@ import HeaderContainer from '@/app/container/headerContainer';
 
 const Login = () => {
   return (
-    <StyledAuthPage>
+    <LoginPage>
       <HeaderContainer noOption={true} />
       <AuthContainer />
-    </StyledAuthPage>
+    </LoginPage>
   );
 };
-const StyledAuthPage = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+const LoginPage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 
-  background: ${({ theme }) => theme.colors.darkgrayBackground};
+  width: 100vw;
+  height: 100vh;
 `;
 
 export default Login;

@@ -76,10 +76,10 @@ const InputBox = styled.div`
   cursor: pointer;
 
   width: 100%;
-  height: var(--rem-80);
+  height: var(--rem-48);
 
   &:hover {
-    background: ${({ theme }) => theme.colors.contentHover};
+    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
   }
 `;
 const StyledLabel = styled.label`
@@ -100,7 +100,7 @@ const SelectedFile = styled.div`
 
 const FileName = styled.span`
   font: var(--font-16);
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme }) => theme.colors.default.secondary};
 
   max-width: 23ch;
   text-overflow: ellipsis;
@@ -121,9 +121,8 @@ const PlaceholderText = styled.div`
 
   font: var(--font-16);
   padding: var(--spacer-2xs) var(--spacer-sm);
-  background: ${({ theme }) => theme.colors.grayHover};
-  color: ${({ theme }) => theme.colors.text};
-
+  background: ${({ theme }) => theme.colors.neutral.backgroundHover};
+  color: ${({ theme }) => theme.colors.default.secondary};
   border-radius: var(--radius-xl);
 
   span {

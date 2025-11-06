@@ -21,9 +21,9 @@ const PostInfos = ({ ...post }: Post) => {
         <span>•</span>
         <span>{formatTimeAgo(post.createdAt)}</span>
       </div>
-      <div>
+      <IconWrapper>
         <EtcIcon />
-      </div>
+      </IconWrapper>
     </StyledPostInfos>
   );
 };
@@ -49,19 +49,34 @@ const StyledPostInfos = styled.div`
     span:nth-child(2) {
       font: var(--font-12-16-bold);
 
-      color: ${({ theme }) => theme.colors.secondaryText};
+      color: ${({ theme }) => theme.colors.neutral.content};
     }
 
     span:nth-child(3),
     span:nth-child(4) {
-      color: ${({ theme }) => theme.colors.neutralContentWeak};
+      color: ${({ theme }) => theme.colors.neutral.contentWeak};
     }
+  }
+`;
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    svg {
-      width: var(--rem-16);
-      height: var(--rem-16);
-      fill: ${({ theme }) => theme.colors.secondaryText};
-    }
+  width: var(--rem-32);
+  height: var(--rem-32);
+
+  border-radius: var(--radius-full);
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.secondary.backgroundHover};
+  }
+
+  svg {
+    width: var(--rem-16);
+    height: var(--rem-16);
+
+    fill: ${({ theme }) => theme.colors.neutral.contentStrong};
   }
 `;
 

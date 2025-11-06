@@ -13,17 +13,14 @@ const HightlightPostList = ({
 }: HighlightListProps) => {
   return (
     <>
-      <StyledHighlightToggle
-        $isHighlightView={isHighlightView}
-        onClick={() => setIsHighlightView((e) => !e)}
-      >
+      <StyledHighlightToggle onClick={() => setIsHighlightView((e) => !e)}>
         <div>
           <PinIcon />
           <span>커뮤니티 하이라이트</span>
         </div>
-        <div>
+        <IconWrapper $isHighlightView={isHighlightView}>
           <DownArrowIcon />
-        </div>
+        </IconWrapper>
       </StyledHighlightToggle>
 
       {isHighlightView && <StyledHighlightPostList></StyledHighlightPostList>}
@@ -31,7 +28,7 @@ const HightlightPostList = ({
   );
 };
 
-const StyledHighlightToggle = styled.div<{ $isHighlightView: boolean }>`
+const StyledHighlightToggle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -46,7 +43,7 @@ const StyledHighlightToggle = styled.div<{ $isHighlightView: boolean }>`
 
   div {
     svg {
-      fill: ${({ theme }) => theme.colors.secondaryText};
+      fill: ${({ theme }) => theme.colors.neutral.contentStrong};
     }
   }
 
@@ -61,20 +58,37 @@ const StyledHighlightToggle = styled.div<{ $isHighlightView: boolean }>`
       line-height: 1.2;
     }
   }
-  div:nth-child(2) {
-    svg {
-      width: var(--rem-12);
-      height: var(--rem-12);
-    }
-    transform: ${({ $isHighlightView }) =>
-      $isHighlightView ? 'rotate(-180deg)' : 'rotate(0deg)'};
-  }
 
   &:hover {
-    background: ${({ theme }) => theme.colors.contentHover};
+    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
     border-radius: var(--radius-md);
   }
 `;
+const IconWrapper = styled.div<{ $isHighlightView: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: var(--rem-24);
+  height: var(--rem-24);
+
+  border-radius: var(--radius-full);
+
+  transform: ${({ $isHighlightView }) =>
+    $isHighlightView ? 'rotate(-180deg)' : 'rotate(0deg)'};
+
+  svg {
+    width: var(--rem-12);
+    height: var(--rem-12);
+
+    fill: ${({ theme }) => theme.colors.neutral.contentStrong};
+  }
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.secondary.backgroundHover};
+  }
+`;
+
 const StyledHighlightPostList = styled.div`
   height: 200px;
   background: lightgray;

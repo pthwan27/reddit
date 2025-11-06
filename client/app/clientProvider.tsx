@@ -5,7 +5,7 @@ import { ThemeProvider } from 'styled-components';
 import { AuthProvider } from './context/authContext';
 import { ModalProvider } from './context/modalContext';
 import GlobalStyle from './styles/globalStyle';
-import { theme } from './theme';
+import { newTheme } from './theme';
 
 export default function ClientProviders({
   children,
@@ -13,7 +13,7 @@ export default function ClientProviders({
   children: React.ReactNode;
 }) {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={newTheme}>
       <GlobalStyle />
       <AuthProvider>
         <ModalProvider>{children}</ModalProvider>
