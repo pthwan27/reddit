@@ -1,5 +1,13 @@
 'use client';
 
+declare module 'styled-components' {
+  export interface DefaultTheme {
+    colors: typeof newTheme.colors;
+    gradients: typeof newTheme.gradients;
+    components: typeof newTheme.components;
+  }
+}
+
 export const newTheme = {
   colors: {
     action: {
@@ -298,12 +306,4 @@ export const newTheme = {
   },
 };
 
-type NewThemeType = typeof newTheme;
-
-declare module 'styled-components' {
-  export type DefaultTheme = NewThemeType;
-}
-
-export const theme = newTheme;
-
-export type Theme = typeof theme;
+export type Theme = typeof newTheme;
