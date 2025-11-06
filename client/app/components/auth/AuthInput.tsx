@@ -8,15 +8,16 @@ const AuthInput = (props: InputHTMLAttributes<HTMLInputElement>) => {
 
 const StyledInput = styled.input`
   width: 88%;
-  border: var(--line-md) solid ${({ theme }) => theme.colors.grayBackground};
-  background: ${({ theme }) => theme.colors.grayBackground};
+  border: var(--line-md) solid
+    ${({ theme }) => theme.components.input.secondary.default};
+  background: ${({ theme }) => theme.components.input.secondary.default};
 
   &:active,
   &:focus {
-    border: var(--line-md) solid ${({ theme }) => theme.colors.secondaryLight};
+    border: var(--line-md) solid ${({ theme }) => theme.colors.default.primary};
   }
   &:hover {
-    background: ${({ theme }) => theme.colors.grayHover};
+    background: ${({ theme }) => theme.components.input.secondary.hover};
   }
 `;
 

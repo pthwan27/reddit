@@ -48,7 +48,7 @@ const UnauthorizedDiv = styled.div`
 
   div {
     text-align: center;
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.global.black};
 
     h2 {
       margin-bottom: var(--spacer-sm);
@@ -56,7 +56,7 @@ const UnauthorizedDiv = styled.div`
     }
 
     p {
-      color: ${({ theme }) => theme.colors.text};
+      color: ${({ theme }) => theme.colors.global.black};
     }
   }
 `;

@@ -56,8 +56,6 @@ const SummaryInfo = styled.div`
   }
   span:nth-child(3) {
     font: var(--font-12-16-regular);
-
-    color: ${({ theme }) => theme.colors.neutralContentWeak};
   }
 `;
 
