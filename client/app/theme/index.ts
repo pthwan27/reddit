@@ -111,6 +111,18 @@ export const newTheme = {
       secondary: '#21272A',
       scrim: '#00000099',
     },
+    tone: {
+      1: '#131313',
+      2: '#434343',
+      3: '#ACACAC',
+      4: '#E4E4E4',
+      5: '#F2F2F2',
+      6: '#F8F8F8',
+      7: '#ffffff',
+    },
+    ui: {
+      canvas: '#F6F8F9',
+    },
   },
   gradients: {
     avatar: 'linear-gradient(0deg, #97AFBCff, #ffffffff 75%)',
@@ -289,7 +301,7 @@ export const newTheme = {
 type NewThemeType = typeof newTheme;
 
 declare module 'styled-components' {
-  export type DefaultTheme = NewThemeType
+  export type DefaultTheme = NewThemeType;
 }
 
 export const theme = newTheme;
