@@ -34,7 +34,7 @@ app.get('/', (_: Request, res: Response) => {
   res.send('running');
 });
 
-const port = 4000;
+const port = 4040;
 
 app.listen(port, async () => {
   console.log(`🚀 Server ready at http://localhost:${port}`);

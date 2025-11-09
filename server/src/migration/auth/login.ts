@@ -40,7 +40,7 @@ export const LoginHandler: RequestHandler = async (req, res) => {
         username: user.username,
       },
       process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '15m' } // 15분
+      { expiresIn: '15m' } // 15분.
     );
 
     // 리프레시 토큰 생성 (긴 만료시간)

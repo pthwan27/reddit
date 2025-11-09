@@ -30,6 +30,7 @@ const MainContainer = ({ children }: { children: React.ReactNode }) => {
 
 const Main = styled.main<{ $isNavVisible: boolean }>`
   display: grid;
+  overflow-x: hidden;
 
   width: 100vw;
   height: 100vh;

@@ -16,19 +16,21 @@ export const usePostStore = create<PostStore>((set, get) => ({
 
   fetchPosts: async (slug: string) => {
     const { loading, page, hasMore } = get();
+    const LIMIT = 7;
+
     if (loading || !hasMore) return;
 
     set({ loading: true });
 
     try {
       const { data } = await clientAxiosInstance.get(
-        `/api/post/list/${slug}?page=${page}&limit=10`
+        `/api/post/list/${slug}?page=${page}&limit=${LIMIT}`
       );
 
       set((state) => ({
         posts: page === 0 ? data.posts : [...state.posts, ...data.posts],
         page: state.page + 1,
-        hasMore: data.posts.length > 0,
+        hasMore: data.posts.length === LIMIT,
         loading: false,
       }));
     } catch (error) {

@@ -52,7 +52,7 @@ const PostListContainer = ({ posts }: { posts: Post[] }) => {
 
       <hr />
       {posts.map((post, idx) => (
-        <PostWrapper key={post.id}>
+        <PostWrapper key={idx + post.identifier}>
           <PostItem post={post} />
           {idx < posts.length - 1 && <hr />}
         </PostWrapper>

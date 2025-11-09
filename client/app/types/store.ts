@@ -19,7 +19,7 @@ export type PostStore = {
   loading: boolean;
   page: number;
   hasMore: boolean;
-  fetchPosts: (slug: string) => Promise<void>;
+  fetchPosts: (slug: string, isInitial?: boolean) => Promise<void>;
   clearPosts: () => void;
   vote: (identifier: string, slug: string, value: number) => Promise<void>;
 };
