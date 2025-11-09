@@ -1,10 +1,11 @@
 import { InputHTMLAttributes, ReactNode, useState } from 'react';
 
-import styled from 'styled-components';
+import styled, { DefaultTheme, css } from 'styled-components';
 
 import ErrorIcon from '../../svgs/ErrorIcon';
 import ValidIcon from '../../svgs/ValidIcon';
 
+type InputVariant = 'neutral' | 'primary' | 'outlined';
 interface PlaceHolderTextareaProps
   extends InputHTMLAttributes<HTMLTextAreaElement> {
   label: string;
@@ -21,6 +22,7 @@ interface PlaceHolderTextareaProps
   hoverBorderColor?: string;
   focusBorderColor?: string;
   lineWidth?: 'sm' | 'md' | 'lg';
+  variant?: InputVariant;
 }
 
 const PlaceHolderTextarea = ({
@@ -35,13 +37,14 @@ const PlaceHolderTextarea = ({
   isExtraContainerVisible = true,
   onChange,
   validationState,
+  variant = 'primary',
 
   bgColor,
   hoverColor,
   borderColor,
   hoverBorderColor,
   focusBorderColor,
-  lineWidth = 'md',
+  lineWidth = 'sm',
 }: PlaceHolderTextareaProps) => {
   const [isFloated, setIsFloated] = useState(false);
 
@@ -54,8 +57,9 @@ const PlaceHolderTextarea = ({
   };
 
   return (
-    <StyledInputLabel>
-      <PlaceHolderInputDiv
+    <StyledTextareaLabel>
+      <PlaceHolderTextareaDiv
+        $variant={variant}
         $bgColor={bgColor}
         $hoverColor={hoverColor}
         $borderColor={borderColor}
@@ -66,7 +70,7 @@ const PlaceHolderTextarea = ({
         onBlur={() => setIsFloated(false)}
       >
         <BoundaryBox>
-          <InputContainer $hasLeadingIcon={!!leadingIcon}>
+          <TextareaContainer $hasLeadingIcon={!!leadingIcon}>
             <PlaceHolderSpan $isFloated={isFloated || Boolean(value)}>
               {label}
               {required && (
@@ -79,7 +83,7 @@ const PlaceHolderTextarea = ({
               maxLength={maxLength}
               onChange={onChange}
             />
-          </InputContainer>
+          </TextareaContainer>
           {isExtraContainerVisible && (
             <ExtraIconContainer id="Extra-icons-container">
               <ExtraIconsValidation id="Extra-icons-validation">
@@ -100,18 +104,67 @@ const PlaceHolderTextarea = ({
             </ExtraIconContainer>
           )}
         </BoundaryBox>
-      </PlaceHolderInputDiv>
-    </StyledInputLabel>
+      </PlaceHolderTextareaDiv>
+    </StyledTextareaLabel>
   );
 };
-const StyledInputLabel = styled.label`
+
+const getVariantStyles = (
+  variant: InputVariant,
+  theme: DefaultTheme,
+  fontColor?: string,
+  bgColor?: string,
+  lineWidth?: 'sm' | 'md' | 'lg'
+) => {
+  switch (variant) {
+    case 'primary':
+      return css`
+        background: ${bgColor || theme.components.input.secondary.default};
+        color: ${fontColor || theme.colors.neutral.contentStrong};
+        border: ${`var(--line-${lineWidth})`} solid transparent;
+
+        &:hover {
+          background: ${theme.components.input.secondary.hover};
+          border: ${`var(--line-${lineWidth})`} solid transparent;
+        }
+      `;
+
+    case 'outlined':
+      return css`
+        background: ${bgColor || theme.colors.secondary.background};
+        color: ${fontColor || theme.colors.secondary.plain};
+        border: var(--line-sm) solid ${theme.components.button.border.default};
+
+        &:hover {
+          background: ${theme.colors.neutral.backgroundHover};
+          border: var(--line-sm) solid ${theme.components.button.border.hover};
+        }
+      `;
+
+    case 'neutral':
+    default:
+      return css`
+        background: ${theme.colors.neutral.background};
+        color: ${fontColor || theme.colors.neutral.contentStrong};
+        border: none;
+
+        &:hover {
+          border: none;
+          background: ${theme.colors.neutral.backgroundHover};
+        }
+      `;
+  }
+};
+
+const StyledTextareaLabel = styled.label`
   position: relative;
   display: block;
   --left-label-position: 0px;
   width: 100%;
 `;
 
-const PlaceHolderInputDiv = styled.div<{
+const PlaceHolderTextareaDiv = styled.div<{
+  $variant: InputVariant;
   $bgColor?: string;
   $hoverColor?: string;
   $borderColor?: string;
@@ -122,28 +175,8 @@ const PlaceHolderInputDiv = styled.div<{
   position: relative;
   border-radius: var(--radius-xl);
 
-  border: var(--line-${({ $lineWidth }) => $lineWidth}) solid
-    ${({ theme, $borderColor }) =>
-      theme.colors[$borderColor as keyof typeof theme.colors] || 'transparent'};
-
-  background: ${({ $bgColor, theme }) => {
-    if (!$bgColor) return theme.components.input.secondary.default;
-    return theme.colors[$bgColor as keyof typeof theme.colors] || 'transparent';
-  }};
-
-  &:hover {
-    border: var(--line-${({ $lineWidth }) => $lineWidth}) solid
-      ${({ theme, $hoverBorderColor }) =>
-        theme.colors[$hoverBorderColor as keyof typeof theme.colors] ||
-        'transparent'};
-
-    background: ${({ $hoverColor, theme }) => {
-      if (!$hoverColor) return theme.components.input.secondary.hover;
-      return (
-        theme.colors[$hoverColor as keyof typeof theme.colors] || 'transparent'
-      );
-    }};
-  }
+  ${({ $variant, theme, $bgColor, $lineWidth }) =>
+    getVariantStyles($variant, theme, undefined, $bgColor, $lineWidth)}
 
   &:focus-within {
     background: ${({ $bgColor, theme }) => {
@@ -151,10 +184,11 @@ const PlaceHolderInputDiv = styled.div<{
       return theme.colors[$bgColor as keyof typeof theme.colors];
     }};
 
-    border: var(--line-md) solid
+    border: var(--line-sm) solid transparent;
+    outline: var(--line-md) solid
       ${({ theme, $focusBorderColor }) =>
         theme.colors[$focusBorderColor as keyof typeof theme.colors] ||
-        theme.colors.default.primary};
+        theme.colors.interactive.focused};
   }
 `;
 
@@ -166,7 +200,9 @@ const BoundaryBox = styled.span`
   width: 100%;
 `;
 
-const InputContainer = styled.span<{ $hasLeadingIcon: boolean }>`
+const TextareaContainer = styled.span<{ $hasLeadingIcon: boolean }>`
+  position: relative;
+
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -175,14 +211,18 @@ const InputContainer = styled.span<{ $hasLeadingIcon: boolean }>`
 `;
 
 const PlaceHolderSpan = styled.span<{ $isFloated: boolean }>`
-  position: ${({ $isFloated }) => ($isFloated ? 'relative' : 'absolute')};
-  top: ${({ $isFloated }) => ($isFloated ? '0' : '14%')};
+  position: absolute;
+  left: 0;
+
+  top: ${({ $isFloated }) => ($isFloated ? 'var(--spacer-xs)' : '10%')};
   transform: ${({ $isFloated }) => ($isFloated ? 'none' : 'translateY(-50%)')};
+
   font: ${({ $isFloated }) =>
     $isFloated ? 'var(--font-12)' : 'var(--font-16)'};
   padding: 0 var(--spacer-md);
   color: ${({ theme }) => theme.components.label || '#5C6C74'};
   z-index: 1;
+
   transition: all 0.2s;
 `;
 
@@ -193,12 +233,16 @@ const RequiredAsterisk = styled.span`
 `;
 
 const StyledTextarea = styled.textarea`
-  padding: 0 var(--spacer-md);
+  margin-top: calc(var(--spacer-lg) + 1px);
+  padding: 0 calc(var(--spacer-md) - 0.5px);
+
   font: var(--font-16);
   background: transparent;
   z-index: 2;
   resize: none;
   height: var(--rem-192);
+
+  overflow-y: auto;
 `;
 
 const ExtraIconContainer = styled.span`

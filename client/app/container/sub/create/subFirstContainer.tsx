@@ -18,15 +18,17 @@ const FirstCreateSubContainer = ({
   return (
     <InputBox>
       <PlaceHolderInput
+        variant="primary"
         label="커뮤니티 이름"
         value={title}
         type="text"
-        maxLength={21}
+        maxLength={19}
         required={true}
         isExtraContainerVisible={false}
         onChange={(e) => setTitle(e.target.value)}
       />
       <PlaceHolderTextarea
+        variant="primary"
         label="커뮤니티 설명"
         value={desc}
         maxLength={300}

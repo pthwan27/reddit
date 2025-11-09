@@ -46,6 +46,7 @@ const GlobalStyle = createGlobalStyle`
   --spacer-md: 1rem;
   --spacer-md-lg: 1.25rem;
   --spacer-lg: 1.5rem;
+  --spacer-xl: 1.75rem;
   --spacer-2xl: 2rem;
   --spacer-2-5xl: 2.5rem;
   --spacer-3xl: 3rem;

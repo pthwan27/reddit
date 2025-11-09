@@ -243,6 +243,7 @@ const CreateSubInfoBox = styled.div`
   flex-direction: column;
   align-items: center;
 
+  width: 90%;
   height: 100%;
 
   @media (min-width: 768px) {

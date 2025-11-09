@@ -65,7 +65,7 @@ export const newTheme = {
     interactive: {
       backgroundDisabled: '#0000000C',
       contentDisabled: '#0000003F',
-      focused: '#007FAE',
+      focused: '#0078D4',
       pressed: '#00000026',
     },
     neutral: {

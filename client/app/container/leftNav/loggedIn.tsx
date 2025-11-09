@@ -36,6 +36,7 @@ const LoggedInContainer = () => {
   return (
     <CollapsibleList title="커뮤니티">
       <IconButton
+        variant="neutral"
         icon={<PlusIcon />}
         value={'커뮤니티 만들기'}
         onClick={() => onOpenCreateSubModal()}
@@ -116,6 +117,8 @@ const IconBox = styled.div<{ $isIcon?: boolean }>`
   }
 `;
 
-const TitleBox = styled.span``;
+const TitleBox = styled.span`
+  color: ${({ theme }) => theme.colors.default.secondary};
+`;
 
 export default LoggedInContainer;

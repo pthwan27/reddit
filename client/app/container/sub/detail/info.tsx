@@ -64,17 +64,17 @@ const SubInfosContainer = ({
           <IconButton
             icon={<PlusIcon />}
             value="게시물 만들기"
-            height="38px"
             radius="var(--radius-xl)"
             onClick={() => goToCreatePost()}
             variant="outlined"
+            font="16-20-semibold"
           />
           <IconButton
             value="임시 버튼"
             fontColor="white"
             radius="var(--radius-xl)"
-            height="38px"
             variant="primary"
+            font="16-20-semibold"
           />
 
           <IconButton
@@ -98,10 +98,10 @@ const HeaderBottomSection = styled.section`
 
   height: var(--rem-128);
 
-  padding: 0 var(--spacer-sm);
+  padding: 0 var(--spacer-md);
 
   @media (min-width: 768px) {
-    top: -2.25rem;
+    top: -2rem;
     margin-bottom: -2.25rem;
     height: var(--rem-88);
   }
@@ -252,6 +252,7 @@ const Buttons = styled.span`
   display: flex;
 
   gap: var(--spacer-sm);
+  height: var(--rem-40);
 `;
 
 export default SubInfosContainer;

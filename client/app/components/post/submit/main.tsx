@@ -22,6 +22,7 @@ const PostSubmitMain = ({
       <InputTypeSelector></InputTypeSelector>
       <MainWrapper>
         <PlaceHolderInput
+          variant="outlined"
           value={title}
           type="text"
           label="제목"
@@ -35,6 +36,7 @@ const PostSubmitMain = ({
           required={true}
         />
         <PlaceHolderTextarea
+          variant="outlined"
           value={content}
           type="text"
           label="내용"

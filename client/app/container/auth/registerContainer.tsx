@@ -82,6 +82,7 @@ const RegisterContainer = () => {
         </StyledDesc>
       </StyledHeader>
       <PlaceHolderInput
+        variant="primary"
         label="이메일을 입력하세요"
         value={email}
         type="email"
@@ -91,6 +92,7 @@ const RegisterContainer = () => {
         validationState={emailValidation as 'valid' | 'invalid' | 'none'}
       />
       <PlaceHolderInput
+        variant="primary"
         label="닉네임을 입력하세요"
         value={nickname}
         type="text"
@@ -100,6 +102,7 @@ const RegisterContainer = () => {
         validationState={nicknameValidation as 'valid' | 'invalid' | 'none'}
       />
       <PlaceHolderInput
+        variant="primary"
         label="비밀번호를 입력하세요"
         value={password}
         type="password"

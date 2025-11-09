@@ -7,6 +7,7 @@ interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: ReactNode;
   value?: string;
   variant?: ButtonVariant;
+
   font?: string;
   fontColor?: string;
   width?: string;
@@ -52,20 +53,32 @@ const getVariantStyles = (
   switch (variant) {
     case 'primary':
       return css`
-        background-color: ${theme.colors.primary.background};
-        color: ${fontColor || theme.colors.primary.onBackground};
+        background: ${theme.colors.primary.background};
+        color: ${fontColor || theme.colors.secondary.plain};
         border: transparent;
 
+        div {
+          svg {
+            fill: ${fontColor || theme.colors.secondary.plain};
+          }
+        }
+
         &:hover {
-          background-color: ${theme.colors.primary.backgroundHover};
+          background: ${theme.colors.primary.backgroundHover};
           border: transparent;
         }
       `;
     case 'outlined':
       return css`
-        background-color: transparent;
+        background: transparent;
         color: ${fontColor || theme.colors.secondary.plain};
         border: var(--line-sm) solid ${theme.components.button.border.default};
+
+        div {
+          svg {
+            fill: ${fontColor || theme.colors.secondary.plain};
+          }
+        }
 
         &:hover {
           border-color: ${theme.components.button.border.hover};
@@ -74,13 +87,19 @@ const getVariantStyles = (
     case 'neutral':
     default:
       return css`
-        background-color: ${theme.colors.neutral.background};
-        color: ${fontColor || theme.colors.neutral.contentStrong};
+        background: ${theme.colors.neutral.background};
+        color: ${fontColor || theme.colors.default.secondary};
         border: none;
+
+        div {
+          svg {
+            fill: ${fontColor || theme.colors.default.secondary};
+          }
+        }
 
         &:hover {
           border: none;
-          background-color: ${theme.colors.neutral.backgroundHover};
+          background: ${theme.colors.neutral.backgroundHover};
         }
       `;
   }
@@ -112,7 +131,6 @@ const StyledButton = styled.button<{
   border-radius: ${({ $radius }) => $radius || 'var(--radius-md)'};
   font: ${({ $font }) => `var(--font-${$font})`};
 
-  /* 5. variant에 따라 스타일을 동적으로 적용합니다. */
   ${({ $variant, theme, $fontColor }) =>
     getVariantStyles($variant, theme, $fontColor)}
 
@@ -127,7 +145,6 @@ const StyledButton = styled.button<{
     display: flex;
     line-height: 1.25rem;
     white-space: nowrap;
-    height: var(--rem-20);
   }
 `;
 
