@@ -1,7 +1,6 @@
 import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { Sub } from '../../entities/Sub';
 import { User } from '../../entities/User';
 
 export const RegisterHandler: RequestHandler = async (req, res) => {
@@ -36,16 +35,6 @@ export const RegisterHandler: RequestHandler = async (req, res) => {
     user.password = password;
 
     await user.save();
-
-    const profileSub = new Sub();
-
-    profileSub.title = user.uuid;
-    profileSub.slug = user.username;
-    profileSub.description = `${user.username}의 프로필 페이지입니다.`;
-    profileSub.user = user;
-    profileSub.profileUser = user;
-
-    await profileSub.save();
 
     // JWT 토큰 생성 (액세스 토큰 - 짧은 만료시간)
     const accessToken = jwt.sign(

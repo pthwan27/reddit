@@ -5,26 +5,30 @@ import styled from 'styled-components';
 import { Post } from '@/app/types';
 
 import CommentIcon from '../../svgs/CommentIcon';
-import VoteDownIcon from '../../svgs/VoteDownIcon';
-import VoteUpIcon from '../../svgs/VoteUpIcon';
+import DownVoteIcon from '../../svgs/DownVote';
+import DownVoteFillIcon from '../../svgs/DownVoteFill';
+import UpVoteFillIcon from '../../svgs/UpVoteFillIcon';
+import UpVoteIcon from '../../svgs/UpVoteIcon';
 
 const PostActions = ({ ...post }: Post) => {
   const { vote } = usePostStore();
 
-  const voteHandler = (value: number) => {
+  const voteHandler = (e: React.MouseEvent, value: number) => {
+    e.stopPropagation();
     vote(post.identifier, post.slug, value);
   };
+
   return (
     <StyledPostActions>
       <VoteButtons
         $userVote={post.userVote === 1 ? 1 : post.userVote === -1 ? -1 : 0}
       >
-        <button onClick={() => voteHandler(1)}>
-          <VoteUpIcon />
+        <button onClick={(e) => voteHandler(e, 1)}>
+          {post.userVote === 1 ? <UpVoteFillIcon /> : <UpVoteIcon />}
         </button>
         <span>{post.voteScore || 0}</span>
-        <button onClick={() => voteHandler(-1)}>
-          <VoteDownIcon />
+        <button onClick={(e) => voteHandler(e, -1)}>
+          {post.userVote === -1 ? <DownVoteFillIcon /> : <DownVoteIcon />}
         </button>
       </VoteButtons>
 
@@ -51,7 +55,6 @@ const VoteButtons = styled.div<{ $userVote: number }>`
   justify-content: center;
 
   padding: var(--spacer-2xs) 0;
-  gap: var(--spacer-4xs);
 
   border-radius: var(--radius-xl);
 
@@ -63,6 +66,7 @@ const VoteButtons = styled.div<{ $userVote: number }>`
         : theme.colors.secondary.background};
 
   span {
+    min-width: var(--rem-8);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,6 +110,7 @@ const VoteButtons = styled.div<{ $userVote: number }>`
 
     svg {
       border-radius: var(--radius-full);
+
       fill: ${({ $userVote, theme }) =>
         $userVote === 1
           ? theme.colors.upvote.onBackground
@@ -113,18 +118,26 @@ const VoteButtons = styled.div<{ $userVote: number }>`
             ? theme.colors.downvote.onBackground
             : theme.colors.secondary.onBackground};
     }
+  }
 
-    svg:nth-child(1) {
+  ${({ $userVote, theme }) =>
+    $userVote === 0 &&
+    `
+    button:nth-child(1) {
+    svg {
       &:hover {
-        fill: ${({ theme }) => theme.colors.upvote.background};
-      }
-    }
-    svg:nth-child(2) {
-      &:hover {
-        fill: ${({ theme }) => theme.colors.downvote.background};
+        fill: ${theme.colors.upvote.background};
       }
     }
   }
+
+  button:nth-child(3) {
+    svg {
+      &:hover {
+        fill: ${theme.colors.downvote.background};
+      }
+    }
+  }`}
 `;
 
 const CommentButton = styled.button`

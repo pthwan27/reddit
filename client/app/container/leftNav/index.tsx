@@ -32,7 +32,7 @@ const LeftNavContainer = ({ isNavVisible, onToggleNav }: LeftNavProps) => {
         <MenuContainer>
           {user ? <LoginNavMenu /> : <LogoutNavMenu />}
         </MenuContainer>
-        <hr />
+        {user ? <hr /> : <></>}
       </LeftNavWrapper>
 
       <CreateSubModal />

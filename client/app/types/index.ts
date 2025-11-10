@@ -44,7 +44,7 @@ export interface Post {
   voteScore: number;
   commentCount: number;
   userVote: number;
-  sub?: Sub;
+  sub: Sub;
   user: User;
   comments: Comment[];
 }

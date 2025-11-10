@@ -3,21 +3,22 @@ import { notFound } from 'next/navigation';
 
 import { clientAxiosInstance } from '@/app/utils/axios';
 
-import SubDetailContainer from '@/app/container/sub/detail';
-
 import { Sub } from '@/app/types';
 
-async function getSubData(slug: string): Promise<Sub> {
+async function getCommentData(id: string, postSlug: string): Promise<Sub> {
   try {
     const cookieStore = await cookies();
 
     const cookieString = await cookieStore.toString();
 
-    const response = await clientAxiosInstance.get(`/api/sub/${slug}`, {
-      headers: {
-        Cookie: cookieString,
-      },
-    });
+    const response = await clientAxiosInstance.get(
+      `/api/comments/${id}/${postSlug}`,
+      {
+        headers: {
+          Cookie: cookieString,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error('Failed to get sub data:', error);
@@ -28,13 +29,13 @@ async function getSubData(slug: string): Promise<Sub> {
 const SubDetailPage = async ({
   params,
 }: {
-  params: Promise<{ type: string; slug: string }>;
+  params: Promise<{ id: string; postSlug: string }>;
 }) => {
-  const { type, slug } = await params;
+  const { id, postSlug } = await params;
 
-  const data = await getSubData(slug);
+  const data = await getCommentData(id, postSlug);
 
-  return <SubDetailContainer type={type} sub={data} />;
+  return <>{data}</>;
 };
 
 export default SubDetailPage;

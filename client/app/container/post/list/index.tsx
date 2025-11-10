@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 
 import styled from 'styled-components';
 
-import HightlightPostList from '@/app/components/post/highlightList';
 import PostItem from '@/app/components/post/item';
-import PostSort from '@/app/components/post/sort';
+import HightlightPosts from '@/app/components/post/list/highlightList';
+import PostSort from '@/app/components/post/list/sort';
 
 import { Post } from '@/app/types';
 
@@ -45,7 +45,7 @@ const PostListContainer = ({ posts }: { posts: Post[] }) => {
         sortOption={sortOption}
       />
 
-      <HightlightPostList
+      <HightlightPosts
         isHighlightView={isHighlightView}
         setIsHighlightView={setIsHighlightView}
       />

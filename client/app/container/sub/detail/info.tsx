@@ -13,7 +13,6 @@ import PencilIcon from '../../../components/svgs/PencilIcon';
 import PlusIcon from '../../../components/svgs/PlusIcon';
 
 interface InfoProps {
-  type: string;
   sub: Sub;
   iconImage: string;
   onEditClick: () => void;
@@ -21,7 +20,6 @@ interface InfoProps {
 }
 
 const SubInfosContainer = ({
-  type,
   sub,
   iconImage,
   onEditClick,
@@ -51,7 +49,7 @@ const SubInfosContainer = ({
           </IconBox>
           <SubInfoBox>
             <div>
-              <Title>{type + '/' + sub.title}</Title>
+              <Title>{'r/' + sub.title}</Title>
               <Desc>1명</Desc>
             </div>
             <SubInfoChangeButton>

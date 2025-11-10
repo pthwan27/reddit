@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
-import DownArrowIcon from '../svgs/DownArrowIcon';
-import PinIcon from '../svgs/PinIcon';
+import DownArrowIcon from '../../svgs/DownArrowIcon';
+import PinIcon from '../../svgs/PinIcon';
 
 interface HighlightListProps {
   isHighlightView: boolean;
   setIsHighlightView: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const HightlightPostList = ({
+const HightlightPosts = ({
   isHighlightView,
   setIsHighlightView,
 }: HighlightListProps) => {
@@ -96,4 +96,4 @@ const StyledHighlightPostList = styled.div`
   margin-bottom: var(--spacer-xs);
 `;
 
-export default HightlightPostList;
+export default HightlightPosts;

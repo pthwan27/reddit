@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import DownArrowIcon from '../svgs/DownArrowIcon';
+import DownArrowIcon from '../../svgs/DownArrowIcon';
 
 interface PostSortProps {
   wrapperRef: React.RefObject<HTMLDivElement | null>;

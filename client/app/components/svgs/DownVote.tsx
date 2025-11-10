@@ -1,4 +1,4 @@
-const VoteDownIcon = () => {
+const DownVoteIcon = () => {
   return (
     <svg
       fill="currentColor"
@@ -14,4 +14,4 @@ const VoteDownIcon = () => {
   );
 };
 
-export default VoteDownIcon;
+export default DownVoteIcon;

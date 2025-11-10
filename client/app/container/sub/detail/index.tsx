@@ -18,7 +18,7 @@ import { Sub } from '@/app/types';
 import RightSideBar from '../../../components/sub/detail/rightSideBar';
 import PostListContainer from '../../post/list';
 
-const SubDetailContainer = ({ type, sub }: { type: string; sub: Sub }) => {
+const SubDetailContainer = ({ ...sub }: Sub) => {
   const { uploadIconImage, uploadBannerImage } = useUploadImage();
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl);
   const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl);
@@ -116,7 +116,6 @@ const SubDetailContainer = ({ type, sub }: { type: string; sub: Sub }) => {
         />
 
         <SubInfos
-          type={type}
           sub={sub}
           iconImage={iconImage}
           onEditClick={() => handleClick('icon')}

@@ -7,7 +7,6 @@ import {
   OneToMany,
   JoinColumn,
   Index,
-  OneToOne,
   BeforeInsert,
 } from "typeorm";
 
@@ -43,10 +42,6 @@ export class Sub extends CoreEntity {
   @OneToMany(() => Post, (post) => post.sub)
   posts: Post[];
 
-  @OneToOne(() => User, (user) => user.profileSub, {
-    nullable: true,
-    onDelete: "CASCADE",
-  })
   @JoinColumn()
   profileUser: User;
 

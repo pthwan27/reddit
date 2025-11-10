@@ -30,7 +30,7 @@ const LoggedInContainer = () => {
   };
 
   const goToSubDetail = (sub: Sub) => {
-    router.push(`/${sub.profileUser ? 'user' : 'r'}/${sub.slug}`);
+    router.push(`/r/${sub.slug}`);
   };
 
   return (

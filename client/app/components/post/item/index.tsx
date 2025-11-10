@@ -1,3 +1,5 @@
+import { useRouter } from 'next/navigation';
+
 import styled from 'styled-components';
 
 import { Post } from '@/app/types';
@@ -6,8 +8,16 @@ import PostActions from './actions';
 import PostInfos from './infos';
 
 const PostItem = ({ post }: { post: Post }) => {
+  const router = useRouter();
+
+  const goToComments = () => {
+    router.push(
+      `/${post.sub.profileUser ? 'u' : 'r'}/${post.sub.slug}/comments/${post.identifier}/${post.slug}`
+    );
+  };
+
   return (
-    <StyledPostItem>
+    <StyledPostItem onClick={() => goToComments()}>
       <PostInfos {...post} />
       <TitleSection>{post.title}</TitleSection>
       <ContentSection>{post.body}</ContentSection>
@@ -24,6 +34,8 @@ const StyledPostItem = styled.div`
   &:hover {
     background: ${({ theme }) => theme.colors.neutral.backgroundHover};
   }
+
+  cursor: pointer;
 `;
 
 const TitleSection = styled.section`

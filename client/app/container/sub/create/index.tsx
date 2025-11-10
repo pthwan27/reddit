@@ -243,7 +243,6 @@ const CreateSubInfoBox = styled.div`
   flex-direction: column;
   align-items: center;
 
-  width: 90%;
   height: 100%;
 
   @media (min-width: 768px) {
@@ -253,6 +252,7 @@ const CreateSubInfoBox = styled.div`
   }
 `;
 const InfoWrapper = styled.div`
+  width: 90%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border-radius: var(--radius-xl);
 `;
