@@ -11,9 +11,7 @@ const PostItem = ({ post }: { post: Post }) => {
   const router = useRouter();
 
   const goToComments = () => {
-    router.push(
-      `/${post.sub.profileUser ? 'u' : 'r'}/${post.sub.slug}/comments/${post.identifier}/${post.slug}`
-    );
+    router.push(`/r/${post.sub.slug}/comments/${post.identifier}/${post.slug}`);
   };
 
   return (

@@ -18,7 +18,6 @@ export const GetMyListHandler: RequestHandler = async (req, res) => {
         createdAt: 'DESC',
         updatedAt: 'DESC',
       },
-      relations: ['profileUser'],
     });
 
     return res.status(200).json({ subs: instanceToPlain(subs) });

@@ -23,7 +23,7 @@ const SubDetailContainer = ({ ...sub }: Sub) => {
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl);
   const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl);
 
-  const { posts, loading, hasMore, fetchPosts, clearPosts } = usePostStore();
+  const { posts, loading, hasMore, fetchPosts } = usePostStore();
 
   const iconFileInputRef = useRef<HTMLInputElement>(null);
   const bannerFileInputRef = useRef<HTMLInputElement>(null);
@@ -98,12 +98,6 @@ const SubDetailContainer = ({ ...sub }: Sub) => {
 
     return () => observer.disconnect();
   }, [loading, hasMore, sub.slug]);
-
-  useEffect(() => {
-    return () => {
-      clearPosts();
-    };
-  }, [clearPosts]);
 
   return (
     <SubDetail>

@@ -63,8 +63,14 @@ export const usePostStore = create<PostStore>((set, get) => ({
       );
 
       if (!targetPost) {
-        throw new Error('Post not found');
+        await clientAxiosInstance.patch('/api/vote', {
+          identifier,
+          slug,
+          value,
+        });
+        return;
       }
+
       const { data } = await clientAxiosInstance.patch('/api/vote', {
         identifier,
         slug,

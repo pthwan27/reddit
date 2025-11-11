@@ -43,7 +43,7 @@ export const VoteHandler: RequestHandler = async (req, res) => {
 
     const updatedPost = await Post.findOne({
       where: { identifier, slug },
-      relations: ['votes', 'user', 'comments', 'votes.user'],
+      relations: ['votes', 'user', 'comments', 'votes.user', 'sub'],
     });
 
     if (updatedPost && user) {
