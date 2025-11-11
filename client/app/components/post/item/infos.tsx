@@ -1,22 +1,22 @@
-import Image from 'next/image';
-
 import formatTimeAgo from '@/app/utils/formatTimeAgo';
 
 import styled from 'styled-components';
 
 import { Post } from '@/app/types';
 
+import IconBox from '../../common/IconBox';
 import EtcIcon from '../../svgs/EtcIcon';
 
 const PostInfos = ({ ...post }: Post) => {
   return (
     <StyledPostInfos>
       <div>
-        <IconBox $isIcon={!!post.user.profileUrl}>
-          {post.user.profileUrl && (
-            <Image src={post.user.profileUrl} alt={post.user.username} fill />
-          )}
-        </IconBox>
+        <IconBox
+          iconUrl={post.user.profileUrl}
+          altText={post.user.username}
+          width={24}
+          height={24}
+        />
         <span>u/{post.user.username}</span>
         <span>•</span>
         <span>{formatTimeAgo(post.createdAt)}</span>
@@ -77,33 +77,6 @@ const IconWrapper = styled.div`
     height: var(--rem-16);
 
     fill: ${({ theme }) => theme.colors.neutral.contentStrong};
-  }
-`;
-
-const IconBox = styled.div<{ $isIcon?: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-
-  width: var(--rem-24);
-  height: var(--rem-24);
-
-  min-width: var(--rem-24);
-  min-height: var(--rem-24);
-
-  border-radius: var(--radius-full);
-  background: ${({ $isIcon, theme }) =>
-    $isIcon ? 'transparent' : theme.colors.neutral.content};
-  overflow: hidden;
-
-  img {
-    width: 100%;
-    height: 100%;
-    border-radius: var(--radius-full);
-    object-fit: cover;
-
-    background: transparent;
   }
 `;
 

@@ -1,9 +1,10 @@
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
+
+import IconBox from '@/app/components/common/IconBox';
 
 import { useAuth } from '@/app/context/authContext';
 import { ModalKey, useModalState } from '@/app/context/modalContext';
@@ -48,11 +49,12 @@ const LoggedInContainer = () => {
         ) : (
           filteredSubs.map((sub: Sub, idx: number) => (
             <SubItem key={sub.title + idx} onClick={() => goToSubDetail(sub)}>
-              <IconBox $isIcon={!!sub.iconUrl}>
-                {sub.iconUrl && (
-                  <Image src={sub.iconUrl} alt={sub.title} fill />
-                )}
-              </IconBox>
+              <IconBox
+                iconUrl={sub.iconUrl}
+                altText={sub.title}
+                width={32}
+                height={32}
+              />
               <TitleBox>{`r/${sub.title}`}</TitleBox>
             </SubItem>
           ))
@@ -85,36 +87,6 @@ const SubItem = styled.button`
   }
 
   font: var(--font-14);
-`;
-
-const IconBox = styled.div<{ $isIcon?: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: relative;
-
-  width: var(--rem-32);
-  height: var(--rem-32);
-
-  min-width: var(--rem-32);
-  min-height: var(--rem-32);
-
-  background: ${({ $isIcon, theme }) =>
-    $isIcon ? 'transparent' : theme.colors.neutral.content};
-
-  border-radius: var(--radius-full);
-  overflow: hidden;
-
-  img {
-    width: 100%;
-    height: 100%;
-
-    border-radius: var(--radius-full);
-    object-fit: cover;
-
-    background: transparent;
-  }
 `;
 
 const TitleBox = styled.span`

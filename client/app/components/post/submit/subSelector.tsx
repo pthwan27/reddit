@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import styled from 'styled-components';
@@ -9,6 +8,7 @@ import SearchIcon from '@/app/components/svgs/SearchIcon';
 
 import { Sub } from '@/app/types';
 
+import IconBox from '../../common/IconBox';
 import CloseIcon from '../../svgs/CloseIcon';
 
 interface SubSelectorProps {
@@ -95,11 +95,12 @@ const SubSelector = ({
           {filteredSubs && filteredSubs.length > 0 ? (
             filteredSubs.map((sub) => (
               <DropdownItem key={sub.id} onClick={() => handleSelect(sub)}>
-                <IconBox $isIcon={!!sub.iconUrl}>
-                  {sub.iconUrl && (
-                    <Image src={sub.iconUrl} alt={sub.title} fill />
-                  )}
-                </IconBox>
+                <IconBox
+                  iconUrl={sub.iconUrl}
+                  altText={sub.title}
+                  width={24}
+                  height={24}
+                />
                 <span>
                   {sub.profileUser
                     ? 'u' + ('/' + sub.title)
@@ -129,15 +130,12 @@ const SubSelector = ({
           ) : (
             selectedSub && (
               <>
-                <IconBox $isIcon={!!selectedSub.iconUrl}>
-                  {selectedSub.iconUrl && (
-                    <Image
-                      src={selectedSub.iconUrl}
-                      alt={selectedSub.title}
-                      fill
-                    />
-                  )}
-                </IconBox>
+                <IconBox
+                  iconUrl={selectedSub.iconUrl}
+                  altText={selectedSub.title}
+                  width={24}
+                  height={24}
+                />
                 <span>
                   {selectedSub.profileUser
                     ? 'u' + ('/' + selectedSub.title)
@@ -262,32 +260,6 @@ const SelectedTag = styled.button<{ $isLoading: boolean }>`
 
   &:active {
     background: ${({ theme }) => theme.gradients.pressed};
-  }
-`;
-const IconBox = styled.div<{ $isIcon?: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-
-  width: var(--rem-24);
-  height: var(--rem-24);
-
-  min-width: var(--rem-24);
-  min-height: var(--rem-24);
-
-  border-radius: var(--radius-full);
-  background: ${({ $isIcon, theme }) =>
-    $isIcon ? 'transparent' : theme.colors.neutral.content};
-  overflow: hidden;
-
-  img {
-    width: 100%;
-    height: 100%;
-    border-radius: var(--radius-full);
-    object-fit: cover;
-
-    background: transparent;
   }
 `;
 

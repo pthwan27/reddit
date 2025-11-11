@@ -1,10 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 import styled from 'styled-components';
 
+import IconBox from '../components/common/IconBox';
 import ProfileDropdown from '../components/header/profileDropdown';
 import SearchInput from '../components/header/searchInput';
 import LogoIcon from '../components/svgs/LogoIcon';
@@ -61,11 +61,12 @@ const HeaderContainer = ({ noOption = false }) => {
                   style={{ position: 'relative' }}
                 >
                   <ProfileButton onClick={() => setIsDropdownOpen((e) => !e)}>
-                    <IconBox $isIcon={!!user.profileUrl}>
-                      {user.profileUrl && (
-                        <Image src={user.profileUrl} alt={user.username} fill />
-                      )}
-                    </IconBox>
+                    <IconBox
+                      iconUrl={user.profileUrl}
+                      altText={user.username}
+                      width={32}
+                      height={32}
+                    />
                   </ProfileButton>
                   <ProfileDropdown
                     isDropdownOpen={isDropdownOpen}
@@ -169,32 +170,6 @@ const ProfileButton = styled.button`
   &:hover {
     border: none;
     background: ${({ theme }) => theme.colors.secondary.backgroundHover};
-  }
-`;
-const IconBox = styled.div<{ $isIcon?: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-
-  width: var(--rem-32);
-  height: var(--rem-32);
-
-  min-width: var(--rem-32);
-  min-height: var(--rem-32);
-
-  border-radius: var(--radius-full);
-  background: ${({ $isIcon, theme }) =>
-    $isIcon ? 'transparent' : theme.colors.neutral.content};
-  overflow: hidden;
-
-  img {
-    width: 100%;
-    height: 100%;
-    border-radius: var(--radius-full);
-    object-fit: cover;
-
-    background: transparent;
   }
 `;
 
