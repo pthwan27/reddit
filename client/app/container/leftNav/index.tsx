@@ -1,12 +1,19 @@
+import { useRouter } from 'next/navigation';
+
+import { useSubStore } from '@/app/store/subStore';
+
 import styled from 'styled-components';
 
 import MenuIcon from '@/app/components/svgs/MenuIcon';
 
+import { ModalKey, useModalState } from '@/app/context/modalContext';
+import { Sub } from '@/app/types';
+
+import CommonLeftNavMenu from '../../components/leftNav/common';
+import LoginNavMenu from '../../components/leftNav/loggedIn';
+import LogoutNavMenu from '../../components/leftNav/loggedOut';
 import { useAuth } from '../../context/authContext';
 import CreateSubModal from '../modal/createSubModal';
-import CommonLeftNavMenu from './common';
-import LoginNavMenu from './loggedIn';
-import LogoutNavMenu from './loggedOut';
 
 interface LeftNavProps {
   isNavVisible: boolean;
@@ -16,6 +23,26 @@ interface LeftNavProps {
 const LeftNavContainer = ({ isNavVisible, onToggleNav }: LeftNavProps) => {
   const { user } = useAuth();
 
+  const router = useRouter();
+
+  const { open } = useModalState();
+  const modalKey: ModalKey = 'createSubModal';
+
+  const { filteredSubs, loading } = useSubStore();
+
+  const onOpenCreateSubModal = () => {
+    if (!user) return;
+
+    open(modalKey);
+  };
+
+  const goToSubDetail = (sub: Sub) => {
+    router.push(`/r/${sub.slug}`);
+  };
+
+  const goToHome = () => {
+    router.push('/');
+  };
   return (
     <LeftNav $isNavVisible={isNavVisible}>
       <ToggleButton $isNavVisible={isNavVisible} onClick={onToggleNav}>
@@ -26,11 +53,20 @@ const LeftNavContainer = ({ isNavVisible, onToggleNav }: LeftNavProps) => {
 
       <LeftNavWrapper $isNavVisible={isNavVisible}>
         <MenuContainer>
-          <CommonLeftNavMenu />
+          <CommonLeftNavMenu goToHome={goToHome} />
         </MenuContainer>
         <hr />
         <MenuContainer>
-          {user ? <LoginNavMenu /> : <LogoutNavMenu />}
+          {user ? (
+            <LoginNavMenu
+              filteredSubs={filteredSubs}
+              loading={loading}
+              onOpenCreateSubModal={onOpenCreateSubModal}
+              goToSubDetail={goToSubDetail}
+            />
+          ) : (
+            <LogoutNavMenu />
+          )}
         </MenuContainer>
         {user ? <hr /> : <></>}
       </LeftNavWrapper>

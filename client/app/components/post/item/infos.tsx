@@ -32,9 +32,9 @@ const StyledPostInfos = styled.div`
   display: flex;
   justify-content: space-between;
 
-  margin-bottom: var(--spacer-xs);
-
   height: var(--rem-32);
+
+  margin-bottom: var(--spacer-xs);
 
   div {
     display: flex;

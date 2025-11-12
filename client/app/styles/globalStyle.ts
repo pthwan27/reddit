@@ -120,6 +120,11 @@ const GlobalStyle = createGlobalStyle`
   --font-18-20-semibold: normal 600 1.25rem var(--font-sans);
   --font-18-20-bold: normal 700 1.25rem var(--font-sans);
 
+  --font-24-light: normal 300 1.5rem var(--font-sans);
+  --font-24-regular: normal 400 1.5rem var(--font-sans);
+  --font-24-semibold: normal 600 1.5rem var(--font-sans);
+  --font-24-bold: normal 700 1.5rem var(--font-sans);
+
 
   /* Label */
   --font-label-default: var(--font-12-16-regular);

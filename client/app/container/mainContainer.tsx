@@ -61,6 +61,10 @@ const MainWrapper = styled.div`
   }
 
   @media (min-width: 768px) {
+    padding: 0 var(--spacer-md);
+  }
+
+  @media (min-width: 1200px) {
     padding: 0 var(--spacer-lg);
   }
 

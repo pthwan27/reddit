@@ -136,7 +136,14 @@ const GridWrapper = styled.div`
   & > :nth-child(2) {
     display: none;
   }
+
+  @media (min-width: 1200px) {
+    padding: 0 var(--spacer-lg);
+  }
+
   @media (min-width: 768px) {
+    padding: 0 var(--spacer-md);
+
     & > :nth-child(2) {
       display: block;
     }

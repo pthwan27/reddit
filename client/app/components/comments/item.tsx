@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 
 import { Comment } from '@/app/types';
 
-import PlusCircleIcon from '../../svgs/PlusCircleIcon';
+import PlusCircleIcon from '../svgs/PlusCircleIcon';
 
 const CommentItem = ({ comment }: { comment: Comment }) => {
   return (

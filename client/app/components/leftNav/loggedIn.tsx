@@ -1,39 +1,26 @@
-import { useRouter } from 'next/navigation';
-
-import { useSubStore } from '@/app/store/subStore';
-
 import styled from 'styled-components';
 
 import IconBox from '@/app/components/common/IconBox';
 
-import { useAuth } from '@/app/context/authContext';
-import { ModalKey, useModalState } from '@/app/context/modalContext';
 import { Sub } from '@/app/types';
 
-import IconButton from '../../components/common/button/iconButton';
-import LoadingSpinner from '../../components/common/loadingSpinner';
-import CollapsibleList from '../../components/leftNav/collapsibleList';
-import PlusIcon from '../../components/svgs/PlusIcon';
+import IconButton from '../common/button/iconButton';
+import LoadingSpinner from '../common/loadingSpinner';
+import PlusIcon from '../svgs/PlusIcon';
+import CollapsibleList from './collapsibleList';
 
-const LoggedInContainer = () => {
-  const router = useRouter();
-  const { user } = useAuth();
-
-  const { open } = useModalState();
-  const modalKey: ModalKey = 'createSubModal';
-
-  const { filteredSubs, loading } = useSubStore();
-
-  const onOpenCreateSubModal = () => {
-    if (!user) return;
-
-    open(modalKey);
-  };
-
-  const goToSubDetail = (sub: Sub) => {
-    router.push(`/r/${sub.slug}`);
-  };
-
+interface LoggedInContainerProps {
+  filteredSubs: Sub[];
+  loading: boolean;
+  onOpenCreateSubModal: () => void;
+  goToSubDetail: (sub: Sub) => void;
+}
+const LoggedIn = ({
+  filteredSubs,
+  loading,
+  onOpenCreateSubModal,
+  goToSubDetail,
+}: LoggedInContainerProps) => {
   return (
     <CollapsibleList title="커뮤니티">
       <IconButton
@@ -93,4 +80,4 @@ const TitleBox = styled.span`
   color: ${({ theme }) => theme.colors.default.secondary};
 `;
 
-export default LoggedInContainer;
+export default LoggedIn;

@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 
 import styled from 'styled-components';
 
-import PostItem from '@/app/components/post/item';
 import HightlightPosts from '@/app/components/post/list/highlightList';
 import PostSort from '@/app/components/post/list/sort';
+
+import PostItem from '@/app/container/post/item';
 
 import { Post } from '@/app/types';
 

@@ -1,20 +1,26 @@
 import Image from 'next/image';
+import { ReactNode } from 'react';
 
-import styled from 'styled-components';
+import styled, { DefaultTheme, css } from 'styled-components';
 
+type BackgroundColor = 'neutral' | 'transparent' | 'secondary';
 interface IconBoxProps {
-  iconUrl: string | null;
-  altText: string;
+  iconUrl?: string | null;
+  icon?: ReactNode;
+  altText?: string;
   width: number;
   height: number;
   percentage?: number;
+  backgroundColor?: BackgroundColor;
 }
 const IconBox = ({
   iconUrl,
-  altText,
+  icon,
+  altText = 'icon alt',
   width,
   height,
   percentage = 100,
+  backgroundColor = 'neutral',
 }: IconBoxProps) => {
   return (
     <StyledIconBox
@@ -22,10 +28,30 @@ const IconBox = ({
       $width={width}
       $height={height}
       $percentage={percentage}
+      $backgroundColor={backgroundColor}
     >
       {iconUrl && <Image src={iconUrl} alt={altText} fill />}
+      {!iconUrl && icon}
     </StyledIconBox>
   );
+};
+
+const bgColor = (backgroundColor: BackgroundColor, theme: DefaultTheme) => {
+  switch (backgroundColor) {
+    case 'transparent':
+      return css`
+        background: transparent;
+      `;
+    case 'secondary':
+      return css`
+        background: ${theme.components.button.secondary.background.default};
+      `;
+    case 'neutral':
+    default:
+      return css`
+        background: ${theme.colors.neutral.contentWeak};
+      `;
+  }
 };
 
 const StyledIconBox = styled.div<{
@@ -33,6 +59,7 @@ const StyledIconBox = styled.div<{
   $width: number;
   $height: number;
   $percentage: number;
+  $backgroundColor: BackgroundColor;
 }>`
   display: flex;
   align-items: center;
@@ -46,8 +73,9 @@ const StyledIconBox = styled.div<{
   min-height: ${({ $height }) => `${$height}px`};
 
   border-radius: var(--radius-full);
-  background: ${({ $isIcon, theme }) =>
-    $isIcon ? 'transparent' : theme.colors.neutral.content};
+
+  ${({ $backgroundColor, theme }) => bgColor($backgroundColor, theme)};
+
   overflow: hidden;
 
   img {
@@ -57,6 +85,11 @@ const StyledIconBox = styled.div<{
     border-radius: var(--radius-full);
     object-fit: cover;
     background: transparent;
+  }
+
+  svg {
+    width: ${({ $percentage }) => `${$percentage}%`};
+    height: ${({ $percentage }) => `${$percentage}%`};
   }
 `;
 

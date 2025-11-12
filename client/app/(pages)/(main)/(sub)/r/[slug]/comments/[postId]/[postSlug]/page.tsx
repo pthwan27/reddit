@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { clientAxiosInstance } from '@/app/utils/axios';
 
-import PostCommentsContainer from '@/app/container/post/comments';
+import PostCommentsContainer from '@/app/container/comments';
 
 import { Comment, Post } from '@/app/types';
 
@@ -17,7 +17,7 @@ async function getCommentData(
     const cookieString = await cookieStore.toString();
 
     const response = await clientAxiosInstance.get(
-      `/api/post/comments/${postId}/${postSlug}`,
+      `/api/comments/${postId}/${postSlug}`,
       {
         headers: {
           Cookie: cookieString,

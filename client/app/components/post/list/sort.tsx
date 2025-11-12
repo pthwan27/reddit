@@ -27,8 +27,10 @@ const PostSort = ({
       </SortButton>
 
       <DropdownMenu $isSelecting={isSelecting}>
+        <DropdownItem $isHeader>정렬 기준</DropdownItem>
         {['최신순', '인기순', '댓글 많은 순'].map((option) => (
           <DropdownItem
+            $isSelected={sortOption === option}
             key={option}
             onClick={() => handleSelect(option as typeof sortOption)}
           >
@@ -45,7 +47,11 @@ const StyledSortDiv = styled.div`
 
   height: var(--rem-32);
 
-  margin: var(--spacer-xs) 0;
+  margin: var(--spacer-xs) var(--spacer-xs);
+
+  @media (min-width: 768px) {
+    margin: var(--spacer-xs) 0;
+  }
 `;
 
 const SortButton = styled.button`
@@ -91,6 +97,7 @@ const SortButton = styled.button`
 
 const DropdownMenu = styled.ul<{ $isSelecting: boolean }>`
   position: absolute;
+  top: calc(100% + var(--spacer-2xs));
 
   transform: ${({ $isSelecting }) => ($isSelecting ? 'scale(1)' : 'scale(0)')};
   opacity: ${({ $isSelecting }) => ($isSelecting ? 1 : 0)};
@@ -112,7 +119,7 @@ const DropdownMenu = styled.ul<{ $isSelecting: boolean }>`
     visibility 0.2s ease-out;
 `;
 
-const DropdownItem = styled.li`
+const DropdownItem = styled.li<{ $isHeader?: boolean; $isSelected?: boolean }>`
   display: flex;
   align-items: center;
   gap: var(--spacer-sm);
@@ -122,8 +129,12 @@ const DropdownItem = styled.li`
   font: var(--font-12-16-semibold);
   color: ${({ theme }) => theme.colors.global.black};
 
+  background: ${({ $isSelected, theme }) =>
+    $isSelected ? theme.colors.neutral.backgroundSelected : 'transparent'};
+
   &:hover {
-    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
+    background: ${({ $isHeader, theme }) =>
+      $isHeader ? 'transparent' : theme.colors.neutral.backgroundHover};
   }
 
   span {
