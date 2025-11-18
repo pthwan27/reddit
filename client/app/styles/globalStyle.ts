@@ -35,6 +35,7 @@ const GlobalStyle = createGlobalStyle`
   --rem-16: 1rem;
   --rem-12: 0.75rem;
   --rem-8: 0.5rem;
+  --rem-6: 0.375rem;
   --rem-4: 0.25rem;
   --rem-2: 0.125rem;
 

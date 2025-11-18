@@ -18,6 +18,8 @@ import RightSideBar from '@/app/components/sub/detail/rightSideBar';
 import { useAuth } from '@/app/context/authContext';
 import { Sub } from '@/app/types';
 
+type PostType = 'text' | 'media' | 'link';
+
 const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
   const { user } = useAuth();
   const { selectedSub, setSelectedSub } = useSubStore();
@@ -28,6 +30,9 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [activeTab, setActiveTab] = useState<PostType>('text');
+  const [mediaFiles, setMediaFiles] = useState<File[]>([]);
+  const [linkUrl, setLinkUrl] = useState<string>('');
   const [error, setError] = useState('');
 
   const titleValidation = useMemo(
@@ -63,14 +68,40 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
   const handleSubmit = async () => {
     if (!user) return;
     try {
-      await clientAxiosInstance.post('/api/post/submit', {
-        title,
-        content,
-        slug: selectedSub ? selectedSub.slug : sub.slug,
-      });
+      const formData = new FormData();
+
+      formData.append('title', title);
+      formData.append('content', content);
+      formData.append('postType', activeTab);
+      formData.append('slug', selectedSub ? selectedSub.slug : sub.slug);
+
+      switch (activeTab) {
+        case 'media':
+          if (mediaFiles.length > 0) {
+            if (mediaFiles[0].type.startsWith('video/')) {
+              formData.append('images', mediaFiles[0]);
+              formData.append('mediaType', 'video');
+            } else {
+              mediaFiles.forEach((file) => {
+                formData.append('images', file);
+              });
+            }
+            formData.append('mediaType', 'image');
+          }
+          break;
+        case 'link':
+          formData.append('linkUrl', linkUrl);
+          break;
+        default:
+          break;
+      }
+
+      await clientAxiosInstance.post('/api/post/submit', formData);
 
       setTitle('');
       setContent('');
+      setMediaFiles([]);
+      setLinkUrl('');
       setError('');
 
       router.replace(
@@ -101,6 +132,12 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
           setTitle={setTitle}
           content={content}
           setContent={setContent}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          mediaFiles={mediaFiles}
+          setMediaFiles={setMediaFiles}
+          linkUrl={linkUrl}
+          setLinkUrl={setLinkUrl}
         />
         <PostSubmitButtons>
           <IconButton
@@ -151,6 +188,7 @@ const GridWrapper = styled.div`
     grid-template-columns: minmax(0, 756px) minmax(0, 316px);
   }
 `;
+
 const PostSubmit = styled.div`
   display: flex;
   flex-direction: column;

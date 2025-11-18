@@ -13,6 +13,7 @@ const storage = multer.diskStorage({
       if (!slug) {
         return cb(new Error('Invalid community slug'), '');
       }
+
       const sub = await AppDataSource.getRepository(Sub).findOneBy({
         slug,
       });

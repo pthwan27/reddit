@@ -68,6 +68,16 @@ export const newTheme = {
       focused: '#0078D4',
       pressed: '#00000026',
     },
+    media: {
+      background: 'rgba(0, 0, 0, 0.6)',
+      backgroundHover: 'rgba(0, 0, 0, 0.8)',
+      backgroundSelected: 'rgba(0, 0, 0, 0.8)',
+      borderSelected: '#FFFFFF',
+      borderWeak: '#FFFFFF19',
+      onBackground: '#FFFFFF',
+      onBackgroundDisabled: '#FFFFFF3F',
+      onBackgroundWeak: '#E5EBEE',
+    },
     neutral: {
       background: '#FFFFFF',
       backgroundHover: '#F6F8F9',

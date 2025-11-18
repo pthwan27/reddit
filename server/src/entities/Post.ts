@@ -37,6 +37,21 @@ export class Post extends CoreEntity {
   @Column()
   subTitle: string;
 
+  @Column({ nullable: false })
+  postType: string;
+
+  @Column({ nullable: false })
+  mediaType: string;
+
+  @Column({type : 'text', nullable: true})
+  imageUrns: string[];
+
+  @Column({type : 'text', nullable: true})
+  videoUrn: string;
+
+  @Column({nullable: true})
+  linkUrl: string;
+
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn({ name: "userId", referencedColumnName: "id" })
   user: User;
@@ -69,6 +84,22 @@ export class Post extends CoreEntity {
   @Expose()
   get url(): string {
     return `/r/${this.subTitle}/${this.identifier}/${this.slug}`;
+  }
+
+  @Expose()
+  get imageUrls(): string[] {
+    if (!this.imageUrns) return [];
+    
+    return this.imageUrns.map((urn: string) => {
+      return `${process.env.APP_URL}/images/posts/${this.identifier}/${urn}`;
+    });
+  }
+
+  @Expose()
+  get videoUrl(): string | null {
+    if (!this.videoUrn) return null;
+    
+    return `${process.env.APP_URL}/videos/posts/${this.identifier}/${this.videoUrn}`;  
   }
 
   @Expose()

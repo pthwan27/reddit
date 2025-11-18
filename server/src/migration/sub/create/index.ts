@@ -87,6 +87,34 @@ export const CreateHandler: RequestHandler = async (req, res) => {
     return res.status(201).json(sub);
   } catch (error) {
     console.error('Error creating sub:', error);
+
+    await cleanupTempFiles(files);
+
     return res.status(500).json({ error: 'Failed to create sub' });
+  }
+};
+
+const cleanupTempFiles = async (
+  files: { [fieldname: string]: Express.Multer.File[] } | undefined
+) => {
+  if (!files) return;
+
+  try {
+    for (const fieldname in files) {
+      const fileArray = files[fieldname];
+
+      for (const file of fileArray) {
+        try {
+          await fs.unlink(file.path);
+        } catch (unlinkError) {
+          console.error(
+            `Failed to delete temp file ${file.path}:`,
+            unlinkError
+          );
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error during cleanup:', error);
   }
 };

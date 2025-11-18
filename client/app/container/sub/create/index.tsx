@@ -184,7 +184,7 @@ const CreateSubContainer = () => {
       <div style={{ marginBottom: '40px' }} />
 
       <CreateSubCarousel>
-        <CarouselContainer>
+        <CarouselWrapper>
           {inputBoxes.map((_, idx) => (
             <CarouselItem
               type="button"
@@ -193,7 +193,7 @@ const CreateSubContainer = () => {
               onClick={() => moveToSlide(idx, true)}
             />
           ))}
-        </CarouselContainer>
+        </CarouselWrapper>
         <ButtonContainer>
           <button
             onClick={() => prevSlice()}
@@ -347,7 +347,7 @@ const CreateSubCarousel = styled.div`
   width: 100%;
 `;
 
-const CarouselContainer = styled.div`
+const CarouselWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: var(--spacer-xs);

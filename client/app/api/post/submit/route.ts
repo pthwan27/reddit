@@ -5,16 +5,12 @@ import { serverAxiosInstance } from '@/app/utils/axios';
 import { CustomError } from '@/app/types';
 
 export async function POST(req: NextRequest) {
-  const { title, content, slug } = await req.json();
+  const formData = await req.formData();
 
   try {
     const { data, status } = await serverAxiosInstance.post(
       '/post/submit',
-      {
-        title,
-        content,
-        slug,
-      },
+      formData,
       {
         headers: {
           Cookie: req.headers.get('cookie') || '',

@@ -155,6 +155,8 @@ const SubSelector = ({
 const StyledSubSelector = styled.div`
   position: relative;
   height: var(--rem-40);
+
+  margin-bottom: var(--spacer-md);
 `;
 
 const SearchInputWrapper = styled.div<{ $isSearching: boolean }>`

@@ -133,11 +133,11 @@ const getVariantStyles = (
       return css`
         background: ${bgColor || theme.colors.secondary.background};
         color: ${fontColor || theme.colors.secondary.plain};
-        border: var(--line-sm) solid ${theme.components.button.border.default};
+        border: var(--line-sm) solid ${theme.colors.neutral.border};
 
         &:hover {
           background: ${theme.colors.neutral.backgroundHover};
-          border: var(--line-sm) solid ${theme.components.button.border.hover};
+          border: var(--line-sm) solid ${theme.colors.neutral.borderMedium};
         }
       `;
 
@@ -214,7 +214,7 @@ const PlaceHolderSpan = styled.span<{ $isFloated: boolean }>`
   position: absolute;
   left: 0;
 
-  top: ${({ $isFloated }) => ($isFloated ? 'var(--spacer-xs)' : '10%')};
+  top: ${({ $isFloated }) => ($isFloated ? 'var(--spacer-xs)' : '14%')};
   transform: ${({ $isFloated }) => ($isFloated ? 'none' : 'translateY(-50%)')};
 
   font: ${({ $isFloated }) =>

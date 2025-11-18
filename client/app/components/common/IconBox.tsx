@@ -12,6 +12,7 @@ interface IconBoxProps {
   height: number;
   percentage?: number;
   backgroundColor?: BackgroundColor;
+  onClick?: (e: React.MouseEvent) => void;
 }
 const IconBox = ({
   iconUrl,
@@ -21,6 +22,8 @@ const IconBox = ({
   height,
   percentage = 100,
   backgroundColor = 'neutral',
+  onClick,
+  ...rest
 }: IconBoxProps) => {
   return (
     <StyledIconBox
@@ -29,6 +32,8 @@ const IconBox = ({
       $height={height}
       $percentage={percentage}
       $backgroundColor={backgroundColor}
+      onClick={onClick}
+      {...rest}
     >
       {iconUrl && <Image src={iconUrl} alt={altText} fill />}
       {!iconUrl && icon}
@@ -45,6 +50,9 @@ const bgColor = (backgroundColor: BackgroundColor, theme: DefaultTheme) => {
     case 'secondary':
       return css`
         background: ${theme.components.button.secondary.background.default};
+
+        &:hover { 
+          background: ${theme.components.button.secondary.background.hover};
       `;
     case 'neutral':
     default:
