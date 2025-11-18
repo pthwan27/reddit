@@ -85,8 +85,8 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
               mediaFiles.forEach((file) => {
                 formData.append('images', file);
               });
+              formData.append('mediaType', 'image');
             }
-            formData.append('mediaType', 'image');
           }
           break;
         case 'link':
@@ -104,9 +104,8 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
       setLinkUrl('');
       setError('');
 
-      router.replace(
-        `/${selectedSub ? 'user' : 'r'}/${selectedSub ? selectedSub.slug : sub.slug}`
-      );
+      router.refresh();
+      router.push(`/r/${selectedSub ? selectedSub.slug : sub.slug}`);
     } catch (err: unknown) {
       const error = err as Error;
       console.error('Create Sub failed:', error);
@@ -146,6 +145,7 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
             radius="var(--radius-xl)"
             height="38px"
             width="fit-content"
+            variant="primary"
             onClick={handleSubmit}
             disabled={
               titleValidation !== 'valid' || contentValidation !== 'valid'

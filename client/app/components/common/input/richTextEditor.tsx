@@ -167,7 +167,8 @@ const PreviewToggle = styled.button<{ $active: boolean }>`
 `;
 
 const EditorBody = styled.div`
-  min-height: var(--rem-128);
+  position: relative;
+  height: var(--rem-128);
 `;
 
 const TextArea = styled.textarea`

@@ -2,7 +2,7 @@ import fs from 'fs';
 import multer from 'multer';
 import path from 'path';
 
-const tempDir = path.join(__dirname, '../../../../public/images/temp/posts');
+const tempDir = path.join(__dirname, '../../../public/images/temp/posts');
 
 if (!fs.existsSync(tempDir)) {
   fs.mkdirSync(tempDir, { recursive: true });
@@ -21,9 +21,9 @@ const storage = multer.diskStorage({
   },
 });
 
-export const postUpload = multer({
+export const PostUpload = multer({
   storage,
-  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB (비디오 고려)
+  limits: { fileSize: 50 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (
       file.mimetype.startsWith('image/') ||

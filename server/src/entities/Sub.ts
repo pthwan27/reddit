@@ -42,6 +42,8 @@ export class Sub extends CoreEntity {
   @OneToMany(() => Post, (post) => post.sub)
   posts: Post[];
 
+  @JoinColumn()
+  profileUser: User;
 
   @Expose()
   get userId(): number {

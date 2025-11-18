@@ -40,10 +40,10 @@ export class Post extends CoreEntity {
   @Column({ nullable: false })
   postType: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   mediaType: string;
 
-  @Column({type : 'text', nullable: true})
+  @Column({type : 'simple-array', nullable: true})
   imageUrns: string[];
 
   @Column({type : 'text', nullable: true})
@@ -91,7 +91,7 @@ export class Post extends CoreEntity {
     if (!this.imageUrns) return [];
     
     return this.imageUrns.map((urn: string) => {
-      return `${process.env.APP_URL}/images/posts/${this.identifier}/${urn}`;
+      return `${process.env.APP_URL}/${urn}`;
     });
   }
 
@@ -99,7 +99,7 @@ export class Post extends CoreEntity {
   get videoUrl(): string | null {
     if (!this.videoUrn) return null;
     
-    return `${process.env.APP_URL}/videos/posts/${this.identifier}/${this.videoUrn}`;  
+    return `${process.env.APP_URL}/${this.videoUrn}`;  
   }
 
   @Expose()

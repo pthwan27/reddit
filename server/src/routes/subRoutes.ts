@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { AuthMiddleware } from '../middleware/auth';
 import { CreateHandler } from '../migration/sub/create';
-import { upload } from '../migration/sub/create/fileUpload';
+import { SubUpload } from '../migration/sub/create/fileUpload';
 import { GetSubDetailHandler } from '../migration/sub/detail';
 import { GetMyListHandler } from '../migration/sub/my-list';
 import { BannerUploadHandler } from '../migration/sub/upload/banner';
@@ -11,7 +11,7 @@ import { IconUploadHandler } from '../migration/sub/upload/icon';
 
 const SubRouter = Router();
 
-SubRouter.post('/create', AuthMiddleware, upload, CreateHandler);
+SubRouter.post('/create', AuthMiddleware, SubUpload, CreateHandler);
 SubRouter.get('/my-list', AuthMiddleware, GetMyListHandler);
 SubRouter.get('/:slug', GetSubDetailHandler);
 

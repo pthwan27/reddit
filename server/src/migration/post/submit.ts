@@ -50,25 +50,33 @@ export const SubmitHandler: RequestHandler = async (req, res) => {
 
     await post.save();
 
-    const moveFile = async (file: Express.Multer.File, postId: number) => {
+    const moveFile = async (file: Express.Multer.File, postSlug: string) => {
+      console.log('Moving file:', file.filename, 'for post:', postSlug);
+
       const oldPath = file.path;
-      const newDir = path.join(
-        __dirname,
-        '../../../../public/images/posts',
-        postId.toString()
-      );
+
+      const baseDir = path.resolve(__dirname, '../../../public/images/posts');
+      const newDir = path.join(baseDir, postSlug);
+      try {
+        await fs.access(oldPath);
+      } catch (error) {
+        console.error('Source file does not exist:', error);
+
+        throw new Error(`Source file not found: ${oldPath}`);
+      }
 
       await fs.mkdir(newDir, { recursive: true });
+
       const newPath = path.join(newDir, file.filename);
       await fs.rename(oldPath, newPath);
 
-      return `/images/posts/${postId}/${file.filename}`;
+      return `/images/posts/${postSlug}/${file.filename}`;
     };
 
     if (postType === 'media' && files && files.length > 0) {
       if (mediaType === 'video' && files.length === 1) {
         const videoFile = files[0];
-        const videoPath = await moveFile(videoFile, post.id);
+        const videoPath = await moveFile(videoFile, post.slug);
 
         post.videoUrn = videoPath;
         post.mediaType = 'video';
@@ -76,7 +84,7 @@ export const SubmitHandler: RequestHandler = async (req, res) => {
         const imagePaths: string[] = [];
 
         for (const file of files) {
-          const imagePath = await moveFile(file, post.id);
+          const imagePath = await moveFile(file, post.slug);
           imagePaths.push(imagePath);
         }
 
