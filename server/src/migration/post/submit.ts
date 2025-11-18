@@ -51,8 +51,6 @@ export const SubmitHandler: RequestHandler = async (req, res) => {
     await post.save();
 
     const moveFile = async (file: Express.Multer.File, postSlug: string) => {
-      console.log('Moving file:', file.filename, 'for post:', postSlug);
-
       const oldPath = file.path;
 
       const baseDir = path.resolve(__dirname, '../../../public/images/posts');
