@@ -43,7 +43,7 @@ export class Post extends CoreEntity {
   @Column({ nullable: true })
   mediaType: string;
 
-  @Column({type : 'simple-array', nullable: true})
+  @Column({type:'text', array: true, nullable: true, default: () => 'ARRAY[]::text[]'} )
   imageUrns: string[];
 
   @Column({type : 'text', nullable: true})
@@ -88,7 +88,7 @@ export class Post extends CoreEntity {
 
   @Expose()
   get imageUrls(): string[] {
-    if (!this.imageUrns) return [];
+    if (!this.imageUrns) return [];    
     
     return this.imageUrns.map((urn: string) => {
       return `${process.env.APP_URL}/${urn}`;

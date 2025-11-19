@@ -1,3 +1,4 @@
+import { instanceToPlain } from 'class-transformer';
 import { RequestHandler } from 'express';
 import fs from 'fs/promises';
 import path from 'path';
@@ -84,7 +85,7 @@ export const CreateHandler: RequestHandler = async (req, res) => {
 
     await sub.save();
 
-    return res.status(201).json(sub);
+    return res.status(201).json(instanceToPlain(sub));
   } catch (error) {
     console.error('Error creating sub:', error);
 

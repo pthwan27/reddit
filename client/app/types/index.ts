@@ -44,6 +44,11 @@ export interface Post {
   voteScore: number;
   commentCount: number;
   userVote: number;
+  postType: 'text' | 'media' | 'link';
+  mediaType?: 'image' | 'video' | null;
+  imageUrls?: string[];
+  videoUrl?: string;
+  linkUrl?: string;
   sub: Sub;
   user: User;
   comments: Comment[];

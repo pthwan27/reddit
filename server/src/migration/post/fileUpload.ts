@@ -10,7 +10,7 @@ if (!fs.existsSync(tempDir)) {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, tempDir); // 일단 temp에 저장
+    cb(null, tempDir);
   },
 
   filename: (req, file, cb) => {

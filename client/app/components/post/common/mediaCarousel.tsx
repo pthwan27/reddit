@@ -8,29 +8,34 @@ import ChevronRightIcon from '@/app/components/svgs/ChevronRightIcon';
 import DeleteIcon from '@/app/components/svgs/DeleteIcon';
 import ImagesIcon from '@/app/components/svgs/ImagesIcon';
 
-interface ImageCarouselProps {
-  imgUrls: string[];
+type ItemVersion = 'submit' | 'view';
+interface MediaCarouselProps {
+  mediaUrls: string[];
   curIdx: number;
   setCurIdx: (idx: number) => void;
-  onAddMore: () => void;
-  onRemove: (e: React.MouseEvent, idx: number) => void;
+  onAddMore?: () => void;
+  onRemove?: (e: React.MouseEvent, idx: number) => void;
   mediaType?: 'image' | 'video' | null;
+  version?: ItemVersion;
 }
-const ImageCarousel = ({
-  imgUrls,
+const MediaCarousel = ({
+  mediaUrls,
   curIdx,
   setCurIdx,
   onAddMore,
   onRemove,
   mediaType = 'image',
-}: ImageCarouselProps) => {
-  const nextSlice = () => {
-    if (curIdx < imgUrls.length - 1) {
+  version = 'submit',
+}: MediaCarouselProps) => {
+  const nextSlice = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (curIdx < mediaUrls.length - 1) {
       setCurIdx(curIdx + 1);
     }
   };
 
-  const prevSlice = () => {
+  const prevSlice = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (curIdx > 0) {
       setCurIdx(curIdx - 1);
     }
@@ -39,7 +44,7 @@ const ImageCarousel = ({
   return (
     <SelectedFileWrapper>
       <ActionButtons>
-        {mediaType === 'image' && (
+        {mediaType === 'image' && onAddMore && (
           <ImgAddButton onClick={onAddMore}>
             <IconBox
               icon={<ImagesIcon />}
@@ -51,36 +56,38 @@ const ImageCarousel = ({
             <span>추가</span>
           </ImgAddButton>
         )}
-        <DeleteButton>
-          <IconBox
-            icon={<DeleteIcon />}
-            width={32}
-            height={32}
-            backgroundColor="transparent"
-            onClick={(e) => onRemove(e, curIdx)}
-            percentage={50}
-          />
-        </DeleteButton>
-        {imgUrls.length > 1 && curIdx > 0 && (
+        {onRemove && (
+          <DeleteButton>
+            <IconBox
+              icon={<DeleteIcon />}
+              width={32}
+              height={32}
+              backgroundColor="transparent"
+              onClick={(e) => onRemove(e, curIdx)}
+              percentage={50}
+            />
+          </DeleteButton>
+        )}
+        {mediaUrls.length > 1 && curIdx > 0 && (
           <PreviousButton>
             <IconBox
               icon={<ChevronLeftIcon />}
               width={32}
               height={32}
               backgroundColor="transparent"
-              onClick={prevSlice}
+              onClick={(e) => prevSlice(e)}
               percentage={50}
             />
           </PreviousButton>
         )}
-        {imgUrls.length > 1 && curIdx < imgUrls.length - 1 && (
+        {mediaUrls.length > 1 && curIdx < mediaUrls.length - 1 && (
           <NextButton>
             <IconBox
               icon={<ChevronRightIcon />}
               width={32}
               height={32}
               backgroundColor="transparent"
-              onClick={nextSlice}
+              onClick={(e) => nextSlice(e)}
               percentage={50}
             />
           </NextButton>
@@ -92,23 +99,40 @@ const ImageCarousel = ({
           <ImgCarouselTrack
             id="imgCarouselTrack"
             $currentIndex={curIdx}
-            $totalItems={imgUrls.length}
+            $totalItems={mediaUrls.length}
           >
-            {imgUrls.map((file, idx) => (
-              <ImgCarouselItem key={idx} $totalItems={imgUrls.length}>
-                <Image src={file} alt={`preview ${curIdx + 1}`} fill />
-                <Image
-                  src={file}
-                  alt={`preview background ${curIdx + 1}`}
-                  fill
-                />
-              </ImgCarouselItem>
-            ))}
+            {version === 'submit' ? (
+              <>
+                {mediaUrls.map((file, idx) => (
+                  <ImgCarouselItem key={idx} $totalItems={mediaUrls.length}>
+                    <Image src={file} alt={`preview ${curIdx + 1}`} fill />
+                    <Image
+                      src={file}
+                      alt={`preview background ${curIdx + 1}`}
+                      fill
+                    />
+                  </ImgCarouselItem>
+                ))}
+              </>
+            ) : (
+              <>
+                {mediaUrls.map((file, idx) => (
+                  <ImgCarouselItemV2 key={idx} $totalItems={mediaUrls.length}>
+                    <Image src={file} alt={`preview ${curIdx + 1}`} fill />{' '}
+                    <Image
+                      src={file}
+                      alt={`preview background ${curIdx + 1}`}
+                      fill
+                    />
+                  </ImgCarouselItemV2>
+                ))}
+              </>
+            )}
           </ImgCarouselTrack>
         </ImgCarouselWrapper>
       ) : (
         <VideoWrapper>
-          <video src={imgUrls[0]} controls muted />
+          <video src={mediaUrls[0]} controls muted />
           <div />
         </VideoWrapper>
       )}
@@ -327,4 +351,34 @@ const ImgCarouselItem = styled.li<{ $totalItems: number }>`
   }
 `;
 
-export default ImageCarousel;
+const ImgCarouselItemV2 = styled.li<{ $totalItems: number }>`
+  position: relative;
+  width: ${({ $totalItems }) => `${100 / $totalItems}%`};
+  height: 100%;
+  flex-shrink: 0;
+
+  img:first-child {
+    position: relative;
+    object-fit: contain;
+
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-xl);
+    z-index: 2;
+  }
+
+  img:nth-child(2) {
+    position: absolute;
+    filter: blur(24px);
+    opacity: 0.3;
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    z-index: 1;
+    border-radius: var(--radius-xl);
+  }
+`;
+
+export default MediaCarousel;

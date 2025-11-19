@@ -27,6 +27,8 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
   const router = useRouter();
 
   const [isTagLoading, setIsTagLoading] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -44,7 +46,14 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
     [content]
   );
 
-  const handleSubSelect = (sub: Sub) => {
+  const handleSelect = (sub: Sub) => {
+    setSearchTerm('');
+    setIsSearching(false);
+    setIsTagLoading(false);
+    if (sub.id === selectedSub?.id) {
+      return;
+    }
+
     if (sub.id !== selectedSub?.id) {
       if (title.trim() || content.trim()) {
         const confirmed = window.confirm(
@@ -56,11 +65,13 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
         }
       }
 
-      setSelectedSub(sub);
       setIsTagLoading(true);
+      setSelectedSub(sub);
+      setMediaFiles([]);
+      setLinkUrl('');
 
       setTimeout(() => {
-        router.push(`/${sub.profileUser ? 'user' : 'r'}/${sub.slug}/submit`);
+        router.push(`/r/${sub.slug}/submit`);
       }, 500);
     }
   };
@@ -104,8 +115,7 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
       setLinkUrl('');
       setError('');
 
-      router.refresh();
-      router.push(`/r/${selectedSub ? selectedSub.slug : sub.slug}`);
+      window.location.href = `/r/${selectedSub ? selectedSub.slug : sub.slug}`;
     } catch (err: unknown) {
       const error = err as Error;
       console.error('Create Sub failed:', error);
@@ -114,17 +124,21 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
   };
 
   useEffect(() => {
-    setTitle('');
-    setContent('');
-  }, [isTagLoading]);
+    if (!selectedSub) {
+      setSelectedSub(sub);
+    }
+  }, [sub, selectedSub, setSelectedSub]);
 
   return (
     <GridWrapper>
       <PostSubmit>
         <PostSubmitHeader
           isTagLoading={isTagLoading}
-          setIsTagLoading={setIsTagLoading}
-          onSelectTag={handleSubSelect}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          isSearching={isSearching}
+          setIsSearching={setIsSearching}
+          handleSelect={handleSelect}
         />
         <PostSubmitMain
           title={title}
@@ -164,7 +178,6 @@ const GridWrapper = styled.div`
   width: 100%;
   max-width: 1120px;
   margin: 0 auto;
-  padding-top: 16px;
 
   gap: var(--spacer-lg);
 
@@ -175,12 +188,9 @@ const GridWrapper = styled.div`
   }
 
   @media (min-width: 1200px) {
-    padding: 0 var(--spacer-lg);
   }
 
   @media (min-width: 768px) {
-    padding: 0 var(--spacer-md);
-
     & > :nth-child(2) {
       display: block;
     }
@@ -194,8 +204,6 @@ const PostSubmit = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-
-  padding: 
 
   margin: 0 auto;
 

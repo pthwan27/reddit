@@ -1,13 +1,12 @@
-# Use postgres/example user/password credentials
-
 services:
   db:
-    image: postgres:latest
+    image: postgres:17
     restart: always
     ports:
       - "5432:5432"
     environment:
       POSTGRES_USER: "${DB_USER_NAME}"
       POSTGRES_PASSWORD: "${DB_USER_PASSWORD}"
+      POSTGRES_DB: "${DB_DATABASE_NAME}"
     volumes:
       - ./data:/var/lib/postgresql/data

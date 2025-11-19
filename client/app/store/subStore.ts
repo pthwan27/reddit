@@ -37,9 +37,10 @@ export const useSubStore = create(
 
         const originalSubs = get().subs;
         const originalFilteredSubs = get().filteredSubs;
+        const tempId = Math.random() * 100000;
 
         const optimisticSub: Sub = {
-          id: Date.now(),
+          id: tempId,
           slug: title, // 임시 slug
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -71,12 +72,11 @@ export const useSubStore = create(
           );
 
           set((state) => ({
-            subs: state.subs.map((sub) =>
-              sub.id === optimisticSub.id ? newSub : sub
-            ),
-            filteredSubs: state.filteredSubs.map((sub) =>
-              sub.id === optimisticSub.id ? newSub : sub
-            ),
+            subs: [newSub, ...state.subs.filter((sub) => sub.id !== tempId)],
+            filteredSubs: [
+              newSub,
+              ...state.filteredSubs.filter((sub) => sub.id !== tempId),
+            ],
           }));
         } catch (err: unknown) {
           const error = err as CustomError;

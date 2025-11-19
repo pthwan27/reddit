@@ -47,10 +47,11 @@ const BannerBox = styled.div`
   background: ${({ theme }) => theme.colors.neutral.content};
 
   background-repeat: no-repeat;
-  background-size: cover;
   background-position: 50%;
+  background-size: cover;
 
   img {
+    object-fit: cover;
     width: 100%;
     height: 100%;
   }

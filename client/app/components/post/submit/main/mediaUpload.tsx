@@ -6,7 +6,7 @@ import IconBox from '@/app/components/common/IconBox';
 import SmallLoadingSpinner from '@/app/components/common/smallLoadingSpinner';
 import UploadIcon from '@/app/components/svgs/UploadIcon';
 
-import ImageCarousel from './ImageCarousel';
+import MediaCarousel from '../../common/mediaCarousel';
 
 interface ImageUploadProps {
   mediaFiles: File[];
@@ -146,7 +146,7 @@ const ImageUpload = ({
   }, []);
 
   return (
-    <ImageUploadArea>
+    <MediaUploadArea>
       <InputBox onClick={handleAddMoreImages} />
 
       {isUploading ? (
@@ -154,8 +154,8 @@ const ImageUpload = ({
           <SmallLoadingSpinner />
         </SpinnerWrapper>
       ) : imgUrls && imgUrls.length > 0 ? (
-        <ImageCarousel
-          imgUrls={imgUrls}
+        <MediaCarousel
+          mediaUrls={imgUrls}
           curIdx={curImgIdx}
           setCurIdx={setcurImgIdx}
           onAddMore={handleAddMoreImages}
@@ -199,11 +199,11 @@ const ImageUpload = ({
         multiple={mediaType !== 'video'}
         disabled={isUploading}
       />
-    </ImageUploadArea>
+    </MediaUploadArea>
   );
 };
 
-const ImageUploadArea = styled.div`
+const MediaUploadArea = styled.div`
   position: relative;
   min-height: min(20vw, 250px);
   height: max(23vw, 250px);
