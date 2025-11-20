@@ -1,3 +1,4 @@
+import { instanceToPlain } from 'class-transformer';
 import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -74,8 +75,7 @@ export const RegisterHandler: RequestHandler = async (req, res) => {
       path: '/',
     });
 
-    // 비밀번호를 제외한 사용자 정보를 반환
-    const { password: _, ...userWithoutPassword } = user;
+    const { password: _, ...userWithoutPassword } = instanceToPlain(user);
 
     return res.status(201).json({
       user: userWithoutPassword,

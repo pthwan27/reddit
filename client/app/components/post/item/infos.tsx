@@ -34,7 +34,8 @@ const StyledPostInfos = styled.div`
 
   height: var(--rem-32);
 
-  margin-bottom: var(--spacer-xs);
+  margin-top: calc(-1 * var(--spacer-2xs));
+  margin-bottom: var(--spacer-2xs);
 
   div {
     display: flex;

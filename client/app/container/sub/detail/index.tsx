@@ -23,7 +23,7 @@ const SubDetailContainer = ({ ...sub }: Sub) => {
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl);
   const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl);
 
-  const { posts, loading, hasMore, fetchPosts } = usePostStore();
+  const { posts, loading, hasMore, fetchPosts, clearPosts } = usePostStore();
 
   const iconFileInputRef = useRef<HTMLInputElement>(null);
   const bannerFileInputRef = useRef<HTMLInputElement>(null);
@@ -76,6 +76,11 @@ const SubDetailContainer = ({ ...sub }: Sub) => {
   useEffect(() => {
     setBannerImage(sub.bannerUrl);
   }, [sub.bannerUrl]);
+
+  useEffect(() => {
+    clearPosts();
+    fetchPosts(sub.slug);
+  }, [sub.slug, fetchPosts]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

@@ -1,3 +1,4 @@
+import { instanceToPlain } from 'class-transformer';
 import { RequestHandler } from 'express';
 
 import { User } from '../../entities/User';
@@ -10,7 +11,7 @@ export const MeHandler: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: 'User not found in context' });
     }
 
-    const { password: _, ...userWithoutPassword } = user;
+    const { password: _, ...userWithoutPassword } = instanceToPlain(user);
 
     return res.status(200).json({
       user: userWithoutPassword,

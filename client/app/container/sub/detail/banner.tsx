@@ -24,7 +24,14 @@ const SubBannerContainer = ({
   return (
     <HeaderTopSection $isBanner={isBanner}>
       <BannerBox>
-        {isBanner && <Image src={bannerImage} alt={sub.title} fill />}
+        {isBanner && (
+          <Image
+            src={bannerImage}
+            alt={sub.title}
+            fill
+            sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
+          />
+        )}
       </BannerBox>
       <EditIcon onClick={onEditClick}>
         <PencilIcon />

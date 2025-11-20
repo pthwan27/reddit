@@ -33,7 +33,7 @@ const SubDetailPage = async ({
   const { slug } = await params;
 
   const data = await getSubData(slug);
-  
+
   return <SubDetailContainer {...data} />;
 };
 

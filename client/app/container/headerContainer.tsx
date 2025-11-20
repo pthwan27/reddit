@@ -56,10 +56,7 @@ const HeaderContainer = ({ noOption = false }) => {
             </CenterNav>
             <RightNav>
               {user ? (
-                <DropdownContainer
-                  ref={dropdownRef}
-                  style={{ position: 'relative' }}
-                >
+                <DropdownContainer ref={dropdownRef}>
                   <ProfileButton onClick={() => setIsDropdownOpen((e) => !e)}>
                     <IconBox
                       iconUrl={user.profileUrl}
@@ -158,6 +155,9 @@ const ProfileButton = styled.button`
   display: flex;
   gap: var(--spacer-4xs);
 
+  width: var(--rem-32);
+  height: var(--rem-32);
+
   justify-content: center;
   align-items: center;
 
@@ -166,6 +166,12 @@ const ProfileButton = styled.button`
   padding: var(--spacer-2xs) var(--spacer-2xs);
   border-radius: var(--radius-full);
   cursor: pointer;
+
+  > img {
+    width: 90%;
+    height: 90%;
+    border-radius: var(--radius-full);
+  }
 
   &:hover {
     border: none;

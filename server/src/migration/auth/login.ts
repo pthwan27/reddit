@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import { instanceToPlain } from 'class-transformer';
 import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -63,7 +64,7 @@ export const LoginHandler: RequestHandler = async (req, res) => {
       path: '/',
     });
 
-    const { password: _, ...userWithoutPassword } = user;
+    const { password: _, ...userWithoutPassword } = instanceToPlain(user);
 
     return res.status(200).json({
       user: userWithoutPassword,

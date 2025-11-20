@@ -9,14 +9,37 @@ const initialState = {
   loading: false,
   page: 0,
   hasMore: true,
+  curSubSlug: '',
 };
 
 export const usePostStore = create<PostStore>((set, get) => ({
   ...initialState,
 
   fetchPosts: async (slug: string) => {
-    const { loading, page, hasMore } = get();
+    const { loading, page, hasMore, curSubSlug } = get();
     const LIMIT = 7;
+    if (curSubSlug !== slug) {
+      set({
+        ...initialState,
+        curSubSlug: slug,
+        loading: true,
+      });
+
+      try {
+        const { data } = await clientAxiosInstance.get(
+          `/api/post/list/${slug}?page=${page}&limit=${LIMIT}`
+        );
+        set((state) => ({
+          posts: page === 0 ? data.posts : [...state.posts, ...data.posts],
+          page: state.page + 1,
+          hasMore: data.posts.length === LIMIT,
+          loading: false,
+        }));
+      } catch (error) {
+        console.error('Failed to fetch posts:', error);
+        set({ loading: false });
+      }
+    }
 
     if (loading || !hasMore) return;
 

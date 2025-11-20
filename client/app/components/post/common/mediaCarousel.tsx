@@ -29,6 +29,7 @@ const MediaCarousel = ({
 }: MediaCarouselProps) => {
   const nextSlice = (e: React.MouseEvent) => {
     e.stopPropagation();
+
     if (curIdx < mediaUrls.length - 1) {
       setCurIdx(curIdx + 1);
     }
@@ -36,6 +37,7 @@ const MediaCarousel = ({
 
   const prevSlice = (e: React.MouseEvent) => {
     e.stopPropagation();
+
     if (curIdx > 0) {
       setCurIdx(curIdx - 1);
     }
@@ -95,7 +97,7 @@ const MediaCarousel = ({
       </ActionButtons>
 
       {mediaType === 'image' ? (
-        <ImgCarouselWrapper>
+        <ImgCarouselWrapper $version={version}>
           <ImgCarouselTrack
             id="imgCarouselTrack"
             $currentIndex={curIdx}
@@ -105,11 +107,17 @@ const MediaCarousel = ({
               <>
                 {mediaUrls.map((file, idx) => (
                   <ImgCarouselItem key={idx} $totalItems={mediaUrls.length}>
-                    <Image src={file} alt={`preview ${curIdx + 1}`} fill />
                     <Image
                       src={file}
-                      alt={`preview background ${curIdx + 1}`}
+                      alt={`submit preview ${curIdx + 1}`}
                       fill
+                      sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
+                    />
+                    <Image
+                      src={file}
+                      alt={`submit preview background ${curIdx + 1}`}
+                      fill
+                      sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
                     />
                   </ImgCarouselItem>
                 ))}
@@ -118,11 +126,18 @@ const MediaCarousel = ({
               <>
                 {mediaUrls.map((file, idx) => (
                   <ImgCarouselItemV2 key={idx} $totalItems={mediaUrls.length}>
-                    <Image src={file} alt={`preview ${curIdx + 1}`} fill />{' '}
                     <Image
                       src={file}
-                      alt={`preview background ${curIdx + 1}`}
+                      alt={`submit preview ${curIdx + 1}`}
+                      width={750}
+                      height={540}
+                      sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
+                    />
+                    <Image
+                      src={file}
+                      alt={`submit preview background ${curIdx + 1}`}
                       fill
+                      sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
                     />
                   </ImgCarouselItemV2>
                 ))}
@@ -298,12 +313,19 @@ const VideoWrapper = styled.div`
   }
 `;
 
-const ImgCarouselWrapper = styled.div`
+const ImgCarouselWrapper = styled.div<{ $version: ItemVersion }>`
   position: relative;
   width: 100%;
-  height: 100%;
+
+  height: ${({ $version }) => ($version === 'view' ? 'auto' : '100%')};
+  min-height: ${({ $version }) => ($version === 'view' ? '200px' : '0')};
+  max-height: ${({ $version }) => ($version === 'view' ? '540px' : 'none')};
+
   overflow: hidden;
   border-radius: var(--radius-xl);
+
+  border-color: ${({ $version, theme }) =>
+    $version === 'view' ? theme.colors.neutral.borderWeak : 'transparent'};
 `;
 
 const ImgCarouselTrack = styled.ul<{
@@ -331,8 +353,12 @@ const ImgCarouselItem = styled.li<{ $totalItems: number }>`
     position: relative;
     object-fit: contain;
 
-    width: 100%;
-    height: 100%;
+    width: auto;
+    max-width: 100%;
+
+    height: auto;
+    max-height: 540px;
+
     border-radius: var(--radius-xl);
     z-index: 2;
   }
@@ -352,18 +378,37 @@ const ImgCarouselItem = styled.li<{ $totalItems: number }>`
 `;
 
 const ImgCarouselItemV2 = styled.li<{ $totalItems: number }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   position: relative;
   width: ${({ $totalItems }) => `${100 / $totalItems}%`};
   height: 100%;
   flex-shrink: 0;
 
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1;
+    border-radius: var(--radius-xl);
+  }
+
   img:first-child {
     position: relative;
     object-fit: contain;
 
-    width: 100%;
-    height: 100%;
-    border-radius: var(--radius-xl);
+    width: auto;
+    max-width: 100%;
+
+    height: auto;
+    max-height: 540px;
+
     z-index: 2;
   }
 

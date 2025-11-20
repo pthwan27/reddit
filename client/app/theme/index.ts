@@ -141,6 +141,11 @@ export const newTheme = {
     ui: {
       canvas: '#F6F8F9',
     },
+    a: {
+      default: '#3F4953',
+      hover: '#2f372f',
+      visited: '#9b00d4',
+    },
   },
   gradients: {
     avatar: 'linear-gradient(0deg, #97AFBCff, #ffffffff 75%)',

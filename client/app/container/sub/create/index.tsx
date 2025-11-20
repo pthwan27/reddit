@@ -159,14 +159,26 @@ const CreateSubContainer = () => {
             {curInputBoxNum > 0 && (
               <StyledBanner $isSelected={!banner}>
                 {bannerPreview && (
-                  <Image src={bannerPreview} alt="banner" fill />
+                  <Image
+                    src={bannerPreview}
+                    alt="banner"
+                    fill
+                    sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
+                  />
                 )}
               </StyledBanner>
             )}
             <StyledMain>
               {curInputBoxNum > 0 && (
                 <IconBox $isSelected={!icon}>
-                  {iconPreview && <Image src={iconPreview} alt="icon" fill />}
+                  {iconPreview && (
+                    <Image
+                      src={iconPreview}
+                      alt="icon"
+                      fill
+                      sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
+                    />
+                  )}
                 </IconBox>
               )}
               <InfoBox>

@@ -35,7 +35,14 @@ const IconBox = ({
       onClick={onClick}
       {...rest}
     >
-      {iconUrl && <Image src={iconUrl} alt={altText} fill />}
+      {iconUrl && (
+        <Image
+          src={iconUrl}
+          alt={altText}
+          fill
+          sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
+        />
+      )}
       {!iconUrl && icon}
     </StyledIconBox>
   );

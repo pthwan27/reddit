@@ -39,7 +39,12 @@ const SubInfosContainer = ({
         <TitleInfo>
           <IconBox onClick={onEditClick} $isIcon={isIcon}>
             {isIcon ? (
-              <Image src={iconImage} alt={sub.title} fill />
+              <Image
+                src={iconImage}
+                alt={sub.title}
+                fill
+                sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
+              />
             ) : (
               <span></span>
             )}

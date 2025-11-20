@@ -16,25 +16,25 @@ const PostBody = ({
   linkUrl = '',
 }: Post) => {
   const [curImgIdx, setcurImgIdx] = useState(0);
-  const mediaUrls = [...imageUrls, videoUrl];
 
   return (
     <>
       <Title>{title}</Title>
       {postType === 'media' && (
-        <MediaCarouselWrapper>
-          <MediaCarousel
-            mediaUrls={mediaUrls}
-            curIdx={curImgIdx}
-            setCurIdx={setcurImgIdx}
-            mediaType={mediaType}
-          />
-        </MediaCarouselWrapper>
+        <>
+          <MediaCarouselWrapper>
+            <MediaCarousel
+              mediaUrls={mediaType === 'image' ? imageUrls : [videoUrl]}
+              curIdx={curImgIdx}
+              setCurIdx={setcurImgIdx}
+              mediaType={mediaType}
+              version={'view'}
+            />
+          </MediaCarouselWrapper>
+        </>
       )}
-
-      {postType === 'link' && <a href={linkUrl}>{linkUrl}</a>}
-
-      <Content>{body}</Content>
+      {postType === 'link' && <Link>{linkUrl}</Link>}
+      {postType === 'text' && <Content>{body}</Content>}
     </>
   );
 };
@@ -46,17 +46,68 @@ const Title = styled.div`
   margin-bottom: var(--spacer-xs);
 
   font: var(--font-24-semibold);
+
+  @media (min-width: 768px) {
+    -webkit-text-size-adjust: clamp(100%, calc(100% * 1), 140%);
+    text-size-adjust: clamp(100%, calc(100% * 1), 140%);
+  }
+
+  @media (min-width: 768px) {
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    margin-bottom: var(--spacer-xs);
+  }
 `;
 
 const MediaCarouselWrapper = styled.div`
   position: relative;
-  min-height: min(20vw, 250px);
-  height: max(23vw, 250px);
+  min-height: 200px;
+  max-height: 540px;
+  height: auto;
+
+  margin-bottom: var(--spacer-xs);
 `;
+
 const Content = styled.div`
   padding-bottom: var(--spacer-2xs);
 
-  font: var(--font-14-20-regular);
+  font-size: 0.75rem;
+  line-height: 1rem;
+
+  @media (min-width: 768px) {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  margin-bottom: var(--spacer-xs);
+`;
+
+const Link = styled.a`
+  margin-bottom: var(--spacer-xs);
+
+  font-weight: 600;
+
+  font-size: 0.75rem;
+  line-height: 1rem;
+
+  @media (min-width: 768px) {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  text-decoration: none;
+  color: ${({ theme }) => theme.colors.a.default};
+
+  &:hover {
+    text-decoration: underline;
+    color: ${({ theme }) => theme.colors.a.hover};
+  }
+
+  &:visited {
+    color: ${({ theme }) => theme.colors.a.visited};
+  }
 `;
 
 export default PostBody;
