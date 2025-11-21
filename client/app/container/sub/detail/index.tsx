@@ -8,7 +8,7 @@ import { usePostStore } from '@/app/store/postStore';
 
 import styled from 'styled-components';
 
-import LoadingSpinner from '@/app/components/common/loadingSpinner';
+import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 
 import SubBanner from '@/app/container/sub/detail/banner';
 import SubInfos from '@/app/container/sub/detail/info';
@@ -165,20 +165,19 @@ const Header = styled.header`
   }
 `;
 
-const Main = styled.main`
+const Main = styled.div`
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
 
-  grid-template-columns: minmax(0, 756px) minmax(0, 316px);
+  & > :nth-child(2) {
+    display: none;
+  }
 
   gap: var(--spacer-lg);
 
-  @media (max-width: 959px) {
-    grid-template-columns: 1fr;
+  @media (min-width: 960px) {
     & > :nth-child(1) {
-    }
-
-    & > :nth-child(2) {
-      display: none;
+      grid-template-columns: minmax(0, 756px) minmax(0, 316px);
     }
   }
 `;

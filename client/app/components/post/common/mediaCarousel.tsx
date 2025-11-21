@@ -17,6 +17,7 @@ interface MediaCarouselProps {
   onRemove?: (e: React.MouseEvent, idx: number) => void;
   mediaType?: 'image' | 'video' | null;
   version?: ItemVersion;
+  noBorderRadiusOnMobile?: boolean;
 }
 const MediaCarousel = ({
   mediaUrls,
@@ -26,6 +27,7 @@ const MediaCarousel = ({
   onRemove,
   mediaType = 'image',
   version = 'submit',
+  noBorderRadiusOnMobile = false,
 }: MediaCarouselProps) => {
   const nextSlice = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -44,7 +46,10 @@ const MediaCarousel = ({
   };
 
   return (
-    <SelectedFileWrapper>
+    <SelectedFileWrapper
+      $version={version}
+      $noBorderRadiusOnMobile={noBorderRadiusOnMobile}
+    >
       <ActionButtons>
         {mediaType === 'image' && onAddMore && (
           <ImgAddButton onClick={onAddMore}>
@@ -99,54 +104,34 @@ const MediaCarousel = ({
       {mediaType === 'image' ? (
         <ImgCarouselWrapper $version={version}>
           <ImgCarouselTrack
-            id="imgCarouselTrack"
             $currentIndex={curIdx}
             $totalItems={mediaUrls.length}
+            $version={version}
           >
-            {version === 'submit' ? (
-              <>
-                {mediaUrls.map((file, idx) => (
-                  <ImgCarouselItem key={idx} $totalItems={mediaUrls.length}>
-                    <Image
-                      src={file}
-                      alt={`submit preview ${curIdx + 1}`}
-                      fill
-                      sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
-                    />
-                    <Image
-                      src={file}
-                      alt={`submit preview background ${curIdx + 1}`}
-                      fill
-                      sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
-                    />
-                  </ImgCarouselItem>
-                ))}
-              </>
-            ) : (
-              <>
-                {mediaUrls.map((file, idx) => (
-                  <ImgCarouselItemV2 key={idx} $totalItems={mediaUrls.length}>
-                    <Image
-                      src={file}
-                      alt={`submit preview ${curIdx + 1}`}
-                      width={750}
-                      height={540}
-                      sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
-                    />
-                    <Image
-                      src={file}
-                      alt={`submit preview background ${curIdx + 1}`}
-                      fill
-                      sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
-                    />
-                  </ImgCarouselItemV2>
-                ))}
-              </>
-            )}
+            {mediaUrls.map((file, idx) => (
+              <ImgCarouselItem
+                key={idx}
+                $totalItems={mediaUrls.length}
+                $version={version}
+              >
+                <Image
+                  src={file}
+                  alt={`submit preview ${curIdx + 1}`}
+                  fill
+                  sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
+                />
+                <Image
+                  src={file}
+                  alt={`submit preview background ${curIdx + 1}`}
+                  fill
+                  sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
+                />
+              </ImgCarouselItem>
+            ))}
           </ImgCarouselTrack>
         </ImgCarouselWrapper>
       ) : (
-        <VideoWrapper>
+        <VideoWrapper $version={version}>
           <video src={mediaUrls[0]} controls muted />
           <div />
         </VideoWrapper>
@@ -217,26 +202,6 @@ const DeleteButton = styled.span`
   }
 `;
 
-const SelectedFileWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  object-position: center center;
-
-  border: var(--line-sm) solid ${({ theme }) => theme.colors.neutral.border};
-  border-radius: var(--radius-xl);
-
-  overflow: hidden;
-
-  &:hover ${ImgAddButton}, &:hover ${DeleteButton} {
-    visibility: visible;
-  }
-`;
-
 const PreviousButton = styled.span`
   position: absolute;
   top: 50%;
@@ -281,12 +246,46 @@ const NextButton = styled.span`
   }
 `;
 
-const VideoWrapper = styled.div`
+const SelectedFileWrapper = styled.div<{
+  $version: ItemVersion;
+  $noBorderRadiusOnMobile: boolean;
+}>`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  object-position: center center;
+
+  border: var(--line-sm) solid ${({ theme }) => theme.colors.neutral.border};
+
+  border-radius: ${({ $noBorderRadiusOnMobile }) =>
+    $noBorderRadiusOnMobile ? 0 : 'var(--radius-xl)'};
+
+  overflow: hidden;
+
+  &:hover ${ImgAddButton}, &:hover ${DeleteButton} {
+    visibility: visible;
+  }
+
+  @media (min-width: 768px) {
+    border-radius: var(--radius-xl);
+  }
+`;
+
+const VideoWrapper = styled.div<{ $version: ItemVersion }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   position: relative;
   width: 100%;
   height: 100%;
+
   overflow: hidden;
-  border-radius: var(--radius-xl);
+  padding: var(--spacer-lg) 0;
 
   video:first-child {
     position: relative;
@@ -294,7 +293,8 @@ const VideoWrapper = styled.div`
 
     width: 100%;
     height: 100%;
-    border-radius: var(--radius-xl);
+    max-height: inherit;
+
     z-index: 2;
   }
 
@@ -308,21 +308,13 @@ const VideoWrapper = styled.div`
     object-fit: cover;
 
     z-index: 1;
-    border-radius: var(--radius-xl);
     pointer-events: none;
   }
 `;
 
 const ImgCarouselWrapper = styled.div<{ $version: ItemVersion }>`
-  position: relative;
   width: 100%;
-
-  height: ${({ $version }) => ($version === 'view' ? 'auto' : '100%')};
-  min-height: ${({ $version }) => ($version === 'view' ? '200px' : '0')};
-  max-height: ${({ $version }) => ($version === 'view' ? '540px' : 'none')};
-
-  overflow: hidden;
-  border-radius: var(--radius-xl);
+  height: 100%;
 
   border-color: ${({ $version, theme }) =>
     $version === 'view' ? theme.colors.neutral.borderWeak : 'transparent'};
@@ -331,6 +323,7 @@ const ImgCarouselWrapper = styled.div<{ $version: ItemVersion }>`
 const ImgCarouselTrack = styled.ul<{
   $currentIndex: number;
   $totalItems: number;
+  $version: ItemVersion;
 }>`
   display: flex;
   width: ${({ $totalItems }) => `${$totalItems * 100}%`};
@@ -343,10 +336,17 @@ const ImgCarouselTrack = styled.ul<{
   transition: transform 0.3s ease-in-out;
 `;
 
-const ImgCarouselItem = styled.li<{ $totalItems: number }>`
+const ImgCarouselItem = styled.li<{
+  $totalItems: number;
+  $version: ItemVersion;
+}>`
   position: relative;
   width: ${({ $totalItems }) => `${100 / $totalItems}%`};
-  height: 100%;
+  height: auto;
+  max-height: 540px;
+
+  aspect-ratio: auto 1/1;
+
   flex-shrink: 0;
 
   img:first-child {
@@ -359,70 +359,26 @@ const ImgCarouselItem = styled.li<{ $totalItems: number }>`
     height: auto;
     max-height: 540px;
 
-    border-radius: var(--radius-xl);
+    aspect-ratio: auto 1/1;
+
     z-index: 2;
   }
 
   img:nth-child(2) {
     position: absolute;
-    filter: blur(24px);
-    opacity: 0.3;
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    z-index: 1;
-    border-radius: var(--radius-xl);
-  }
-`;
-
-const ImgCarouselItemV2 = styled.li<{ $totalItems: number }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  position: relative;
-  width: ${({ $totalItems }) => `${100 / $totalItems}%`};
-  height: 100%;
-  flex-shrink: 0;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    z-index: 1;
-    border-radius: var(--radius-xl);
-  }
-
-  img:first-child {
-    position: relative;
-    object-fit: contain;
+    filter: blur(32px);
+    opacity: 0.7;
 
     width: auto;
-    max-width: 100%;
 
     height: auto;
     max-height: 540px;
 
-    z-index: 2;
-  }
-
-  img:nth-child(2) {
-    position: absolute;
-    filter: blur(24px);
-    opacity: 0.3;
-    width: 100%;
-    height: 100%;
+    aspect-ratio: auto 1/1;
 
     object-fit: cover;
 
     z-index: 1;
-    border-radius: var(--radius-xl);
   }
 `;
 

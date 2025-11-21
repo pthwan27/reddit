@@ -56,6 +56,8 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
 
     if (sub.id !== selectedSub?.id) {
       if (title.trim() || content.trim()) {
+        if (typeof window === 'undefined') return;
+
         const confirmed = window.confirm(
           '작성 중인 내용이 있습니다. 정말 다른 커뮤니티로 이동하시겠습니까?'
         );
@@ -70,9 +72,7 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
       setMediaFiles([]);
       setLinkUrl('');
 
-      setTimeout(() => {
-        router.push(`/r/${sub.slug}/submit`);
-      }, 500);
+      router.push(`/r/${sub.slug}/submit`);
     }
   };
 
@@ -114,6 +114,8 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
       setMediaFiles([]);
       setLinkUrl('');
       setError('');
+
+      if (typeof window === 'undefined') return;
 
       window.location.href = `/r/${selectedSub ? selectedSub.slug : sub.slug}`;
     } catch (err: unknown) {

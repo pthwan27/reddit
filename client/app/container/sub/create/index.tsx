@@ -8,7 +8,7 @@ import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
-import LoadingSpinner from '@/app/components/common/loadingSpinner';
+import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 
 import { useAuth } from '@/app/context/authContext';
 import { useModalState } from '@/app/context/modalContext';
@@ -171,14 +171,7 @@ const CreateSubContainer = () => {
             <StyledMain>
               {curInputBoxNum > 0 && (
                 <IconBox $isSelected={!icon}>
-                  {iconPreview && (
-                    <Image
-                      src={iconPreview}
-                      alt="icon"
-                      fill
-                      sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
-                    />
-                  )}
+                  {iconPreview && <Image src={iconPreview} alt="icon" fill />}
                 </IconBox>
               )}
               <InfoBox>

@@ -15,7 +15,7 @@ const PostBody = ({
   videoUrl = '',
   linkUrl = '',
 }: Post) => {
-  const [curImgIdx, setcurImgIdx] = useState(0);
+  const [curImgIdx, setCurImgIdx] = useState(0);
 
   return (
     <>
@@ -26,7 +26,7 @@ const PostBody = ({
             <MediaCarousel
               mediaUrls={mediaType === 'image' ? imageUrls : [videoUrl]}
               curIdx={curImgIdx}
-              setCurIdx={setcurImgIdx}
+              setCurIdx={setCurImgIdx}
               mediaType={mediaType}
               version={'view'}
             />
@@ -63,8 +63,7 @@ const Title = styled.div`
 
 const MediaCarouselWrapper = styled.div`
   position: relative;
-  min-height: 200px;
-  max-height: 540px;
+  width: auto;
   height: auto;
 
   margin-bottom: var(--spacer-xs);

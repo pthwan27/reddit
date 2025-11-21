@@ -49,7 +49,6 @@ const CommentsContainer = ({
           <CommentsByPost comments={comments} />
         </BottomSection>
       </CommentsWrapper>
-
       <RightSideBar sub={displayPost.sub} />
     </GridWrapper>
   );

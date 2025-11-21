@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import IconBox from '@/app/components/common/IconBox';
-import SmallLoadingSpinner from '@/app/components/common/smallLoadingSpinner';
+import SmallLoadingSpinner from '@/app/components/common/loading/smallLoadingSpinner';
 import UploadIcon from '@/app/components/svgs/UploadIcon';
 
 import MediaCarousel from '../../common/mediaCarousel';

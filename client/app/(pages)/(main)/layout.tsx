@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import LoadingSpinner from '@/app/components/common/loadingSpinner';
+import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 
 import HeaderContainer from '@/app/container/headerContainer';
 import MainContainer from '@/app/container/mainContainer';

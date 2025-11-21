@@ -19,7 +19,7 @@ const PostItem = ({ post }: { post: Post }) => {
 
   if (post.postType === 'link') {
     return (
-      <StyledPostLinkItem>
+      <StyledPostLinkItem onClick={() => goToComments()}>
         <PostHeader>
           <PostInfos {...post} />
         </PostHeader>
@@ -48,7 +48,7 @@ const StyledPostLinkItem = styled.div`
   display: grid;
 
   grid-template-rows: auto auto auto;
-  grid-template-columns: 1fr min-content;
+  grid-template-columns: minmax(0, 1fr) min-content;
 
   column-gap: var(--spacer-2xs);
 
@@ -80,6 +80,8 @@ const PostContent = styled.div`
 
   grid-column-start: 1;
   grid-column-end: 2;
+
+  overflow: hidden;
 `;
 const PostLinkPreview = styled.div`
   grid-row-start: 2;

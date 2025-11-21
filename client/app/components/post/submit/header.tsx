@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { Sub } from '@/app/types';
 
 import IconBox from '../../common/IconBox';
-import SmallLoadingSpinner from '../../common/smallLoadingSpinner';
+import SmallLoadingSpinner from '../../common/loading/smallLoadingSpinner';
 import CloseIcon from '../../svgs/CloseIcon';
 import DownArrowIcon from '../../svgs/DownArrowIcon';
 import SearchIcon from '../../svgs/SearchIcon';

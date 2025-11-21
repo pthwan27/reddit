@@ -5,7 +5,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useAuth } from '../../context/authContext';
-import LoadingSpinner from '../common/loadingSpinner';
+import LoadingSpinner from '../common/loading/loadingSpinner';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;

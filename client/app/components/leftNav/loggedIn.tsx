@@ -5,7 +5,7 @@ import IconBox from '@/app/components/common/IconBox';
 import { Sub } from '@/app/types';
 
 import IconButton from '../common/button/iconButton';
-import LoadingSpinner from '../common/loadingSpinner';
+import Skeleton from '../common/loading/skeleton';
 import PlusIcon from '../svgs/PlusIcon';
 import CollapsibleList from './collapsibleList';
 
@@ -32,7 +32,13 @@ const LoggedIn = ({
 
       <SubList>
         {loading ? (
-          <LoadingSpinner />
+          <SkeletonWrapper>
+            {Array.from({ length: 5 }).map((_, idx) => (
+              <SkeletonItemWrapper key={idx}>
+                <Skeleton />
+              </SkeletonItemWrapper>
+            ))}
+          </SkeletonWrapper>
         ) : (
           filteredSubs.map((sub: Sub, idx: number) => (
             <SubItem key={sub.title + idx} onClick={() => goToSubDetail(sub)}>
@@ -55,6 +61,19 @@ const SubList = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--spacer-4xs);
+`;
+
+const SkeletonWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+`;
+const SkeletonItemWrapper = styled.div`
+  height: var(--rem-32);
+  padding: var(--spacer-2xs) var(--spacer-md);
+
+  border-radius: var(--radius-md);
+  border: none;
 `;
 
 const SubItem = styled.button`
