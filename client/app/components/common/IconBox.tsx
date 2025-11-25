@@ -21,7 +21,7 @@ const IconBox = ({
   width,
   height,
   percentage = 100,
-  backgroundColor = 'neutral',
+  backgroundColor = 'transparent',
   onClick,
   ...rest
 }: IconBoxProps) => {

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { clientAxiosInstance } from '@/app/utils/axios';
@@ -7,6 +8,7 @@ import styled from 'styled-components';
 
 import { Post } from '@/app/types';
 
+import Skeleton from '../../common/loading/skeleton';
 import MediaCarousel from '../../post/common/mediaCarousel';
 
 interface LinkMetadata {
@@ -51,10 +53,20 @@ const CommentsByPostBody = ({
     }
   }, [linkUrl]);
 
+  useEffect(() => {
+    if (postType !== 'link' && (imageUrls.length > 0 || videoUrl !== '')) {
+      setLoading(false);
+    }
+  }, [postType, imageUrls, videoUrl]);
+
   return (
     <>
       <Title>{title}</Title>
-      {postType === 'media' && (
+      {loading ? (
+        <SkeletonWrapper $postType={postType}>
+          <Skeleton />
+        </SkeletonWrapper>
+      ) : postType === 'media' ? (
         <>
           <MediaCarouselWrapper>
             <MediaCarousel
@@ -67,21 +79,28 @@ const CommentsByPostBody = ({
             />
           </MediaCarouselWrapper>
         </>
-      )}
-
-      {loading && postType === 'link' ? (
-        <Skeleton />
       ) : (
         <>
           {metadata && metadata.image && !error && (
-            <LinkWrapper>
-              <Image
-                src={metadata.image}
-                alt={metadata.title || 'Link preview'}
-                fill
-                sizes="(max-width: 768px) 50vw, 25vw"
-                style={{ objectFit: 'cover' }}
-              />
+            <LinkWrapper onClick={() => window.open(linkUrl, '_blank')}>
+              <LinkImgWrapper>
+                <Image
+                  src={metadata.image}
+                  alt={metadata.title || 'Link preview'}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+              </LinkImgWrapper>
+              <LinkActions>
+                <Link
+                  href={linkUrl}
+                  target="_blank"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {metadata.siteName}
+                </Link>
+                <button>열기</button>
+              </LinkActions>
             </LinkWrapper>
           )}
         </>
@@ -109,16 +128,15 @@ const Title = styled.div`
 
 const MediaCarouselWrapper = styled.div`
   position: relative;
-  min-height: 200px;
-  max-height: 540px;
-  height: auto;
 
   margin-bottom: var(--spacer-xs);
 `;
 
-const Skeleton = styled.div`
+const SkeletonWrapper = styled.div<{ $postType: string }>`
   width: 100%;
-  height: var(--rem-320);
+  height: ${({ $postType }) =>
+    $postType === 'media' ? 'var(--rem-480)' : 'var(--rem-320)'};
+
   background: linear-gradient(
     90deg,
     ${({ theme }) => theme.colors.neutral.background} 25%,
@@ -139,25 +157,82 @@ const Skeleton = styled.div`
 `;
 
 const LinkWrapper = styled.div`
+  display: block;
+
+  box-shadow: 0 0 0 var(--line-sm)
+    ${({ theme }) => theme.colors.neutral.borderWeak} inset;
+  overflow: hidden;
+
+  border-radius: 0;
+
+  margin-bottom: var(--spacer-xs);
+
+  cursor: pointer;
+
+  @media (min-width: 768px) {
+    border-radius: var(--radius-xl);
+  }
+`;
+
+const LinkImgWrapper = styled.div`
+  position: relative;
+
   display: flex;
   justify-content: center;
   align-items: center;
 
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 300px;
+  width: auto;
+  height: auto;
+
   max-height: 540px;
+
+  aspect-ratio: auto 16/9;
 
   > img {
     position: relative;
-    object-fit: contain;
+    object-fit: fill;
 
     width: auto;
-    max-width: 100%;
 
     height: auto;
     max-height: 540px;
+
+    aspect-ratio: auto 16/9;
+  }
+`;
+
+const LinkActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+  padding: var(--spacer-xs) var(--spacer-md);
+
+  > a {
+    color: ${({ theme }) => theme.colors.a.default};
+
+    &:hover {
+      text-decoration: underline;
+      color: ${({ theme }) => theme.colors.a.hover};
+    }
+
+    &:visited {
+      color: ${({ theme }) => theme.colors.a.visited};
+    }
+  }
+
+  > button {
+   
+    font: var(--font-14-20-semibold);
+    line-height: 1.5;
+    border: var(--line-sm) solid
+      ${({ theme }) => theme.components.button.border.default};
+    padding: var(--spacer-xs) var(--spacer-md);
+
+    &:hover {
+    border : var(--line-sm) solid ${({ theme }) =>
+      theme.components.button.border.hover};
   }
 `;
 

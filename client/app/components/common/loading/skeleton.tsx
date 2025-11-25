@@ -13,6 +13,9 @@ const SkeletonDiv = styled.div`
     ${({ theme }) => theme.colors.neutral.border} 50%,
     ${({ theme }) => theme.colors.neutral.background} 75%
   );
+
+  border-radius: var(--radius-md);
+
   background-size: 200% 100%;
   animation: loading 1.5s infinite;
 

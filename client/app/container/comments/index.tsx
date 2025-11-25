@@ -7,10 +7,10 @@ import { usePostStore } from '@/app/store/postStore';
 import styled from 'styled-components';
 
 import CommentsByPost from '@/app/components/comments/bottom/commentsByPost';
+import CommentInput from '@/app/components/comments/bottom/input';
 import CommentsByPostActions from '@/app/components/comments/top/actions';
 import CommentsByPostBody from '@/app/components/comments/top/body';
 import CommentsByPostInfos from '@/app/components/comments/top/infos';
-import CommentInput from '@/app/components/comments/top/input';
 import RightSideBar from '@/app/components/sub/detail/rightSideBar';
 
 import { Comment, Post } from '@/app/types';
@@ -47,6 +47,7 @@ const CommentsContainer = ({
         </TopSection>
         <BottomSection>
           <CommentsByPost comments={comments} />
+          <CommentInput />
         </BottomSection>
       </CommentsWrapper>
       <RightSideBar sub={displayPost.sub} />
