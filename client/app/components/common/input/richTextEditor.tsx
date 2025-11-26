@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 
 import Blockquote from '@tiptap/extension-blockquote';
+import Heading from '@tiptap/extension-heading';
 import Link from '@tiptap/extension-link';
 import { BulletList, OrderedList } from '@tiptap/extension-list';
 import Superscript from '@tiptap/extension-superscript';
@@ -38,6 +39,9 @@ const RichTextEditor = ({
     extensions: [
       StarterKit,
       Superscript,
+      Heading.configure({
+        levels: [1, 2, 3],
+      }),
       Link.configure({
         openOnClick: false,
         autolink: true,
@@ -120,6 +124,7 @@ const RichTextEditor = ({
         isBold: editor.isActive('bold'),
         isItalic: editor.isActive('italic'),
         isStrike: editor.isActive('strike'),
+        isHeading: editor.isActive('heading'),
         isSuperscript: editor.isActive('superscript'),
         isLink: editor.isActive('link'),
         isBulletList: editor.isActive('bulletList'),
@@ -183,7 +188,6 @@ const RichTextEditor = ({
             <Buttons>
               <ToolButton
                 onClick={() => editor?.chain().focus().toggleBold().run()}
-                disabled={!editor?.can().chain().focus().toggleBold().run()}
                 $isSelected={editorState?.isBold}
                 title="굵게"
               >
@@ -196,7 +200,6 @@ const RichTextEditor = ({
               </ToolButton>
               <ToolButton
                 onClick={() => editor?.chain().focus().toggleItalic().run()}
-                disabled={!editor?.can().chain().focus().toggleItalic().run()}
                 title="기울기"
                 $isSelected={editorState?.isItalic}
               >
@@ -209,7 +212,6 @@ const RichTextEditor = ({
               </ToolButton>
               <ToolButton
                 onClick={() => editor?.chain().focus().toggleStrike().run()}
-                disabled={!editor?.can().chain().focus().toggleStrike().run()}
                 title="취소선"
                 $isSelected={editorState?.isStrike}
               >
@@ -224,7 +226,6 @@ const RichTextEditor = ({
                 onClick={() =>
                   editor?.chain().focus().toggleSuperscript().run()
                 }
-                disabled={editor?.isActive('superscript')}
                 title="위 첨자"
                 $isSelected={editorState?.isSuperscript}
               >
@@ -237,9 +238,10 @@ const RichTextEditor = ({
               </ToolButton>
               <ToolButton
                 onClick={() => {
-                  editor?.chain().focus().toggleHeading({ level: 2 }).run();
+                  editor?.chain().focus().toggleHeading({ level: 3 }).run();
                 }}
                 title="제목"
+                $isSelected={editor?.isActive('heading', { level: 3 })}
               >
                 <IconBox
                   icon={<TextSize />}
@@ -479,12 +481,14 @@ const ModeToggle = styled.button<{ $active: boolean }>`
 
 const EditorBody = styled.div`
   position: relative;
-  height: var(--rem-128);
+  min-height: var(--rem-128);
 `;
+
 const StyledEditor = styled(EditorContent)`
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  padding: 0 var(--spacer-md);
 
   ul {
     list-style-type: disc !important;
@@ -496,6 +500,29 @@ const StyledEditor = styled(EditorContent)`
     list-style-type: decimal !important;
     padding-left: var(--spacer-lg);
     margin: var(--spacer-xs) 0;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-weight: 600;
+    margin: 0.5em 0;
+  }
+  h1 {
+    font-size: 2em;
+  }
+  h2 {
+    font-size: 1.5em;
+  }
+  h3 {
+    font-size: 1.25em;
+  }
+
+  > div {
+    &:focus-visible {
+      outline: none;
+      border: none;
+    }
   }
 `;
 

@@ -12,6 +12,7 @@
   "dependencies": {
     "@tiptap/extension-blockquote": "^3.11.0",
     "@tiptap/extension-code-block": "^3.11.0",
+    "@tiptap/extension-heading": "^3.11.0",
     "@tiptap/extension-link": "^3.11.0",
     "@tiptap/extension-list": "^3.11.0",
     "@tiptap/extension-superscript": "^3.11.0",
