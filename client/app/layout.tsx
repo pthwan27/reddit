@@ -1,9 +1,9 @@
-import ClientProviders from "./clientProvider";
-import { ModalProvider } from "./context/modalContext";
+import ClientProviders from './clientProvider';
+import { ModalProvider } from './context/modalContext';
 
 export const metadata = {
-  title: "Reddit",
-  description: "message app",
+  title: 'Reddit',
+  description: 'message app',
 };
 
 export default function RootLayout({
@@ -17,7 +17,9 @@ export default function RootLayout({
         <link
           href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap"
           rel="stylesheet"
-        ></link>
+        />
+
+        <script src="https://cdn.tailwindcss.com?plugins=typography" />
       </head>
       <body>
         <ClientProviders>
