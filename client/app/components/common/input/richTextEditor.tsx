@@ -27,14 +27,34 @@ import IconBox from '../IconBox';
 interface RichTextEditorProps {
   content: string;
   onChange: (content: string) => void;
-  placeholder?: string;
+  placeholder: string;
+  isToolbarVisibleDefault?: boolean;
+  editorHeightPercentage?: number;
+  isInSubmitMode?: boolean;
+  submitHandler?: () => void;
+  cancelHandler?: () => void;
 }
 
 const RichTextEditor = ({
   content,
   onChange,
   placeholder,
+  isToolbarVisibleDefault = true,
+  editorHeightPercentage = 100,
+  isInSubmitMode = false,
+  submitHandler = () => {},
+  cancelHandler = () => {},
 }: RichTextEditorProps) => {
+  const editableRef = useRef<HTMLDivElement>(null);
+
+  const [isEmpty, setIsEmpty] = useState(true);
+  const [isToolbarVisible, setIsToolbarVisible] = useState(
+    isToolbarVisibleDefault
+  );
+
+  const toggleIsVisibleToolbar = () => {
+    setIsToolbarVisible((prev) => !prev);
+  };
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -110,6 +130,11 @@ const RichTextEditor = ({
       Blockquote,
     ],
     content: content,
+    onUpdate: ({ editor }) => {
+      onChange(editor.getHTML());
+
+      setIsEmpty(editor.getHTML() === '<p></p>');
+    },
     immediatelyRender: false,
   });
 
@@ -162,192 +187,178 @@ const RichTextEditor = ({
     }
   }, [editor]);
 
-  const editableRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const [isToolbarVisible, setIsToolbarVisible] = useState(true);
-  const [isMarkdownMode, setIsMarkdownMode] = useState(false);
-
-  const toggleIsVisibleToolbar = () => {
-    setIsToolbarVisible((prev) => !prev);
-  };
-
   return (
     <StyledRichTextEditor>
-      <ToggleIsVisibleToolbar
-        onClick={toggleIsVisibleToolbar}
-        $isView={isToolbarVisible}
-      >
-        <IconBox icon={<FormatIcon />} width={32} height={32} percentage={50} />
-      </ToggleIsVisibleToolbar>
       <EditorToolbar $isView={isToolbarVisible}>
         <ToolbarLeft>
-          {isMarkdownMode ? (
-            <MarkdownInfo>Markdown Editor</MarkdownInfo>
-          ) : (
-            <Buttons>
-              <ToolButton
-                onClick={() => editor?.chain().focus().toggleBold().run()}
-                $isSelected={editorState?.isBold}
-                title="굵게"
-              >
-                <IconBox
-                  icon={<Bold />}
-                  width={16}
-                  height={16}
-                  percentage={100}
-                />
-              </ToolButton>
-              <ToolButton
-                onClick={() => editor?.chain().focus().toggleItalic().run()}
-                title="기울기"
-                $isSelected={editorState?.isItalic}
-              >
-                <IconBox
-                  icon={<Italic />}
-                  width={16}
-                  height={16}
-                  percentage={100}
-                />
-              </ToolButton>
-              <ToolButton
-                onClick={() => editor?.chain().focus().toggleStrike().run()}
-                title="취소선"
-                $isSelected={editorState?.isStrike}
-              >
-                <IconBox
-                  icon={<StrikeThrough />}
-                  width={16}
-                  height={16}
-                  percentage={100}
-                />
-              </ToolButton>
-              <ToolButton
-                onClick={() =>
-                  editor?.chain().focus().toggleSuperscript().run()
-                }
-                title="위 첨자"
-                $isSelected={editorState?.isSuperscript}
-              >
-                <IconBox
-                  icon={<SuperScript />}
-                  width={16}
-                  height={16}
-                  percentage={100}
-                />
-              </ToolButton>
-              <ToolButton
-                onClick={() => {
-                  editor?.chain().focus().toggleHeading({ level: 3 }).run();
-                }}
-                title="제목"
-                $isSelected={editor?.isActive('heading', { level: 3 })}
-              >
-                <IconBox
-                  icon={<TextSize />}
-                  width={16}
-                  height={16}
-                  percentage={100}
-                />
-              </ToolButton>
-              <ToolbarDivider />
-              <ToolButton
-                onClick={
-                  !editorState?.isLink
-                    ? setLink
-                    : () => editor?.chain().focus().unsetLink().run()
-                }
-                $isSelected={editorState?.isLink}
-                title="링크"
-              >
-                <IconBox
-                  icon={<LinkIcon />}
-                  width={16}
-                  height={16}
-                  percentage={100}
-                />
-              </ToolButton>
-              <ToolButton
-                onClick={() => editor?.chain().focus().toggleBulletList().run()}
-                title="순서 없는 목록"
-                $isSelected={editorState?.isBulletList}
-              >
-                <IconBox
-                  icon={<ListBulleted />}
-                  width={16}
-                  height={16}
-                  percentage={100}
-                />
-              </ToolButton>
-              <ToolButton
-                onClick={() =>
-                  editor?.chain().focus().toggleOrderedList().run()
-                }
-                title="순서 있는 목록"
-                $isSelected={editorState?.isOrderedList}
-              >
-                <IconBox
-                  icon={<ListNumbered />}
-                  width={16}
-                  height={16}
-                  percentage={100}
-                />
-              </ToolButton>
-              <ToolButton
-                onClick={() => editor?.chain().focus().toggleBlockquote().run()}
-                title="인용"
-                $isSelected={editorState?.isBlockQuote}
-              >
-                <IconBox
-                  icon={<Quote />}
-                  width={16}
-                  height={16}
-                  percentage={100}
-                />
-              </ToolButton>
+          <Buttons>
+            <ToolButton
+              onClick={() => editor?.chain().focus().toggleBold().run()}
+              $isSelected={editorState?.isBold}
+              title="굵게"
+            >
+              <IconBox
+                icon={<Bold />}
+                width={16}
+                height={16}
+                percentage={100}
+              />
+            </ToolButton>
+            <ToolButton
+              onClick={() => editor?.chain().focus().toggleItalic().run()}
+              title="기울기"
+              $isSelected={editorState?.isItalic}
+            >
+              <IconBox
+                icon={<Italic />}
+                width={16}
+                height={16}
+                percentage={100}
+              />
+            </ToolButton>
+            <ToolButton
+              onClick={() => editor?.chain().focus().toggleStrike().run()}
+              title="취소선"
+              $isSelected={editorState?.isStrike}
+            >
+              <IconBox
+                icon={<StrikeThrough />}
+                width={16}
+                height={16}
+                percentage={100}
+              />
+            </ToolButton>
+            <ToolButton
+              onClick={() => editor?.chain().focus().toggleSuperscript().run()}
+              title="위 첨자"
+              $isSelected={editorState?.isSuperscript}
+            >
+              <IconBox
+                icon={<SuperScript />}
+                width={16}
+                height={16}
+                percentage={100}
+              />
+            </ToolButton>
+            <ToolButton
+              onClick={() => {
+                editor?.chain().focus().toggleHeading({ level: 3 }).run();
+              }}
+              title="제목"
+              $isSelected={editor?.isActive('heading', { level: 3 })}
+            >
+              <IconBox
+                icon={<TextSize />}
+                width={16}
+                height={16}
+                percentage={100}
+              />
+            </ToolButton>
+            <ToolbarDivider />
+            <ToolButton
+              onClick={
+                !editorState?.isLink
+                  ? setLink
+                  : () => editor?.chain().focus().unsetLink().run()
+              }
+              $isSelected={editorState?.isLink}
+              title="링크"
+            >
+              <IconBox
+                icon={<LinkIcon />}
+                width={16}
+                height={16}
+                percentage={100}
+              />
+            </ToolButton>
+            <ToolButton
+              onClick={() => editor?.chain().focus().toggleBulletList().run()}
+              title="순서 없는 목록"
+              $isSelected={editorState?.isBulletList}
+            >
+              <IconBox
+                icon={<ListBulleted />}
+                width={16}
+                height={16}
+                percentage={100}
+              />
+            </ToolButton>
+            <ToolButton
+              onClick={() => editor?.chain().focus().toggleOrderedList().run()}
+              title="순서 있는 목록"
+              $isSelected={editorState?.isOrderedList}
+            >
+              <IconBox
+                icon={<ListNumbered />}
+                width={16}
+                height={16}
+                percentage={100}
+              />
+            </ToolButton>
+            <ToolButton
+              onClick={() => editor?.chain().focus().toggleBlockquote().run()}
+              title="인용"
+              $isSelected={editorState?.isBlockQuote}
+            >
+              <IconBox
+                icon={<Quote />}
+                width={16}
+                height={16}
+                percentage={100}
+              />
+            </ToolButton>
 
-              <ToolButton
-                onClick={() => editor?.chain().focus().toggleCodeBlock().run()}
-                title="코드 블록"
-                $isSelected={editorState?.isCodeBlock}
-              >
-                <IconBox
-                  icon={<CodeBlock />}
-                  width={16}
-                  height={16}
-                  percentage={100}
-                />
-              </ToolButton>
-            </Buttons>
-          )}
+            <ToolButton
+              onClick={() => editor?.chain().focus().toggleCodeBlock().run()}
+              title="코드 블록"
+              $isSelected={editorState?.isCodeBlock}
+            >
+              <IconBox
+                icon={<CodeBlock />}
+                width={16}
+                height={16}
+                percentage={100}
+              />
+            </ToolButton>
+          </Buttons>
         </ToolbarLeft>
-
-        <ToolbarRight>
-          <ModeToggle
-            $active={isMarkdownMode}
-            onClick={() => setIsMarkdownMode(!isMarkdownMode)}
-          >
-            {isMarkdownMode
-              ? '서식 있는 텍스트 편집기로 전환'
-              : 'Markdown으로 전환'}
-          </ModeToggle>
-        </ToolbarRight>
       </EditorToolbar>
 
-      <EditorBody id="editor-body">
-        {!isMarkdownMode ? (
-          <StyledEditor ref={editableRef} editor={editor} />
-        ) : (
-          <TextArea
-            ref={textareaRef}
-            id="editor-text-area"
-            name="textarea"
-            value={content}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder={placeholder}
-          />
-        )}
+      <EditorBody
+        id="editor-body"
+        $editorHeightPercentage={editorHeightPercentage}
+      >
+        <StyledEditor ref={editableRef} editor={editor} />
+        <PlaceHolderText>{isEmpty && placeholder}</PlaceHolderText>
       </EditorBody>
+
+      <ExtraButtons>
+        <ToggleIsVisibleToolbar
+          onClick={toggleIsVisibleToolbar}
+          $isView={isToolbarVisible}
+        >
+          <IconBox
+            icon={<FormatIcon />}
+            width={32}
+            height={32}
+            percentage={50}
+          />
+        </ToggleIsVisibleToolbar>
+
+        {isInSubmitMode && (
+          <SubmitButtons>
+            <button
+              onClick={() => {
+                setIsToolbarVisible(false);
+                cancelHandler();
+              }}
+            >
+              취소
+            </button>
+            <button onClick={submitHandler}>댓글</button>
+          </SubmitButtons>
+        )}
+      </ExtraButtons>
     </StyledRichTextEditor>
   );
 };
@@ -358,31 +369,9 @@ const StyledRichTextEditor = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.neutral.border};
   border-radius: var(--radius-xl);
   overflow: hidden;
-`;
 
-const ToggleIsVisibleToolbar = styled.button<{ $isView: boolean }>`
-  position: absolute;
-  bottom: var(--spacer-sm);
-  left: var(--spacer-sm);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 0;
-
-  width: var(--rem-32);
-  height: var(--rem-32);
-
-  background: ${({ theme, $isView }) =>
-    $isView
-      ? theme.components.button.background.activated
-      : theme.components.button.background.default};
-
-  z-index: 10;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.secondary.backgroundHover};
+  &:focus-within {
+    border: 1px solid ${({ theme }) => theme.colors.neutral.borderMedium};
   }
 `;
 
@@ -417,17 +406,6 @@ const Buttons = styled.span`
 
   flex-wrap: nowrap;
 `;
-const MarkdownInfo = styled.span`
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-
-  padding-left: var(--spacer-md);
-
-  font: var(--font-12);
-  line-height: 1;
-  color: ${({ theme }) => theme.colors.secondary.weak};
-`;
 
 const ToolButton = styled.button<{ $isSelected?: boolean }>`
   display: flex;
@@ -457,68 +435,26 @@ const ToolbarDivider = styled.div`
   flex-shrink: 0;
 `;
 
-const ToolbarRight = styled.div`
-  flex-shrink: 0;
-  margin-left: var(--spacer-sm);
-`;
-
-const ModeToggle = styled.button<{ $active: boolean }>`
-  padding: var(--spacer-2xs) var(--spacer-xs);
-  border: 1px solid ${({ theme }) => theme.colors.neutral.border};
-  border-radius: var(--radius-sm);
-  background: ${({ $active, theme }) =>
-    $active ? theme.colors.secondary.background : 'transparent'};
-
-  font-size: 0.75rem;
-  color: ${({ theme }) => theme.colors.neutral.content};
-  cursor: pointer;
-  white-space: nowrap;
-
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.colors.neutral.borderMedium};
-  }
-`;
-
-const EditorBody = styled.div`
+const EditorBody = styled.div<{ $editorHeightPercentage: number }>`
   position: relative;
-  min-height: var(--rem-128);
+  height: ${({ $editorHeightPercentage }) =>
+    `calc(${$editorHeightPercentage} * var(--rem-128) / 100)`};
+
+  padding: var(--spacer-sm) var(--spacer-md);
 `;
 
 const StyledEditor = styled(EditorContent)`
   width: 100%;
   height: 100%;
+
   overflow-y: auto;
-  padding: 0 var(--spacer-md);
 
-  ul {
-    list-style-type: disc !important;
-    padding-left: var(--spacer-lg);
-    margin: var(--spacer-xs) 0;
-  }
-
-  ol {
-    list-style-type: decimal !important;
-    padding-left: var(--spacer-lg);
-    margin: var(--spacer-xs) 0;
-  }
-
-  h1,
-  h2,
-  h3 {
-    font-weight: 600;
-    margin: 0.5em 0;
-  }
-  h1 {
-    font-size: 2em;
-  }
-  h2 {
-    font-size: 1.5em;
-  }
-  h3 {
-    font-size: 1.25em;
-  }
+  color: ${({ theme }) => theme.colors.neutral.contentStrong};
 
   > div {
+    width: 100%;
+    height: 100%;
+
     &:focus-visible {
       outline: none;
       border: none;
@@ -526,26 +462,75 @@ const StyledEditor = styled(EditorContent)`
   }
 `;
 
-const TextArea = styled.textarea`
+const PlaceHolderText = styled.span`
+  position: absolute;
+  top: calc(var(--spacer-md) + 4px);
+  pointer-events: none;
+
+  color: ${({ theme }) => theme.colors.neutral.contentWeak};
+`;
+
+const ExtraButtons = styled.div`
   width: 100%;
-  height: 100%;
-  padding: var(--spacer-sm) var(--spacer-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  border: none;
-  resize: vertical;
-  background: transparent;
+  padding: 0 var(--spacer-sm) var(--spacer-sm) var(--spacer-sm);
+`;
 
-  font: var(--font-14);
-  line-height: 1.3;
+const ToggleIsVisibleToolbar = styled.button<{ $isView: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  color: ${({ theme }) => theme.colors.neutral.contentStrong};
+  padding: 0;
 
-  &:focus {
-    outline: none;
+  width: var(--rem-32);
+  height: var(--rem-32);
+
+  background: ${({ theme, $isView }) =>
+    $isView
+      ? theme.components.button.background.activated
+      : theme.components.button.background.default};
+
+  z-index: 10;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.secondary.backgroundHover};
+  }
+`;
+
+const SubmitButtons = styled.div`
+  display: flex;
+  gap: var(--spacer-xs);
+
+  > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: var(--rem-32);
+    padding: 0 var(--spacer-sm);
+    font: var(--font-12-16-semibold);
+    line-height: 1.5;
   }
 
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.neutral.contentWeak};
+  > button:first-child {
+    background: ${({ theme }) => theme.colors.secondary.background};
+
+    &:hover {
+      background: ${({ theme }) => theme.colors.secondary.backgroundHover};
+    }
+  }
+
+  > button:last-child {
+    background: ${({ theme }) => theme.colors.primary.background};
+    color: ${({ theme }) => theme.colors.primary.onBackground};
+
+    &:hover {
+      background: ${({ theme }) => theme.colors.primary.backgroundHover};
+    }
   }
 `;
 

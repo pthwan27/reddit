@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import DOMPurify from 'dompurify';
 import styled from 'styled-components';
 
 import { Post } from '@/app/types';
@@ -16,6 +17,7 @@ const PostBody = ({
   linkUrl = '',
 }: Post) => {
   const [curImgIdx, setCurImgIdx] = useState(0);
+  const cleanContent = DOMPurify.sanitize(body.replace('"', ''));
 
   return (
     <>
@@ -34,7 +36,9 @@ const PostBody = ({
         </>
       )}
       {postType === 'link' && <Link>{linkUrl}</Link>}
-      {postType === 'text' && <Content>{body}</Content>}
+      {postType === 'text' && (
+        <Content dangerouslySetInnerHTML={{ __html: cleanContent }} />
+      )}
     </>
   );
 };

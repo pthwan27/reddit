@@ -42,7 +42,8 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
     [title]
   );
   const contentValidation = useMemo(
-    () => validationCheck(content, 'postContent'),
+    () =>
+      validationCheck(content.replace(/<[^>]*>/g, '').trim(), 'postContent'),
     [content]
   );
 
@@ -164,7 +165,7 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
             variant="primary"
             onClick={handleSubmit}
             disabled={
-              titleValidation !== 'valid' || contentValidation !== 'valid'
+              !(titleValidation === 'valid' && contentValidation === 'valid')
             }
           />
         </PostSubmitButtons>

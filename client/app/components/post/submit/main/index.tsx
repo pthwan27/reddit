@@ -116,7 +116,7 @@ const PostSubmitMain = ({
         <RichTextEditor
           content={content}
           onChange={setContent}
-          placeholder="내용을 입력하세요"
+          placeholder="본문 텍스트(선택 사항)"
         />
       </MainWrapper>
     </StyledPostSubmitMain>

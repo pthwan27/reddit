@@ -264,6 +264,10 @@ const StyledInput = styled.input`
   z-index: 2;
 
   transition: all 0.2s;
+
+  &:focus-visible {
+    outline: none;
+  }
 `;
 
 const ExtraIconsContainer = styled.span`

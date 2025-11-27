@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { clientAxiosInstance } from '@/app/utils/axios';
 
+import DOMPurify from 'dompurify';
 import styled from 'styled-components';
 
 import { Post } from '@/app/types';
@@ -31,6 +32,7 @@ const CommentsByPostBody = ({
   const [metadata, setMetadata] = useState<LinkMetadata | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const cleanContent = DOMPurify.sanitize(body.replace('"', ''));
 
   useEffect(() => {
     const getMetadata = async () => {
@@ -106,7 +108,7 @@ const CommentsByPostBody = ({
         </>
       )}
 
-      <Content>{body}</Content>
+      <Content dangerouslySetInnerHTML={{ __html: cleanContent }} />
     </>
   );
 };
@@ -115,7 +117,8 @@ const Title = styled.div`
   display: flex;
   justify-content: space-between;
 
-  font: var(--font-24-semibold);
+  font: var(--font-title-h3);
+  font-weight: 600;
 
   padding: 0 var(--spacer-md);
   margin-bottom: var(--spacer-xs);

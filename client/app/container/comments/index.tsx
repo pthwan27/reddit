@@ -1,16 +1,16 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { usePostStore } from '@/app/store/postStore';
 
 import styled from 'styled-components';
 
 import CommentsByPost from '@/app/components/comments/bottom/commentsByPost';
-import CommentInput from '@/app/components/comments/bottom/input';
 import CommentsByPostActions from '@/app/components/comments/top/actions';
 import CommentsByPostBody from '@/app/components/comments/top/body';
 import CommentsByPostInfos from '@/app/components/comments/top/infos';
+import RichTextEditor from '@/app/components/common/input/richTextEditor';
 import RightSideBar from '@/app/components/sub/detail/rightSideBar';
 
 import { Comment, Post } from '@/app/types';
@@ -22,6 +22,9 @@ const CommentsContainer = ({
   post: Post;
   comments: Comment[];
 }) => {
+  const [isFocused, setIsFocused] = useState(false);
+  const [comment, setComment] = useState('');
+
   const storePost = usePostStore((state) =>
     state.posts.find((p) => p.identifier === post.identifier)
   );
@@ -36,6 +39,15 @@ const CommentsContainer = ({
 
   const displayPost = storePost || post;
 
+  const openInputEditor = () => {
+    setIsFocused(true);
+  }
+  const cancelHandler = () => {
+    setComment('');
+    setIsFocused(false);
+  };
+  const commentSubmitHandler = () => {};
+
   return (
     <GridWrapper>
       <CommentsWrapper>
@@ -43,11 +55,25 @@ const CommentsContainer = ({
           <CommentsByPostInfos {...displayPost} />
           <CommentsByPostBody {...displayPost} />
           <CommentsByPostActions {...displayPost} />
-          <CommentInput />
         </TopSection>
         <BottomSection>
+          <InputWrapper>
+            {!isFocused ? (
+              <button onClick={openInputEditor}>답글을 달아보세요</button>
+            ) : (
+              <RichTextEditor
+                content={comment}
+                onChange={setComment}
+                placeholder=""
+                isToolbarVisibleDefault={false}
+                editorHeightPercentage={50}
+                isInSubmitMode={true}
+                submitHandler={commentSubmitHandler}
+                cancelHandler={cancelHandler}
+              />
+            )}
+          </InputWrapper>
           <CommentsByPost comments={comments} />
-          <CommentInput />
         </BottomSection>
       </CommentsWrapper>
       <RightSideBar sub={displayPost.sub} />
@@ -102,6 +128,47 @@ const TopSection = styled.section`
   }
 `;
 
-const BottomSection = styled.section``;
+const BottomSection = styled.section`
+  @media (min-width: 768px) {
+    padding: var(--spacer-xs) var(--spacer-xs) 0;
+  }
+
+  @media (min-width: 768px) {
+    border-radius: var(--radius-md);
+  }
+
+  @media (min-width: 768px) {
+    margin-top: var(--spacer-xs);
+    margin-right: calc(-1 * var(--spacer-xs));
+    margin-left: calc(-1 * var(--spacer-xs));
+  }
+`;
+
+const InputWrapper = styled.div`
+  padding: 0 var(--spacer-md);
+
+  @media (min-width: 768px) {
+    padding: 0;
+  }
+
+  > button {
+    width: 100%;
+
+    text-align: left;
+
+    padding: var(--spacer-xs) var(--spacer-md);
+
+    font: var(--font-16-20-regular);
+    line-height: 1.5;
+
+    color: ${({ theme }) => theme.colors.neutral.contentWeak};
+
+    border: 1px solid ${({ theme }) => theme.colors.neutral.border};
+
+    &:focus-within {
+      border: 1px solid ${({ theme }) => theme.colors.neutral.borderMedium};
+    }
+  }
+`;
 
 export default CommentsContainer;

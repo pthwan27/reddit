@@ -261,6 +261,127 @@ const GlobalStyle = createGlobalStyle`
   a{
     color: ${({ theme }) => theme.colors.default.primary || '#115BCA'};
   }
+
+  
+.tiptap .is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  font-size: 0.875rem;
+}
+
+  .tiptap {
+    p {
+      padding: 0.25rem 0;
+    }
+
+    pre {
+      background: #0d0d0d;
+      border-radius: 0.5rem;
+      color: #fff;
+      font-family: inherit;
+      padding: 0.75rem 1rem;
+      line-height: 1.6rem;
+
+      code {
+        background: none;
+        color: inherit;
+        font-size: 1rem;
+        padding: 0;
+      }
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-weight: 600;
+      margin: 0.5em 0;
+    }
+    h1 {
+      font-size: 2em;
+    }
+    h2 {
+      font-size: 1.5em;
+    }
+    h3 {
+      font-size: 1.25em;
+    }
+
+    ul,
+    ol {
+      padding: 0 2rem;
+
+      p {
+        padding: 0;
+      }
+    }
+
+    ul > li {
+      list-style: disc;
+
+      li {
+        list-style: circle;
+      }
+    }
+
+    ol > li {
+      list-style: decimal;
+    }
+
+    blockquote {
+      border-left: 3px solid var(--color-border);
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0.625rem;
+    }
+
+    a {
+      text-decoration: underline;
+      color: #477bff;
+    }
+
+    iframe {
+      padding: 0.625rem 0;
+    }
+
+    .tableWrapper {
+      margin: 1.25rem 0;
+    }
+
+    table {
+      overflow: hidden;
+      border-collapse: collapse;
+      table-layout: fixed;
+      width: 100%;
+      border: 1px solid var(--color-border);
+      user-select: contain;
+
+      tr {
+        &:nth-child(2n) {
+          background-color: var(--color-background);
+        }
+
+        &:nth-child(2n + 1) {
+          background-color: var(--color-deep-background);
+        }
+
+        td {
+          padding: 0.9375rem 0.375rem;
+          border-right: 1px solid var(--color-border);
+          border-bottom: 1px solid var(--color-border);
+        }
+      }
+    }
+  }
+
+  .resize-cursor {
+    td:has(.column-resize-handle) {
+      border-right: 2px solid #477bff !important;
+      cursor: col-resize;
+    }
+  }
 `;
 
 export default GlobalStyle;
