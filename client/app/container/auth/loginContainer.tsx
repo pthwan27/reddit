@@ -7,6 +7,7 @@ import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
+import ErrorMessage from '@/app/components/common/errorMessage';
 import PlaceHolderInput from '@/app/components/common/input/placeholderInput';
 
 import { CustomError } from '@/app/types';
@@ -146,12 +147,6 @@ const StyledDesc = styled.span`
   text-align: center;
 
   color: ${({ theme }) => theme.components.tooltip.neutral.text || '#333D42'};
-`;
-const ErrorMessage = styled.div`
-  color: ${({ theme }) => theme.colors.global.error || '#ff6b6b'};
-  font: var(--font-14);
-  text-align: center;
-  margin: var(--spacer-xs) 0;
 `;
 
 const StyledHelper = styled.div`

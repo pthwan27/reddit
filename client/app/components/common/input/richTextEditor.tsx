@@ -476,7 +476,7 @@ const ExtraButtons = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  padding: 0 var(--spacer-sm) var(--spacer-sm) var(--spacer-sm);
+  padding: 0 var(--spacer-sm) var(--spacer-xs) var(--spacer-sm);
 `;
 
 const ToggleIsVisibleToolbar = styled.button<{ $isView: boolean }>`

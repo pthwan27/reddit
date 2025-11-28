@@ -5,6 +5,7 @@ import path from 'path';
 
 import { AppDataSource } from './data-source';
 import AuthRouter from './routes/authRoutes';
+import CommentsRouter from './routes/commentsRoutes';
 import PostRouter from './routes/postRoutes';
 import SubRouter from './routes/subRoutes';
 import VoteRouter from './routes/voteRoutes';
@@ -29,6 +30,7 @@ app.use('/auth', AuthRouter);
 app.use('/sub', SubRouter);
 app.use('/post', PostRouter);
 app.use('/vote', VoteRouter);
+app.use('/comments', CommentsRouter);
 
 app.get('/', (_: Request, res: Response) => {
   res.send('running');

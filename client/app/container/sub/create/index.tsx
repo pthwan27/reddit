@@ -8,6 +8,7 @@ import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
+import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 
 import { useAuth } from '@/app/context/authContext';
@@ -402,13 +403,6 @@ const ButtonContainer = styled.div`
       background: ${({ theme }) => theme.colors.primary.backgroundHover};
     }
   }
-`;
-
-const ErrorMessage = styled.div`
-  color: ${({ theme }) => theme.colors.global.error || '#ff6b6b'};
-  font: var(--font-14);
-  text-align: center;
-  margin: var(--spacer-xs) 0;
 `;
 
 export default CreateSubContainer;

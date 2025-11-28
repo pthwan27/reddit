@@ -1,6 +1,9 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
+import { clientAxiosInstance } from '@/app/utils/axios';
 
 import { usePostStore } from '@/app/store/postStore';
 
@@ -10,9 +13,11 @@ import CommentsByPost from '@/app/components/comments/bottom/commentsByPost';
 import CommentsByPostActions from '@/app/components/comments/top/actions';
 import CommentsByPostBody from '@/app/components/comments/top/body';
 import CommentsByPostInfos from '@/app/components/comments/top/infos';
+import ErrorMessage from '@/app/components/common/errorMessage';
 import RichTextEditor from '@/app/components/common/input/richTextEditor';
 import RightSideBar from '@/app/components/sub/detail/rightSideBar';
 
+import { useAuth } from '@/app/context/authContext';
 import { Comment, Post } from '@/app/types';
 
 const CommentsContainer = ({
@@ -24,6 +29,11 @@ const CommentsContainer = ({
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [comment, setComment] = useState('');
+  const [error, setError] = useState('');
+
+  const router = useRouter();
+
+  const { user } = useAuth();
 
   const storePost = usePostStore((state) =>
     state.posts.find((p) => p.identifier === post.identifier)
@@ -41,12 +51,32 @@ const CommentsContainer = ({
 
   const openInputEditor = () => {
     setIsFocused(true);
-  }
+  };
   const cancelHandler = () => {
     setComment('');
     setIsFocused(false);
   };
-  const commentSubmitHandler = () => {};
+
+  const commentSubmitHandler = async () => {
+    if (!user) return router.push('/login');
+
+    try {
+      const formData = new FormData();
+
+      formData.append('comment', comment);
+      formData.append('postId', post.id.toString());
+      formData.append('postSlug', post.slug);
+
+      await clientAxiosInstance.post(
+        `/api/comments/${post.id}/${post.slug}/submit`,
+        formData
+      );
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error('Create Sub failed:', error);
+      setError(error.message);
+    }
+  };
 
   return (
     <GridWrapper>
@@ -75,6 +105,8 @@ const CommentsContainer = ({
           </InputWrapper>
           <CommentsByPost comments={comments} />
         </BottomSection>
+
+        {error && <ErrorMessage>{error}</ErrorMessage>}
       </CommentsWrapper>
       <RightSideBar sub={displayPost.sub} />
     </GridWrapper>

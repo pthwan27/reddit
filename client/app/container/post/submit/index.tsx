@@ -11,6 +11,7 @@ import { useSubStore } from '@/app/store/subStore';
 import styled from 'styled-components';
 
 import IconButton from '@/app/components/common/button/iconButton';
+import ErrorMessage from '@/app/components/common/errorMessage';
 import PostSubmitHeader from '@/app/components/post/submit/header';
 import PostSubmitMain from '@/app/components/post/submit/main';
 import RightSideBar from '@/app/components/sub/detail/rightSideBar';
@@ -221,13 +222,6 @@ const PostSubmitButtons = styled.div`
   padding: 0 var(--spacer-md);
 
   margin-top: -8px;
-`;
-
-const ErrorMessage = styled.div`
-  color: ${({ theme }) => theme.colors.global.error || '#ff6b6b'};
-  font: var(--font-14);
-  text-align: center;
-  margin: var(--spacer-xs) 0;
 `;
 
 export default PostSubmitContainer;
