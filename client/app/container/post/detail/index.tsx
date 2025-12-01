@@ -2,13 +2,13 @@ import { useRouter } from 'next/navigation';
 
 import styled from 'styled-components';
 
-import LinkPreview from '@/app/components/post/item/linkPreview';
+import LinkPreview from '@/app/components/post/detail/linkPreview';
 
 import { Post } from '@/app/types';
 
-import PostActions from '../../../components/post/item/actions';
-import PostBody from '../../../components/post/item/body';
-import PostInfos from '../../../components/post/item/infos';
+import PostActions from '../../../components/post/detail/actions';
+import PostBody from '../../../components/post/detail/body';
+import PostInfos from '../../../components/post/detail/infos';
 
 const PostItem = ({ post }: { post: Post }) => {
   const router = useRouter();

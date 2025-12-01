@@ -9,11 +9,14 @@ const initialState = {
   loading: false,
   page: 0,
   hasMore: true,
+  selectedPost: null,
   curSubSlug: '',
 };
 
 export const usePostStore = create<PostStore>((set, get) => ({
   ...initialState,
+
+  setSelectedPost: (post: Post | null) => set({ selectedPost: post }),
 
   fetchPosts: async (slug: string) => {
     const { loading, page, hasMore, curSubSlug } = get();

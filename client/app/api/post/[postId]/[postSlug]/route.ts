@@ -12,7 +12,7 @@ export async function GET(
     const { postId, postSlug } = await context.params;
 
     const { data, status } = await serverAxiosInstance.get(
-      `/comments/getOnPost/${postId}/${postSlug}`,
+      `/post/${postId}/${postSlug}`,
       {
         headers: {
           Cookie: req.headers.get('cookie') || '',
@@ -24,11 +24,11 @@ export async function GET(
   } catch (err: unknown) {
     const error = err as CustomError;
     console.error(
-      'Get my post detail API error:',
+      'Get my sub detail API error:',
       error.response?.data || error.message
     );
     return NextResponse.json(
-      { error: error.response?.data?.error || 'Failed to get post detail' },
+      { error: error.response?.data?.error || 'Failed to get sub detail' },
       { status: error.response?.status || 500 }
     );
   }

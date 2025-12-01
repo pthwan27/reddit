@@ -51,6 +51,11 @@ export class Comment extends CoreEntity {
   get username(): string {
     return this.user?.username;
   }
+  
+  @Expose()
+  get userProfileUrl(): string {
+    return this.user?.profileUrl;
+  }
 
   protected userVote: number;
 

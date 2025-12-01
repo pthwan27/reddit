@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import HightlightPosts from '@/app/components/post/list/highlightList';
 import PostSort from '@/app/components/post/list/sort';
 
-import PostItem from '@/app/container/post/item';
+import PostDetail from '@/app/container/post/detail';
 
 import { Post } from '@/app/types';
 
@@ -54,7 +54,7 @@ const PostListContainer = ({ posts }: { posts: Post[] }) => {
       <hr />
       {posts.map((post, idx) => (
         <PostWrapper key={idx + post.identifier}>
-          <PostItem post={post} />
+          <PostDetail post={post} />
           {idx < posts.length - 1 && <hr />}
         </PostWrapper>
       ))}

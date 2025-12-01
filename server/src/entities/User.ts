@@ -12,6 +12,7 @@ import { nanoid } from "nanoid";
 
 @Entity("users")
 export class User extends CoreEntity {
+  @Exclude()
   @Index()
   @Column({ unique: true })
   uuid: string;

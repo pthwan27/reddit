@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { clientAxiosInstance } from '@/app/utils/axios';
 
@@ -9,45 +9,36 @@ import { usePostStore } from '@/app/store/postStore';
 
 import styled from 'styled-components';
 
-import CommentsByPost from '@/app/components/comments/bottom/commentsByPost';
-import CommentsByPostActions from '@/app/components/comments/top/actions';
+import CommentSort from '@/app/components/comments/bottom/sort';
+import CommentsByPost from '@/app/components/comments/commentsByPost';
 import CommentsByPostBody from '@/app/components/comments/top/body';
 import CommentsByPostInfos from '@/app/components/comments/top/infos';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import RichTextEditor from '@/app/components/common/input/richTextEditor';
+import Skeleton from '@/app/components/common/loading/skeleton';
 import RightSideBar from '@/app/components/sub/detail/rightSideBar';
 
 import { useAuth } from '@/app/context/authContext';
 import { Comment, Post } from '@/app/types';
 
-const CommentsContainer = ({
-  post,
-  comments,
-}: {
-  post: Post;
-  comments: Comment[];
-}) => {
+const CommentsContainer = ({ post }: { post: Post }) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const { selectedPost, setSelectedPost } = usePostStore();
+
+  const [comments] = useState<Comment[]>([]);
+
   const [isFocused, setIsFocused] = useState(false);
   const [comment, setComment] = useState('');
   const [error, setError] = useState('');
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [sortOption, setSortOption] = useState<
+    '최신순' | '인기순' | '댓글 많은 순'
+  >('최신순');
 
   const router = useRouter();
 
   const { user } = useAuth();
-
-  const storePost = usePostStore((state) =>
-    state.posts.find((p) => p.identifier === post.identifier)
-  );
-
-  useEffect(() => {
-    if (!storePost) {
-      usePostStore.setState((state) => ({
-        posts: [post, ...state.posts],
-      }));
-    }
-  }, [post.identifier, storePost]);
-
-  const displayPost = storePost || post;
 
   const openInputEditor = () => {
     setIsFocused(true);
@@ -78,13 +69,44 @@ const CommentsContainer = ({
     }
   };
 
+  const handleSelect = (option: string) => {
+    setSortOption(option as typeof sortOption);
+    setIsSelecting(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsSelecting(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (!selectedPost) {
+      setSelectedPost(post);
+    }
+  }, [selectedPost, post]);
+
+  if (!selectedPost) {
+    return (
+      <SkeletonWrapper>
+        <Skeleton></Skeleton>
+      </SkeletonWrapper>
+    );
+  }
+
   return (
     <GridWrapper>
       <CommentsWrapper>
         <TopSection>
-          <CommentsByPostInfos {...displayPost} />
-          <CommentsByPostBody {...displayPost} />
-          <CommentsByPostActions {...displayPost} />
+          <CommentsByPostInfos {...selectedPost} />
+          <CommentsByPostBody {...selectedPost} />
         </TopSection>
         <BottomSection>
           <InputWrapper>
@@ -103,15 +125,28 @@ const CommentsContainer = ({
               />
             )}
           </InputWrapper>
-          <CommentsByPost comments={comments} />
         </BottomSection>
+        <CommentsSection>
+          <CommentSort
+            wrapperRef={wrapperRef}
+            isSelecting={isSelecting}
+            setIsSelecting={setIsSelecting}
+            handleSelect={handleSelect}
+            sortOption={sortOption}
+          />
+          <CommentsByPost comments={comments} />
+        </CommentsSection>
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </CommentsWrapper>
-      <RightSideBar sub={displayPost.sub} />
+      <RightSideBar sub={selectedPost.sub} />
     </GridWrapper>
   );
 };
+const SkeletonWrapper = styled.div`
+  width: 100%;
+  height: 400px;
+`;
 
 const GridWrapper = styled.div`
   display: grid;
@@ -176,6 +211,13 @@ const BottomSection = styled.section`
   }
 `;
 
+const CommentsSection = styled.section`
+  padding: 0 var(--spacer-md);
+
+  @media (min-width: 768px) {
+    padding: 0;
+  }
+`;
 const InputWrapper = styled.div`
   padding: 0 var(--spacer-md);
 

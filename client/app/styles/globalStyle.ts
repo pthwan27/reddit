@@ -38,6 +38,7 @@ const GlobalStyle = createGlobalStyle`
   --rem-6: 0.375rem;
   --rem-4: 0.25rem;
   --rem-2: 0.125rem;
+  --rem-1: 0.0625rem;
 
   /* Spacers */
   --spacer-4xs: 0.125rem;

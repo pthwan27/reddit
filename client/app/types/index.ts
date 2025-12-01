@@ -61,6 +61,7 @@ export interface Comment {
   body: string;
   postId: number;
   username: string;
+  userProfileUrl: string;
   voteScore: number;
   userVote: number;
   childComments?: Comment[];

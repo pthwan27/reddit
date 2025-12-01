@@ -5,30 +5,34 @@ import { Comment } from '../../entities/Comment';
 import { Post } from '../../entities/Post';
 import { User } from '../../entities/User';
 
-export const GetPostDetailHandler: RequestHandler = async (req, res) => {
+export const GetCommentsOnPostHandler: RequestHandler = async (req, res) => {
   try {
     const user: User | undefined = res.locals.user;
-    const { postId } = req.params;
+
+    const page = parseInt(req.query.page as string) || 0;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const { postId, postSlug } = req.params;
 
     const post = await Post.findOne({
-      where: { identifier: postId },
-      relations: ['user', 'sub', 'votes', 'votes.user', 'comments'],
+      where: { identifier: postId, slug: postSlug },
     });
 
     if (user) {
       post.setUserVote(user);
     }
-
-    const comments = await Comment.find({
-      where: { postId: post.id },
-      relations: ['user'],
-      order: { createdAt: 'DESC' },
-      // take, skip 추가 -> 페이징
-    });
-
     if (!post) {
       return res.status(404).json({ error: '게시글을 찾을 수 없습니다.' });
     }
+
+    const [comments] = await Comment.findAndCount({
+      where: { postId: post.id },
+      relations: ['user'],
+      order: { createdAt: 'DESC' },
+
+      skip: page * limit,
+      take: limit,
+    });
 
     return res.status(200).json({
       post: instanceToPlain(post),
