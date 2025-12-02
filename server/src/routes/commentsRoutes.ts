@@ -11,6 +11,6 @@ const CommentsRouter = Router();
 const upload = multer();
 
 CommentsRouter.post('/submit', AuthMiddleware, upload.none(), SubmitHandler);
-CommentsRouter.get('/getOnPost', UserMiddleware, GetCommentsOnPostHandler);
+CommentsRouter.get('/getOnPost/:id', UserMiddleware, GetCommentsOnPostHandler);
 
 export default CommentsRouter;

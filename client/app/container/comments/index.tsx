@@ -5,17 +5,19 @@ import { useEffect, useRef, useState } from 'react';
 
 import { clientAxiosInstance } from '@/app/utils/axios';
 
+import { useCommentStore } from '@/app/store/commentStore';
 import { usePostStore } from '@/app/store/postStore';
 
 import styled from 'styled-components';
 
-import CommentSort from '@/app/components/comments/bottom/sort';
-import CommentsByPost from '@/app/components/comments/commentsByPost';
-import CommentsByPostBody from '@/app/components/comments/top/body';
-import CommentsByPostInfos from '@/app/components/comments/top/infos';
+import CommentsOnPost from '@/app/components/comments/onPost';
+import CommentSort from '@/app/components/comments/sort';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import RichTextEditor from '@/app/components/common/input/richTextEditor';
 import Skeleton from '@/app/components/common/loading/skeleton';
+import PostActions from '@/app/components/post/detail/actions';
+import PostBody from '@/app/components/post/detail/body';
+import PostInfos from '@/app/components/post/detail/infos';
 import RightSideBar from '@/app/components/sub/detail/rightSideBar';
 
 import { useAuth } from '@/app/context/authContext';
@@ -23,8 +25,11 @@ import { Comment, Post } from '@/app/types';
 
 const CommentsContainer = ({ post }: { post: Post }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<HTMLDivElement>(null);
 
   const { selectedPost, setSelectedPost } = usePostStore();
+
+  const { loading, hasMore, fetchComments } = useCommentStore();
 
   const [comments] = useState<Comment[]>([]);
 
@@ -43,6 +48,7 @@ const CommentsContainer = ({ post }: { post: Post }) => {
   const openInputEditor = () => {
     setIsFocused(true);
   };
+
   const cancelHandler = () => {
     setComment('');
     setIsFocused(false);
@@ -56,12 +62,8 @@ const CommentsContainer = ({ post }: { post: Post }) => {
 
       formData.append('comment', comment);
       formData.append('postId', post.id.toString());
-      formData.append('postSlug', post.slug);
 
-      await clientAxiosInstance.post(
-        `/api/comments/${post.id}/${post.slug}/submit`,
-        formData
-      );
+      await clientAxiosInstance.post(`/api/comments/submit`, formData);
     } catch (err: unknown) {
       const error = err as Error;
       console.error('Create Sub failed:', error);
@@ -93,6 +95,28 @@ const CommentsContainer = ({ post }: { post: Post }) => {
     }
   }, [selectedPost, post]);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+
+        if (target.isIntersecting && !loading && hasMore) {
+          fetchComments(post.id);
+        }
+      },
+      {
+        threshold: 0.5,
+        rootMargin: '100px',
+      }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [loading, hasMore, post.slug]);
+
   if (!selectedPost) {
     return (
       <SkeletonWrapper>
@@ -104,11 +128,12 @@ const CommentsContainer = ({ post }: { post: Post }) => {
   return (
     <GridWrapper>
       <CommentsWrapper>
-        <TopSection>
-          <CommentsByPostInfos {...selectedPost} />
-          <CommentsByPostBody {...selectedPost} />
-        </TopSection>
-        <BottomSection>
+        <PostSection>
+          <PostInfos {...selectedPost} />
+          <PostBody {...selectedPost} />
+          <PostActions {...selectedPost} />
+        </PostSection>
+        <InputSection>
           <InputWrapper>
             {!isFocused ? (
               <button onClick={openInputEditor}>답글을 달아보세요</button>
@@ -125,7 +150,7 @@ const CommentsContainer = ({ post }: { post: Post }) => {
               />
             )}
           </InputWrapper>
-        </BottomSection>
+        </InputSection>
         <CommentsSection>
           <CommentSort
             wrapperRef={wrapperRef}
@@ -134,7 +159,19 @@ const CommentsContainer = ({ post }: { post: Post }) => {
             handleSelect={handleSelect}
             sortOption={sortOption}
           />
-          <CommentsByPost comments={comments} />
+          <ObserverWrapper>
+            <CommentsOnPost comments={comments} />
+
+            {loading && (
+              <SkeletonWrapper>
+                <Skeleton />
+              </SkeletonWrapper>
+            )}
+            <div
+              ref={observerRef}
+              style={{ height: '20px', background: 'black' }}
+            />
+          </ObserverWrapper>
         </CommentsSection>
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -173,7 +210,7 @@ const GridWrapper = styled.div`
 
 const CommentsWrapper = styled.div``;
 
-const TopSection = styled.section`
+const PostSection = styled.section`
   display: flex;
   flex-direction: column;
 
@@ -195,7 +232,7 @@ const TopSection = styled.section`
   }
 `;
 
-const BottomSection = styled.section`
+const InputSection = styled.section`
   @media (min-width: 768px) {
     padding: var(--spacer-xs) var(--spacer-xs) 0;
   }
@@ -226,11 +263,12 @@ const InputWrapper = styled.div`
   }
 
   > button {
+    display: flex;
+
     width: 100%;
 
-    text-align: left;
-
     padding: var(--spacer-xs) var(--spacer-md);
+    cursor: text;
 
     font: var(--font-16-20-regular);
     line-height: 1.5;
@@ -243,6 +281,12 @@ const InputWrapper = styled.div`
       border: 1px solid ${({ theme }) => theme.colors.neutral.borderMedium};
     }
   }
+`;
+
+const ObserverWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-sm);
 `;
 
 export default CommentsContainer;

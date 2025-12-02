@@ -4,16 +4,14 @@ import { Comment } from '../../entities/Comment';
 import { User } from '../../entities/User';
 
 export const SubmitHandler: RequestHandler = async (req, res) => {
-  const { comment, postId, postSlug } = req.body;
+  const { comment, postId } = req.body;
 
   const user: User = res.locals.user;
-
-  console.log('Submitting comment:', comment, postId, postSlug);
 
   if (!user) {
     return res.status(401).json({ error: 'User not found in context' });
   }
-  if (!postId || !postSlug || !comment) {
+  if (!postId || !comment) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 

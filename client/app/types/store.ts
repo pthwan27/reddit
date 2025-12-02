@@ -1,4 +1,4 @@
-import { CreateSubProps, Post, Sub } from '../types';
+import { Comment, CreateSubProps, Post, Sub } from '../types';
 
 export type SubState = {
   subs: Sub[];
@@ -20,9 +20,9 @@ export type PostStore = {
   page: number;
   hasMore: boolean;
   selectedPost: Post | null;
-  curSubSlug: string;
+  curSubId: number;
   setSelectedPost: (post: Post | null) => void;
-  fetchPosts: (slug: string, isInitial?: boolean) => Promise<void>;
+  fetchPosts: (id: number, isInitial?: boolean) => Promise<void>;
   clearPosts: () => void;
   vote: (identifier: string, slug: string, value: number) => Promise<void>;
 };
@@ -32,8 +32,8 @@ export type CommentStore = {
   loading: boolean;
   page: number;
   hasMore: boolean;
-  curPostSlug: string;
-  fetchComments: (slug: string, isInitial?: boolean) => Promise<void>;
+  curPostId: number;
+  fetchComments: (id: number, isInitial?: boolean) => Promise<void>;
   clearComments: () => void;
   vote: (identifier: string, slug: string, value: number) => Promise<void>;
 };

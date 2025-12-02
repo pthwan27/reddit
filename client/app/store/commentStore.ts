@@ -9,36 +9,42 @@ const initialState = {
   loading: false,
   page: 0,
   hasMore: true,
-  curPostSlug: '',
+  curPostId: 0,
 };
 
 export const useCommentStore = create<CommentStore>((set, get) => ({
   ...initialState,
 
-  fetchComments: async (slug: string) => {
-    const { loading, page, hasMore, curPostSlug } = get();
+  fetchComments: async (id: number) => {
+    const { loading, page, hasMore, curPostId } = get();
     const LIMIT = 10;
-    if (curPostSlug !== slug) {
+
+    if (curPostId !== id) {
       set({
         ...initialState,
-        curPostSlug: slug,
+        curPostId: id,
         loading: true,
       });
 
       try {
         const { data } = await clientAxiosInstance.get(
-          `/api/post/list/${slug}?page=${page}&limit=${LIMIT}`
+          `/api/comments/getOnPost/${id}?page=${page}&limit=${LIMIT}`
         );
         set((state) => ({
           comments:
             page === 0 ? data.comments : [...state.comments, ...data.comments],
-          page: state.page + 1,
+          page: 1,
           hasMore: data.comments.length === LIMIT,
           loading: false,
+          curPostId: id,
         }));
+
+        return;
       } catch (error) {
         console.error('Failed to fetch comments:', error);
         set({ loading: false });
+
+        return;
       }
     }
 
@@ -48,12 +54,11 @@ export const useCommentStore = create<CommentStore>((set, get) => ({
 
     try {
       const { data } = await clientAxiosInstance.get(
-        `/api/post/list/${slug}?page=${page}&limit=${LIMIT}`
+        `/api/comments/getOnPost/${id}?page=${page}&limit=${LIMIT}`
       );
 
       set((state) => ({
-        comments:
-          page === 0 ? data.comments : [...state.comments, ...data.comments],
+        comments: [...state.comments, ...data.comments],
         page: state.page + 1,
         hasMore: data.comments.length === LIMIT,
         loading: false,

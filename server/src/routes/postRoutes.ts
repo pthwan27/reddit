@@ -10,7 +10,7 @@ import { SubmitHandler } from '../migration/post/submit';
 const PostRouter = Router();
 
 PostRouter.post('/submit', AuthMiddleware, PostUpload, SubmitHandler);
-PostRouter.get('/list/:slug', UserMiddleware, ListBySubHandler);
-PostRouter.get('/:postId/:postSlug', UserMiddleware, GetPostDetailHandler);
+PostRouter.get('/list/:id', UserMiddleware, ListBySubHandler);
+PostRouter.get('/:id', UserMiddleware, GetPostDetailHandler);
 
 export default PostRouter;

@@ -7,15 +7,13 @@ import { User } from '../../entities/User';
 
 export const GetCommentsOnPostHandler: RequestHandler = async (req, res) => {
   try {
+    const { postId } = req.params;
     const user: User | undefined = res.locals.user;
-
     const page = parseInt(req.query.page as string) || 0;
     const limit = parseInt(req.query.limit as string) || 10;
 
-    const { postId, postSlug } = req.params;
-
-    const post = await Post.findOne({
-      where: { identifier: postId, slug: postSlug },
+    const post = await Post.findOneBy({
+      id: parseInt(postId, 10),
     });
 
     if (user) {
@@ -35,7 +33,6 @@ export const GetCommentsOnPostHandler: RequestHandler = async (req, res) => {
     });
 
     return res.status(200).json({
-      post: instanceToPlain(post),
       comments: instanceToPlain(comments),
     });
   } catch (error) {

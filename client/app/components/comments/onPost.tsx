@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import formatTimeAgo from '@/app/utils/formatTimeAgo';
 
@@ -11,35 +11,12 @@ import IconBox from '../common/IconBox';
 import MinusCircleIcon from '../svgs/MinusCircleIcon';
 import PlusCircleIcon from '../svgs/PlusCircleIcon';
 
-const CommentsByPost = ({ comments }: { comments: Comment[] }) => {
-  const observerRef = useRef<HTMLDivElement>(null);
+const CommentsOnPost = ({ comments }: { comments: Comment[] }) => {
   const [isSummary, setIsSummary] = useState(false);
 
   const toggleSummary = () => {
     setIsSummary((prev) => !prev);
   };
-
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       const target = entries[0];
-
-  //       if (target.isIntersecting && !loading && hasMore) {
-  //         fetchComments(sub.slug);
-  //       }
-  //     },
-  //     {
-  //       threshold: 0.5,
-  //       rootMargin: '100px',
-  //     }
-  //   );
-
-  //   if (observerRef.current) {
-  //     observer.observe(observerRef.current);
-  //   }
-
-  //   return () => observer.disconnect();
-  // }, [loading, hasMore, sub.slug]);
 
   return (
     <StyledCommentsByPost>
@@ -80,7 +57,7 @@ const CommentsByPost = ({ comments }: { comments: Comment[] }) => {
                 <div></div>
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(comment.body.replace('"', '')),
+                    __html: DOMPurify.sanitize(comment.body),
                   }}
                 />
               </Contents>
@@ -97,10 +74,6 @@ const CommentsByPost = ({ comments }: { comments: Comment[] }) => {
             </ItemGridWrapper>
           </CommentItem>
         ))}
-        <div
-          ref={observerRef}
-          style={{ height: '20px', background: 'black' }}
-        />
       </CommentList>
     </StyledCommentsByPost>
   );
@@ -240,4 +213,4 @@ const ContentIconWrapper = styled.div`
   padding: var(--spacer-4xs) 0;
 `;
 
-export default CommentsByPost;
+export default CommentsOnPost;

@@ -79,8 +79,9 @@ const SubDetailContainer = ({ ...sub }: Sub) => {
 
   useEffect(() => {
     clearPosts();
-    fetchPosts(sub.slug);
-  }, [sub.slug, fetchPosts]);
+
+    fetchPosts(sub.id);
+  }, [sub.id, fetchPosts]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -88,7 +89,7 @@ const SubDetailContainer = ({ ...sub }: Sub) => {
         const target = entries[0];
 
         if (target.isIntersecting && !loading && hasMore) {
-          fetchPosts(sub.slug);
+          fetchPosts(sub.id);
         }
       },
       {

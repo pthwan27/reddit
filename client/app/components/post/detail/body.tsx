@@ -17,7 +17,7 @@ const PostBody = ({
   linkUrl = '',
 }: Post) => {
   const [curImgIdx, setCurImgIdx] = useState(0);
-  const cleanContent = DOMPurify.sanitize(body.replace('"', ''));
+  const cleanContent = DOMPurify.sanitize(body);
 
   return (
     <>

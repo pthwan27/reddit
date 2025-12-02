@@ -10,7 +10,7 @@ const initialState = {
   page: 0,
   hasMore: true,
   selectedPost: null,
-  curSubSlug: '',
+  curSubId: 0,
 };
 
 export const usePostStore = create<PostStore>((set, get) => ({
@@ -18,29 +18,35 @@ export const usePostStore = create<PostStore>((set, get) => ({
 
   setSelectedPost: (post: Post | null) => set({ selectedPost: post }),
 
-  fetchPosts: async (slug: string) => {
-    const { loading, page, hasMore, curSubSlug } = get();
+  fetchPosts: async (id: number) => {
+    const { loading, page, hasMore, curSubId } = get();
     const LIMIT = 7;
-    if (curSubSlug !== slug) {
+
+    if (curSubId !== id) {
       set({
         ...initialState,
-        curSubSlug: slug,
+        curSubId: id,
         loading: true,
       });
 
       try {
         const { data } = await clientAxiosInstance.get(
-          `/api/post/list/${slug}?page=${page}&limit=${LIMIT}`
+          `/api/post/list/${id}?page=${0}&limit=${LIMIT}`
         );
         set((state) => ({
           posts: page === 0 ? data.posts : [...state.posts, ...data.posts],
-          page: state.page + 1,
+          page: 1,
           hasMore: data.posts.length === LIMIT,
           loading: false,
+          curSubId: id,
         }));
+
+        return;
       } catch (error) {
         console.error('Failed to fetch posts:', error);
         set({ loading: false });
+
+        return;
       }
     }
 
@@ -50,11 +56,11 @@ export const usePostStore = create<PostStore>((set, get) => ({
 
     try {
       const { data } = await clientAxiosInstance.get(
-        `/api/post/list/${slug}?page=${page}&limit=${LIMIT}`
+        `/api/post/list/${id}?page=${page}&limit=${LIMIT}`
       );
 
       set((state) => ({
-        posts: page === 0 ? data.posts : [...state.posts, ...data.posts],
+        posts: [...state.posts, ...data.posts],
         page: state.page + 1,
         hasMore: data.posts.length === LIMIT,
         loading: false,

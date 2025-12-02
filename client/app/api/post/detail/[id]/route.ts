@@ -6,19 +6,16 @@ import { CustomError } from '@/app/types';
 
 export async function GET(
   req: NextRequest,
-  context: { params: Promise<{ postId: string; postSlug: string }> }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { postId, postSlug } = await context.params;
+    const { id } = await context.params;
 
-    const { data, status } = await serverAxiosInstance.get(
-      `/post/${postId}/${postSlug}`,
-      {
-        headers: {
-          Cookie: req.headers.get('cookie') || '',
-        },
-      }
-    );
+    const { data, status } = await serverAxiosInstance.get(`/post/${id}`, {
+      headers: {
+        Cookie: req.headers.get('cookie') || '',
+      },
+    });
 
     return NextResponse.json(data, { status });
   } catch (err: unknown) {

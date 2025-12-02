@@ -6,17 +6,17 @@ import { CustomError } from '@/app/types';
 
 export async function GET(
   req: NextRequest,
-  context: { params: Promise<{ slug: string }> }
+  context: { params: Promise<{ postId: string }> }
 ) {
-  const { slug } = await context.params;
-
-  const searchParams = req.nextUrl.searchParams;
-  const page = searchParams.get('page') || '0';
-  const limit = searchParams.get('limit') || '10';
-
   try {
+    const { postId } = await context.params;
+
+    const searchParams = req.nextUrl.searchParams;
+    const page = searchParams.get('page') || '0';
+    const limit = searchParams.get('limit') || '7';
+
     const { data, status } = await serverAxiosInstance.get(
-      `/post/list/${slug}?page=${page}&limit=${limit}`,
+      `/comments/getOnPost/${postId}?page=${page}&limit=${limit}`,
       {
         headers: {
           Cookie: req.headers.get('cookie') || '',
@@ -28,11 +28,11 @@ export async function GET(
   } catch (err: unknown) {
     const error = err as CustomError;
     console.error(
-      'Get Post List API error:',
+      'Get my post detail API error:',
       error.response?.data || error.message
     );
     return NextResponse.json(
-      { error: error.response?.data?.error || 'Failed to get post list' },
+      { error: error.response?.data?.error || 'Failed to get post detail' },
       { status: error.response?.status || 500 }
     );
   }
