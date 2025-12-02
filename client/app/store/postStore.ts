@@ -9,14 +9,11 @@ const initialState = {
   loading: false,
   page: 0,
   hasMore: true,
-  selectedPost: null,
   curSubId: 0,
 };
 
 export const usePostStore = create<PostStore>((set, get) => ({
   ...initialState,
-
-  setSelectedPost: (post: Post | null) => set({ selectedPost: post }),
 
   fetchPosts: async (id: number) => {
     const { loading, page, hasMore, curSubId } = get();
@@ -73,10 +70,10 @@ export const usePostStore = create<PostStore>((set, get) => ({
 
   clearPosts: () => set(initialState),
 
-  vote: async (identifier: string, slug: string, value: number) => {
+  vote: async (id: number, value: number, type: string) => {
     const originPosts = get().posts;
     const updatedPosts = originPosts.map((post) => {
-      if (post.identifier === identifier) {
+      if (post.id === id) {
         const newUserVote = post.userVote === value ? 0 : value;
 
         const voteChange = newUserVote - (post.userVote || 0);
@@ -90,27 +87,25 @@ export const usePostStore = create<PostStore>((set, get) => ({
     set({ posts: updatedPosts });
 
     try {
-      const targetPost = updatedPosts.find(
-        (post) => post.identifier === identifier
-      );
+      const targetPost = updatedPosts.find((post) => post.id === id);
 
       if (!targetPost) {
         await clientAxiosInstance.patch('/api/vote', {
-          identifier,
-          slug,
+          id,
           value,
+          type,
         });
         return;
       }
 
       const { data } = await clientAxiosInstance.patch('/api/vote', {
-        identifier,
-        slug,
+        id,
         value: targetPost.userVote,
+        type,
       });
 
       set((state) => ({
-        posts: state.posts.map((p) => (p.identifier === identifier ? data : p)),
+        posts: state.posts.map((p) => (p.id === id ? data : p)),
       }));
     } catch (error) {
       console.error('Vote failed, rolling back.', error);

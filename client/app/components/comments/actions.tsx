@@ -1,45 +1,47 @@
-import { usePostStore } from '@/app/store/postStore';
+import { useCommentStore } from '@/app/store/commentStore';
 
 import styled from 'styled-components';
 
-import { Post } from '@/app/types';
+import { Comment } from '@/app/types';
 
-import CommentIcon from '../../svgs/CommentIcon';
-import DownVoteIcon from '../../svgs/DownVote';
-import DownVoteFillIcon from '../../svgs/DownVoteFill';
-import UpVoteFillIcon from '../../svgs/UpVoteFillIcon';
-import UpVoteIcon from '../../svgs/UpVoteIcon';
+import CommentIcon from '../svgs/CommentIcon';
+import DownVoteIcon from '../svgs/DownVote';
+import DownVoteFillIcon from '../svgs/DownVoteFill';
+import UpVoteFillIcon from '../svgs/UpVoteFillIcon';
+import UpVoteIcon from '../svgs/UpVoteIcon';
 
-const PostActions = ({ ...post }: Post) => {
-  const { vote } = usePostStore();
+const CommentActions = ({ ...comment }: Comment) => {
+  const { vote } = useCommentStore();
 
   const voteHandler = (e: React.MouseEvent, value: number) => {
     e.stopPropagation();
-    vote(post.id, value, 'post');
+    vote(comment.id, value, 'comment');
   };
 
   return (
-    <StyledPostActions>
+    <StyledCommentActions>
       <VoteButtons
-        $userVote={post.userVote === 1 ? 1 : post.userVote === -1 ? -1 : 0}
+        $userVote={
+          comment.userVote === 1 ? 1 : comment.userVote === -1 ? -1 : 0
+        }
       >
         <button onClick={(e) => voteHandler(e, 1)}>
-          {post.userVote === 1 ? <UpVoteFillIcon /> : <UpVoteIcon />}
+          {comment.userVote === 1 ? <UpVoteFillIcon /> : <UpVoteIcon />}
         </button>
-        <span>{post.voteScore || 0}</span>
+        <span>{comment.voteScore || 0}</span>
         <button onClick={(e) => voteHandler(e, -1)}>
-          {post.userVote === -1 ? <DownVoteFillIcon /> : <DownVoteIcon />}
+          {comment.userVote === -1 ? <DownVoteFillIcon /> : <DownVoteIcon />}
         </button>
       </VoteButtons>
 
       <CommentButton>
         <CommentIcon />
-        {post.commentCount || 0}
+        {comment.commentCount || 0}
       </CommentButton>
-    </StyledPostActions>
+    </StyledCommentActions>
   );
 };
-const StyledPostActions = styled.section`
+const StyledCommentActions = styled.section`
   display: flex;
 
   gap: var(--spacer-xs);
@@ -163,4 +165,4 @@ const CommentButton = styled.button`
     background: ${({ theme }) => theme.colors.secondary.backgroundHover};
   }
 `;
-export default PostActions;
+export default CommentActions;

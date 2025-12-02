@@ -71,10 +71,10 @@ export const useCommentStore = create<CommentStore>((set, get) => ({
 
   clearComments: () => set(initialState),
 
-  vote: async (identifier: string, slug: string, value: number) => {
+  vote: async (id: number, value: number, type: string) => {
     const originComments = get().comments;
     const updatedComments = originComments.map((comment) => {
-      if (comment.identifier === identifier) {
+      if (comment.id === id) {
         const newUserVote = comment.userVote === value ? 0 : value;
 
         const voteChange = newUserVote - (comment.userVote || 0);
@@ -89,28 +89,26 @@ export const useCommentStore = create<CommentStore>((set, get) => ({
 
     try {
       const targetComment = updatedComments.find(
-        (comment) => comment.identifier === identifier
+        (comment) => comment.id === id
       );
 
       if (!targetComment) {
         await clientAxiosInstance.patch('/api/vote', {
-          identifier,
-          slug,
+          id,
           value,
+          type,
         });
         return;
       }
 
       const { data } = await clientAxiosInstance.patch('/api/vote', {
-        identifier,
-        slug,
+        id,
         value: targetComment.userVote,
+        type,
       });
 
       set((state) => ({
-        comments: state.comments.map((c) =>
-          c.identifier === identifier ? data : c
-        ),
+        comments: state.comments.map((c) => (c.id === id ? data : c)),
       }));
     } catch (error) {
       console.error('Vote failed, rolling back.', error);

@@ -7,17 +7,20 @@ import PostCommentsContainer from '@/app/container/comments';
 
 import { Post } from '@/app/types';
 
-async function getDetailPost(id: number): Promise<{ post: Post }> {
+async function getDetailPost(identifier: string): Promise<{ post: Post }> {
   try {
     const cookieStore = await cookies();
 
     const cookieString = await cookieStore.toString();
 
-    const response = await clientAxiosInstance.get(`/api/post/detail/${id}}`, {
-      headers: {
-        Cookie: cookieString,
-      },
-    });
+    const response = await clientAxiosInstance.get(
+      `/api/post/detail/${identifier}`,
+      {
+        headers: {
+          Cookie: cookieString,
+        },
+      }
+    );
 
     return { post: response.data };
   } catch (error) {
@@ -29,11 +32,11 @@ async function getDetailPost(id: number): Promise<{ post: Post }> {
 const PostDetailPage = async ({
   params,
 }: {
-  params: Promise<{ id: number }>;
+  params: Promise<{ identifier: string }>;
 }) => {
-  const { id } = await params;
+  const { identifier } = await params;
 
-  const data = await getDetailPost(id);
+  const data = await getDetailPost(identifier);
   return <PostCommentsContainer post={data.post} />;
 };
 

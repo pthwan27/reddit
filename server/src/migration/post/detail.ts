@@ -6,12 +6,12 @@ import { User } from '../../entities/User';
 
 export const GetPostDetailHandler: RequestHandler = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { identifier } = req.params;
 
     const user: User | undefined = res.locals.user;
 
     const post = await Post.findOne({
-      where: { id: parseInt(id, 10) },
+      where: { identifier },
       relations: ['user', 'sub', 'votes', 'votes.user', 'comments'],
     });
 

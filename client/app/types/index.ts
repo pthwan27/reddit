@@ -64,6 +64,7 @@ export interface Comment {
   userProfileUrl: string;
   voteScore: number;
   userVote: number;
+  commentCount: number;
   childComments?: Comment[];
 }
 

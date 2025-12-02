@@ -36,7 +36,7 @@ export class Comment extends CoreEntity {
   post: Post;
 
   @Exclude()
-  @OneToMany(() => Vote, (vote) => vote.post)
+  @OneToMany(() => Vote, (vote) => vote.comment)
   votes: Vote[];
 
   @ManyToOne(() => Comment, (comment) => comment.childComments, { nullable: true, onDelete: 'CASCADE' })
@@ -60,8 +60,13 @@ export class Comment extends CoreEntity {
   protected userVote: number;
 
   setUserVote(user: User) {
-    const idx = this.votes?.findIndex((v) => v.username === user.username);
+    const idx = this.votes?.findIndex((v) => v.user.id === user.id);
     this.userVote = idx > -1 ? this.votes[idx].value : 0;
+  }
+
+  @Expose()
+  get commentCount(): number {
+    return this.childComments?.length;
   }
 
   @Expose()

@@ -19,12 +19,10 @@ export type PostStore = {
   loading: boolean;
   page: number;
   hasMore: boolean;
-  selectedPost: Post | null;
   curSubId: number;
-  setSelectedPost: (post: Post | null) => void;
   fetchPosts: (id: number, isInitial?: boolean) => Promise<void>;
   clearPosts: () => void;
-  vote: (identifier: string, slug: string, value: number) => Promise<void>;
+  vote: (id: number, value: number, type: string) => Promise<void>;
 };
 
 export type CommentStore = {
@@ -35,5 +33,5 @@ export type CommentStore = {
   curPostId: number;
   fetchComments: (id: number, isInitial?: boolean) => Promise<void>;
   clearComments: () => void;
-  vote: (identifier: string, slug: string, value: number) => Promise<void>;
+  vote: (id: number, value: number, type: string) => Promise<void>;
 };

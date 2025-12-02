@@ -7,13 +7,13 @@ import { User } from '../../entities/User';
 
 export const GetCommentsOnPostHandler: RequestHandler = async (req, res) => {
   try {
-    const { postId } = req.params;
+    const { id } = req.params;
     const user: User | undefined = res.locals.user;
     const page = parseInt(req.query.page as string) || 0;
     const limit = parseInt(req.query.limit as string) || 10;
 
     const post = await Post.findOneBy({
-      id: parseInt(postId, 10),
+      id: parseInt(id, 10),
     });
 
     if (user) {
@@ -24,8 +24,8 @@ export const GetCommentsOnPostHandler: RequestHandler = async (req, res) => {
     }
 
     const [comments] = await Comment.findAndCount({
-      where: { postId: post.id },
-      relations: ['user'],
+      where: { postId: parseInt(id, 10) },
+      relations: ['user', 'votes', 'votes.user'],
       order: { createdAt: 'DESC' },
 
       skip: page * limit,

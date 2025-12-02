@@ -11,6 +11,6 @@ const PostRouter = Router();
 
 PostRouter.post('/submit', AuthMiddleware, PostUpload, SubmitHandler);
 PostRouter.get('/list/:id', UserMiddleware, ListBySubHandler);
-PostRouter.get('/:id', UserMiddleware, GetPostDetailHandler);
+PostRouter.get('/:identifier', UserMiddleware, GetPostDetailHandler);
 
 export default PostRouter;

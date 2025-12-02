@@ -5,15 +5,15 @@ import { serverAxiosInstance } from '@/app/utils/axios';
 import { CustomError } from '@/app/types';
 
 export async function PATCH(req: NextRequest) {
-  const { identifier, slug, value } = await req.json();
+  const { id, value, type } = await req.json();
 
   try {
     const { data, status } = await serverAxiosInstance.patch(
       '/vote',
       {
-        identifier,
-        slug,
+        id,
         value,
+        type,
       },
       {
         headers: {

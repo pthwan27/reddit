@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react';
 import { clientAxiosInstance } from '@/app/utils/axios';
 
 import { useCommentStore } from '@/app/store/commentStore';
-import { usePostStore } from '@/app/store/postStore';
 
 import styled from 'styled-components';
 
@@ -21,17 +20,13 @@ import PostInfos from '@/app/components/post/detail/infos';
 import RightSideBar from '@/app/components/sub/detail/rightSideBar';
 
 import { useAuth } from '@/app/context/authContext';
-import { Comment, Post } from '@/app/types';
+import { Post } from '@/app/types';
 
 const CommentsContainer = ({ post }: { post: Post }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<HTMLDivElement>(null);
 
-  const { selectedPost, setSelectedPost } = usePostStore();
-
-  const { loading, hasMore, fetchComments } = useCommentStore();
-
-  const [comments] = useState<Comment[]>([]);
+  const { comments, loading, hasMore, fetchComments } = useCommentStore();
 
   const [isFocused, setIsFocused] = useState(false);
   const [comment, setComment] = useState('');
@@ -90,12 +85,6 @@ const CommentsContainer = ({ post }: { post: Post }) => {
   }, []);
 
   useEffect(() => {
-    if (!selectedPost) {
-      setSelectedPost(post);
-    }
-  }, [selectedPost, post]);
-
-  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const target = entries[0];
@@ -117,7 +106,7 @@ const CommentsContainer = ({ post }: { post: Post }) => {
     return () => observer.disconnect();
   }, [loading, hasMore, post.slug]);
 
-  if (!selectedPost) {
+  if (!post) {
     return (
       <SkeletonWrapper>
         <Skeleton></Skeleton>
@@ -129,9 +118,9 @@ const CommentsContainer = ({ post }: { post: Post }) => {
     <GridWrapper>
       <CommentsWrapper>
         <PostSection>
-          <PostInfos {...selectedPost} />
-          <PostBody {...selectedPost} />
-          <PostActions {...selectedPost} />
+          <PostInfos {...post} />
+          <PostBody {...post} />
+          <PostActions {...post} />
         </PostSection>
         <InputSection>
           <InputWrapper>
@@ -176,7 +165,7 @@ const CommentsContainer = ({ post }: { post: Post }) => {
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </CommentsWrapper>
-      <RightSideBar sub={selectedPost.sub} />
+      <RightSideBar sub={post.sub} />
     </GridWrapper>
   );
 };

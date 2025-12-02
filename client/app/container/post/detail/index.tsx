@@ -14,7 +14,7 @@ const PostItem = ({ post }: { post: Post }) => {
   const router = useRouter();
 
   const goToComments = () => {
-    router.push(`/r/${post.sub.slug}/comments/${post.id}`);
+    router.push(`/r/${post.sub.slug}/comments/${post.identifier}`);
   };
 
   if (post.postType === 'link') {

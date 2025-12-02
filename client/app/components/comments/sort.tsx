@@ -44,12 +44,12 @@ const CommentSort = ({
 };
 
 const StyledSortDiv = styled.div`
+  position: relative;
+
   display: flex;
   align-items: center;
 
   gap: var(--spacer-4xs);
-
-  position: relative;
 
   margin-top: var(--spacer-sm);
 
@@ -117,6 +117,7 @@ const SortButton = styled.button`
 const DropdownMenu = styled.ul<{ $isSelecting: boolean }>`
   position: absolute;
   top: calc(100% + var(--spacer-2xs));
+  left: var(--rem-40);
 
   transform: ${({ $isSelecting }) => ($isSelecting ? 'scale(1)' : 'scale(0)')};
   opacity: ${({ $isSelecting }) => ($isSelecting ? 1 : 0)};

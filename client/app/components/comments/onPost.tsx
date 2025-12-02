@@ -10,6 +10,7 @@ import { Comment } from '@/app/types';
 import IconBox from '../common/IconBox';
 import MinusCircleIcon from '../svgs/MinusCircleIcon';
 import PlusCircleIcon from '../svgs/PlusCircleIcon';
+import CommentActions from './actions';
 
 const CommentsOnPost = ({ comments }: { comments: Comment[] }) => {
   const [isSummary, setIsSummary] = useState(false);
@@ -70,6 +71,7 @@ const CommentsOnPost = ({ comments }: { comments: Comment[] }) => {
                     percentage={100}
                   />
                 </ContentIconWrapper>
+                <CommentActions {...comment} />
               </Contents>
             </ItemGridWrapper>
           </CommentItem>

@@ -6,17 +6,17 @@ import { CustomError } from '@/app/types';
 
 export async function GET(
   req: NextRequest,
-  context: { params: Promise<{ postId: string }> }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { postId } = await context.params;
+    const { id } = await context.params;
 
     const searchParams = req.nextUrl.searchParams;
     const page = searchParams.get('page') || '0';
     const limit = searchParams.get('limit') || '7';
 
     const { data, status } = await serverAxiosInstance.get(
-      `/comments/getOnPost/${postId}?page=${page}&limit=${limit}`,
+      `/comments/getOnPost/${id}?page=${page}&limit=${limit}`,
       {
         headers: {
           Cookie: req.headers.get('cookie') || '',
