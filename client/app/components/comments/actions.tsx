@@ -10,7 +10,11 @@ import DownVoteFillIcon from '../svgs/DownVoteFill';
 import UpVoteFillIcon from '../svgs/UpVoteFillIcon';
 import UpVoteIcon from '../svgs/UpVoteIcon';
 
-const CommentActions = ({ ...comment }: Comment) => {
+interface CommentActionsProps {
+  comment: Comment;
+  setIsEditorOpen: () => void;
+}
+const CommentActions = ({ comment, setIsEditorOpen }: CommentActionsProps) => {
   const { vote } = useCommentStore();
 
   const voteHandler = (e: React.MouseEvent, value: number) => {
@@ -25,18 +29,24 @@ const CommentActions = ({ ...comment }: Comment) => {
           comment.userVote === 1 ? 1 : comment.userVote === -1 ? -1 : 0
         }
       >
-        <button onClick={(e) => voteHandler(e, 1)}>
+        <UpvoteButton
+          onClick={(e) => voteHandler(e, 1)}
+          $isActive={comment.userVote === 1}
+        >
           {comment.userVote === 1 ? <UpVoteFillIcon /> : <UpVoteIcon />}
-        </button>
+        </UpvoteButton>
         <span>{comment.voteScore || 0}</span>
-        <button onClick={(e) => voteHandler(e, -1)}>
+        <DownvoteButton
+          onClick={(e) => voteHandler(e, -1)}
+          $isActive={comment.userVote === -1}
+        >
           {comment.userVote === -1 ? <DownVoteFillIcon /> : <DownVoteIcon />}
-        </button>
+        </DownvoteButton>
       </VoteButtons>
 
-      <CommentButton>
+      <CommentButton onClick={setIsEditorOpen}>
         <CommentIcon />
-        {comment.commentCount || 0}
+        <span>답글 달기</span>
       </CommentButton>
     </StyledCommentActions>
   );
@@ -60,25 +70,13 @@ const VoteButtons = styled.div<{ $userVote: number }>`
 
   border-radius: var(--radius-xl);
 
-  background: ${({ $userVote, theme }) =>
-    $userVote === 1
-      ? theme.colors.upvote.background
-      : $userVote === -1
-        ? theme.colors.downvote.background
-        : theme.colors.secondary.background};
-
   span {
     min-width: var(--rem-8);
     display: flex;
     align-items: center;
     justify-content: center;
 
-    color: ${({ $userVote, theme }) =>
-      $userVote === 1
-        ? theme.colors.global.white
-        : $userVote === -1
-          ? theme.colors.global.white
-          : theme.colors.global.black};
+    color: ${({ theme }) => theme.components.button.plain.text.weak};
   }
 
   button {
@@ -94,52 +92,37 @@ const VoteButtons = styled.div<{ $userVote: number }>`
 
     border-radius: var(--radius-full);
 
-    background: ${({ $userVote, theme }) =>
-      $userVote === 1
+    &:hover {
+      background: ${({ theme }) =>
+        theme.components.button.plain.background.hover};
+    }
+  }
+`;
+
+const UpvoteButton = styled.button<{ $isActive: boolean }>`
+  > svg {
+    fill: ${({ $isActive, theme }) =>
+      $isActive
         ? theme.colors.upvote.background
-        : $userVote === -1
-          ? theme.colors.downvote.background
-          : theme.colors.secondary.background};
+        : theme.components.button.plain.text.weak};
 
     &:hover {
-      background: ${({ $userVote, theme }) =>
-        $userVote === 1
-          ? theme.colors.upvote.backgroundHover
-          : $userVote === -1
-            ? theme.colors.downvote.backgroundHover
-            : theme.colors.secondary.background};
-    }
-
-    svg {
-      border-radius: var(--radius-full);
-
-      fill: ${({ $userVote, theme }) =>
-        $userVote === 1
-          ? theme.colors.upvote.onBackground
-          : $userVote === -1
-            ? theme.colors.downvote.onBackground
-            : theme.colors.secondary.onBackground};
+      fill: ${({ theme }) => theme.colors.upvote.background};
     }
   }
+`;
 
-  ${({ $userVote, theme }) =>
-    $userVote === 0 &&
-    `
-    button:nth-child(1) {
-    svg {
-      &:hover {
-        fill: ${theme.colors.upvote.background};
-      }
+const DownvoteButton = styled.button<{ $isActive: boolean }>`
+  > svg {
+    fill: ${({ $isActive, theme }) =>
+      $isActive
+        ? theme.colors.downvote.background
+        : theme.components.button.plain.text.weak};
+
+    &:hover {
+      fill: ${({ theme }) => theme.colors.downvote.background};
     }
   }
-
-  button:nth-child(3) {
-    svg {
-      &:hover {
-        fill: ${theme.colors.downvote.background};
-      }
-    }
-  }`}
 `;
 
 const CommentButton = styled.button`
@@ -152,17 +135,22 @@ const CommentButton = styled.button`
 
   border-radius: var(--radius-xl);
 
+  color: ${({ theme }) => theme.components.button.plain.text.weak};
   svg {
+    fill: ${({ theme }) => theme.components.button.plain.text.weak};
     height: var(--rem-16);
     width: var(--rem-16);
   }
 
-  border: none;
-  background: ${({ theme }) => theme.colors.secondary.background};
-
   &:hover {
-    border: none;
-    background: ${({ theme }) => theme.colors.secondary.backgroundHover};
+    background: ${({ theme }) =>
+      theme.components.button.plain.background.hover};
+
+    color: ${({ theme }) => theme.components.button.plain.text.hover};
+
+    svg {
+      fill: ${({ theme }) => theme.components.button.plain.text.hover};
+    }
   }
 `;
 export default CommentActions;

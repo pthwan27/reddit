@@ -6,13 +6,15 @@ import { useEffect, useRef, useState } from 'react';
 import { clientAxiosInstance } from '@/app/utils/axios';
 
 import { useCommentStore } from '@/app/store/commentStore';
+import { usePostStore } from '@/app/store/postStore';
 
 import styled from 'styled-components';
 
-import CommentsOnPost from '@/app/components/comments/onPost';
+import CommentInput from '@/app/components/comments/input';
+import CommentList from '@/app/components/comments/list';
 import CommentSort from '@/app/components/comments/sort';
 import ErrorMessage from '@/app/components/common/errorMessage';
-import RichTextEditor from '@/app/components/common/input/richTextEditor';
+import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 import Skeleton from '@/app/components/common/loading/skeleton';
 import PostActions from '@/app/components/post/detail/actions';
 import PostBody from '@/app/components/post/detail/body';
@@ -26,27 +28,28 @@ const CommentsContainer = ({ post }: { post: Post }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<HTMLDivElement>(null);
 
+  const router = useRouter();
+  const { user } = useAuth();
+
+  const { selectedPost, setSelectedPost } = usePostStore();
   const { comments, loading, hasMore, fetchComments } = useCommentStore();
 
-  const [isFocused, setIsFocused] = useState(false);
-  const [comment, setComment] = useState('');
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [content, setContent] = useState('');
+
   const [error, setError] = useState('');
   const [isSelecting, setIsSelecting] = useState(false);
   const [sortOption, setSortOption] = useState<
     '최신순' | '인기순' | '댓글 많은 순'
   >('최신순');
 
-  const router = useRouter();
-
-  const { user } = useAuth();
-
   const openInputEditor = () => {
-    setIsFocused(true);
+    setIsEditorOpen(true);
   };
 
   const cancelHandler = () => {
-    setComment('');
-    setIsFocused(false);
+    setContent('');
+    setIsEditorOpen(false);
   };
 
   const commentSubmitHandler = async () => {
@@ -55,7 +58,7 @@ const CommentsContainer = ({ post }: { post: Post }) => {
     try {
       const formData = new FormData();
 
-      formData.append('comment', comment);
+      formData.append('comment', content);
       formData.append('postId', post.id.toString());
 
       await clientAxiosInstance.post(`/api/comments/submit`, formData);
@@ -106,7 +109,16 @@ const CommentsContainer = ({ post }: { post: Post }) => {
     return () => observer.disconnect();
   }, [loading, hasMore, post.slug]);
 
-  if (!post) {
+  useEffect(() => {
+    setSelectedPost(post);
+    fetchComments(post.id);
+
+    return () => {
+      setSelectedPost(null);
+    };
+  }, [post]);
+
+  if (!selectedPost) {
     return (
       <SkeletonWrapper>
         <Skeleton></Skeleton>
@@ -118,27 +130,19 @@ const CommentsContainer = ({ post }: { post: Post }) => {
     <GridWrapper>
       <CommentsWrapper>
         <PostSection>
-          <PostInfos {...post} />
-          <PostBody {...post} />
-          <PostActions {...post} />
+          <PostInfos {...selectedPost} />
+          <PostBody {...selectedPost} />
+          <PostActions {...selectedPost} />
         </PostSection>
         <InputSection>
-          <InputWrapper>
-            {!isFocused ? (
-              <button onClick={openInputEditor}>답글을 달아보세요</button>
-            ) : (
-              <RichTextEditor
-                content={comment}
-                onChange={setComment}
-                placeholder=""
-                isToolbarVisibleDefault={false}
-                editorHeightPercentage={50}
-                isInSubmitMode={true}
-                submitHandler={commentSubmitHandler}
-                cancelHandler={cancelHandler}
-              />
-            )}
-          </InputWrapper>
+          <CommentInput
+            isEditorOpen={isEditorOpen}
+            openInputEditor={openInputEditor}
+            cancelHandler={cancelHandler}
+            content={content}
+            setContent={setContent}
+            commentSubmitHandler={commentSubmitHandler}
+          />
         </InputSection>
         <CommentsSection>
           <CommentSort
@@ -149,13 +153,11 @@ const CommentsContainer = ({ post }: { post: Post }) => {
             sortOption={sortOption}
           />
           <ObserverWrapper>
-            <CommentsOnPost comments={comments} />
+            <CommentListWrapper>
+              <CommentList comments={comments} />
+            </CommentListWrapper>
 
-            {loading && (
-              <SkeletonWrapper>
-                <Skeleton />
-              </SkeletonWrapper>
-            )}
+            {loading && <LoadingSpinner />}
             <div
               ref={observerRef}
               style={{ height: '20px', background: 'black' }}
@@ -165,10 +167,11 @@ const CommentsContainer = ({ post }: { post: Post }) => {
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </CommentsWrapper>
-      <RightSideBar sub={post.sub} />
+      <RightSideBar sub={selectedPost.sub} />
     </GridWrapper>
   );
 };
+
 const SkeletonWrapper = styled.div`
   width: 100%;
   height: 400px;
@@ -205,6 +208,8 @@ const PostSection = styled.section`
 
   padding-top: var(--spacer-xs);
   margin-bottom: var(--spacer-xs);
+
+  padding: var(--spacer-md) var(--spacer-md) var(--spacer-2xs);
 
   @media (min-width: 768px) {
     padding: var(--spacer-xs) var(--spacer-xs) 0;
@@ -244,31 +249,12 @@ const CommentsSection = styled.section`
     padding: 0;
   }
 `;
-const InputWrapper = styled.div`
-  padding: 0 var(--spacer-md);
+
+const CommentListWrapper = styled.section`
+  margin-top: var(--spacer-sm);
 
   @media (min-width: 768px) {
     padding: 0;
-  }
-
-  > button {
-    display: flex;
-
-    width: 100%;
-
-    padding: var(--spacer-xs) var(--spacer-md);
-    cursor: text;
-
-    font: var(--font-16-20-regular);
-    line-height: 1.5;
-
-    color: ${({ theme }) => theme.colors.neutral.contentWeak};
-
-    border: 1px solid ${({ theme }) => theme.colors.neutral.border};
-
-    &:focus-within {
-      border: 1px solid ${({ theme }) => theme.colors.neutral.borderMedium};
-    }
   }
 `;
 

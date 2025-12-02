@@ -61,7 +61,7 @@ const StyledSortDiv = styled.div`
     display: flex;
     align-items: center;
 
-    height: var(--rem-32);
+    height: var(--rem-40);
     font: var(--font-12-16-regular);
 
     color: ${({ theme }) => theme.colors.neutral.contentWeak};

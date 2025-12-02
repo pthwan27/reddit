@@ -10,10 +10,13 @@ const initialState = {
   page: 0,
   hasMore: true,
   curSubId: 0,
+  selectedPost: null,
 };
 
 export const usePostStore = create<PostStore>((set, get) => ({
   ...initialState,
+
+  setSelectedPost: (post: Post | null) => set({ selectedPost: post }),
 
   fetchPosts: async (id: number) => {
     const { loading, page, hasMore, curSubId } = get();
@@ -71,7 +74,8 @@ export const usePostStore = create<PostStore>((set, get) => ({
   clearPosts: () => set(initialState),
 
   vote: async (id: number, value: number, type: string) => {
-    const originPosts = get().posts;
+    const { posts: originPosts, selectedPost } = get();
+
     const updatedPosts = originPosts.map((post) => {
       if (post.id === id) {
         const newUserVote = post.userVote === value ? 0 : value;
@@ -84,7 +88,19 @@ export const usePostStore = create<PostStore>((set, get) => ({
       return post;
     });
 
-    set({ posts: updatedPosts });
+    let updatedSelectedPost = selectedPost;
+    if (selectedPost && selectedPost.id === id) {
+      const newUserVote = selectedPost.userVote === value ? 0 : value;
+      const voteChange = newUserVote - (selectedPost.userVote || 0);
+      const newVoteScore = selectedPost.voteScore + voteChange;
+
+      updatedSelectedPost = {
+        ...selectedPost,
+        userVote: newUserVote,
+        voteScore: newVoteScore,
+      };
+    }
+    set({ posts: updatedPosts, selectedPost: updatedSelectedPost });
 
     try {
       const targetPost = updatedPosts.find((post) => post.id === id);
@@ -106,10 +122,14 @@ export const usePostStore = create<PostStore>((set, get) => ({
 
       set((state) => ({
         posts: state.posts.map((p) => (p.id === id ? data : p)),
+        selectedPost: state.selectedPost?.id === id ? data : state.selectedPost,
       }));
     } catch (error) {
       console.error('Vote failed, rolling back.', error);
-      set({ posts: originPosts });
+      set({
+        posts: originPosts,
+        selectedPost: selectedPost,
+      });
     }
   },
 }));

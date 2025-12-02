@@ -20,6 +20,8 @@ export type PostStore = {
   page: number;
   hasMore: boolean;
   curSubId: number;
+  selectedPost: Post | null;
+  setSelectedPost: (post: Post | null) => void;
   fetchPosts: (id: number, isInitial?: boolean) => Promise<void>;
   clearPosts: () => void;
   vote: (id: number, value: number, type: string) => Promise<void>;

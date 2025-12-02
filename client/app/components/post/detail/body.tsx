@@ -49,18 +49,13 @@ const Title = styled.div`
 
   margin-bottom: var(--spacer-xs);
 
-  font: var(--font-24-semibold);
-
-  @media (min-width: 768px) {
-    -webkit-text-size-adjust: clamp(100%, calc(100% * 1), 140%);
-    text-size-adjust: clamp(100%, calc(100% * 1), 140%);
-  }
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: 1.5rem;
 
   @media (min-width: 768px) {
     font-size: 1.125rem;
     line-height: 1.5rem;
-  }
-  @media (min-width: 768px) {
     margin-bottom: var(--spacer-xs);
   }
 `;
