@@ -1,8 +1,9 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import { clientAxiosInstance } from '@/app/utils/axios';
 import formatTimeAgo from '@/app/utils/formatTimeAgo';
+
+import { useCommentStore } from '@/app/store/commentStore';
 
 import DOMPurify from 'dompurify';
 import { styled } from 'styled-components';
@@ -17,8 +18,13 @@ import MinusCircleIcon from '../../svgs/MinusCircleIcon';
 import PlusCircleIcon from '../../svgs/PlusCircleIcon';
 import CommentActions from '../actions';
 
-const CommentItem = ({ ...comment }: Comment) => {
+interface CommentItemProps extends Comment {
+  depth?: number;
+}
+
+const CommentItem = ({ depth = 0, ...comment }: CommentItemProps) => {
   const { user } = useAuth();
+  const { submitComment } = useCommentStore();
   const router = useRouter();
 
   const [isSummary, setIsSummary] = useState(true);
@@ -26,6 +32,10 @@ const CommentItem = ({ ...comment }: Comment) => {
 
   const [content, setContent] = useState('');
   const [error, setError] = useState('');
+
+  const [hoveredChildIndex, setHoveredChildIndex] = useState<number | null>(
+    null
+  );
 
   const openInputEditor = () => {
     setIsEditorOpen(true);
@@ -40,15 +50,14 @@ const CommentItem = ({ ...comment }: Comment) => {
     if (!user) return router.push('/login');
 
     try {
-      const formData = new FormData();
+      setError('');
 
-      formData.append('comment', content);
-      formData.append('commentId', comment.id.toString());
+      await submitComment(comment.id, content, 'comment');
 
-      await clientAxiosInstance.post(`/api/comments/submit`, formData);
+      cancelHandler();
     } catch (err: unknown) {
       const error = err as Error;
-      console.error('Create Sub failed:', error);
+      console.error('Reply submit failed:', error);
       setError(error.message);
     }
   };
@@ -57,24 +66,26 @@ const CommentItem = ({ ...comment }: Comment) => {
     setIsSummary((prev) => !prev);
   };
 
-  const isChildComment = Boolean(comment.childComments);
+  const hasChildComments =
+    comment.childComments && comment.childComments.length > 0;
+
   return (
     <StyledCommentItem key={comment.identifier}>
       <Summary>
-        {isSummary ? (
-          <AvatarWrapper>
+        <AvatarWrapper>
+          {isSummary ? (
             <IconBox iconUrl={comment.userProfileUrl} width={32} height={32} />
-          </AvatarWrapper>
-        ) : (
-          <button onClick={toggleSummary}>
-            <IconBox
-              icon={<PlusCircleIcon />}
-              width={32}
-              height={32}
-              percentage={50}
-            ></IconBox>
-          </button>
-        )}
+          ) : (
+            <PlusCircleIconWrapper onClick={toggleSummary}>
+              <IconBox
+                icon={<PlusCircleIcon />}
+                width={16}
+                height={16}
+                percentage={100}
+              />
+            </PlusCircleIconWrapper>
+          )}
+        </AvatarWrapper>
 
         <div>
           <span>{comment.username}</span>
@@ -82,59 +93,98 @@ const CommentItem = ({ ...comment }: Comment) => {
           <span>{formatTimeAgo(comment.createdAt)}</span>
         </div>
       </Summary>
-      <ItemGridWrapper>
-        {!isChildComment && (
-          <ThreadLineWrapper>
-            <ThreadLine />
-          </ThreadLineWrapper>
-        )}
-        <Contents>
-          <div></div>
-          <ContentBox
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(comment.body),
-            }}
-          />
-        </Contents>
-        <Contents>
-          <ContentIconWrapper>
-            {!isChildComment && (
-              <IconBox
-                icon={<MinusCircleIcon />}
-                width={16}
-                height={16}
-                percentage={100}
-              />
-            )}
-          </ContentIconWrapper>
-          <CommentActions comment={comment} setIsEditorOpen={openInputEditor} />
-        </Contents>
 
-        {isEditorOpen && (
+      {isSummary && (
+        <ItemGridWrapper>
           <Contents>
-            <div />
-            <InputBox>
-              <RichTextEditor
-                content={content}
-                onChange={setContent}
-                placeholder=""
-                isToolbarVisibleDefault={false}
-                editorHeightPercentage={40}
-                isInSubmitMode={true}
-                submitHandler={commentSubmitHandler}
-                cancelHandler={cancelHandler}
-              />
-            </InputBox>
+            <Spacer />
+            <Content
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(comment.body),
+              }}
+            />
           </Contents>
-        )}
-      </ItemGridWrapper>
+          <Contents>
+            {!hasChildComments ? (
+              <Spacer />
+            ) : (
+              <CloseIconWrapper onClick={toggleSummary}>
+                <IconBox
+                  icon={<MinusCircleIcon />}
+                  width={16}
+                  height={16}
+                  percentage={100}
+                />
+              </CloseIconWrapper>
+            )}
+            <CommentActions
+              comment={comment}
+              setIsEditorOpen={openInputEditor}
+            />
+          </Contents>
+
+          {isEditorOpen && (
+            <Contents>
+              <Spacer />
+              <InputEditorWrapper>
+                <RichTextEditor
+                  content={content}
+                  onChange={setContent}
+                  placeholder=""
+                  isToolbarVisibleDefault={false}
+                  editorHeightPercentage={40}
+                  isInSubmitMode={true}
+                  submitHandler={commentSubmitHandler}
+                  cancelHandler={cancelHandler}
+                />
+              </InputEditorWrapper>
+            </Contents>
+          )}
+        </ItemGridWrapper>
+      )}
+
+      {isSummary &&
+        hasChildComments &&
+        comment.childComments.map((childComment, idx) => (
+          <div key={childComment.identifier + idx}>
+            {hasChildComments && (
+              <ThreadLineWrapper
+                className="threadLineWrapper"
+                onClick={toggleSummary}
+                onMouseEnter={() => setHoveredChildIndex(idx)}
+                onMouseLeave={() => setHoveredChildIndex(null)}
+              >
+                <ThreadLine $isHovered={hoveredChildIndex === idx} />
+              </ThreadLineWrapper>
+            )}
+            <ItemGridWrapper key={childComment.identifier}>
+              <Contents>
+                <BranchLineWrapper
+                  onClick={toggleSummary}
+                  className="branchLineWrapper"
+                  onMouseEnter={() => setHoveredChildIndex(idx)}
+                  onMouseLeave={() => setHoveredChildIndex(null)}
+                >
+                  <BranchLine $isHovered={hoveredChildIndex === idx} />
+                </BranchLineWrapper>
+                <CommentItem
+                  key={childComment.identifier}
+                  {...childComment}
+                  depth={depth + 1}
+                />
+              </Contents>
+            </ItemGridWrapper>
+          </div>
+        ))}
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </StyledCommentItem>
   );
 };
 
-const StyledCommentItem = styled.div``;
+const StyledCommentItem = styled.div`
+  position: relative;
+`;
 
 const Summary = styled.summary`
   display: grid;
@@ -178,8 +228,9 @@ const Summary = styled.summary`
   }
 `;
 const AvatarWrapper = styled.div`
-  width: var(--rem-24);
   height: var(--rem-40);
+
+  z-index: 1;
 `;
 
 const ItemGridWrapper = styled.div`
@@ -192,6 +243,8 @@ const ItemGridWrapper = styled.div`
   @media (min-width: 768px) {
     grid-template-columns: 32px 1fr;
   }
+
+  padding: var(--spacer-4xs) 0;
 `;
 
 const ThreadLineWrapper = styled.div`
@@ -212,13 +265,52 @@ const ThreadLineWrapper = styled.div`
     width: var(--rem-32);
   }
 
+  z-index: 0;
+
   cursor: pointer;
 `;
-const ThreadLine = styled.div`
+
+const ThreadLine = styled.div<{ $isHovered: boolean }>`
   width: var(--rem-1);
   height: 100%;
 
-  background: ${({ theme }) => theme.colors.tone[4]};
+  background: ${({ theme, $isHovered }) =>
+    $isHovered ? theme.colors.tone[2] : theme.colors.tone[4]};
+  cursor: pointer;
+`;
+
+const BranchLineWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  background: ${({ theme }) => theme.colors.neutral.background};
+
+  top: 0px;
+  bottom: 0px;
+  inset-inline-start: 0px;
+
+  width: var(--rem-24);
+
+  @media (min-width: 768px) {
+    width: var(--rem-32);
+  }
+
+  z-index: 0;
+
+  cursor: pointer;
+`;
+
+const BranchLine = styled.div<{ $isHovered: boolean }>`
+  border-style: solid;
+  border-inline-start-width: 1px;
+  border-bottom-width: 1px;
+  border-end-start-radius: 12px;
+
+  border-color: ${({ theme, $isHovered }) =>
+    $isHovered ? theme.colors.tone[2] : theme.colors.tone[4]};
+
+  width: calc(50% + 0.5px);
+  height: 1rem;
 `;
 
 const Contents = styled.div`
@@ -238,20 +330,41 @@ const Contents = styled.div`
     min-width: 0px;
   }
 `;
-const InputBox = styled.div`
+const Spacer = styled.div``;
+
+const InputEditorWrapper = styled.div`
   padding-bottom: 1rem;
   padding-top: 1rem;
 `;
 
-const ContentBox = styled.div`
+const Content = styled.div`
   margin: 0 var(--spacer-2xs);
+
   @media (min-width: 768px) {
     margin: 0 var(--spacer-xs);
   }
+
   padding-bottom: var(--spacer-2xs);
 `;
 
-const ContentIconWrapper = styled.div`
+const PlusCircleIconWrapper = styled.button`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: flex-start;
+
+  padding: var(--spacer-4xs) 0;
+  background: ${({ theme }) => theme.colors.neutral.background};
+
+  &:active {
+    background: ${({ theme }) => theme.colors.secondary.backgroundSelected};
+  }
+`;
+
+const CloseIconWrapper = styled.button`
   position: relative;
 
   display: flex;
@@ -262,5 +375,14 @@ const ContentIconWrapper = styled.div`
 
   margin-top: var(--rem-6);
   padding: var(--spacer-4xs) 0;
+
+  cursor: pointer;
+
+  &:active {
+    background: ${({ theme }) => theme.colors.secondary.backgroundSelected};
+  }
+
+  z-index: 1;
 `;
+
 export default CommentItem;

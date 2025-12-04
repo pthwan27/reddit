@@ -30,9 +30,15 @@ export type PostStore = {
 export type CommentStore = {
   comments: Comment[];
   loading: boolean;
+  submitting: boolean;
   page: number;
   hasMore: boolean;
   curPostId: number;
+  submitComment: (
+    id: number,
+    content: string,
+    type: 'post' | 'comment'
+  ) => Promise<void>;
   fetchComments: (id: number, isInitial?: boolean) => Promise<void>;
   clearComments: () => void;
   vote: (id: number, value: number, type: string) => Promise<void>;

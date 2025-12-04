@@ -65,7 +65,7 @@ export interface Comment {
   voteScore: number;
   userVote: number;
   commentCount: number;
-  childComments?: Comment[];
+  childComments: Comment[];
 }
 
 export interface CreateSubProps {

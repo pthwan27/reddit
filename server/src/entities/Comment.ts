@@ -26,6 +26,9 @@ export class Comment extends CoreEntity {
 
   @Column()
   postId: number;
+  
+  @Column({ nullable: true })
+  parentCommentId: number;
 
   @Exclude()
   @ManyToOne(() => User)
@@ -40,12 +43,11 @@ export class Comment extends CoreEntity {
   votes: Vote[];
 
   @ManyToOne(() => Comment, (comment) => comment.childComments, { nullable: true, onDelete: 'CASCADE' })
+  @JoinColumn({ name: "parentCommentId" })
   parentComment: Comment;
 
   @Expose()
-  @OneToMany(() => Comment, (comment) => comment.parentComment)
-  childComments: Comment[];
-
+  childComments: Comment[] = [];
 
   @Expose()
   get username(): string {
@@ -56,7 +58,8 @@ export class Comment extends CoreEntity {
   get userProfileUrl(): string {
     return this.user?.profileUrl;
   }
-
+  
+  @Expose()
   protected userVote: number;
 
   setUserVote(user: User) {
@@ -66,7 +69,7 @@ export class Comment extends CoreEntity {
 
   @Expose()
   get commentCount(): number {
-    return this.childComments?.length;
+    return this.childComments?.length || 0;
   }
 
   @Expose()

@@ -3,15 +3,13 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-import { clientAxiosInstance } from '@/app/utils/axios';
-
 import { useCommentStore } from '@/app/store/commentStore';
 import { usePostStore } from '@/app/store/postStore';
 
 import styled from 'styled-components';
 
 import CommentInput from '@/app/components/comments/input';
-import CommentList from '@/app/components/comments/list';
+import CommentItem from '@/app/components/comments/item';
 import CommentSort from '@/app/components/comments/sort';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
@@ -26,13 +24,12 @@ import { Post } from '@/app/types';
 
 const CommentsContainer = ({ post }: { post: Post }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const observerRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
   const { user } = useAuth();
 
   const { selectedPost, setSelectedPost } = usePostStore();
-  const { comments, loading, hasMore, fetchComments } = useCommentStore();
+  const { comments, loading, fetchComments, submitComment } = useCommentStore();
 
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [content, setContent] = useState('');
@@ -56,15 +53,14 @@ const CommentsContainer = ({ post }: { post: Post }) => {
     if (!user) return router.push('/login');
 
     try {
-      const formData = new FormData();
+      setError('');
 
-      formData.append('comment', content);
-      formData.append('postId', post.id.toString());
+      await submitComment(post.id, content, 'post');
 
-      await clientAxiosInstance.post(`/api/comments/submit`, formData);
+      cancelHandler();
     } catch (err: unknown) {
       const error = err as Error;
-      console.error('Create Sub failed:', error);
+      console.error('Submit Comment failed:', error);
       setError(error.message);
     }
   };
@@ -86,28 +82,6 @@ const CommentsContainer = ({ post }: { post: Post }) => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const target = entries[0];
-
-        if (target.isIntersecting && !loading && hasMore) {
-          fetchComments(post.id);
-        }
-      },
-      {
-        threshold: 0.5,
-        rootMargin: '100px',
-      }
-    );
-
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [loading, hasMore, post.slug]);
 
   useEffect(() => {
     setSelectedPost(post);
@@ -152,17 +126,18 @@ const CommentsContainer = ({ post }: { post: Post }) => {
             handleSelect={handleSelect}
             sortOption={sortOption}
           />
-          <ObserverWrapper>
-            <CommentListWrapper>
-              <CommentList comments={comments} />
-            </CommentListWrapper>
-
-            {loading && <LoadingSpinner />}
-            <div
-              ref={observerRef}
-              style={{ height: '20px', background: 'black' }}
-            />
-          </ObserverWrapper>
+          <CommentListWrapper>
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
+              <>
+                <div />
+                {comments.map((comment) => (
+                  <CommentItem {...comment} key={comment.identifier} />
+                ))}
+              </>
+            )}
+          </CommentListWrapper>
         </CommentsSection>
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -251,17 +226,16 @@ const CommentsSection = styled.section`
 `;
 
 const CommentListWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--spacer-md);
+
   margin-top: var(--spacer-sm);
 
   @media (min-width: 768px) {
     padding: 0;
   }
-`;
-
-const ObserverWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacer-sm);
 `;
 
 export default CommentsContainer;

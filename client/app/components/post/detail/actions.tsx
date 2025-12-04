@@ -39,7 +39,7 @@ const PostActions = ({ ...post }: Post) => {
     </StyledPostActions>
   );
 };
-const StyledPostActions = styled.section`
+const StyledPostActions = styled.span`
   display: flex;
 
   gap: var(--spacer-xs);

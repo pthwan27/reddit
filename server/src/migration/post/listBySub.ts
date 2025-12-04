@@ -21,7 +21,14 @@ export const ListBySubHandler: RequestHandler = async (req, res) => {
     const [posts] = await Post.findAndCount({
       where: { sub: { id: parseInt(id, 10) } },
       order: { createdAt: 'DESC' },
-      relations: ['user', 'sub', 'votes', 'votes.user', 'comments'],
+      relations: [
+        'user',
+        'sub',
+        'votes',
+        'votes.user',
+        'comments',
+        'comments.user',
+      ],
 
       skip: page * limit,
       take: limit,

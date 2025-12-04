@@ -51,7 +51,7 @@ const CommentActions = ({ comment, setIsEditorOpen }: CommentActionsProps) => {
     </StyledCommentActions>
   );
 };
-const StyledCommentActions = styled.section`
+const StyledCommentActions = styled.span`
   display: flex;
 
   gap: var(--spacer-xs);
