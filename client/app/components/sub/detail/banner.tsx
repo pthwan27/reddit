@@ -15,14 +15,14 @@ interface BannerProps {
   isBanner: boolean;
 }
 
-const SubBannerContainer = ({
+const SubBanner = ({
   sub,
   bannerImage,
   onEditClick,
   isBanner,
 }: BannerProps) => {
   return (
-    <HeaderTopSection $isBanner={isBanner}>
+    <StyledSubBanner $isBanner={isBanner}>
       <BannerBox>
         {isBanner && (
           <Image
@@ -36,11 +36,11 @@ const SubBannerContainer = ({
       <EditIcon onClick={onEditClick}>
         <PencilIcon />
       </EditIcon>
-    </HeaderTopSection>
+    </StyledSubBanner>
   );
 };
 
-const HeaderTopSection = styled.section<{ $isBanner: boolean }>`
+const StyledSubBanner = styled.section<{ $isBanner: boolean }>`
   position: relative;
 
   height: ${({ $isBanner }) =>
@@ -102,4 +102,4 @@ const EditIcon = styled.div`
     opacity: 1;
   }
 `;
-export default SubBannerContainer;
+export default SubBanner;

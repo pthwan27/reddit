@@ -8,16 +8,17 @@ import { usePostStore } from '@/app/store/postStore';
 
 import styled from 'styled-components';
 
-import CommentInput from '@/app/components/comments/input';
-import CommentItem from '@/app/components/comments/item';
-import CommentSort from '@/app/components/comments/sort';
+import CommentInput from '@/app/components/comments/item/input';
+import CommentSort from '@/app/components/comments/item/sort';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 import Skeleton from '@/app/components/common/loading/skeleton';
-import PostActions from '@/app/components/post/detail/actions';
-import PostBody from '@/app/components/post/detail/body';
-import PostInfos from '@/app/components/post/detail/infos';
-import RightSideBar from '@/app/components/sub/detail/rightSideBar';
+import PostActions from '@/app/components/post/item/actions';
+import PostBody from '@/app/components/post/item/body';
+import PostInfos from '@/app/components/post/item/infos';
+import RightSideBar from '@/app/components/sub/rightSideBar';
+
+import CommentItem from '@/app/container/comments/item';
 
 import { useAuth } from '@/app/context/authContext';
 import { Post } from '@/app/types';

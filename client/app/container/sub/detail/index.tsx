@@ -9,13 +9,12 @@ import { usePostStore } from '@/app/store/postStore';
 import styled from 'styled-components';
 
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
-
-import SubBanner from '@/app/container/sub/detail/banner';
-import SubInfos from '@/app/container/sub/detail/info';
+import SubBanner from '@/app/components/sub/detail/banner';
+import SubInfos from '@/app/components/sub/detail/info';
 
 import { Sub } from '@/app/types';
 
-import RightSideBar from '../../../components/sub/detail/rightSideBar';
+import RightSideBar from '../../../components/sub/rightSideBar';
 import PostListContainer from '../../post/list';
 
 const SubDetailContainer = ({ ...sub }: Sub) => {
@@ -124,8 +123,7 @@ const SubDetailContainer = ({ ...sub }: Sub) => {
       </Header>
       <Main>
         <ObserverWrapper>
-          <PostListContainer posts={posts} />
-          {loading && <LoadingSpinner />}
+          {loading ? <LoadingSpinner /> : <PostListContainer posts={posts} />}
           <div
             ref={observerRef}
             style={{ height: '20px', background: 'black' }}

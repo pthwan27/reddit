@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-import DownArrowIcon from '../svgs/DownArrowIcon';
+import DownArrowIcon from '../../svgs/DownArrowIcon';
 
-interface CommentSortProps {
+interface PostSortProps {
   wrapperRef: React.RefObject<HTMLDivElement | null>;
   isSelecting: boolean;
   setIsSelecting: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,16 +10,15 @@ interface CommentSortProps {
   sortOption: '최신순' | '인기순' | '댓글 많은 순';
 }
 
-const CommentSort = ({
+const PostSort = ({
   wrapperRef,
   isSelecting,
   setIsSelecting,
   handleSelect,
   sortOption,
-}: CommentSortProps) => {
+}: PostSortProps) => {
   return (
     <StyledSortDiv ref={wrapperRef}>
-      <span>정렬 기준 :</span>
       <SortButton onClick={() => setIsSelecting((e) => !e)}>
         <span>{sortOption}</span>
         <span>
@@ -46,28 +45,12 @@ const CommentSort = ({
 const StyledSortDiv = styled.div`
   position: relative;
 
-  display: flex;
-  align-items: center;
+  height: var(--rem-32);
 
-  gap: var(--spacer-4xs);
-
-  margin-top: var(--spacer-sm);
+  margin: var(--spacer-xs) var(--spacer-xs);
 
   @media (min-width: 768px) {
-    padding: 0 0;
-  }
-
-  > span {
-    display: flex;
-    align-items: center;
-
-    height: var(--rem-40);
-    font: var(--font-12-16-regular);
-
-    color: ${({ theme }) => theme.colors.neutral.contentWeak};
-    line-height: 1rem;
-
-    padding-top: var(--spacer-4xs);
+    margin: var(--spacer-xs) 0;
   }
 `;
 
@@ -117,7 +100,6 @@ const SortButton = styled.button`
 const DropdownMenu = styled.ul<{ $isSelecting: boolean }>`
   position: absolute;
   top: calc(100% + var(--spacer-2xs));
-  left: var(--rem-40);
 
   transform: ${({ $isSelecting }) => ($isSelecting ? 'scale(1)' : 'scale(0)')};
   opacity: ${({ $isSelecting }) => ($isSelecting ? 1 : 0)};
@@ -162,4 +144,4 @@ const DropdownItem = styled.li<{ $isHeader?: boolean; $isSelected?: boolean }>`
   }
 `;
 
-export default CommentSort;
+export default PostSort;

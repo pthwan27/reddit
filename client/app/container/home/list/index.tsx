@@ -2,21 +2,18 @@ import { useEffect, useRef, useState } from 'react';
 
 import styled from 'styled-components';
 
-import HightlightPosts from '@/app/components/post/list/highlightList';
 import PostSort from '@/app/components/post/list/sort';
 
 import PostItem from '@/app/container/post/item';
 
 import { Post } from '@/app/types';
 
-const PostListContainer = ({ posts }: { posts: Post[] }) => {
+const HomePostListContainer = ({ posts }: { posts: Post[] }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isSelecting, setIsSelecting] = useState(false);
   const [sortOption, setSortOption] = useState<
     '최신순' | '인기순' | '댓글 많은 순'
   >('최신순');
-
-  const [isHighlightView, setIsHighlightView] = useState(false);
 
   const handleSelect = (option: string) => {
     setSortOption(option as typeof sortOption);
@@ -46,11 +43,6 @@ const PostListContainer = ({ posts }: { posts: Post[] }) => {
         sortOption={sortOption}
       />
 
-      <HightlightPosts
-        isHighlightView={isHighlightView}
-        setIsHighlightView={setIsHighlightView}
-      />
-
       <hr />
       {posts.map((post, idx) => (
         <PostWrapper key={idx + post.identifier}>
@@ -65,4 +57,4 @@ const PostListContainer = ({ posts }: { posts: Post[] }) => {
 const PostList = styled.div``;
 
 const PostWrapper = styled.div``;
-export default PostListContainer;
+export default HomePostListContainer;

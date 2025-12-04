@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import LeftNavContainer from './leftNav';
+import LeftNavContainer from '../container/leftNav';
 
-const MainContainer = ({ children }: { children: React.ReactNode }) => {
+const HomePageLayout = ({ children }: { children: React.ReactNode }) => {
   const [isNavVisible, setIsNavVisible] = useState(true);
 
   useEffect(() => {
@@ -71,4 +71,4 @@ const MainWrapper = styled.div`
   transition: max-width var(--transition-duration) var(--transition-curve);
 `;
 
-export default MainContainer;
+export default HomePageLayout;

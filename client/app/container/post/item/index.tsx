@@ -2,15 +2,15 @@ import { useRouter } from 'next/navigation';
 
 import styled from 'styled-components';
 
-import LinkPreview from '@/app/components/post/detail/linkPreview';
+import LinkPreview from '@/app/components/post/item/linkPreview';
 
 import { Post } from '@/app/types';
 
-import PostActions from '../../../components/post/detail/actions';
-import PostBody from '../../../components/post/detail/body';
-import PostInfos from '../../../components/post/detail/infos';
+import PostActions from '../../../components/post/item/actions';
+import PostBody from '../../../components/post/item/body';
+import PostInfos from '../../../components/post/item/infos';
 
-const PostItem = ({ post }: { post: Post }) => {
+const PostItemContainer = ({ post }: { post: Post }) => {
   const router = useRouter();
 
   const goToComments = () => {
@@ -19,7 +19,7 @@ const PostItem = ({ post }: { post: Post }) => {
 
   if (post.postType === 'link') {
     return (
-      <StyledPostLinkItem onClick={() => goToComments()}>
+      <PostItem onClick={() => goToComments()}>
         <PostHeader>
           <PostInfos {...post} />
         </PostHeader>
@@ -31,7 +31,7 @@ const PostItem = ({ post }: { post: Post }) => {
         </PostLinkPreview>
 
         <PostActions {...post} />
-      </StyledPostLinkItem>
+      </PostItem>
     );
   }
 
@@ -44,7 +44,7 @@ const PostItem = ({ post }: { post: Post }) => {
   );
 };
 
-const StyledPostLinkItem = styled.div`
+const PostItem = styled.div`
   display: grid;
 
   grid-template-rows: auto auto auto;
@@ -107,4 +107,4 @@ const StyledPostItem = styled.div`
   }
 `;
 
-export default PostItem;
+export default PostItemContainer;

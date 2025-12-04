@@ -5,13 +5,14 @@ import { useEffect, useState } from 'react';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 
 import HeaderContainer from '@/app/container/headerContainer';
-import MainContainer from '@/app/container/mainContainer';
 
-interface MainLayoutProps {
+import HomePageLayout from '@/app/layout/homePage';
+
+interface HomeLayoutProps {
   children: React.ReactNode;
 }
 
-const MainLayout = ({ children }: MainLayoutProps) => {
+const HomeLayout = ({ children }: HomeLayoutProps) => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1000);
@@ -25,10 +26,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       ) : (
         <>
           <HeaderContainer />
-          <MainContainer>{children}</MainContainer>
+          <HomePageLayout>{children}</HomePageLayout>
         </>
       )}
     </>
   );
 };
-export default MainLayout;
+export default HomeLayout;

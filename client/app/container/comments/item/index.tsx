@@ -11,18 +11,18 @@ import { styled } from 'styled-components';
 import { useAuth } from '@/app/context/authContext';
 import { Comment } from '@/app/types';
 
-import IconBox from '../../common/IconBox';
-import ErrorMessage from '../../common/errorMessage';
-import RichTextEditor from '../../common/input/richTextEditor';
-import MinusCircleIcon from '../../svgs/MinusCircleIcon';
-import PlusCircleIcon from '../../svgs/PlusCircleIcon';
-import CommentActions from '../actions';
+import CommentActions from '../../../components/comments/actions';
+import IconBox from '../../../components/common/IconBox';
+import ErrorMessage from '../../../components/common/errorMessage';
+import RichTextEditor from '../../../components/common/input/richTextEditor';
+import MinusCircleIcon from '../../../components/svgs/MinusCircleIcon';
+import PlusCircleIcon from '../../../components/svgs/PlusCircleIcon';
 
 interface CommentItemProps extends Comment {
   depth?: number;
 }
 
-const CommentItem = ({ depth = 0, ...comment }: CommentItemProps) => {
+const CommentItemContainer = ({ depth = 0, ...comment }: CommentItemProps) => {
   const { user } = useAuth();
   const { submitComment } = useCommentStore();
   const router = useRouter();
@@ -70,7 +70,7 @@ const CommentItem = ({ depth = 0, ...comment }: CommentItemProps) => {
     comment.childComments && comment.childComments.length > 0;
 
   return (
-    <StyledCommentItem key={comment.identifier}>
+    <CommentItem key={comment.identifier}>
       <Summary>
         <AvatarWrapper>
           {isSummary ? (
@@ -167,7 +167,7 @@ const CommentItem = ({ depth = 0, ...comment }: CommentItemProps) => {
                 >
                   <BranchLine $isHovered={hoveredChildIndex === idx} />
                 </BranchLineWrapper>
-                <CommentItem
+                <CommentItemContainer
                   key={childComment.identifier}
                   {...childComment}
                   depth={depth + 1}
@@ -178,11 +178,11 @@ const CommentItem = ({ depth = 0, ...comment }: CommentItemProps) => {
         ))}
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
-    </StyledCommentItem>
+    </CommentItem>
   );
 };
 
-const StyledCommentItem = styled.div`
+const CommentItem = styled.div`
   position: relative;
 `;
 
@@ -373,7 +373,7 @@ const CloseIconWrapper = styled.button`
 
   background: ${({ theme }) => theme.colors.neutral.background};
 
-  margin-top: var(--rem-6);
+  margin-top: var(--rem-4);
   padding: var(--spacer-4xs) 0;
 
   cursor: pointer;
@@ -385,4 +385,4 @@ const CloseIconWrapper = styled.button`
   z-index: 1;
 `;
 
-export default CommentItem;
+export default CommentItemContainer;

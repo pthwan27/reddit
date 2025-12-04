@@ -7,10 +7,10 @@ import styled from 'styled-components';
 
 import { Sub } from '@/app/types';
 
-import IconButton from '../../../components/common/button/iconButton';
-import EtcIcon from '../../../components/svgs/EtcIcon';
-import PencilIcon from '../../../components/svgs/PencilIcon';
-import PlusIcon from '../../../components/svgs/PlusIcon';
+import IconButton from '../../common/button/iconButton';
+import EtcIcon from '../../svgs/EtcIcon';
+import PencilIcon from '../../svgs/PencilIcon';
+import PlusIcon from '../../svgs/PlusIcon';
 
 interface InfoProps {
   sub: Sub;
@@ -19,12 +19,7 @@ interface InfoProps {
   isIcon?: boolean;
 }
 
-const SubInfosContainer = ({
-  sub,
-  iconImage,
-  onEditClick,
-  isIcon,
-}: InfoProps) => {
+const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const { setSelectedSub } = useSubStore();
@@ -34,7 +29,7 @@ const SubInfosContainer = ({
     router.push(`${pathname}/submit`);
   };
   return (
-    <HeaderBottomSection>
+    <StyledSubInfos>
       <ActionsBar>
         <TitleInfo>
           <IconBox onClick={onEditClick} $isIcon={isIcon}>
@@ -90,11 +85,11 @@ const SubInfosContainer = ({
           />
         </Buttons>
       </ActionsBar>
-    </HeaderBottomSection>
+    </StyledSubInfos>
   );
 };
 
-const HeaderBottomSection = styled.section`
+const StyledSubInfos = styled.section`
   display: flex;
 
   position: relative;
@@ -258,4 +253,4 @@ const Buttons = styled.span`
   height: var(--rem-40);
 `;
 
-export default SubInfosContainer;
+export default SubInfos;

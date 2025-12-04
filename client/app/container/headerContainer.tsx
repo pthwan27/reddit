@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import styled from 'styled-components';
@@ -15,6 +16,7 @@ import AuthModal from './modal/authModal';
 const HeaderContainer = ({ noOption = false }) => {
   const { user, logout } = useAuth();
   const { open } = useModalState();
+  const router = useRouter();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -40,12 +42,16 @@ const HeaderContainer = ({ noOption = false }) => {
     };
   }, [isDropdownOpen, user]);
 
+  const goToHome = () => {
+    router.push('/');
+  };
+
   const modalKey: ModalKey = 'authModal';
   return (
     <Header>
       <Nav>
         <LeftNav>
-          <Logo>
+          <Logo onClick={goToHome} aria-label="홈으로 이동">
             <LogoIcon />
           </Logo>
         </LeftNav>
@@ -118,6 +124,9 @@ const Logo = styled.div`
   gap: var(--spacer-xs);
   width: var(--size-2xl);
   height: var(--size-2xl);
+  cursor: pointer;
+
+  border-radius: 2rem 1.4rem 2rem 1.2rem;
   cursor: pointer;
 
   svg {

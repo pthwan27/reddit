@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import RichTextEditor from '../common/input/richTextEditor';
+import RichTextEditor from '../../common/input/richTextEditor';
 
 interface CommentInputProps {
   isEditorOpen: boolean;

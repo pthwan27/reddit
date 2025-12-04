@@ -48,25 +48,25 @@ const LinkPreview = ({ url }: LinkPreviewProps) => {
 
   if (loading) {
     return (
-      <PreviewContainer>
+      <StyledPreview>
         <Skeleton />
-      </PreviewContainer>
+      </StyledPreview>
     );
   }
 
   if (error || !metadata) {
     return (
-      <PreviewContainer>
+      <StyledPreview>
         <DefaultPreview>
           <LinkIcon>🔗</LinkIcon>
           <PreviewUrl></PreviewUrl>
         </DefaultPreview>
-      </PreviewContainer>
+      </StyledPreview>
     );
   }
 
   return (
-    <PreviewContainer>
+    <StyledPreview>
       {metadata.image && (
         <PreviewImage>
           <Image
@@ -85,11 +85,11 @@ const LinkPreview = ({ url }: LinkPreviewProps) => {
           <PreviewDescription>{metadata.description}</PreviewDescription>
         )}
       </PreviewInfo>
-    </PreviewContainer>
+    </StyledPreview>
   );
 };
 
-const PreviewContainer = styled.div`
+const StyledPreview = styled.div`
   display: flex;
   flex-direction: column;
 

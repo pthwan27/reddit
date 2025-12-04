@@ -14,7 +14,7 @@ import IconButton from '@/app/components/common/button/iconButton';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import PostSubmitHeader from '@/app/components/post/submit/header';
 import PostSubmitMain from '@/app/components/post/submit/main';
-import RightSideBar from '@/app/components/sub/detail/rightSideBar';
+import RightSideBar from '@/app/components/sub/rightSideBar';
 
 import { useAuth } from '@/app/context/authContext';
 import { Sub } from '@/app/types';
