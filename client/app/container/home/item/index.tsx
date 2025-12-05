@@ -2,13 +2,12 @@ import { useRouter } from 'next/navigation';
 
 import styled from 'styled-components';
 
+import HomePostActions from '@/app/components/home/item/actions';
+import HomePostBody from '@/app/components/home/item/body';
+import HomePostInfos from '@/app/components/home/item/infos';
 import LinkPreview from '@/app/components/post/item/linkPreview';
 
 import { Post } from '@/app/types';
-
-import PostActions from '../../../components/post/item/actions';
-import PostBody from '../../../components/post/item/body';
-import PostInfos from '../../../components/post/item/infos';
 
 const HomePostItem = ({ post }: { post: Post }) => {
   const router = useRouter();
@@ -19,32 +18,32 @@ const HomePostItem = ({ post }: { post: Post }) => {
 
   if (post.postType === 'link') {
     return (
-      <PostLinkItemContainer onClick={() => goToComments()}>
+      <HomePostLinkItemContainer onClick={() => goToComments()}>
         <PostHeader>
-          <PostInfos {...post} />
+          <HomePostInfos {...post} />
         </PostHeader>
         <PostContent>
-          <PostBody {...post} />
+          <HomePostBody {...post} />
         </PostContent>
         <PostLinkPreview>
           {post.linkUrl && <LinkPreview url={post.linkUrl} />}
         </PostLinkPreview>
 
-        <PostActions {...post} />
-      </PostLinkItemContainer>
+        <HomePostActions {...post} />
+      </HomePostLinkItemContainer>
     );
   }
 
   return (
-    <PostItemContainer onClick={() => goToComments()}>
-      <PostInfos {...post} />
-      <PostBody {...post} />
-      <PostActions {...post} />
-    </PostItemContainer>
+    <HomePostItemContainer onClick={() => goToComments()}>
+      <HomePostInfos {...post} />
+      <HomePostBody {...post} />
+      <HomePostActions {...post} />
+    </HomePostItemContainer>
   );
 };
 
-const PostLinkItemContainer = styled.div`
+const HomePostLinkItemContainer = styled.div`
   display: grid;
 
   grid-template-rows: auto auto auto;
@@ -67,7 +66,7 @@ const PostLinkItemContainer = styled.div`
   }
 `;
 
-const PostItemContainer = styled.div`
+const HomePostItemContainer = styled.div`
   padding: var(--spacer-2xs) var(--spacer-md);
 
   margin: var(--spacer-2xs) 0;

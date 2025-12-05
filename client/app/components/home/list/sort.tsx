@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import DownArrowIcon from '../../svgs/DownArrowIcon';
 
-interface PostSortProps {
+interface HomePostSortProps {
   wrapperRef: React.RefObject<HTMLDivElement | null>;
   isSelecting: boolean;
   setIsSelecting: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,13 +10,13 @@ interface PostSortProps {
   sortOption: '최신순' | '인기순' | '댓글 많은 순';
 }
 
-const PostSort = ({
+const HomePostSort = ({
   wrapperRef,
   isSelecting,
   setIsSelecting,
   handleSelect,
   sortOption,
-}: PostSortProps) => {
+}: HomePostSortProps) => {
   return (
     <StyledSortDiv ref={wrapperRef}>
       <SortButton onClick={() => setIsSelecting((e) => !e)}>
@@ -144,4 +144,4 @@ const DropdownItem = styled.li<{ $isHeader?: boolean; $isSelected?: boolean }>`
   }
 `;
 
-export default PostSort;
+export default HomePostSort;

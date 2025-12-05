@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import styled from 'styled-components';
 
-import PostSort from '@/app/components/post/list/sort';
+import HomePostSort from '@/app/components/home/list/sort';
 
 import { Post } from '@/app/types';
 
@@ -34,8 +34,8 @@ const HomePostList = ({ posts }: { posts: Post[] }) => {
   }, []);
 
   return (
-    <PostList>
-      <PostSort
+    <HomePostListContainer>
+      <HomePostSort
         wrapperRef={wrapperRef}
         isSelecting={isSelecting}
         setIsSelecting={setIsSelecting}
@@ -45,17 +45,17 @@ const HomePostList = ({ posts }: { posts: Post[] }) => {
 
       <hr />
       {posts.map((post, idx) => (
-        <PostWrapper key={idx + post.identifier}>
+        <HomePostWrapper key={idx + post.identifier}>
           <HomePostItem post={post} />
           {idx < posts.length - 1 && <hr />}
-        </PostWrapper>
+        </HomePostWrapper>
       ))}
-    </PostList>
+    </HomePostListContainer>
   );
 };
 
-const PostList = styled.div``;
+const HomePostListContainer = styled.div``;
 
-const PostWrapper = styled.div``;
+const HomePostWrapper = styled.div``;
 
 export default HomePostList;

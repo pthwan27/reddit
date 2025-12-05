@@ -68,7 +68,7 @@ const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
             font="16-20-semibold"
           />
           <IconButton
-            value="임시 버튼"
+            value="가입"
             fontColor="white"
             radius="var(--radius-xl)"
             variant="primary"

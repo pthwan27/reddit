@@ -123,11 +123,16 @@ const SubDetail = ({ ...sub }: Sub) => {
       </Header>
       <Main>
         <ObserverWrapper>
-          {loading ? <LoadingSpinner /> : <PostList posts={posts} />}
-          <div
-            ref={observerRef}
-            style={{ height: '20px', background: 'black' }}
-          />
+          <PostList posts={posts} />
+
+          {loading && <LoadingSpinner />}
+
+          {hasMore && !loading && (
+            <div
+              ref={observerRef}
+              style={{ height: '20px', background: 'black' }}
+            />
+          )}
         </ObserverWrapper>
         <RightSideBar sub={sub} />
       </Main>

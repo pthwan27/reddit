@@ -167,7 +167,7 @@ const CommentItem = ({ depth = 0, ...comment }: CommentItemProps) => {
                 >
                   <BranchLine $isHovered={hoveredChildIndex === idx} />
                 </BranchLineWrapper>
-                <CommentItemContainer
+                <CommentItem
                   key={childComment.identifier}
                   {...childComment}
                   depth={depth + 1}

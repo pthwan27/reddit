@@ -15,17 +15,29 @@ const Home = () => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState('');
 
   const observerRef = useRef<HTMLDivElement>(null);
+
+  const [page, setPage] = useState(0);
+  const LIMIT = 10;
+
   const getPostList = async () => {
     try {
       setLoading(true);
-      const { data } = await clientAxiosInstance('/api/home/posts');
-      setPosts(data.posts);
+
+      const { data } = await clientAxiosInstance(
+        `/api/home/posts?page=${page}&limit=${LIMIT}`
+      );
+
+      setPosts((prev) => (page === 0 ? data.posts : [...prev, ...data.posts]));
+
+      setPage((prevPage) => (prevPage !== 0 ? prevPage + 1 : 1));
+      setHasMore(data.posts.length === LIMIT);
+      setLoading(false);
 
       setError('');
-      setLoading(false);
     } catch (e) {
       const error = e as CustomError;
       setError(
@@ -36,26 +48,44 @@ const Home = () => {
   };
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+
+        if (target.isIntersecting && !loading && hasMore) {
+          getPostList();
+        }
+      },
+      {
+        threshold: 0.5,
+        rootMargin: '100px',
+      }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [loading, hasMore]);
+
+  useEffect(() => {
     getPostList();
   }, []);
 
   return (
     <HomeContainer>
-      {posts.map((post, idx) => {
-        return (
-          <ObserverWrapper key={idx + post.identifier}>
-            {loading ? (
-              <LoadingSpinner />
-            ) : (
-              <HomePostListContainer posts={posts} />
-            )}
-            <div
-              ref={observerRef}
-              style={{ height: '20px', background: 'black' }}
-            />
-          </ObserverWrapper>
-        );
-      })}
+      <ObserverWrapper>
+        <HomePostListContainer posts={posts} />
+        {loading && <LoadingSpinner />}
+
+        {hasMore && !loading && (
+          <div
+            ref={observerRef}
+            style={{ height: '20px', background: 'black' }}
+          />
+        )}
+      </ObserverWrapper>
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </HomeContainer>
   );

@@ -6,7 +6,7 @@ import IconBox from '@/app/components/common/IconBox';
 import SmallLoadingSpinner from '@/app/components/common/loading/smallLoadingSpinner';
 import UploadIcon from '@/app/components/svgs/UploadIcon';
 
-import MediaCarousel from '../../common/mediaCarousel';
+import MediaCarousel from '../../../common/mediaCarousel';
 
 interface ImageUploadProps {
   mediaFiles: File[];

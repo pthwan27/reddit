@@ -7,7 +7,7 @@ import { Post } from '@/app/types';
 
 import MediaCarousel from '../../common/mediaCarousel';
 
-const PostBody = ({
+const HomePostBody = ({
   title,
   body,
   postType = 'text',
@@ -108,4 +108,4 @@ const Link = styled.a`
   }
 `;
 
-export default PostBody;
+export default HomePostBody;
