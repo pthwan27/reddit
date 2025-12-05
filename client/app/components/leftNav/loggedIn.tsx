@@ -9,7 +9,7 @@ import Skeleton from '../common/loading/skeleton';
 import PlusIcon from '../svgs/PlusIcon';
 import CollapsibleList from './collapsibleList';
 
-interface LoggedInContainerProps {
+interface LoggedInProps {
   filteredSubs: Sub[];
   loading: boolean;
   onOpenCreateSubModal: () => void;
@@ -20,7 +20,7 @@ const LoggedIn = ({
   loading,
   onOpenCreateSubModal,
   goToSubDetail,
-}: LoggedInContainerProps) => {
+}: LoggedInProps) => {
   return (
     <CollapsibleList title="커뮤니티">
       <IconButton

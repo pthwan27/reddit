@@ -9,7 +9,7 @@ import PostItem from '@/app/container/post/item';
 
 import { Post } from '@/app/types';
 
-const PostListContainer = ({ posts }: { posts: Post[] }) => {
+const PostList = ({ posts }: { posts: Post[] }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isSelecting, setIsSelecting] = useState(false);
   const [sortOption, setSortOption] = useState<
@@ -37,7 +37,7 @@ const PostListContainer = ({ posts }: { posts: Post[] }) => {
   }, []);
 
   return (
-    <PostList>
+    <PostListContainer>
       <PostSort
         wrapperRef={wrapperRef}
         isSelecting={isSelecting}
@@ -58,11 +58,10 @@ const PostListContainer = ({ posts }: { posts: Post[] }) => {
           {idx < posts.length - 1 && <hr />}
         </PostWrapper>
       ))}
-    </PostList>
+    </PostListContainer>
   );
 };
 
-const PostList = styled.div``;
-
+const PostListContainer = styled.div``;
 const PostWrapper = styled.div``;
-export default PostListContainer;
+export default PostList;

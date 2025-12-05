@@ -2,10 +2,10 @@ import IconButton from '../common/button/iconButton';
 import ArrowIcon from '../svgs/ArrowIcon';
 import HomeIcon from '../svgs/HomeIcon';
 
-interface CommonContainerProps {
+interface CommonProps {
   goToHome: () => void;
 }
-const Common = ({ goToHome }: CommonContainerProps) => {
+const Common = ({ goToHome }: CommonProps) => {
   return (
     <>
       <IconButton

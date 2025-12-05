@@ -15,9 +15,9 @@ import SubInfos from '@/app/components/sub/detail/info';
 import { Sub } from '@/app/types';
 
 import RightSideBar from '../../../components/sub/rightSideBar';
-import PostListContainer from '../../post/list';
+import PostList from '../../post/list';
 
-const SubDetailContainer = ({ ...sub }: Sub) => {
+const SubDetail = ({ ...sub }: Sub) => {
   const { uploadIconImage, uploadBannerImage } = useUploadImage();
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl);
   const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl);
@@ -105,7 +105,7 @@ const SubDetailContainer = ({ ...sub }: Sub) => {
   }, [loading, hasMore, sub.slug]);
 
   return (
-    <SubDetail>
+    <SubDetailContainer>
       <Header>
         <SubBanner
           sub={sub}
@@ -123,7 +123,7 @@ const SubDetailContainer = ({ ...sub }: Sub) => {
       </Header>
       <Main>
         <ObserverWrapper>
-          {loading ? <LoadingSpinner /> : <PostListContainer posts={posts} />}
+          {loading ? <LoadingSpinner /> : <PostList posts={posts} />}
           <div
             ref={observerRef}
             style={{ height: '20px', background: 'black' }}
@@ -142,11 +142,11 @@ const SubDetailContainer = ({ ...sub }: Sub) => {
         type="file"
         onChange={handleFileChange('icon')}
       />
-    </SubDetail>
+    </SubDetailContainer>
   );
 };
 
-const SubDetail = styled.div`
+const SubDetailContainer = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -190,4 +190,4 @@ const ObserverWrapper = styled.div`
 const HiddenInput = styled.input`
   display: none;
 `;
-export default SubDetailContainer;
+export default SubDetail;

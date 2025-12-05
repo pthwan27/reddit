@@ -21,7 +21,7 @@ import { Sub } from '@/app/types';
 
 type PostType = 'text' | 'media' | 'link';
 
-const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
+const PostSubmit = ({ sub }: { sub: Sub }) => {
   const { user } = useAuth();
   const { selectedSub, setSelectedSub } = useSubStore();
 
@@ -135,7 +135,7 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
 
   return (
     <GridWrapper>
-      <PostSubmit>
+      <PostSubmitContainer>
         <PostSubmitHeader
           isTagLoading={isTagLoading}
           searchTerm={searchTerm}
@@ -171,7 +171,7 @@ const PostSubmitContainer = ({ sub }: { sub: Sub }) => {
           />
         </PostSubmitButtons>
         {error && <ErrorMessage>{error}</ErrorMessage>}
-      </PostSubmit>
+      </PostSubmitContainer>
       <RightSideBar sub={sub} />
     </GridWrapper>
   );
@@ -203,7 +203,7 @@ const GridWrapper = styled.div`
   }
 `;
 
-const PostSubmit = styled.div`
+const PostSubmitContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -224,4 +224,4 @@ const PostSubmitButtons = styled.div`
   margin-top: -8px;
 `;
 
-export default PostSubmitContainer;
+export default PostSubmit;

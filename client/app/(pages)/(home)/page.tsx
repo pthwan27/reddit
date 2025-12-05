@@ -1,9 +1,9 @@
 'use client';
 
-import HomeContainer from '@/app/container/home';
+import Home from '@/app/container/home';
 
-const Home = () => {
-  return <HomeContainer />;
+const HomePage = () => {
+  return <Home />;
 };
 
-export default Home;
+export default HomePage;

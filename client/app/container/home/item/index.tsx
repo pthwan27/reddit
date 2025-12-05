@@ -10,7 +10,7 @@ import PostActions from '../../../components/post/item/actions';
 import PostBody from '../../../components/post/item/body';
 import PostInfos from '../../../components/post/item/infos';
 
-const PostItem = ({ post }: { post: Post }) => {
+const HomePostItem = ({ post }: { post: Post }) => {
   const router = useRouter();
 
   const goToComments = () => {
@@ -107,4 +107,4 @@ const PostLinkPreview = styled.div`
   grid-column-end: 3;
 `;
 
-export default PostItem;
+export default HomePostItem;

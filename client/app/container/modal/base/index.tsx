@@ -15,7 +15,7 @@ type BaseModalProps = {
   width?: string;
 };
 
-const BaseModalContainer = ({
+const BaseModal = ({
   children,
   modalkey,
   headerInfo,
@@ -64,7 +64,7 @@ const BaseModalContainer = ({
       {modals[modalkey] && (
         <>
           {createPortal(
-            <BaseModal data-modal>
+            <BaseModalContainer data-modal>
               <ModalBackground onClick={() => close(modalkey)} />
               <Modal $width={width}>
                 <ModalContentHeader>
@@ -82,7 +82,7 @@ const BaseModalContainer = ({
                 </ModalContentHeader>
                 <ModalContentMain>{children}</ModalContentMain>
               </Modal>
-            </BaseModal>,
+            </BaseModalContainer>,
             document.body
           )}
         </>
@@ -91,7 +91,7 @@ const BaseModalContainer = ({
   );
 };
 
-const BaseModal = styled.div`
+const BaseModalContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -186,4 +186,4 @@ const ModalContentMain = styled.div`
   padding: var(--spacer-xs) 0 var(--spacer-2xl) 0;
 `;
 
-export default BaseModalContainer;
+export default BaseModal;

@@ -2,18 +2,18 @@ import styled from 'styled-components';
 
 import ImageInput from '@/app/components/common/input/imageInput';
 
-type CreateSubSecContainerProps = {
+type CreateSubSecProps = {
   banner: File | null;
   setBanner: React.Dispatch<React.SetStateAction<File | null>>;
   icon: File | null;
   setIcon: React.Dispatch<React.SetStateAction<File | null>>;
 };
-const SecCreateSubContainer = ({
+const SecCreateSub = ({
   banner,
   setBanner,
   icon,
   setIcon,
-}: CreateSubSecContainerProps) => {
+}: CreateSubSecProps) => {
   return (
     <InputBox>
       <ImageInput
@@ -39,4 +39,4 @@ const InputBox = styled.div`
   width: 100%;
 `;
 
-export default SecCreateSubContainer;
+export default SecCreateSub;

@@ -13,7 +13,7 @@ interface PlaceHolderTextareaProps
   leadingIcon?: ReactNode;
   ExtraIcon?: ReactNode;
   clearButton?: boolean;
-  isExtraContainerVisible?: boolean;
+  isExtraWrapperVisible?: boolean;
   validationState?: 'valid' | 'invalid' | 'none' | false;
 
   bgColor?: string;
@@ -34,7 +34,7 @@ const PlaceHolderTextarea = ({
   leadingIcon,
   ExtraIcon,
   clearButton = false,
-  isExtraContainerVisible = true,
+  isExtraWrapperVisible = true,
   onChange,
   validationState,
   variant = 'primary',
@@ -70,7 +70,7 @@ const PlaceHolderTextarea = ({
         onBlur={() => setIsFloated(false)}
       >
         <BoundaryBox>
-          <TextareaContainer $hasLeadingIcon={!!leadingIcon}>
+          <TextareaWrapper $hasLeadingIcon={!!leadingIcon}>
             <PlaceHolderSpan $isFloated={isFloated || Boolean(value)}>
               {label}
               {required && (
@@ -83,9 +83,9 @@ const PlaceHolderTextarea = ({
               maxLength={maxLength}
               onChange={onChange}
             />
-          </TextareaContainer>
-          {isExtraContainerVisible && (
-            <ExtraIconContainer id="Extra-icons-container">
+          </TextareaWrapper>
+          {isExtraWrapperVisible && (
+            <ExtraIconWrapper id="Extra-icons-wrapper">
               <ExtraIconsValidation id="Extra-icons-validation">
                 {validationState === 'invalid' && <ErrorIcon />}
 
@@ -101,7 +101,7 @@ const PlaceHolderTextarea = ({
                   <ClearButton onClick={handleClear}>✕</ClearButton>
                 )}
               </ExtraIconsGeneral>
-            </ExtraIconContainer>
+            </ExtraIconWrapper>
           )}
         </BoundaryBox>
       </PlaceHolderTextareaDiv>
@@ -200,7 +200,7 @@ const BoundaryBox = styled.span`
   width: 100%;
 `;
 
-const TextareaContainer = styled.span<{ $hasLeadingIcon: boolean }>`
+const TextareaWrapper = styled.span<{ $hasLeadingIcon: boolean }>`
   position: relative;
 
   display: flex;
@@ -245,7 +245,7 @@ const StyledTextarea = styled.textarea`
   overflow-y: auto;
 `;
 
-const ExtraIconContainer = styled.span`
+const ExtraIconWrapper = styled.span`
   display: flex;
   align-items: center;
   gap: var(--rem-8);

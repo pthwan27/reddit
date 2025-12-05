@@ -2,18 +2,19 @@
 
 import styled from 'styled-components';
 
-import AuthContainer from '@/app/container/auth';
-import HeaderContainer from '@/app/container/headerContainer';
+import Auth from '@/app/container/auth';
+import Header from '@/app/container/header';
+import Login from '@/app/container/auth/login';
 
-const Login = () => {
+const LoginPage = () => {
   return (
-    <LoginPage>
-      <HeaderContainer noOption={true} />
-      <AuthContainer />
-    </LoginPage>
+    <Login>
+      <Header noOption={true} />
+      <Auth />
+    </Login>
   );
 };
-const LoginPage = styled.div`
+const Login = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,4 +23,4 @@ const LoginPage = styled.div`
   height: 100vh;
 `;
 
-export default Login;
+export default LoginPage;

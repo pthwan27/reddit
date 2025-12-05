@@ -4,7 +4,7 @@ import { ModalKey } from '@/app/context/modalContext';
 
 import CreateSub from '../sub/create';
 
-const CreateSubModalContainer = () => {
+const CreateSubModal = () => {
   const modalKey: ModalKey = 'createSubModal';
 
   return (
@@ -19,4 +19,4 @@ const CreateSubModalContainer = () => {
   );
 };
 
-export default CreateSubModalContainer;
+export default CreateSubModal;

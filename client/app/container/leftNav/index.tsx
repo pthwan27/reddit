@@ -20,7 +20,7 @@ interface LeftNavProps {
   onToggleNav: () => void;
 }
 
-const LeftNavContainer = ({ isNavVisible, onToggleNav }: LeftNavProps) => {
+const LeftNav = ({ isNavVisible, onToggleNav }: LeftNavProps) => {
   const { user } = useAuth();
 
   const router = useRouter();
@@ -44,7 +44,7 @@ const LeftNavContainer = ({ isNavVisible, onToggleNav }: LeftNavProps) => {
     router.push('/');
   };
   return (
-    <LeftNav $isNavVisible={isNavVisible}>
+    <LeftNavContainer $isNavVisible={isNavVisible}>
       <ToggleButton $isNavVisible={isNavVisible} onClick={onToggleNav}>
         <span>
           <MenuIcon />
@@ -72,11 +72,11 @@ const LeftNavContainer = ({ isNavVisible, onToggleNav }: LeftNavProps) => {
       </LeftNavWrapper>
 
       <CreateSubModal />
-    </LeftNav>
+    </LeftNavContainer>
   );
 };
 
-const LeftNav = styled.div<{ $isNavVisible: boolean }>`
+const LeftNavContainer = styled.div<{ $isNavVisible: boolean }>`
   position: fixed;
 
   min-height: calc(100dvh - 56px);
@@ -166,4 +166,4 @@ const ToggleButton = styled.button<{ $isNavVisible: boolean }>`
       ${({ theme }) => theme.components.button.border.hover};
   }
 `;
-export default LeftNavContainer;
+export default LeftNav;

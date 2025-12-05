@@ -13,7 +13,7 @@ import { useAuth } from '../context/authContext';
 import { ModalKey, useModalState } from '../context/modalContext';
 import AuthModal from './modal/authModal';
 
-const HeaderContainer = ({ noOption = false }) => {
+const Header = ({ noOption = false }) => {
   const { user, logout } = useAuth();
   const { open } = useModalState();
   const router = useRouter();
@@ -48,7 +48,7 @@ const HeaderContainer = ({ noOption = false }) => {
 
   const modalKey: ModalKey = 'authModal';
   return (
-    <Header>
+    <HeaderContainer>
       <Nav>
         <LeftNav>
           <Logo onClick={goToHome} aria-label="홈으로 이동">
@@ -84,10 +84,10 @@ const HeaderContainer = ({ noOption = false }) => {
         )}
       </Nav>
       <AuthModal />
-    </Header>
+    </HeaderContainer>
   );
 };
-const Header = styled.header`
+const HeaderContainer = styled.header`
   position: fixed;
   top: 0;
   left: 0;
@@ -199,4 +199,4 @@ const LoginButton = styled.button`
   }
 `;
 
-export default HeaderContainer;
+export default Header;

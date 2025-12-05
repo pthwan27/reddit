@@ -11,7 +11,7 @@ import { CustomError, Post } from '@/app/types';
 
 import HomePostListContainer from './list';
 
-const HomeContainer = () => {
+const Home = () => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   const [loading, setLoading] = useState(false);
@@ -40,7 +40,7 @@ const HomeContainer = () => {
   }, []);
 
   return (
-    <Home>
+    <HomeContainer>
       {posts.map((post, idx) => {
         return (
           <ObserverWrapper key={idx + post.identifier}>
@@ -57,11 +57,11 @@ const HomeContainer = () => {
         );
       })}
       {error && <ErrorMessage>{error}</ErrorMessage>}
-    </Home>
+    </HomeContainer>
   );
 };
 
-const Home = styled.div``;
+const HomeContainer = styled.div``;
 
 const ObserverWrapper = styled.div`
   display: flex;
@@ -69,4 +69,4 @@ const ObserverWrapper = styled.div`
   gap: var(--spacer-sm);
 `;
 
-export default HomeContainer;
+export default Home;

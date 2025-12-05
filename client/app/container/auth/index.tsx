@@ -2,17 +2,19 @@ import styled from 'styled-components';
 
 import { useAuth } from '@/app/context/authContext';
 
-import LoginContainer from './loginContainer';
-import RegisterContainer from './registerContainer';
+import LoginContainer from './login';
+import RegisterContainer from './register';
 
-const AuthContainer = () => {
+const Auth = () => {
   const { mode } = useAuth();
   return (
-    <Auth>{mode === 'login' ? <LoginContainer /> : <RegisterContainer />}</Auth>
+    <AuthContainer>
+      {mode === 'login' ? <LoginContainer /> : <RegisterContainer />}
+    </AuthContainer>
   );
 };
 
-const Auth = styled.div`
+const AuthContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,4 +32,4 @@ const Auth = styled.div`
   box-shadow: var(--box-shadow);
 `;
 
-export default AuthContainer;
+export default Auth;

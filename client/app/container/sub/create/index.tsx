@@ -14,10 +14,10 @@ import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 import { useAuth } from '@/app/context/authContext';
 import { useModalState } from '@/app/context/modalContext';
 
-import FirstCreateSubContainer from './subFirstContainer';
-import SecCreateSubContainer from './subSecContainer';
+import FirstCreateSub from './subFirst';
+import SecCreateSub from './subSec';
 
-const CreateSubContainer = () => {
+const CreateSub = () => {
   const router = useRouter();
 
   const { user } = useAuth();
@@ -46,14 +46,14 @@ const CreateSubContainer = () => {
   );
 
   const inputBoxes = [
-    <FirstCreateSubContainer
+    <FirstCreateSub
       key={'create-sub-first'}
       title={title}
       setTitle={setTitle}
       desc={description}
       setDesc={setDescription}
     />,
-    <SecCreateSubContainer
+    <SecCreateSub
       key={'create-sub-sec'}
       banner={banner}
       setBanner={setBanner}
@@ -152,8 +152,8 @@ const CreateSubContainer = () => {
     return () => URL.revokeObjectURL(objectURL);
   }, [icon]);
   return (
-    <CreateSub>
-      <CreateSubMainContainer>
+    <CreateSubContainer>
+      <MainWrapper>
         <CreateInputBox>{inputBoxes[curInputBoxNum]}</CreateInputBox>
         <CreateSubInfoBox>
           <InfoWrapper>
@@ -185,7 +185,7 @@ const CreateSubContainer = () => {
             </StyledDesc>
           </InfoWrapper>
         </CreateSubInfoBox>
-      </CreateSubMainContainer>
+      </MainWrapper>
 
       <div style={{ marginBottom: '40px' }} />
 
@@ -200,7 +200,7 @@ const CreateSubContainer = () => {
             />
           ))}
         </CarouselWrapper>
-        <ButtonContainer>
+        <ButtonWrapper>
           <button
             onClick={() => prevSlice()}
             disabled={curInputBoxNum === 0}
@@ -215,15 +215,15 @@ const CreateSubContainer = () => {
           >
             {curInputBoxNum === inputBoxes.length - 1 ? '생성하기' : '다음'}
           </button>
-        </ButtonContainer>
+        </ButtonWrapper>
       </CreateSubCarousel>
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
-    </CreateSub>
+    </CreateSubContainer>
   );
 };
 
-const CreateSub = styled.div`
+const CreateSubContainer = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -231,10 +231,11 @@ const CreateSub = styled.div`
   width: 100%;
 `;
 
-const CreateSubMainContainer = styled.div`
+const MainWrapper = styled.div`
   display: flex;
   gap: var(--spacer-md);
 `;
+
 const CreateInputBox = styled.div`
   display: flex;
   justify-content: center;
@@ -381,7 +382,7 @@ const CarouselItem = styled.button<{ $isSelected: boolean }>`
   transition: all 0.4s;
 `;
 
-const ButtonContainer = styled.div`
+const ButtonWrapper = styled.div`
   display: flex;
   gap: var(--spacer-xs);
 
@@ -405,4 +406,4 @@ const ButtonContainer = styled.div`
   }
 `;
 
-export default CreateSubContainer;
+export default CreateSub;

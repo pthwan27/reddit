@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import LeftNavContainer from '../container/leftNav';
+import LeftNav from '../container/leftNav';
 
 const HomePageLayout = ({ children }: { children: React.ReactNode }) => {
   const [isNavVisible, setIsNavVisible] = useState(true);
@@ -19,10 +19,7 @@ const HomePageLayout = ({ children }: { children: React.ReactNode }) => {
   };
   return (
     <Main $isNavVisible={isNavVisible}>
-      <LeftNavContainer
-        isNavVisible={isNavVisible}
-        onToggleNav={handleNavVisible}
-      />
+      <LeftNav isNavVisible={isNavVisible} onToggleNav={handleNavVisible} />
       <MainWrapper>{children}</MainWrapper>
     </Main>
   );

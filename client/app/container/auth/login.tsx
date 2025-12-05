@@ -1,9 +1,9 @@
-'use client';
-
 import { useRouter } from 'next/navigation';
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { validationCheck } from '@/app/utils/validationCheck';
+
+import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
@@ -15,39 +15,35 @@ import { CustomError } from '@/app/types';
 import AuthButton from '../../components/auth/AuthButton';
 import { useAuth } from '../../context/authContext';
 
-const RegisterContainer = () => {
+const Login = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
-  const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const { register, setMode } = useAuth();
+  const { login, setMode } = useAuth();
+
+  const { getMySubs } = useSubStore();
 
   const emailValidation = useMemo(
     () => validationCheck(email, 'email'),
     [email]
-  );
-  const nicknameValidation = useMemo(
-    () => validationCheck(nickname, 'nickname'),
-    [nickname]
   );
   const passwordValidation = useMemo(
     () => validationCheck(password, 'password'),
     [password]
   );
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password || !nickname) {
-      setError('이메일과 닉네임, 비밀번호를 입력해주세요.');
+    if (!email || !password) {
+      setError('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
-      setError('');
-      await register(email, nickname, password, () => {
+      await login(email, password, () => {
         if (
           typeof window !== 'undefined' &&
           window.location.pathname === '/login'
@@ -58,23 +54,22 @@ const RegisterContainer = () => {
             router.push('/');
           }
         }
+        setError('');
 
-        setEmail('');
-        setNickname('');
-        setPassword('');
+        getMySubs();
       });
     } catch (err: unknown) {
       const error = err as CustomError;
-      console.error('Registration failed:', error);
+      console.error('Login failed:', error);
 
-      setError(error.response?.data?.error || '회원가입을 실패했습니다.');
+      setError(error.response?.data?.error || '로그인에 실패했습니다.');
     }
   };
 
   return (
-    <StyledRegisterContainer>
+    <LoginContainer onSubmit={handleLogin}>
       <StyledHeader>
-        <StyledTitle>회원가입</StyledTitle>
+        <StyledTitle>로그인</StyledTitle>
         <StyledDesc>
           계속 진행할 경우 서비스 이용 약관에 동의하고
           <p>
@@ -92,16 +87,7 @@ const RegisterContainer = () => {
         onChange={(e) => setEmail(e.target.value)}
         validationState={emailValidation as 'valid' | 'invalid' | 'none'}
       />
-      <PlaceHolderInput
-        variant="primary"
-        label="닉네임을 입력하세요"
-        value={nickname}
-        type="text"
-        maxLength={20}
-        required={true}
-        onChange={(e) => setNickname(e.target.value)}
-        validationState={nicknameValidation as 'valid' | 'invalid' | 'none'}
-      />
+
       <PlaceHolderInput
         variant="primary"
         label="비밀번호를 입력하세요"
@@ -112,31 +98,30 @@ const RegisterContainer = () => {
         onChange={(e) => setPassword(e.target.value)}
         validationState={passwordValidation as 'valid' | 'invalid' | 'none'}
       />
+
       <StyledHelper>
+        <a>비밀 번호를 잊으셨나요?</a>
         <p>
-          이미 아이디가 있으신가요?
-          <a onClick={() => setMode('login')}> 로그인하세요</a>
+          처음 이용하시나요?
+          <a onClick={() => setMode('register')}> 가입하세요</a>
         </p>
       </StyledHelper>
+
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
       <AuthButton
         type="submit"
-        onClick={handleRegister}
+        onClick={handleLogin}
         disabled={
-          !(
-            emailValidation === 'valid' &&
-            nicknameValidation === 'valid' &&
-            passwordValidation === 'valid'
-          )
+          !(emailValidation === 'valid' && passwordValidation === 'valid')
         }
       >
-        회원가입
+        로그인
       </AuthButton>
-    </StyledRegisterContainer>
+    </LoginContainer>
   );
 };
-const StyledRegisterContainer = styled.form`
+const LoginContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -172,10 +157,17 @@ const StyledHelper = styled.div`
   font: var(--font-14);
   color: ${({ theme }) => theme.components.tooltip.neutral.text || '#333D42'};
 
-  gap: var(--spacer-xs);
   padding: 0 var(--spacer-md);
+  gap: var(--spacer-xs);
 
   margin-top: var(--spacer-2xs);
   margin-bottom: var(--spacer-sm);
+
+  a {
+  }
+  p {
+    margin-top: var(--spacer-sm);
+  }
 `;
-export default RegisterContainer;
+
+export default Login;

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 
-import HeaderContainer from '@/app/container/headerContainer';
+import Header from '@/app/container/header';
 
 import HomePageLayout from '@/app/layout/homePage';
 
@@ -25,7 +25,7 @@ const HomeLayout = ({ children }: HomeLayoutProps) => {
         <LoadingSpinner />
       ) : (
         <>
-          <HeaderContainer />
+          <Header />
           <HomePageLayout>{children}</HomePageLayout>
         </>
       )}

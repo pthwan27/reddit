@@ -12,7 +12,7 @@ interface PlaceHolderInputProps extends InputHTMLAttributes<HTMLInputElement> {
   leadingIcon?: ReactNode;
   ExtraIcon?: ReactNode;
   clearButton?: boolean;
-  isExtraContainerVisible?: boolean;
+  isExtraWrapperVisible?: boolean;
   validationState?: 'valid' | 'invalid' | 'none' | false;
 
   variant?: InputVariant;
@@ -33,7 +33,7 @@ const PlaceHolderInput = ({
   leadingIcon,
   ExtraIcon,
   clearButton = false,
-  isExtraContainerVisible = true,
+  isExtraWrapperVisible = true,
   validationState,
   onChange,
 
@@ -69,7 +69,7 @@ const PlaceHolderInput = ({
         onBlur={() => setIsFloated(false)}
       >
         <BoundaryBox>
-          <InputContainer $hasLeadingIcon={!!leadingIcon}>
+          <InputWrapper $hasLeadingIcon={!!leadingIcon}>
             <LeadingIcon>{leadingIcon}</LeadingIcon>
             <PlaceHolderSpan $isFloated={isFloated || Boolean(value)}>
               {label}
@@ -84,9 +84,9 @@ const PlaceHolderInput = ({
               maxLength={maxLength}
               onChange={onChange}
             />
-          </InputContainer>
-          {isExtraContainerVisible && (
-            <ExtraIconsContainer id="Extra-icons-container">
+          </InputWrapper>
+          {isExtraWrapperVisible && (
+            <ExtraIconsWrapper id="Extra-icons-wrpper">
               <ExtraIconsValidation id="Extra-icons-validation">
                 {validationState === 'invalid' && (
                   <div style={{ width: 20, height: 20 }}>
@@ -113,7 +113,7 @@ const PlaceHolderInput = ({
                   </ClearButton>
                 )}
               </ExtraIconsGeneral>
-            </ExtraIconsContainer>
+            </ExtraIconsWrapper>
           )}
         </BoundaryBox>
       </PlaceHolderInputDiv>
@@ -216,7 +216,7 @@ const BoundaryBox = styled.span`
   width: 100%;
 `;
 
-const InputContainer = styled.span<{ $hasLeadingIcon: boolean }>`
+const InputWrapper = styled.span<{ $hasLeadingIcon: boolean }>`
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -270,7 +270,7 @@ const StyledInput = styled.input`
   }
 `;
 
-const ExtraIconsContainer = styled.span`
+const ExtraIconsWrapper = styled.span`
   display: flex;
   align-items: center;
   gap: var(--rem-8);

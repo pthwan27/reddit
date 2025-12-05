@@ -23,7 +23,7 @@ import CommentItem from '@/app/container/comments/item';
 import { useAuth } from '@/app/context/authContext';
 import { Post } from '@/app/types';
 
-const CommentsContainer = ({ post }: { post: Post }) => {
+const CommentList = ({ post }: { post: Post }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
@@ -239,4 +239,4 @@ const CommentListWrapper = styled.section`
   }
 `;
 
-export default CommentsContainer;
+export default CommentList;

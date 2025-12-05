@@ -22,7 +22,7 @@ interface CommentItemProps extends Comment {
   depth?: number;
 }
 
-const CommentItemContainer = ({ depth = 0, ...comment }: CommentItemProps) => {
+const CommentItem = ({ depth = 0, ...comment }: CommentItemProps) => {
   const { user } = useAuth();
   const { submitComment } = useCommentStore();
   const router = useRouter();
@@ -70,7 +70,7 @@ const CommentItemContainer = ({ depth = 0, ...comment }: CommentItemProps) => {
     comment.childComments && comment.childComments.length > 0;
 
   return (
-    <CommentItem key={comment.identifier}>
+    <CommentItemContainer key={comment.identifier}>
       <Summary>
         <AvatarWrapper>
           {isSummary ? (
@@ -178,11 +178,11 @@ const CommentItemContainer = ({ depth = 0, ...comment }: CommentItemProps) => {
         ))}
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
-    </CommentItem>
+    </CommentItemContainer>
   );
 };
 
-const CommentItem = styled.div`
+const CommentItemContainer = styled.div`
   position: relative;
 `;
 
@@ -385,4 +385,4 @@ const CloseIconWrapper = styled.button`
   z-index: 1;
 `;
 
-export default CommentItemContainer;
+export default CommentItem;

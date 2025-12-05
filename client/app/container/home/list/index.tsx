@@ -4,11 +4,11 @@ import styled from 'styled-components';
 
 import PostSort from '@/app/components/post/list/sort';
 
-import PostItem from '@/app/container/post/item';
-
 import { Post } from '@/app/types';
 
-const HomePostListContainer = ({ posts }: { posts: Post[] }) => {
+import HomePostItem from '../item';
+
+const HomePostList = ({ posts }: { posts: Post[] }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isSelecting, setIsSelecting] = useState(false);
   const [sortOption, setSortOption] = useState<
@@ -46,7 +46,7 @@ const HomePostListContainer = ({ posts }: { posts: Post[] }) => {
       <hr />
       {posts.map((post, idx) => (
         <PostWrapper key={idx + post.identifier}>
-          <PostItem post={post} />
+          <HomePostItem post={post} />
           {idx < posts.length - 1 && <hr />}
         </PostWrapper>
       ))}
@@ -57,4 +57,5 @@ const HomePostListContainer = ({ posts }: { posts: Post[] }) => {
 const PostList = styled.div``;
 
 const PostWrapper = styled.div``;
-export default HomePostListContainer;
+
+export default HomePostList;

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import { clientAxiosInstance } from '@/app/utils/axios';
 
-import SubDetailContainer from '@/app/container/sub/detail';
+import SubDetail from '@/app/container/sub/detail';
 
 import { Sub } from '@/app/types';
 
@@ -34,7 +34,7 @@ const SubDetailPage = async ({
 
   const data = await getSubData(slug);
 
-  return <SubDetailContainer {...data} />;
+  return <SubDetail {...data} />;
 };
 
 export default SubDetailPage;
