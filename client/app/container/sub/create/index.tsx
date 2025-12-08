@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { validationCheck } from '@/app/utils/validationCheck';
 
 import { useSubStore } from '@/app/store/subStore';
+import { useUIStore } from '@/app/store/uiStore';
 
 import styled from 'styled-components';
 
@@ -32,6 +33,7 @@ const CreateSub = () => {
 
   const [error, setError] = useState('');
   const { createSub, loading } = useSubStore();
+  const { setLeftNavByHeaderVisible } = useUIStore();
 
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
   const [iconPreview, setIconPreview] = useState<string | null>(null);
@@ -78,6 +80,7 @@ const CreateSub = () => {
       });
 
       close(modalkey);
+      setLeftNavByHeaderVisible(false);
     } catch (err: unknown) {
       const error = err as Error;
       console.error('Create Sub failed:', error);

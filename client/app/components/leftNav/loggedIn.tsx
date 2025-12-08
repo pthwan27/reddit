@@ -12,13 +12,13 @@ import CollapsibleList from './collapsibleList';
 interface LoggedInProps {
   filteredSubs: Sub[];
   loading: boolean;
-  onOpenCreateSubModal: () => void;
+  openCreateSubModal: () => void;
   goToSubDetail: (sub: Sub) => void;
 }
 const LoggedIn = ({
   filteredSubs,
   loading,
-  onOpenCreateSubModal,
+  openCreateSubModal,
   goToSubDetail,
 }: LoggedInProps) => {
   return (
@@ -27,7 +27,7 @@ const LoggedIn = ({
         variant="neutral"
         icon={<PlusIcon />}
         value={'커뮤니티 만들기'}
-        onClick={() => onOpenCreateSubModal()}
+        onClick={() => openCreateSubModal()}
       />
 
       <SubList>

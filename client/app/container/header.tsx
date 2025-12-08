@@ -9,12 +9,15 @@ import IconBox from '../components/common/IconBox';
 import ProfileDropdown from '../components/header/profileDropdown';
 import SearchInput from '../components/header/searchInput';
 import LogoIcon from '../components/svgs/LogoIcon';
+import MenuIcon from '../components/svgs/MenuIcon';
 import { useAuth } from '../context/authContext';
 import { ModalKey, useModalState } from '../context/modalContext';
+import { useUIStore } from '../store/uiStore';
 import AuthModal from './modal/authModal';
 
 const Header = ({ noOption = false }) => {
   const { user, logout } = useAuth();
+  const { toggleLeftNavByHeader } = useUIStore();
   const { open } = useModalState();
   const router = useRouter();
 
@@ -51,6 +54,18 @@ const Header = ({ noOption = false }) => {
     <HeaderContainer>
       <Nav>
         <LeftNav>
+          <ToggleButton
+            onClick={toggleLeftNavByHeader}
+            aria-label="사이드바 토글 버튼"
+          >
+            <IconBox
+              icon={<MenuIcon />}
+              altText="메뉴 아이콘"
+              width={40}
+              height={40}
+              percentage={50}
+            />
+          </ToggleButton>
           <Logo onClick={goToHome} aria-label="홈으로 이동">
             <LogoIcon />
           </Logo>
@@ -114,9 +129,21 @@ const Nav = styled.nav`
 const LeftNav = styled.div`
   display: flex;
   align-items: center;
+
   gap: var(--spacer-xs);
 
   padding-inline-end: var(--spacer-lg);
+`;
+
+const ToggleButton = styled.button`
+  padding: 0;
+  @media (min-width: 1200px) {
+    display: none;
+  }
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.secondary.backgroundHover};
+  }
 `;
 const Logo = styled.div`
   display: flex;

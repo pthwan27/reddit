@@ -138,6 +138,8 @@ const GlobalStyle = createGlobalStyle`
               0 6px 8px rgba(0,0,0,0.11),
               0 8px 16px rgba(0,0,0,0.11);
 
+  --box-shadow-xs : 0 0 #0000, 0 0 #0000, 0 0.0625rem 0.125rem 0 #00000040;
+
               
   /* Container Width */
   --flex-nav-width : 272px;

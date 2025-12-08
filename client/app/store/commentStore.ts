@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { Comment } from '../types';
-import { CommentStore } from '../types/store';
+import { CommentState } from '../types/store';
 import { clientAxiosInstance } from '../utils/axios';
 
 const initialState = {
@@ -13,7 +13,7 @@ const initialState = {
   curPostId: 0,
 };
 
-export const useCommentStore = create<CommentStore>((set, get) => ({
+export const useCommentStore = create<CommentState>((set, get) => ({
   ...initialState,
 
   submitComment: async (

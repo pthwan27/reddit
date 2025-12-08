@@ -14,7 +14,7 @@ export type SubState = {
   setHasHydrated: (hydrated: boolean) => void;
 };
 
-export type PostStore = {
+export type PostState = {
   posts: Post[];
   loading: boolean;
   page: number;
@@ -27,7 +27,7 @@ export type PostStore = {
   vote: (id: number, value: number, type: string) => Promise<void>;
 };
 
-export type CommentStore = {
+export type CommentState = {
   comments: Comment[];
   loading: boolean;
   submitting: boolean;
@@ -42,4 +42,12 @@ export type CommentStore = {
   fetchComments: (id: number, isInitial?: boolean) => Promise<void>;
   clearComments: () => void;
   vote: (id: number, value: number, type: string) => Promise<void>;
+};
+
+export type UIState = {
+  leftNavVisible: boolean;
+  toggleLeftNav: () => void;
+  leftNavByHeaderVisible: boolean;
+  toggleLeftNavByHeader: () => void;
+  setLeftNavByHeaderVisible: (visible: boolean) => void;
 };

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { Post } from '../types';
-import { PostStore } from '../types/store';
+import { PostState } from '../types/store';
 import { clientAxiosInstance } from '../utils/axios';
 
 const initialState = {
@@ -13,7 +13,7 @@ const initialState = {
   selectedPost: null,
 };
 
-export const usePostStore = create<PostStore>((set, get) => ({
+export const usePostStore = create<PostState>((set, get) => ({
   ...initialState,
 
   setSelectedPost: (post: Post | null) => set({ selectedPost: post }),

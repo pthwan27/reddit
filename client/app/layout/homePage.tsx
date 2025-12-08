@@ -1,31 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import styled from 'styled-components';
 
 import LeftNav from '../container/leftNav';
+import { useUIStore } from '../store/uiStore';
 
-const HomePageLayout = ({ children }: { children: React.ReactNode }) => {
-  const [isNavVisible, setIsNavVisible] = useState(true);
+const MainLayout = ({ children }: { children: React.ReactNode }) => {
+  const { leftNavVisible } = useUIStore();
 
   useEffect(() => {
     document.documentElement.style.setProperty(
       '--expanded-nav-width',
-      isNavVisible ? '272px' : '0px'
+      leftNavVisible ? '272px' : '0px'
     );
-  }, [isNavVisible]);
+  }, [leftNavVisible]);
 
-  const handleNavVisible = () => {
-    setIsNavVisible((prev) => !prev);
-  };
   return (
-    <Main $isNavVisible={isNavVisible}>
-      <LeftNav isNavVisible={isNavVisible} onToggleNav={handleNavVisible} />
+    <Main $leftNavVisible={leftNavVisible}>
+      <LeftNav />
       <MainWrapper>{children}</MainWrapper>
     </Main>
   );
 };
 
-const Main = styled.main<{ $isNavVisible: boolean }>`
+const Main = styled.main<{ $leftNavVisible: boolean }>`
   display: grid;
   overflow-x: hidden;
 
@@ -68,4 +66,4 @@ const MainWrapper = styled.div`
   transition: max-width var(--transition-duration) var(--transition-curve);
 `;
 
-export default HomePageLayout;
+export default MainLayout;
