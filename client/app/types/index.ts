@@ -27,6 +27,8 @@ export interface Sub {
   bannerUrl: string;
   username: string;
   profileUser: User | null;
+  isSubscribed: boolean;
+  isOwner: boolean;
   posts?: Post[];
 }
 // Post 타입

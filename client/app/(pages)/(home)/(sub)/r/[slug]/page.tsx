@@ -34,7 +34,7 @@ const SubDetailPage = async ({
 
   const data = await getSubData(slug);
 
-  return <SubDetail {...data} />;
+  return <SubDetail sub={data} />;
 };
 
 export default SubDetailPage;

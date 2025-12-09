@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 import { useSubStore } from '@/app/store/subStore';
 
@@ -17,9 +18,16 @@ interface InfoProps {
   iconImage: string;
   onEditClick: () => void;
   isIcon?: boolean;
+  handleSubscribe: () => void;
 }
 
-const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
+const SubInfos = ({
+  sub,
+  iconImage,
+  onEditClick,
+  isIcon,
+  handleSubscribe,
+}: InfoProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const { setSelectedSub } = useSubStore();
@@ -28,6 +36,8 @@ const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
     setSelectedSub(sub);
     router.push(`${pathname}/submit`);
   };
+
+  useEffect(() => {}, [sub.isSubscribed]);
   return (
     <StyledSubInfos>
       <ActionsBar>
@@ -67,13 +77,26 @@ const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
             variant="outlined"
             font="16-20-semibold"
           />
-          <IconButton
-            value="가입"
-            fontColor="white"
-            radius="var(--radius-xl)"
-            variant="primary"
-            font="16-20-semibold"
-          />
+
+          {sub.isSubscribed || sub.isOwner ? (
+            <IconButton
+              value="가입됨"
+              radius="var(--radius-xl)"
+              variant="outlined"
+              font="16-20-semibold"
+              disabled={sub.isOwner}
+              onClick={handleSubscribe}
+            />
+          ) : (
+            <IconButton
+              value="가입"
+              fontColor="white"
+              radius="var(--radius-xl)"
+              variant="primary"
+              font="16-20-semibold"
+              onClick={handleSubscribe}
+            />
+          )}
 
           <IconButton
             icon={<EtcIcon />}

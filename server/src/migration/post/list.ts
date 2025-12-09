@@ -1,7 +1,9 @@
 import { instanceToPlain } from 'class-transformer';
 import { RequestHandler } from 'express';
+import { In } from 'typeorm/find-options/operator/In';
 
 import { Post } from '../../entities/Post';
+import { Subscription } from '../../entities/Subscription';
 import { User } from '../../entities/User';
 
 export const ListHandler: RequestHandler = async (req, res) => {
@@ -27,6 +29,13 @@ export const ListHandler: RequestHandler = async (req, res) => {
 
     if (user) {
       posts.forEach((p: Post) => p.setUserVote(user));
+
+      const subscriptions = await Subscription.find({
+        where: { user: { id: In([user.id]) } },
+        relations: ['sub'],
+      });
+
+      console.log('subscriptions', subscriptions);
     }
 
     return res.status(200).json({ posts: instanceToPlain(posts) });

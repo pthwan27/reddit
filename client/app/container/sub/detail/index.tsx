@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import { clientAxiosInstance } from '@/app/utils/axios';
+
 import { useUploadImage } from '@/app/hooks/useUploadImage';
 
 import { usePostStore } from '@/app/store/postStore';
@@ -12,16 +14,20 @@ import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 import SubBanner from '@/app/components/sub/detail/banner';
 import SubInfos from '@/app/components/sub/detail/info';
 
+import { useAuth } from '@/app/context/authContext';
 import { Sub } from '@/app/types';
 
 import RightSideBar from '../../../components/sub/rightSideBar';
 import PostList from '../../post/list';
 
-const SubDetail = ({ ...sub }: Sub) => {
+const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
+  const [sub, setSub] = useState<Sub>({ ...initialSub });
+
   const { uploadIconImage, uploadBannerImage } = useUploadImage();
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl);
   const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl);
 
+  const { user } = useAuth();
   const { posts, loading, hasMore, fetchPosts, clearPosts } = usePostStore();
 
   const iconFileInputRef = useRef<HTMLInputElement>(null);
@@ -68,6 +74,27 @@ const SubDetail = ({ ...sub }: Sub) => {
     }
   };
 
+  const handleSubscribe = async () => {
+    try {
+      const { data } = await clientAxiosInstance.patch(
+        `api/sub/${sub.slug}/subscribe`,
+        {
+          id: sub.id,
+          subscribe: !sub.isSubscribed,
+        }
+      );
+
+      setSub((prevSub) => ({
+        ...prevSub,
+        isSubscribed: data.isSubscribed,
+      }));
+    } catch (err) {
+      const error = err as Error;
+
+      console.error('구독/구독취소 실패:', error.message);
+    }
+  };
+
   useEffect(() => {
     setIconImage(sub.iconUrl);
   }, [sub.iconUrl]);
@@ -81,6 +108,14 @@ const SubDetail = ({ ...sub }: Sub) => {
 
     fetchPosts(sub.id);
   }, [sub.id, fetchPosts]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await clientAxiosInstance.get(`/api/sub/${sub.slug}`);
+
+      setSub(response.data);
+    })();
+  }, [user]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -119,6 +154,7 @@ const SubDetail = ({ ...sub }: Sub) => {
           iconImage={iconImage}
           onEditClick={() => handleClick('icon')}
           isIcon={!!iconImage}
+          handleSubscribe={handleSubscribe}
         />
       </Header>
       <Main>

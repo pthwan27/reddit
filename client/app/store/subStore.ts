@@ -50,6 +50,8 @@ export const useSubStore = create(
           iconUrl: iconPreview || '',
           username,
           profileUser: null,
+          isSubscribed: false,
+          isOwner: false,
         };
 
         set((state) => ({

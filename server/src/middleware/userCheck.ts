@@ -26,14 +26,13 @@ export const UserMiddleware: RequestHandler = async (req, res, next) => {
     const user = await User.findOneBy({ id: decoded.userId });
 
     if (!user) {
-      return next(); // 유저가 없어도 그냥 다음으로 넘어감
+      return next();
     }
 
     res.locals.user = user;
 
     return next();
   } catch (error) {
-    // 토큰이 유효하지 않아도 오류를 반환하지 않고 그냥 다음으로 넘어감
     console.error('Optional auth error:', error);
     return next();
   }

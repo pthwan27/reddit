@@ -3,7 +3,9 @@ import { RequestHandler } from 'express';
 import fs from 'fs/promises';
 import path from 'path';
 
+import { AppDataSource } from '../../../data-source';
 import { Sub } from '../../../entities/Sub';
+import { Subscription } from '../../../entities/Subscription';
 import { User } from '../../../entities/User';
 
 export const CreateHandler: RequestHandler = async (req, res) => {
@@ -52,13 +54,23 @@ export const CreateHandler: RequestHandler = async (req, res) => {
       .json({ error: '커뮤니티 설명은 100자 이하여야 합니다.' });
   }
 
+  const queryRunner = AppDataSource.createQueryRunner();
+
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
+
   try {
     const sub = new Sub();
     sub.title = title;
     sub.description = description || title + '주제의 커뮤니티입니다.';
     sub.user = user;
 
-    await sub.save();
+    await queryRunner.manager.save(sub);
+
+    const subscription = new Subscription();
+    subscription.user = user;
+    subscription.sub = sub;
+    await queryRunner.manager.save(subscription);
 
     const moveFile = async (file: Express.Multer.File) => {
       const oldPath = file.path;
@@ -83,15 +95,19 @@ export const CreateHandler: RequestHandler = async (req, res) => {
       sub.iconUrn = await moveFile(files.icon[0]);
     }
 
-    await sub.save();
+    await queryRunner.manager.save(sub);
+    await queryRunner.commitTransaction();
 
     return res.status(201).json(instanceToPlain(sub));
   } catch (error) {
     console.error('Error creating sub:', error);
 
+    await queryRunner.rollbackTransaction();
     await cleanupTempFiles(files);
 
     return res.status(500).json({ error: 'Failed to create sub' });
+  } finally {
+    await queryRunner.release();
   }
 };
 

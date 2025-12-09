@@ -9,6 +9,7 @@ import { Vote } from "./Vote";
 import { Sub } from "./Sub";
 import { Comment } from "./Comment";
 import { nanoid } from "nanoid";
+import { Subscription } from "./Subscription";
 
 @Entity("users")
 export class User extends CoreEntity {
@@ -45,6 +46,9 @@ export class User extends CoreEntity {
 
   @OneToMany(() => Sub, (sub) => sub.user)
   subs: Sub[]; 
+  
+  @OneToMany(() => Subscription, (subscription) => subscription.user)
+  subscriptions: Subscription[];
 
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment[];

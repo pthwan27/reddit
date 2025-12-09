@@ -14,6 +14,7 @@ import CoreEntity from "./CoreEntity";
 import { User } from "./User";
 import { Post } from "./Post";
 import { Exclude, Expose } from "class-transformer";
+import { Subscription } from "./Subscription";
 
 @Entity("subs")
 export class Sub extends CoreEntity {
@@ -42,6 +43,9 @@ export class Sub extends CoreEntity {
   @OneToMany(() => Post, (post) => post.sub)
   posts: Post[];
 
+  @OneToMany(() => Subscription, (subscription) => subscription.sub)
+  subscribers: Subscription[];
+
   @JoinColumn()
   profileUser: User;
 
@@ -54,6 +58,14 @@ export class Sub extends CoreEntity {
   get username(): string {
     return this.user?.username;
   }
+
+  @Expose()
+  isSubscribed: boolean;
+
+  
+  @Expose()
+  isOwner: boolean;
+
 
   @Expose()
   get iconUrl(): string {
