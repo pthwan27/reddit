@@ -78,7 +78,10 @@ const LeftNav = () => {
 
         <LeftNavWrapper $leftNavVisible={leftNavVisible}>
           <MenuContainer>
-            <CommonLeftNavMenu goToHome={goToHome} />
+            <CommonLeftNavMenu
+              goToHome={goToHome}
+              openCreateSubModal={openCreateSubModal}
+            />
           </MenuContainer>
           <hr />
           <MenuContainer>
@@ -86,7 +89,6 @@ const LeftNav = () => {
               <LoginNavMenu
                 filteredSubs={filteredSubs}
                 loading={loading}
-                openCreateSubModal={openCreateSubModal}
                 goToSubDetail={goToSubDetail}
               />
             ) : (
@@ -106,7 +108,10 @@ const LeftNav = () => {
           $leftNavByHeaderVisible={leftNavByHeaderVisible}
         >
           <MenuContainer>
-            <CommonLeftNavMenu goToHome={goToHome} />
+            <CommonLeftNavMenu
+              goToHome={goToHome}
+              openCreateSubModal={openCreateSubModal}
+            />
           </MenuContainer>
           <hr />
           <MenuContainer>
@@ -114,7 +119,6 @@ const LeftNav = () => {
               <LoginNavMenu
                 filteredSubs={filteredSubs}
                 loading={loading}
-                openCreateSubModal={openCreateSubModal}
                 goToSubDetail={goToSubDetail}
               />
             ) : (

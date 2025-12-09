@@ -6,30 +6,22 @@ import { Sub } from '@/app/types';
 
 import IconButton from '../common/button/iconButton';
 import Skeleton from '../common/loading/skeleton';
-import PlusIcon from '../svgs/PlusIcon';
+import SettingIcon from '../svgs/SettingIcon';
 import CollapsibleList from './collapsibleList';
 
 interface LoggedInProps {
   filteredSubs: Sub[];
   loading: boolean;
-  openCreateSubModal: () => void;
   goToSubDetail: (sub: Sub) => void;
 }
-const LoggedIn = ({
-  filteredSubs,
-  loading,
-  openCreateSubModal,
-  goToSubDetail,
-}: LoggedInProps) => {
+const LoggedIn = ({ filteredSubs, loading, goToSubDetail }: LoggedInProps) => {
   return (
     <CollapsibleList title="커뮤니티">
       <IconButton
         variant="neutral"
-        icon={<PlusIcon />}
-        value={'커뮤니티 만들기'}
-        onClick={() => openCreateSubModal()}
+        icon={<SettingIcon />}
+        value={'커뮤니티 관리'}
       />
-
       <SubList>
         {loading ? (
           <SkeletonWrapper>

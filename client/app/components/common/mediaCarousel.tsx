@@ -45,6 +45,12 @@ const MediaCarousel = ({
     }
   };
 
+  const moveToIdx = (e: React.MouseEvent, idx: number) => {
+    e.stopPropagation();
+
+    setCurIdx(idx);
+  };
+
   return (
     <SelectedFileWrapper
       $version={version}
@@ -135,6 +141,19 @@ const MediaCarousel = ({
           <video src={mediaUrls[0]} controls muted />
           <div />
         </VideoWrapper>
+      )}
+
+      {mediaType === 'image' && mediaUrls.length > 1 && (
+        <CarouselWrapper>
+          {mediaUrls.map((_, idx) => (
+            <CarouselItem
+              type="button"
+              key={idx}
+              $isSelected={idx === curIdx}
+              onClick={(e) => moveToIdx(e, idx)}
+            />
+          ))}
+        </CarouselWrapper>
       )}
     </SelectedFileWrapper>
   );
@@ -380,6 +399,50 @@ const ImgCarouselItem = styled.li<{
 
     z-index: 1;
   }
+`;
+
+const CarouselWrapper = styled.div`
+  position: absolute;
+  bottom: var(--spacer-sm);
+  left: 50%;
+  transform: translateX(-50%);
+
+  height: var(--rem-16);
+
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-4xs);
+  padding: 0 var(--spacer-2xs);
+
+  background: ${({ theme }) => theme.colors.media.background};
+  border-radius: var(--radius-full);
+
+  z-index: 10;
+`;
+
+const CarouselItem = styled.button<{ $isSelected: boolean }>`
+  width: var(--rem-6);
+  height: var(--rem-6);
+
+  background: ${({ $isSelected, theme }) =>
+    $isSelected
+      ? theme.colors.media.onBackground
+      : theme.colors.media.onBackgroundDisabled};
+
+  border-radius: var(--radius-full);
+  cursor: pointer;
+
+  padding: 0;
+  margin: var(--spacer-4xs);
+
+  z-index: 10;
+
+  &:hover {
+    background: ${({ $isSelected, theme }) =>
+      !$isSelected && theme.colors.media.onBackgroundWeak};
+  }
+
+  transition: all 0.4s;
 `;
 
 export default MediaCarousel;
