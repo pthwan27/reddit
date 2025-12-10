@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Post } from '@/app/types';
 
 import MediaCarousel from '../../common/mediaCarousel';
+import CommentPostLinkPreview from './linkPreview';
 
 const CommentPostBody = ({
   title,
@@ -20,34 +21,42 @@ const CommentPostBody = ({
   const cleanContent = DOMPurify.sanitize(body);
 
   return (
-    <>
+    <StyledCommentPostBody>
       <Title>{title}</Title>
       {postType === 'media' && (
-        <>
-          <MediaCarouselWrapper>
-            <MediaCarousel
-              mediaUrls={mediaType === 'image' ? imageUrls : [videoUrl]}
-              curIdx={curImgIdx}
-              setCurIdx={setCurImgIdx}
-              mediaType={mediaType}
-              version={'view'}
-            />
-          </MediaCarouselWrapper>
-        </>
+        <MediaCarouselWrapper>
+          <MediaCarousel
+            mediaUrls={mediaType === 'image' ? imageUrls : [videoUrl]}
+            curIdx={curImgIdx}
+            setCurIdx={setCurImgIdx}
+            mediaType={mediaType}
+            version={'view'}
+            noBorderRadiusOnMobile={true}
+          />
+        </MediaCarouselWrapper>
       )}
-      {postType === 'link' && <Link>{linkUrl}</Link>}
+      {postType === 'link' && <CommentPostLinkPreview url={linkUrl} />}
       {postType === 'text' && (
         <Content dangerouslySetInnerHTML={{ __html: cleanContent }} />
       )}
-    </>
+    </StyledCommentPostBody>
   );
 };
+
+const StyledCommentPostBody = styled.div``;
 
 const Title = styled.div`
   display: flex;
   justify-content: space-between;
 
   margin-bottom: var(--spacer-xs);
+
+  padding: var(--spacer-md) var(--spacer-md) var(--spacer-2xs);
+
+  @media (min-width: 768px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 
   font-weight: 600;
   font-size: 1.125rem;
@@ -80,31 +89,12 @@ const Content = styled.div`
   }
 
   margin-bottom: var(--spacer-xs);
-`;
 
-const Link = styled.a`
-  margin-bottom: var(--spacer-xs);
-
-  font-weight: 600;
-
-  font-size: 0.75rem;
-  line-height: 1rem;
+  padding: var(--spacer-md) var(--spacer-md) var(--spacer-2xs);
 
   @media (min-width: 768px) {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-
-  text-decoration: none;
-  color: ${({ theme }) => theme.colors.a.default};
-
-  &:hover {
-    text-decoration: underline;
-    color: ${({ theme }) => theme.colors.a.hover};
-  }
-
-  &:visited {
-    color: ${({ theme }) => theme.colors.a.visited};
+    padding-left: 0;
+    padding-right: 0;
   }
 `;
 

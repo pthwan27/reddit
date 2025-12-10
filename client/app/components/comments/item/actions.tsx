@@ -44,9 +44,16 @@ const StyledPostActions = styled.span`
 
   gap: var(--spacer-xs);
 
-  height: var(--rem-32);
+  height: var(--rem-48);
 
   font: var(--font-12-16-semibold);
+
+  padding: var(--spacer-md) var(--spacer-md) var(--spacer-2xs);
+
+  @media (min-width: 768px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 `;
 
 const VoteButtons = styled.div<{ $userVote: number }>`
@@ -55,6 +62,8 @@ const VoteButtons = styled.div<{ $userVote: number }>`
   justify-content: center;
 
   padding: var(--spacer-2xs) 0;
+
+  height: var(--rem-32);
 
   border-radius: var(--radius-xl);
 
@@ -146,6 +155,8 @@ const CommentButton = styled.button`
   justify-content: center;
 
   padding: var(--spacer-2xs) var(--spacer-xs);
+  height: var(--rem-32);
+
   gap: var(--spacer-2xs);
 
   border-radius: var(--radius-xl);

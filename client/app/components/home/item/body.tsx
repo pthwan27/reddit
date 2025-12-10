@@ -23,17 +23,15 @@ const HomePostBody = ({
     <>
       <Title>{title}</Title>
       {postType === 'media' && (
-        <>
-          <MediaCarouselWrapper>
-            <MediaCarousel
-              mediaUrls={mediaType === 'image' ? imageUrls : [videoUrl]}
-              curIdx={curImgIdx}
-              setCurIdx={setCurImgIdx}
-              mediaType={mediaType}
-              version={'view'}
-            />
-          </MediaCarouselWrapper>
-        </>
+        <MediaCarouselWrapper>
+          <MediaCarousel
+            mediaUrls={mediaType === 'image' ? imageUrls : [videoUrl]}
+            curIdx={curImgIdx}
+            setCurIdx={setCurImgIdx}
+            mediaType={mediaType}
+            version={'view'}
+          />
+        </MediaCarouselWrapper>
       )}
       {postType === 'link' && <Link>{linkUrl}</Link>}
       {postType === 'text' && (
@@ -66,6 +64,8 @@ const MediaCarouselWrapper = styled.div`
   height: auto;
 
   margin-bottom: var(--spacer-xs);
+
+  border-radius: var(--radius-xl);
 `;
 
 const Content = styled.div`

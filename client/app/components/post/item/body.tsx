@@ -23,17 +23,15 @@ const PostBody = ({
     <>
       <Title>{title}</Title>
       {postType === 'media' && (
-        <>
-          <MediaCarouselWrapper>
-            <MediaCarousel
-              mediaUrls={mediaType === 'image' ? imageUrls : [videoUrl]}
-              curIdx={curImgIdx}
-              setCurIdx={setCurImgIdx}
-              mediaType={mediaType}
-              version={'view'}
-            />
-          </MediaCarouselWrapper>
-        </>
+        <MediaCarouselWrapper>
+          <MediaCarousel
+            mediaUrls={mediaType === 'image' ? imageUrls : [videoUrl]}
+            curIdx={curImgIdx}
+            setCurIdx={setCurImgIdx}
+            mediaType={mediaType}
+            version={'view'}
+          />
+        </MediaCarouselWrapper>
       )}
       {postType === 'link' && <Link>{linkUrl}</Link>}
       {postType === 'text' && (

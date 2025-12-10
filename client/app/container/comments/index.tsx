@@ -185,8 +185,6 @@ const PostInfoSection = styled.section`
   padding-top: var(--spacer-xs);
   margin-bottom: var(--spacer-xs);
 
-  padding: var(--spacer-md) var(--spacer-md) var(--spacer-2xs);
-
   @media (min-width: 768px) {
     padding: var(--spacer-xs) var(--spacer-xs) 0;
   }
@@ -201,6 +199,8 @@ const PostInfoSection = styled.section`
 `;
 
 const InputSection = styled.section`
+  margin-top: var(--spacer-md);
+
   @media (min-width: 768px) {
     padding: var(--spacer-xs) var(--spacer-xs) 0;
   }

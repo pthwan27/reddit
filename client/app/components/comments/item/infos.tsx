@@ -46,11 +46,11 @@ const CommentPostInfos = ({ ...post }: Post) => {
 };
 
 const StyledPostInfos = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
 
-  padding-top: var(--spacer-md);
-  padding-bottom: var(--spacer-2xs);
+  padding: var(--spacer-md) var(--spacer-md) var(--spacer-2xs);
 
   @media (min-width: 768px) {
     padding-left: 0;
@@ -71,6 +71,14 @@ const PostInfoWrapper = styled.div`
   @media (min-width: 768px) {
     > div:first-child {
       display: flex;
+    }
+  }
+
+  @media (min-width: 1472px) {
+    > div:first-child {
+      position: absolute;
+      top: 1rem;
+      inset-inline-start: -2.5rem;
     }
   }
 `;
