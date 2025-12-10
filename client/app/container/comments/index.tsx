@@ -8,14 +8,14 @@ import { usePostStore } from '@/app/store/postStore';
 
 import styled from 'styled-components';
 
+import CommentPostActions from '@/app/components/comments/item/actions';
+import CommentPostBody from '@/app/components/comments/item/body';
+import CommentPostInfos from '@/app/components/comments/item/infos';
 import CommentInput from '@/app/components/comments/item/input';
 import CommentSort from '@/app/components/comments/item/sort';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 import Skeleton from '@/app/components/common/loading/skeleton';
-import PostActions from '@/app/components/post/item/actions';
-import PostBody from '@/app/components/post/item/body';
-import PostInfos from '@/app/components/post/item/infos';
 import RightSideBar from '@/app/components/sub/rightSideBar';
 
 import CommentItem from '@/app/container/comments/item';
@@ -103,12 +103,12 @@ const CommentList = ({ post }: { post: Post }) => {
 
   return (
     <GridWrapper>
-      <CommentsWrapper>
-        <PostSection>
-          <PostInfos {...selectedPost} />
-          <PostBody {...selectedPost} />
-          <PostActions {...selectedPost} />
-        </PostSection>
+      <PostCommentsWrapper>
+        <PostInfoSection>
+          <CommentPostInfos {...selectedPost} />
+          <CommentPostBody {...selectedPost} />
+          <CommentPostActions {...selectedPost} />
+        </PostInfoSection>
         <InputSection>
           <CommentInput
             isEditorOpen={isEditorOpen}
@@ -142,7 +142,7 @@ const CommentList = ({ post }: { post: Post }) => {
         </CommentsSection>
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
-      </CommentsWrapper>
+      </PostCommentsWrapper>
       <RightSideBar sub={selectedPost.sub} />
     </GridWrapper>
   );
@@ -162,6 +162,7 @@ const GridWrapper = styled.div`
   gap: var(--spacer-lg);
 
   grid-template-columns: minmax(0, 1fr);
+  background: ${({ theme }) => theme.colors.neutral.background};
 
   & > :nth-child(2) {
     display: none;
@@ -175,10 +176,9 @@ const GridWrapper = styled.div`
     grid-template-columns: minmax(0, 756px) minmax(0, 316px);
   }
 `;
+const PostCommentsWrapper = styled.div``;
 
-const CommentsWrapper = styled.div``;
-
-const PostSection = styled.section`
+const PostInfoSection = styled.section`
   display: flex;
   flex-direction: column;
 
@@ -196,9 +196,7 @@ const PostSection = styled.section`
   }
 
   @media (min-width: 768px) {
-    margin-top: var(--spacer-xs);
-    margin-right: calc(-1 * var(--spacer-xs));
-    margin-left: calc(-1 * var(--spacer-xs));
+    margin: var(--spacer-xs) calc(-1 * var(--spacer-xs)) 0;
   }
 `;
 

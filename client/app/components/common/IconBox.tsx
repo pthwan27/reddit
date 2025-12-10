@@ -64,7 +64,7 @@ const bgColor = (backgroundColor: BackgroundColor, theme: DefaultTheme) => {
     case 'neutral':
     default:
       return css`
-        background: ${theme.colors.neutral.contentWeak};
+        background: ${theme.colors.neutral.background};
       `;
   }
 };

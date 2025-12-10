@@ -10,11 +10,11 @@ import SettingIcon from '../svgs/SettingIcon';
 import CollapsibleList from './collapsibleList';
 
 interface LoggedInProps {
-  filteredSubs: Sub[];
+  subscribeSubs: Sub[];
   loading: boolean;
   goToSubDetail: (sub: Sub) => void;
 }
-const LoggedIn = ({ filteredSubs, loading, goToSubDetail }: LoggedInProps) => {
+const LoggedIn = ({ subscribeSubs, loading, goToSubDetail }: LoggedInProps) => {
   return (
     <CollapsibleList title="커뮤니티">
       <IconButton
@@ -32,7 +32,7 @@ const LoggedIn = ({ filteredSubs, loading, goToSubDetail }: LoggedInProps) => {
             ))}
           </SkeletonWrapper>
         ) : (
-          filteredSubs.map((sub: Sub, idx: number) => (
+          subscribeSubs.map((sub: Sub, idx: number) => (
             <SubItem key={sub.title + idx} onClick={() => goToSubDetail(sub)}>
               <IconBox
                 iconUrl={sub.iconUrl}

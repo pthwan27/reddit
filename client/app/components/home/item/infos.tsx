@@ -1,3 +1,5 @@
+import { useRouter } from 'next/navigation';
+
 import formatTimeAgo from '@/app/utils/formatTimeAgo';
 
 import styled from 'styled-components';
@@ -7,13 +9,20 @@ import { Post } from '@/app/types';
 import IconBox from '../../common/IconBox';
 import EtcIcon from '../../svgs/EtcIcon';
 
-const HomePostInfos = ({ ...post }: Post) => {
+const HomePostInfos = ({
+  post,
+  handleSubscribe,
+}: {
+  post: Post;
+  handleSubscribe: () => void;
+}) => {
+  const router = useRouter();
+
   const goToSub = (e: React.MouseEvent) => {
     e.stopPropagation();
 
-    //가입 기능 구현 -> sub 페이지에서도 사용 예정
+    router.push(`/r/${post.sub.slug}`);
   };
-
   return (
     <StyledHomePostInfos>
       <div>
@@ -23,12 +32,17 @@ const HomePostInfos = ({ ...post }: Post) => {
           width={24}
           height={24}
         />
-        <span>r/{post.sub.title}</span>
+        <SubTitle onClick={(e) => goToSub(e)}>r/{post.sub.title}</SubTitle>
         <span>•</span>
         <span>{formatTimeAgo(post.createdAt)}</span>
       </div>
       <IconsWrapper>
-        <RegisterButton onClick={goToSub}>가입</RegisterButton>
+        {post.sub.isSubscribed ? (
+          <></>
+        ) : (
+          <RegisterButton onClick={handleSubscribe}>가입</RegisterButton>
+        )}
+
         <IconWrapper>
           <EtcIcon />
         </IconWrapper>
@@ -46,7 +60,7 @@ const StyledHomePostInfos = styled.div`
   margin-top: calc(-1 * var(--spacer-2xs));
   margin-bottom: var(--spacer-2xs);
 
-  div {
+  > div {
     display: flex;
     align-items: center;
 
@@ -56,16 +70,33 @@ const StyledHomePostInfos = styled.div`
 
     cursor: pointer;
 
-    span:nth-child(2) {
-      font: var(--font-12-16-bold);
-
-      color: ${({ theme }) => theme.colors.neutral.content};
+    > span {
+      display: flex;
+      align-items: center;
+      height: var(--rem-32);
     }
 
-    span:nth-child(3),
-    span:nth-child(4) {
+    > span:nth-child(3),
+    > span:nth-child(4) {
       color: ${({ theme }) => theme.colors.neutral.contentWeak};
     }
+
+    > span:nth-child(4) {
+      font: var(--font-12-16-regular);
+
+      line-height: 1rem;
+    }
+  }
+`;
+
+const SubTitle = styled.span`
+  font: var(--font-12-16-semibold);
+  line-height: 1rem;
+
+  color: ${({ theme }) => theme.colors.neutral.content};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary.plain};
   }
 `;
 

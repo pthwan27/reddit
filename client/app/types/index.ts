@@ -26,7 +26,6 @@ export interface Sub {
   iconUrl: string;
   bannerUrl: string;
   username: string;
-  profileUser: User | null;
   isSubscribed: boolean;
   isOwner: boolean;
   posts?: Post[];

@@ -7,7 +7,6 @@ import { clientAxiosInstance } from '../utils/axios';
 
 const initialState = {
   subs: [],
-  filteredSubs: [],
   selectedSub: null,
   loading: false,
 };
@@ -36,7 +35,6 @@ export const useSubStore = create(
         set({ loading: true });
 
         const originalSubs = get().subs;
-        const originalFilteredSubs = get().filteredSubs;
         const tempId = Math.random() * 100000;
 
         const optimisticSub: Sub = {
@@ -49,16 +47,12 @@ export const useSubStore = create(
           bannerUrl: bannerPreview || '',
           iconUrl: iconPreview || '',
           username,
-          profileUser: null,
           isSubscribed: false,
           isOwner: false,
         };
 
         set((state) => ({
           subs: [optimisticSub, ...state.subs],
-          filteredSubs: !optimisticSub.profileUser
-            ? [optimisticSub, ...state.filteredSubs]
-            : state.filteredSubs,
         }));
 
         try {
@@ -75,16 +69,12 @@ export const useSubStore = create(
 
           set((state) => ({
             subs: [newSub, ...state.subs.filter((sub) => sub.id !== tempId)],
-            filteredSubs: [
-              newSub,
-              ...state.filteredSubs.filter((sub) => sub.id !== tempId),
-            ],
           }));
         } catch (err: unknown) {
           const error = err as CustomError;
           console.error('Create Sub failed:', error);
 
-          set({ subs: originalSubs, filteredSubs: originalFilteredSubs });
+          set({ subs: originalSubs });
 
           throw error;
         } finally {
@@ -101,9 +91,36 @@ export const useSubStore = create(
 
           set({
             subs: data,
-            filteredSubs: data.filter((sub) => !sub.profileUser),
             loading: false,
           });
+        } catch (error) {
+          set({ loading: false });
+          throw error;
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      handleSubscription: async (sub: Sub) => {
+        try {
+          const { data } = await clientAxiosInstance.patch(
+            `api/sub/${sub.slug}/subscribe`,
+            {
+              id: sub.id,
+            }
+          );
+
+          if (data.sub?.isSubscribed) {
+            set({
+              subs: [...get().subs, data.sub],
+              loading: false,
+            });
+          } else {
+            set({
+              subs: [...get().subs.filter((s) => s.id !== data.sub.id)],
+              loading: false,
+            });
+          }
         } catch (error) {
           set({ loading: false });
           throw error;

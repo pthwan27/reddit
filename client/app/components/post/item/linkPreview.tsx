@@ -20,7 +20,7 @@ interface LinkMetadata {
   siteName?: string;
 }
 
-const LinkPreview = ({ url }: LinkPreviewProps) => {
+const PostLinkPreview = ({ url }: LinkPreviewProps) => {
   const [metadata, setMetadata] = useState<LinkMetadata | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -170,4 +170,4 @@ const PreviewUrl = styled.div`
   color: ${({ theme }) => theme.colors.neutral.content};
 `;
 
-export default LinkPreview;
+export default PostLinkPreview;

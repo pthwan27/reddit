@@ -80,14 +80,10 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
         `api/sub/${sub.slug}/subscribe`,
         {
           id: sub.id,
-          subscribe: !sub.isSubscribed,
         }
       );
 
-      setSub((prevSub) => ({
-        ...prevSub,
-        isSubscribed: data.isSubscribed,
-      }));
+      setSub(data.sub);
     } catch (err) {
       const error = err as Error;
 

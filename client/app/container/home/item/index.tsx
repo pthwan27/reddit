@@ -1,26 +1,51 @@
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+import { clientAxiosInstance } from '@/app/utils/axios';
 
 import styled from 'styled-components';
 
 import HomePostActions from '@/app/components/home/item/actions';
 import HomePostBody from '@/app/components/home/item/body';
 import HomePostInfos from '@/app/components/home/item/infos';
-import LinkPreview from '@/app/components/post/item/linkPreview';
+import LinkPreview from '@/app/components/home/item/linkPreview';
 
 import { Post } from '@/app/types';
 
-const HomePostItem = ({ post }: { post: Post }) => {
+const HomePostItem = ({ post: initialPost }: { post: Post }) => {
+  const [post, setPost] = useState<Post>(initialPost);
+
   const router = useRouter();
 
   const goToComments = () => {
     router.push(`/r/${post.sub.slug}/comments/${post.identifier}`);
   };
 
+  const handleSubscribe = async () => {
+    try {
+      const { data } = await clientAxiosInstance.patch(
+        `api/sub/${post.sub.slug}/subscribe`,
+        {
+          id: post.sub.id,
+        }
+      );
+
+      setPost((prevPost) => ({
+        ...prevPost,
+        sub: data.sub,
+      }));
+    } catch (err) {
+      const error = err as Error;
+
+      console.error('구독/구독취소 실패:', error.message);
+    }
+  };
+
   if (post.postType === 'link') {
     return (
       <HomePostLinkItemContainer onClick={() => goToComments()}>
         <PostHeader>
-          <HomePostInfos {...post} />
+          <HomePostInfos post={post} handleSubscribe={handleSubscribe} />
         </PostHeader>
         <PostContent>
           <HomePostBody {...post} />
@@ -36,7 +61,7 @@ const HomePostItem = ({ post }: { post: Post }) => {
 
   return (
     <HomePostItemContainer onClick={() => goToComments()}>
-      <HomePostInfos {...post} />
+      <HomePostInfos post={post} handleSubscribe={handleSubscribe} />
       <HomePostBody {...post} />
       <HomePostActions {...post} />
     </HomePostItemContainer>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { clientAxiosInstance } from '@/app/utils/axios';
 
@@ -7,11 +7,13 @@ import { styled } from 'styled-components';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 
+import { useAuth } from '@/app/context/authContext';
 import { CustomError, Post } from '@/app/types';
 
 import HomePostListContainer from './list';
 
 const Home = () => {
+  const { user, isLoading: isAuthLoading } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
 
   const [loading, setLoading] = useState(false);
@@ -23,29 +25,36 @@ const Home = () => {
   const [page, setPage] = useState(0);
   const LIMIT = 10;
 
-  const getPostList = async () => {
-    try {
-      setLoading(true);
+  const getPostList = useCallback(
+    async (isNewSearch: boolean = false) => {
+      const currentPage = isNewSearch ? 0 : page;
 
-      const { data } = await clientAxiosInstance(
-        `/api/home/posts?page=${page}&limit=${LIMIT}`
-      );
+      try {
+        setLoading(true);
 
-      setPosts((prev) => (page === 0 ? data.posts : [...prev, ...data.posts]));
+        const { data } = await clientAxiosInstance(
+          `/api/home/posts?page=${currentPage}&limit=${LIMIT}`
+        );
 
-      setPage((prevPage) => (prevPage !== 0 ? prevPage + 1 : 1));
-      setHasMore(data.posts.length === LIMIT);
-      setLoading(false);
+        setPosts((prev) =>
+          page === 0 ? data.posts : [...prev, ...data.posts]
+        );
 
-      setError('');
-    } catch (e) {
-      const error = e as CustomError;
-      setError(
-        error.response?.data?.error || '게시물 불러오기에 실패했습니다.'
-      );
-      setLoading(false);
-    }
-  };
+        setPage((prevPage) => (prevPage !== 0 ? prevPage + 1 : 1));
+        setHasMore(data.posts.length === LIMIT);
+        setLoading(false);
+
+        setError('');
+      } catch (e) {
+        const error = e as CustomError;
+        setError(
+          error.response?.data?.error || '게시물 불러오기에 실패했습니다.'
+        );
+        setLoading(false);
+      }
+    },
+    [page]
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -53,7 +62,7 @@ const Home = () => {
         const target = entries[0];
 
         if (target.isIntersecting && !loading && hasMore) {
-          getPostList();
+          getPostList(false);
         }
       },
       {
@@ -70,8 +79,12 @@ const Home = () => {
   }, [loading, hasMore]);
 
   useEffect(() => {
-    getPostList();
-  }, []);
+    if (!isAuthLoading) {
+      setPosts([]);
+      setPage(0);
+      getPostList(true);
+    }
+  }, [user]);
 
   return (
     <HomeContainer>

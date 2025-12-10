@@ -46,8 +46,6 @@ export class Sub extends CoreEntity {
   @OneToMany(() => Subscription, (subscription) => subscription.sub)
   subscribers: Subscription[];
 
-  @JoinColumn()
-  profileUser: User;
 
   @Expose()
   get userId(): number {

@@ -7,19 +7,20 @@ import { useUIStore } from '@/app/store/uiStore';
 import styled from 'styled-components';
 
 import IconBox from '@/app/components/common/IconBox';
+import LoggedIn from '@/app/components/leftNav/loggedIn';
+import LoggedOut from '@/app/components/leftNav/loggedOut';
 import MenuIcon from '@/app/components/svgs/MenuIcon';
 
 import { ModalKey, useModalState } from '@/app/context/modalContext';
 import { Sub } from '@/app/types';
 
 import CommonLeftNavMenu from '../../components/leftNav/common';
-import LoginNavMenu from '../../components/leftNav/loggedIn';
-import LogoutNavMenu from '../../components/leftNav/loggedOut';
 import { useAuth } from '../../context/authContext';
 import CreateSubModal from '../modal/createSubModal';
 
 const LeftNav = () => {
   const { user } = useAuth();
+
   const {
     leftNavVisible,
     leftNavByHeaderVisible,
@@ -27,13 +28,13 @@ const LeftNav = () => {
     toggleLeftNavByHeader,
   } = useUIStore();
 
+  const { subs, loading } = useSubStore();
+
   const router = useRouter();
   const pathname = usePathname();
 
   const { open } = useModalState();
   const modalKey: ModalKey = 'createSubModal';
-
-  const { filteredSubs, loading } = useSubStore();
 
   const openCreateSubModal = () => {
     if (!user) return;
@@ -86,13 +87,13 @@ const LeftNav = () => {
           <hr />
           <MenuContainer>
             {user ? (
-              <LoginNavMenu
-                filteredSubs={filteredSubs}
+              <LoggedIn
+                subscribeSubs={subs}
                 loading={loading}
                 goToSubDetail={goToSubDetail}
               />
             ) : (
-              <LogoutNavMenu />
+              <LoggedOut />
             )}
           </MenuContainer>
           {user ? <hr /> : <></>}
@@ -116,13 +117,13 @@ const LeftNav = () => {
           <hr />
           <MenuContainer>
             {user ? (
-              <LoginNavMenu
-                filteredSubs={filteredSubs}
+              <LoggedIn
+                subscribeSubs={subs}
                 loading={loading}
                 goToSubDetail={goToSubDetail}
               />
             ) : (
-              <LogoutNavMenu />
+              <LoggedOut />
             )}
           </MenuContainer>
           {user ? <hr /> : <></>}
@@ -265,7 +266,7 @@ const ToggleButton = styled.button<{ $leftNavVisible: boolean }>`
   position: absolute;
 
   right: 0;
-  top: 32px;
+  top: var(--rem-20);
 
   transform: translateX(50%);
 

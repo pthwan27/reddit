@@ -1,3 +1,4 @@
+import { instanceToPlain } from 'class-transformer';
 import { RequestHandler } from 'express';
 
 import { Sub } from '../../entities/Sub';
@@ -6,7 +7,7 @@ import { User } from '../../entities/User';
 
 export const SubscribeHandler: RequestHandler = async (req, res) => {
   try {
-    const { id, subscribe } = req.body;
+    const { id } = req.body;
 
     const user: User | undefined = res.locals.user;
 
@@ -14,7 +15,7 @@ export const SubscribeHandler: RequestHandler = async (req, res) => {
       return res.status(401).json({ error: 'User not found in context' });
     }
 
-    if (!id || subscribe === undefined) {
+    if (!id) {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
@@ -28,24 +29,22 @@ export const SubscribeHandler: RequestHandler = async (req, res) => {
       where: { user: { id: user.id }, sub: { id: sub.id } },
     });
 
-    if (subscribe) {
-      if (subscription) {
-        return res.status(200).json({ isSubscribed: true });
-      }
+    if (subscription) {
+      await subscription.remove();
+      sub.isSubscribed = false;
+      sub.isOwner = user.id === sub.userId;
 
+      return res.status(200).json(instanceToPlain(sub));
+    } else {
       const newSubscription = new Subscription();
       newSubscription.user = user;
       newSubscription.sub = sub;
       await newSubscription.save();
-    } else {
-      if (subscription) {
-        await subscription.remove();
-      } else {
-        return res.status(200).json({ isSubscribed: false });
-      }
-    }
 
-    return res.status(200).json({ isSubscribed: subscribe });
+      sub.isSubscribed = true;
+      sub.isOwner = user.id === sub.userId;
+      return res.status(200).json(instanceToPlain(sub));
+    }
   } catch (error) {
     console.error('Error patch sub subscribe:', error);
 
