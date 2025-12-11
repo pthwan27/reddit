@@ -8,7 +8,16 @@ import { Post } from '@/app/types';
 
 import HomePostItem from '../item';
 
-const HomePostList = ({ posts }: { posts: Post[] }) => {
+const HomePostList = ({
+  posts,
+  handleSubscribe,
+}: {
+  posts: Post[];
+  handleSubscribe: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    post: Post
+  ) => Promise<void>;
+}) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isSelecting, setIsSelecting] = useState(false);
   const [sortOption, setSortOption] = useState<
@@ -46,7 +55,7 @@ const HomePostList = ({ posts }: { posts: Post[] }) => {
       <hr />
       {posts.map((post, idx) => (
         <HomePostWrapper key={idx + post.identifier}>
-          <HomePostItem post={post} />
+          <HomePostItem post={post} handleSubscribe={handleSubscribe} />
           {idx < posts.length - 1 && <hr />}
         </HomePostWrapper>
       ))}

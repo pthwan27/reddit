@@ -1,3 +1,5 @@
+import { useRouter } from 'next/navigation';
+
 import formatTimeAgo from '@/app/utils/formatTimeAgo';
 
 import styled from 'styled-components';
@@ -9,19 +11,26 @@ import ArrowBackIcon from '../../svgs/ArrowBackIcon';
 import EtcIcon from '../../svgs/EtcIcon';
 
 const CommentPostInfos = ({ ...post }: Post) => {
+  const router = useRouter();
+
+  const goToBack = () => {
+    router.back();
+  };
   return (
     <StyledPostInfos>
       <PostInfoWrapper>
-        <IconBox
-          icon={<ArrowBackIcon />}
-          width={32}
-          height={32}
-          percentage={50}
-          backgroundColor="secondary"
-        />
+        <BackButton onClick={goToBack}>
+          <IconBox
+            icon={<ArrowBackIcon />}
+            width={32}
+            height={32}
+            percentage={50}
+            backgroundColor="secondary"
+          />
+        </BackButton>
         <PostInfo>
           <IconBox
-            iconUrl={post.user.profileUrl}
+            iconUrl={post.sub.iconUrl}
             altText={post.user.username}
             width={32}
             height={32}
@@ -81,6 +90,9 @@ const PostInfoWrapper = styled.div`
       inset-inline-start: -2.5rem;
     }
   }
+`;
+const BackButton = styled.button`
+  padding: 0;
 `;
 
 const PostInfo = styled.div`

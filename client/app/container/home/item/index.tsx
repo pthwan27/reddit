@@ -1,7 +1,4 @@
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-
-import { clientAxiosInstance } from '@/app/utils/axios';
 
 import styled from 'styled-components';
 
@@ -12,33 +9,20 @@ import LinkPreview from '@/app/components/home/item/linkPreview';
 
 import { Post } from '@/app/types';
 
-const HomePostItem = ({ post: initialPost }: { post: Post }) => {
-  const [post, setPost] = useState<Post>(initialPost);
-
+const HomePostItem = ({
+  post,
+  handleSubscribe,
+}: {
+  post: Post;
+  handleSubscribe: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    post: Post
+  ) => Promise<void>;
+}) => {
   const router = useRouter();
 
   const goToComments = () => {
     router.push(`/r/${post.sub.slug}/comments/${post.identifier}`);
-  };
-
-  const handleSubscribe = async () => {
-    try {
-      const { data } = await clientAxiosInstance.patch(
-        `api/sub/${post.sub.slug}/subscribe`,
-        {
-          id: post.sub.id,
-        }
-      );
-
-      setPost((prevPost) => ({
-        ...prevPost,
-        sub: data.sub,
-      }));
-    } catch (err) {
-      const error = err as Error;
-
-      console.error('구독/구독취소 실패:', error.message);
-    }
   };
 
   if (post.postType === 'link') {

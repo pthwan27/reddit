@@ -18,7 +18,7 @@ interface InfoProps {
   iconImage: string;
   onEditClick: () => void;
   isIcon?: boolean;
-  handleSubscribe: () => void;
+  handleSubscribe: (sub: Sub) => Promise<void>;
 }
 
 const SubInfos = ({
@@ -85,7 +85,7 @@ const SubInfos = ({
               variant="outlined"
               font="16-20-semibold"
               disabled={sub.isOwner}
-              onClick={handleSubscribe}
+              onClick={() => handleSubscribe(sub)}
             />
           ) : (
             <IconButton
@@ -94,7 +94,7 @@ const SubInfos = ({
               radius="var(--radius-xl)"
               variant="primary"
               font="16-20-semibold"
-              onClick={handleSubscribe}
+              onClick={() => handleSubscribe(sub)}
             />
           )}
 

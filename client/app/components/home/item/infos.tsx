@@ -14,7 +14,10 @@ const HomePostInfos = ({
   handleSubscribe,
 }: {
   post: Post;
-  handleSubscribe: () => void;
+  handleSubscribe: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    post: Post
+  ) => Promise<void>;
 }) => {
   const router = useRouter();
 
@@ -26,12 +29,16 @@ const HomePostInfos = ({
   return (
     <StyledHomePostInfos>
       <div>
-        <IconBox
-          iconUrl={post.sub.iconUrl}
-          altText={post.sub.title}
-          width={24}
-          height={24}
-        />
+        {post.sub.iconUrl ? (
+          <IconBox
+            iconUrl={post.sub.iconUrl}
+            altText={post.sub.title}
+            width={24}
+            height={24}
+          />
+        ) : (
+          <div style={{ width: '24px', height: '24px' }} />
+        )}
         <SubTitle onClick={(e) => goToSub(e)}>r/{post.sub.title}</SubTitle>
         <span>•</span>
         <span>{formatTimeAgo(post.createdAt)}</span>
@@ -40,7 +47,9 @@ const HomePostInfos = ({
         {post.sub.isSubscribed ? (
           <></>
         ) : (
-          <RegisterButton onClick={handleSubscribe}>가입</RegisterButton>
+          <RegisterButton onClick={(e) => handleSubscribe(e, post)}>
+            가입
+          </RegisterButton>
         )}
 
         <IconWrapper>

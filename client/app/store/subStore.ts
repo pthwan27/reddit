@@ -101,7 +101,7 @@ export const useSubStore = create(
         }
       },
 
-      handleSubscription: async (sub: Sub) => {
+      handleSubscribe: async (sub: Sub) => {
         try {
           const { data } = await clientAxiosInstance.patch(
             `api/sub/${sub.slug}/subscribe`,
@@ -110,17 +110,19 @@ export const useSubStore = create(
             }
           );
 
-          if (data.sub?.isSubscribed) {
+          if (data?.isSubscribed) {
             set({
-              subs: [...get().subs, data.sub],
+              subs: [...get().subs, data],
               loading: false,
             });
           } else {
             set({
-              subs: [...get().subs.filter((s) => s.id !== data.sub.id)],
+              subs: [...get().subs.filter((s) => s.id !== data.id)],
               loading: false,
             });
           }
+
+          return data?.isSubscribed;
         } catch (error) {
           set({ loading: false });
           throw error;

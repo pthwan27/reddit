@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { clientAxiosInstance } from '@/app/utils/axios';
 
+import { useSubStore } from '@/app/store/subStore';
+
 import { styled } from 'styled-components';
 
 import ErrorMessage from '@/app/components/common/errorMessage';
@@ -14,6 +16,8 @@ import HomePostListContainer from './list';
 
 const Home = () => {
   const { user, isLoading: isAuthLoading } = useAuth();
+  const { handleSubscribe: subscribe } = useSubStore();
+
   const [posts, setPosts] = useState<Post[]>([]);
 
   const [loading, setLoading] = useState(false);
@@ -56,6 +60,34 @@ const Home = () => {
     [page]
   );
 
+  const handleSubscribe = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    post: Post
+  ) => {
+    e.stopPropagation();
+
+    try {
+      const isSubscribed = await subscribe(post.sub);
+
+      setPosts((prevPosts) =>
+        prevPosts.map((prevPost) => {
+          if (prevPost.sub.id !== post.sub.id) return prevPost;
+          return {
+            ...prevPost,
+            sub: {
+              ...prevPost.sub,
+              isSubscribed: isSubscribed,
+            },
+          };
+        })
+      );
+    } catch (err) {
+      const error = err as Error;
+
+      console.error('구독/구독취소 실패:', error.message);
+    }
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -89,7 +121,10 @@ const Home = () => {
   return (
     <HomeContainer>
       <ObserverWrapper>
-        <HomePostListContainer posts={posts} />
+        <HomePostListContainer
+          posts={posts}
+          handleSubscribe={handleSubscribe}
+        />
         {loading && <LoadingSpinner />}
 
         {hasMore && !loading && (

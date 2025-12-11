@@ -7,6 +7,7 @@ import { clientAxiosInstance } from '@/app/utils/axios';
 import { useUploadImage } from '@/app/hooks/useUploadImage';
 
 import { usePostStore } from '@/app/store/postStore';
+import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
@@ -21,18 +22,19 @@ import RightSideBar from '../../../components/sub/rightSideBar';
 import PostList from '../../post/list';
 
 const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
-  const [sub, setSub] = useState<Sub>({ ...initialSub });
-
-  const { uploadIconImage, uploadBannerImage } = useUploadImage();
-  const [iconImage, setIconImage] = useState<string>(sub.iconUrl);
-  const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl);
-
   const { user } = useAuth();
+
   const { posts, loading, hasMore, fetchPosts, clearPosts } = usePostStore();
+  const { handleSubscribe: subscribe } = useSubStore();
+  const { uploadIconImage, uploadBannerImage } = useUploadImage();
+
+  const [sub, setSub] = useState<Sub>(initialSub);
+
+  const [iconImage, setIconImage] = useState<string>(sub.iconUrl || '');
+  const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl || '');
 
   const iconFileInputRef = useRef<HTMLInputElement>(null);
   const bannerFileInputRef = useRef<HTMLInputElement>(null);
-
   const observerRef = useRef<HTMLDivElement>(null);
 
   const handleFileChange =
@@ -74,22 +76,28 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
     }
   };
 
-  const handleSubscribe = async () => {
+  const handleSubscribe = async (sub: Sub) => {
     try {
-      const { data } = await clientAxiosInstance.patch(
-        `api/sub/${sub.slug}/subscribe`,
-        {
-          id: sub.id,
-        }
-      );
+      const isSubscribed = await subscribe(sub);
 
-      setSub(data.sub);
+      setSub({
+        ...sub,
+        isSubscribed: isSubscribed,
+      });
     } catch (err) {
       const error = err as Error;
 
       console.error('구독/구독취소 실패:', error.message);
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await clientAxiosInstance.get(`/api/sub/${sub.slug}`);
+
+      setSub(data);
+    })();
+  }, [user]);
 
   useEffect(() => {
     setIconImage(sub.iconUrl);
@@ -104,14 +112,6 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
 
     fetchPosts(sub.id);
   }, [sub.id, fetchPosts]);
-
-  useEffect(() => {
-    (async () => {
-      const response = await clientAxiosInstance.get(`/api/sub/${sub.slug}`);
-
-      setSub(response.data);
-    })();
-  }, [user]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

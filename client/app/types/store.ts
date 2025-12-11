@@ -8,7 +8,7 @@ export type SubState = {
   setSelectedSub: (sub: Sub | null) => void;
   reset: () => void;
   createSub: (subData: CreateSubProps) => Promise<void>;
-  handleSubscription: (sub: Sub) => Promise<void>;
+  handleSubscribe: (sub: Sub) => Promise<boolean>;
 
   _hasHydrated: boolean;
   setHasHydrated: (hydrated: boolean) => void;
