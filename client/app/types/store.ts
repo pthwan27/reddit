@@ -6,12 +6,11 @@ export type SubState = {
   loading: boolean;
   getMySubs: () => Promise<void>;
   setSelectedSub: (sub: Sub | null) => void;
-  reset: () => void;
   createSub: (subData: CreateSubProps) => Promise<void>;
   handleSubscribe: (sub: Sub) => Promise<boolean>;
-
   _hasHydrated: boolean;
   setHasHydrated: (hydrated: boolean) => void;
+  reset: () => void;
 };
 
 export type PostState = {
@@ -22,9 +21,12 @@ export type PostState = {
   curSubId: number;
   selectedPost: Post | null;
   setSelectedPost: (post: Post | null) => void;
-  fetchPosts: (id: number, isInitial?: boolean) => Promise<void>;
+  fetchHomePosts: (isInitial?: boolean) => Promise<void>;
+  fetchSubPosts: (id: number, isInitial?: boolean) => Promise<void>;
   clearPosts: () => void;
   vote: (id: number, value: number, type: string) => Promise<void>;
+  updatePostSubscribeStatus: (subId: number, isSubscribed: boolean) => void;
+  reset: () => void;
 };
 
 export type CommentState = {

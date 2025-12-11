@@ -4,6 +4,7 @@ import { persist } from 'zustand/middleware';
 import { CreateSubProps, CustomError, Sub } from '../types';
 import { SubState } from '../types/store';
 import { clientAxiosInstance } from '../utils/axios';
+import { usePostStore } from './postStore';
 
 const initialState = {
   subs: [],
@@ -102,6 +103,23 @@ export const useSubStore = create(
       },
 
       handleSubscribe: async (sub: Sub) => {
+        const originSubs = get().subs;
+
+        const isCurSubscribed = !!originSubs.find((s) => s.id === sub.id);
+
+        let updatedSubs: Sub[];
+
+        if (isCurSubscribed) {
+          updatedSubs = originSubs.filter((s) => s.id !== sub.id);
+        } else {
+          updatedSubs = [{ ...sub, isSubscribed: true }, ...originSubs];
+        }
+        set({ subs: updatedSubs });
+
+        usePostStore
+          .getState()
+          .updatePostSubscribeStatus(sub.id, !isCurSubscribed);
+
         try {
           const { data } = await clientAxiosInstance.patch(
             `api/sub/${sub.slug}/subscribe`,
@@ -111,20 +129,26 @@ export const useSubStore = create(
           );
 
           if (data?.isSubscribed) {
-            set({
-              subs: [...get().subs, data],
-              loading: false,
-            });
+            set((state) => ({
+              subs: [data, ...state.subs.filter((s) => s.id !== data.id)],
+            }));
           } else {
-            set({
-              subs: [...get().subs.filter((s) => s.id !== data.id)],
-              loading: false,
-            });
+            set((state) => ({
+              subs: state.subs.filter((s) => s.id !== data.id),
+            }));
           }
 
-          return data?.isSubscribed;
+          usePostStore
+            .getState()
+            .updatePostSubscribeStatus(sub.id, data?.isSubscribed);
+
+          return data.isSubscribed;
         } catch (error) {
           set({ loading: false });
+          set({ subs: originSubs });
+          usePostStore
+            .getState()
+            .updatePostSubscribeStatus(sub.id, isCurSubscribed);
           throw error;
         } finally {
           set({ loading: false });

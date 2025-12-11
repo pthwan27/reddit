@@ -2,30 +2,31 @@ import { useRouter } from 'next/navigation';
 
 import formatTimeAgo from '@/app/utils/formatTimeAgo';
 
+import { useSubStore } from '@/app/store/subStore';
+
 import styled from 'styled-components';
 
-import { Post } from '@/app/types';
+import { Post, Sub } from '@/app/types';
 
 import IconBox from '../../common/IconBox';
 import EtcIcon from '../../svgs/EtcIcon';
 
-const HomePostInfos = ({
-  post,
-  handleSubscribe,
-}: {
-  post: Post;
-  handleSubscribe: (
-    e: React.MouseEvent<HTMLButtonElement>,
-    post: Post
-  ) => Promise<void>;
-}) => {
+const HomePostInfos = ({ post }: { post: Post }) => {
   const router = useRouter();
+  const { handleSubscribe: subscribe } = useSubStore();
 
   const goToSub = (e: React.MouseEvent) => {
     e.stopPropagation();
 
     router.push(`/r/${post.sub.slug}`);
   };
+
+  const handleSubscribe = (e: React.MouseEvent, sub: Sub) => {
+    e.stopPropagation();
+
+    subscribe(sub);
+  };
+
   return (
     <StyledHomePostInfos>
       <div>
@@ -47,7 +48,7 @@ const HomePostInfos = ({
         {post.sub.isSubscribed ? (
           <></>
         ) : (
-          <RegisterButton onClick={(e) => handleSubscribe(e, post)}>
+          <RegisterButton onClick={(e) => handleSubscribe(e, post.sub)}>
             가입
           </RegisterButton>
         )}

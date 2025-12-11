@@ -11,12 +11,13 @@ import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
+import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 import SubBanner from '@/app/components/sub/detail/banner';
 import SubInfos from '@/app/components/sub/detail/info';
 
 import { useAuth } from '@/app/context/authContext';
-import { Sub } from '@/app/types';
+import { CustomError, Sub } from '@/app/types';
 
 import RightSideBar from '../../../components/sub/rightSideBar';
 import PostList from '../../post/list';
@@ -24,7 +25,8 @@ import PostList from '../../post/list';
 const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   const { user } = useAuth();
 
-  const { posts, loading, hasMore, fetchPosts, clearPosts } = usePostStore();
+  const [error, setError] = useState('');
+  const { posts, loading, hasMore, fetchSubPosts, clearPosts } = usePostStore();
   const { handleSubscribe: subscribe } = useSubStore();
   const { uploadIconImage, uploadBannerImage } = useUploadImage();
 
@@ -92,14 +94,6 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   };
 
   useEffect(() => {
-    (async () => {
-      const { data } = await clientAxiosInstance.get(`/api/sub/${sub.slug}`);
-
-      setSub(data);
-    })();
-  }, [user]);
-
-  useEffect(() => {
     setIconImage(sub.iconUrl);
   }, [sub.iconUrl]);
 
@@ -108,10 +102,18 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   }, [sub.bannerUrl]);
 
   useEffect(() => {
+    (async () => {
+      const { data } = await clientAxiosInstance.get(`/api/sub/${sub.slug}`);
+
+      setSub(data);
+    })();
+  }, [user]);
+
+  useEffect(() => {
     clearPosts();
 
-    fetchPosts(sub.id);
-  }, [sub.id, fetchPosts]);
+    fetchSubPosts(sub.id);
+  }, [sub.id, fetchSubPosts]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -119,7 +121,16 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
         const target = entries[0];
 
         if (target.isIntersecting && !loading && hasMore) {
-          fetchPosts(sub.id);
+          try {
+            fetchSubPosts(sub.id);
+          } catch (err) {
+            const error = err as CustomError;
+            console.error('Fetching posts failed:', error);
+
+            setError(
+              error.response?.data?.error || '게시물 불러오기를 실패했습니다.'
+            );
+          }
         }
       },
       {
@@ -179,6 +190,8 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
         type="file"
         onChange={handleFileChange('icon')}
       />
+
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </SubDetailContainer>
   );
 };

@@ -3,6 +3,7 @@ import { RequestHandler } from 'express';
 
 import { Comment } from '../../entities/Comment';
 import { Post } from '../../entities/Post';
+import { Subscription } from '../../entities/Subscription';
 import { User } from '../../entities/User';
 import { Vote } from '../../entities/Vote';
 
@@ -58,8 +59,19 @@ export const VoteHandler: RequestHandler = async (req, res) => {
         relations: ['votes', 'user', 'comments', 'votes.user', 'sub'],
       });
 
+      const subscriptions = await Subscription.find({
+        where: { user: { id: user.id } },
+        relations: ['sub', 'sub.subscribers'],
+      });
+
+      const subscriptionSubIds = subscriptions.map((s) => s.sub.id);
+
       if (updatedPost && user) {
         updatedPost.setUserVote(user);
+      }
+
+      if (subscriptionSubIds.includes(updatedPost.sub.id)) {
+        updatedPost.sub.isSubscribed = true;
       }
 
       return res.json(instanceToPlain(updatedPost));

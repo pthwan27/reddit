@@ -9,16 +9,7 @@ import LinkPreview from '@/app/components/home/item/linkPreview';
 
 import { Post } from '@/app/types';
 
-const HomePostItem = ({
-  post,
-  handleSubscribe,
-}: {
-  post: Post;
-  handleSubscribe: (
-    e: React.MouseEvent<HTMLButtonElement>,
-    post: Post
-  ) => Promise<void>;
-}) => {
+const HomePostItem = ({ post }: { post: Post }) => {
   const router = useRouter();
 
   const goToComments = () => {
@@ -29,7 +20,7 @@ const HomePostItem = ({
     return (
       <HomePostLinkItemContainer onClick={() => goToComments()}>
         <PostHeader>
-          <HomePostInfos post={post} handleSubscribe={handleSubscribe} />
+          <HomePostInfos post={post} />
         </PostHeader>
         <PostContent>
           <HomePostBody {...post} />
@@ -45,7 +36,7 @@ const HomePostItem = ({
 
   return (
     <HomePostItemContainer onClick={() => goToComments()}>
-      <HomePostInfos post={post} handleSubscribe={handleSubscribe} />
+      <HomePostInfos post={post} />
       <HomePostBody {...post} />
       <HomePostActions {...post} />
     </HomePostItemContainer>

@@ -18,7 +18,31 @@ export const usePostStore = create<PostState>((set, get) => ({
 
   setSelectedPost: (post: Post | null) => set({ selectedPost: post }),
 
-  fetchPosts: async (id: number) => {
+  fetchHomePosts: async () => {
+    const { loading, page, hasMore } = get();
+    const LIMIT = 10;
+
+    if (loading || !hasMore) return;
+    set({ loading: true });
+
+    try {
+      const { data } = await clientAxiosInstance(
+        `/api/home/posts?page=${page}&limit=${LIMIT}`
+      );
+
+      set((state) => ({
+        posts: [...state.posts, ...data.posts],
+        page: state.page + 1,
+        hasMore: data.posts.length === LIMIT,
+      }));
+    } catch (error) {
+      console.error('Failed to fetch home posts:', error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  fetchSubPosts: async (id: number) => {
     const { loading, page, hasMore, curSubId } = get();
     const LIMIT = 7;
 
@@ -132,4 +156,17 @@ export const usePostStore = create<PostState>((set, get) => ({
       });
     }
   },
+
+  updatePostSubscribeStatus: (subId: number, isSubscribed: boolean) => {
+    set((state) => ({
+      posts: state.posts.map((post) => {
+        if (post.sub.id === subId) {
+          return { ...post, sub: { ...post.sub, isSubscribed } };
+        }
+        return post;
+      }),
+    }));
+  },
+
+  reset: () => set(initialState),
 }));
