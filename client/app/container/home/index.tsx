@@ -55,6 +55,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!isAuthLoading) {
+      clearPosts();
       fetchHomePosts();
     }
   }, [user]);
@@ -84,7 +85,9 @@ const Home = () => {
   );
 };
 
-const HomeContainer = styled.div``;
+const HomeContainer = styled.div`
+  margin-bottom: var(--spacer-2xl);
+`;
 
 const ObserverWrapper = styled.div`
   display: flex;

@@ -9,7 +9,7 @@ import { useSubStore } from './subStore';
 
 const initialState = {
   user: null,
-  loading: false,
+  loading: true,
   mode: 'login' as 'login' | 'register',
 };
 
@@ -89,9 +89,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
   initAuth: () => {
+    set({ loading: true });
+
     const refreshToken = async () => {
-      await clientAxiosInstance.post('/api/auth/refresh');
+      const { data } = await clientAxiosInstance.post('/api/auth/refresh');
+
+      if (data.user) {
+        set({ user: data.user });
+      }
     };
+
     let refreshTokenPromise: Promise<void> | null = null;
 
     clientAxiosInstance.interceptors.response.use(

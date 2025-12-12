@@ -204,6 +204,8 @@ const SubDetailContainer = styled.div`
 
   width: 100%;
   height: 100%;
+
+  margin-bottom: var(--spacer-2xl);
 `;
 
 const Header = styled.header`
