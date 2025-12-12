@@ -18,9 +18,13 @@ export const usePostStore = create<PostState>((set, get) => ({
 
   setSelectedPost: (post: Post | null) => set({ selectedPost: post }),
 
-  fetchHomePosts: async () => {
+  fetchHomePosts: async (isInitial?: boolean) => {
     const { loading, page, hasMore } = get();
     const LIMIT = 10;
+
+    if (isInitial) {
+      set({ ...initialState });
+    }
 
     if (loading || !hasMore) return;
     set({ loading: true });
@@ -31,8 +35,8 @@ export const usePostStore = create<PostState>((set, get) => ({
       );
 
       set((state) => ({
-        posts: [...state.posts, ...data.posts],
-        page: state.page + 1,
+        posts: isInitial ? data.posts : [...state.posts, ...data.posts],
+        page: isInitial ? 1 : state.page + 1,
         hasMore: data.posts.length === LIMIT,
       }));
     } catch (error) {

@@ -3,12 +3,12 @@ import { useState } from 'react';
 
 import formatTimeAgo from '@/app/utils/formatTimeAgo';
 
+import { useAuthStore } from '@/app/store/authStore';
 import { useCommentStore } from '@/app/store/commentStore';
 
 import DOMPurify from 'dompurify';
 import { styled } from 'styled-components';
 
-import { useAuth } from '@/app/context/authContext';
 import { Comment } from '@/app/types';
 
 import CommentActions from '../../../components/comments/actions';
@@ -23,7 +23,7 @@ interface CommentItemProps extends Comment {
 }
 
 const CommentItem = ({ depth = 0, ...comment }: CommentItemProps) => {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
   const { submitComment } = useCommentStore();
   const router = useRouter();
 

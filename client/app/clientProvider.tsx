@@ -2,8 +2,7 @@
 
 import { ThemeProvider } from 'styled-components';
 
-import { AuthProvider } from './context/authContext';
-import { ModalProvider } from './context/modalContext';
+import AuthInitializer from './layout/authInitializer';
 import GlobalStyle from './styles/globalStyle';
 import { newTheme } from './theme';
 
@@ -15,9 +14,8 @@ export default function ClientProviders({
   return (
     <ThemeProvider theme={newTheme}>
       <GlobalStyle />
-      <AuthProvider>
-        <ModalProvider>{children}</ModalProvider>
-      </AuthProvider>
+      <AuthInitializer />
+      {children}
     </ThemeProvider>
   );
 }

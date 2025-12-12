@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { useAuthStore } from '@/app/store/authStore';
 import { usePostStore } from '@/app/store/postStore';
 
 import { styled } from 'styled-components';
@@ -7,13 +8,12 @@ import { styled } from 'styled-components';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 
-import { useAuth } from '@/app/context/authContext';
 import { CustomError } from '@/app/types';
 
 import HomePostListContainer from './list';
 
 const Home = () => {
-  const { user, isLoading: isAuthLoading } = useAuth();
+  const { user, loading: isAuthLoading } = useAuthStore();
 
   const [error, setError] = useState('');
 

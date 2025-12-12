@@ -1,5 +1,4 @@
 import ClientProviders from './clientProvider';
-import { ModalProvider } from './context/modalContext';
 
 export const metadata = {
   title: 'Reddit',
@@ -22,9 +21,7 @@ export default function RootLayout({
         <script src="https://cdn.tailwindcss.com?plugins=typography" />
       </head>
       <body>
-        <ClientProviders>
-          <ModalProvider>{children}</ModalProvider>
-        </ClientProviders>
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );

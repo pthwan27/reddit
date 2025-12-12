@@ -6,6 +6,7 @@ import { clientAxiosInstance } from '@/app/utils/axios';
 
 import { useUploadImage } from '@/app/hooks/useUploadImage';
 
+import { useAuthStore } from '@/app/store/authStore';
 import { usePostStore } from '@/app/store/postStore';
 import { useSubStore } from '@/app/store/subStore';
 
@@ -16,14 +17,13 @@ import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 import SubBanner from '@/app/components/sub/detail/banner';
 import SubInfos from '@/app/components/sub/detail/info';
 
-import { useAuth } from '@/app/context/authContext';
 import { CustomError, Sub } from '@/app/types';
 
 import RightSideBar from '../../../components/sub/rightSideBar';
 import PostList from '../../post/list';
 
 const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
 
   const [error, setError] = useState('');
   const { posts, loading, hasMore, fetchSubPosts, clearPosts } = usePostStore();

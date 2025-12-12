@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
+import { useAuthStore } from '@/app/store/authStore';
 import { useCommentStore } from '@/app/store/commentStore';
 import { usePostStore } from '@/app/store/postStore';
 
@@ -20,14 +21,13 @@ import RightSideBar from '@/app/components/sub/rightSideBar';
 
 import CommentItem from '@/app/container/comments/item';
 
-import { useAuth } from '@/app/context/authContext';
 import { Post } from '@/app/types';
 
 const CommentList = ({ post }: { post: Post }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
-  const { user } = useAuth();
+  const { user } = useAuthStore();
 
   const { selectedPost, setSelectedPost } = usePostStore();
   const { comments, loading, fetchComments, submitComment } = useCommentStore();

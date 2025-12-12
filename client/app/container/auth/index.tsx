@@ -1,12 +1,12 @@
-import styled from 'styled-components';
+import { useAuthStore } from '@/app/store/authStore';
 
-import { useAuth } from '@/app/context/authContext';
+import styled from 'styled-components';
 
 import LoginContainer from './login';
 import RegisterContainer from './register';
 
 const Auth = () => {
-  const { mode } = useAuth();
+  const { mode } = useAuthStore();
   return (
     <AuthContainer>
       {mode === 'login' ? <LoginContainer /> : <RegisterContainer />}

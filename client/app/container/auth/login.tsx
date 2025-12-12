@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 
 import { validationCheck } from '@/app/utils/validationCheck';
 
+import { useAuthStore } from '@/app/store/authStore';
 import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
@@ -13,7 +14,6 @@ import PlaceHolderInput from '@/app/components/common/input/placeholderInput';
 import { CustomError } from '@/app/types';
 
 import AuthButton from '../../components/auth/AuthButton';
-import { useAuth } from '../../context/authContext';
 
 const Login = () => {
   const router = useRouter();
@@ -21,7 +21,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const { login, setMode } = useAuth();
+  const { login, setMode } = useAuthStore();
 
   const { getMySubs } = useSubStore();
 

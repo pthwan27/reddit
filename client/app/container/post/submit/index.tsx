@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { clientAxiosInstance } from '@/app/utils/axios';
 import { validationCheck } from '@/app/utils/validationCheck';
 
+import { useAuthStore } from '@/app/store/authStore';
 import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
@@ -16,13 +17,12 @@ import PostSubmitHeader from '@/app/components/post/submit/header';
 import PostSubmitMain from '@/app/components/post/submit/main';
 import RightSideBar from '@/app/components/sub/rightSideBar';
 
-import { useAuth } from '@/app/context/authContext';
 import { Sub } from '@/app/types';
 
 type PostType = 'text' | 'media' | 'link';
 
 const PostSubmit = ({ sub }: { sub: Sub }) => {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
   const { selectedSub, setSelectedSub } = useSubStore();
 
   const router = useRouter();

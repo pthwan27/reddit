@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { validationCheck } from '@/app/utils/validationCheck';
 
+import { useAuthStore } from '@/app/store/authStore';
+import { useModalStore } from '@/app/store/modalStore';
 import { useSubStore } from '@/app/store/subStore';
 import { useUIStore } from '@/app/store/uiStore';
 
@@ -12,17 +14,14 @@ import styled from 'styled-components';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 
-import { useAuth } from '@/app/context/authContext';
-import { useModalState } from '@/app/context/modalContext';
-
 import FirstCreateSub from './subFirst';
 import SecCreateSub from './subSec';
 
 const CreateSub = () => {
   const router = useRouter();
 
-  const { user } = useAuth();
-  const { close } = useModalState();
+  const { user } = useAuthStore();
+  const { close } = useModalStore();
   const modalkey = 'createSubModal';
 
   const [title, setTitle] = useState<string>('');
@@ -243,6 +242,7 @@ const CreateInputBox = styled.div`
   display: flex;
   justify-content: center;
 
+  flex: 1;
   @media (min-width: 768px) {
     flex: 0 0 404px;
     width: 404px;
@@ -254,6 +254,8 @@ const CreateSubInfoBox = styled.div`
   align-items: center;
 
   height: 100%;
+
+  flex: 1;
 
   @media (min-width: 768px) {
     flex: 0 0 315px;

@@ -1,17 +1,18 @@
 import { useState } from 'react';
 
-import { useAuth } from '../context/authContext';
+import { useAuthStore } from '@/app/store/authStore';
+
 import { ChangeSubProps, CustomError } from '../types';
 import { clientAxiosInstance } from '../utils/axios';
 
 export const useUploadImage = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { user } = useAuthStore();
 
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState('');
 
   const uploadIconImage = async ({ slug, icon }: ChangeSubProps) => {
-    if (!isAuthenticated || !user) {
+    if (!user) {
       setError('로그인이 필요합니다.');
       return false;
     }
@@ -47,7 +48,7 @@ export const useUploadImage = () => {
   };
 
   const uploadBannerImage = async ({ slug, banner }: ChangeSubProps) => {
-    if (!isAuthenticated || !user) {
+    if (!user) {
       setError('로그인이 필요합니다.');
       return false;
     }

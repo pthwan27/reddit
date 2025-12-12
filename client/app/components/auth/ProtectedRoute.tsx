@@ -2,9 +2,10 @@
 
 import React from 'react';
 
+import { useAuthStore } from '@/app/store/authStore';
+
 import styled from 'styled-components';
 
-import { useAuth } from '../../context/authContext';
 import LoadingSpinner from '../common/loading/loadingSpinner';
 
 interface ProtectedRouteProps {
@@ -16,13 +17,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   fallback,
 }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { user, loading } = useAuthStore();
 
-  if (isLoading) {
+  if (loading) {
     return <LoadingSpinner />;
   }
 
-  if (!isAuthenticated) {
+  if (!user) {
     return (
       fallback || (
         <UnauthorizedDiv>

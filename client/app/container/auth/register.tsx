@@ -5,6 +5,8 @@ import React, { useMemo, useState } from 'react';
 
 import { validationCheck } from '@/app/utils/validationCheck';
 
+import { useAuthStore } from '@/app/store/authStore';
+
 import styled from 'styled-components';
 
 import ErrorMessage from '@/app/components/common/errorMessage';
@@ -13,7 +15,6 @@ import PlaceHolderInput from '@/app/components/common/input/placeholderInput';
 import { CustomError } from '@/app/types';
 
 import AuthButton from '../../components/auth/AuthButton';
-import { useAuth } from '../../context/authContext';
 
 const Register = () => {
   const router = useRouter();
@@ -22,7 +23,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const { register, setMode } = useAuth();
+  const { register, setMode } = useAuthStore();
 
   const emailValidation = useMemo(
     () => validationCheck(email, 'email'),

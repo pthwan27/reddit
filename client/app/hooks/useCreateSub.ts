@@ -1,16 +1,15 @@
 import { useState } from 'react';
 
-import { useAuth } from '../context/authContext';
-import { ModalKey, useModalState } from '../context/modalContext';
+import { useAuthStore } from '@/app/store/authStore';
+
+import { useModalStore } from '../store/modalStore';
 import { CreateSubProps, CustomError } from '../types';
 import { clientAxiosInstance } from '../utils/axios';
 
 export const useCreateSub = () => {
-  const modalKey: ModalKey = 'createSubModal';
+  const { close } = useModalStore();
 
-  const { close } = useModalState();
-
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, loading } = useAuthStore();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -22,7 +21,7 @@ export const useCreateSub = () => {
     icon,
     banner,
   }: CreateSubProps) => {
-    if (!isAuthenticated || !user) {
+    if (!user) {
       setError('로그인이 필요합니다.');
       return false;
     }
@@ -45,7 +44,7 @@ export const useCreateSub = () => {
 
       await clientAxiosInstance.post('/api/sub/create', formData);
 
-      close(modalKey);
+      close('createSubModal');
       return true;
     } catch (err: unknown) {
       const error = err as CustomError;
@@ -63,7 +62,6 @@ export const useCreateSub = () => {
     error,
     setError,
     isSubmitting,
-    isLoading,
-    isAuthenticated,
+    loading,
   };
 };

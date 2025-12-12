@@ -1,6 +1,8 @@
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
+import { useAuthStore } from '@/app/store/authStore';
+import { useModalStore } from '@/app/store/modalStore';
 import { useSubStore } from '@/app/store/subStore';
 import { useUIStore } from '@/app/store/uiStore';
 
@@ -11,15 +13,13 @@ import LoggedIn from '@/app/components/leftNav/loggedIn';
 import LoggedOut from '@/app/components/leftNav/loggedOut';
 import MenuIcon from '@/app/components/svgs/MenuIcon';
 
-import { ModalKey, useModalState } from '@/app/context/modalContext';
 import { Sub } from '@/app/types';
 
 import CommonLeftNavMenu from '../../components/leftNav/common';
-import { useAuth } from '../../context/authContext';
 import CreateSubModal from '../modal/createSubModal';
 
 const LeftNav = () => {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
 
   const {
     leftNavVisible,
@@ -33,13 +33,15 @@ const LeftNav = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { open } = useModalState();
-  const modalKey: ModalKey = 'createSubModal';
+  const { open } = useModalStore();
 
   const openCreateSubModal = () => {
-    if (!user) return;
+    if (!user) {
+      router.push('/login');
+      return;
+    }
 
-    open(modalKey);
+    open('createSubModal');
   };
 
   const goToSubDetail = (sub: Sub) => {

@@ -1,4 +1,35 @@
-import { Comment, CreateSubProps, Post, Sub } from '../types';
+import { Comment, CreateSubProps, Post, Sub, User } from '../types';
+
+export type AuthState = {
+  user: User | null;
+  loading: boolean;
+  mode: 'login' | 'register';
+  setMode: (mode: 'login' | 'register') => void;
+  login: (
+    email: string,
+    password: string,
+    onSuccess?: () => void
+  ) => Promise<void>;
+  logout: () => Promise<void>;
+  register: (
+    email: string,
+    username: string,
+    password: string,
+    onSuccess?: () => void
+  ) => Promise<void>;
+  refreshUser: () => Promise<void>;
+
+  initAuth: () => void;
+};
+
+export type ModalKey = 'authModal' | 'createSubModal';
+
+export type ModalState = {
+  modals: Record<ModalKey, boolean>;
+  open: (key: ModalKey) => void;
+  close: (key: ModalKey) => void;
+  toggle: (key: ModalKey) => void;
+};
 
 export type SubState = {
   subs: Sub[];

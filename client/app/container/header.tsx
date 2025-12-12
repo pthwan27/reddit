@@ -3,6 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
+import { useAuthStore } from '@/app/store/authStore';
+import { useUIStore } from '@/app/store/uiStore';
+
 import styled from 'styled-components';
 
 import IconBox from '../components/common/IconBox';
@@ -10,15 +13,13 @@ import ProfileDropdown from '../components/header/profileDropdown';
 import SearchInput from '../components/header/searchInput';
 import LogoIcon from '../components/svgs/LogoIcon';
 import MenuIcon from '../components/svgs/MenuIcon';
-import { useAuth } from '../context/authContext';
-import { ModalKey, useModalState } from '../context/modalContext';
-import { useUIStore } from '../store/uiStore';
+import { useModalStore } from '../store/modalStore';
 import AuthModal from './modal/authModal';
 
 const Header = ({ noOption = false }) => {
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuthStore();
   const { toggleLeftNavByHeader } = useUIStore();
-  const { open } = useModalState();
+  const { open } = useModalStore();
   const router = useRouter();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -49,7 +50,6 @@ const Header = ({ noOption = false }) => {
     router.push('/');
   };
 
-  const modalKey: ModalKey = 'authModal';
   return (
     <HeaderContainer>
       <Nav>
@@ -92,7 +92,9 @@ const Header = ({ noOption = false }) => {
                   />
                 </DropdownContainer>
               ) : (
-                <LoginButton onClick={() => open(modalKey)}>로그인</LoginButton>
+                <LoginButton onClick={() => open('authModal')}>
+                  로그인
+                </LoginButton>
               )}
             </RightNav>
           </>

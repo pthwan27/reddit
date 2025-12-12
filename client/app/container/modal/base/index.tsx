@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
+import { useAuthStore } from '@/app/store/authStore';
+import { useModalStore } from '@/app/store/modalStore';
+
 import styled from 'styled-components';
 
 import CloseIcon from '../../../components/svgs/CloseIcon';
-import { useAuth } from '../../../context/authContext';
-import { useModalState } from '../../../context/modalContext';
 
 type BaseModalProps = {
   children: React.ReactNode;
@@ -22,8 +23,8 @@ const BaseModal = ({
   headerSubInfo,
   width,
 }: BaseModalProps) => {
-  const { modals, close } = useModalState();
-  const { user } = useAuth();
+  const { modals, close } = useModalStore();
+  const { user } = useAuthStore();
 
   useEffect(() => {
     if (modalkey === 'authModal' && user) {
