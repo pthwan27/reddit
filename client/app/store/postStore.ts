@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { Post } from '../types';
-import { PostState } from '../types/store';
+import { PostState, SortOption } from '../types/store';
 import { clientAxiosInstance } from '../utils/axios';
 
 const initialState = {
@@ -11,34 +11,51 @@ const initialState = {
   hasMore: true,
   curSubId: 0,
   selectedPost: null,
+  sortOption: '최신순' as SortOption,
 };
 
 export const usePostStore = create<PostState>((set, get) => ({
   ...initialState,
 
+  setSortOption: (option: SortOption) => {
+    if (get().sortOption !== option) {
+      set({ sortOption: option });
+      get().fetchHomePosts(true);
+    }
+  },
+
   setSelectedPost: (post: Post | null) => set({ selectedPost: post }),
 
   fetchHomePosts: async (isInitial?: boolean) => {
-    const { loading, page, hasMore } = get();
+    const { loading, page, hasMore, sortOption } = get();
     const LIMIT = 10;
 
-    if (isInitial) {
-      set({ ...initialState });
-    }
-
-    if (loading || !hasMore) return;
-    set({ loading: true });
-
     try {
-      const { data } = await clientAxiosInstance(
-        `/api/home/posts?page=${page}&limit=${LIMIT}`
-      );
+      if (isInitial) {
+        set({ ...initialState, sortOption });
 
-      set((state) => ({
-        posts: isInitial ? data.posts : [...state.posts, ...data.posts],
-        page: isInitial ? 1 : state.page + 1,
-        hasMore: data.posts.length === LIMIT,
-      }));
+        const { data } = await clientAxiosInstance(
+          `/api/home/posts?page=${0}&limit=${LIMIT}&sortOption=${sortOption}`
+        );
+        set(() => ({
+          posts: data.posts,
+          page: 1,
+          hasMore: data.posts.length === LIMIT,
+        }));
+      } else {
+        if (loading || !hasMore) return;
+        set({ loading: true });
+
+        const { data } = await clientAxiosInstance(
+          `/api/home/posts?page=${page}&limit=${LIMIT}&sortOption=${sortOption}`
+        );
+
+        set((state) => ({
+          posts: isInitial ? data.posts : [...state.posts, ...data.posts],
+          page: isInitial ? 1 : state.page + 1,
+          hasMore: data.posts.length === LIMIT,
+        }));
+      }
     } catch (error) {
       console.error('Failed to fetch home posts:', error);
     } finally {
@@ -47,7 +64,7 @@ export const usePostStore = create<PostState>((set, get) => ({
   },
 
   fetchSubPosts: async (id: number) => {
-    const { loading, page, hasMore, curSubId } = get();
+    const { loading, page, hasMore, curSubId, sortOption } = get();
     const LIMIT = 7;
 
     if (curSubId !== id) {
@@ -59,7 +76,7 @@ export const usePostStore = create<PostState>((set, get) => ({
 
       try {
         const { data } = await clientAxiosInstance.get(
-          `/api/post/list/${id}?page=${0}&limit=${LIMIT}`
+          `/api/post/list/${id}?page=${0}&limit=${LIMIT}&sortOption=${sortOption}`
         );
         set((state) => ({
           posts: page === 0 ? data.posts : [...state.posts, ...data.posts],

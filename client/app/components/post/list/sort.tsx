@@ -4,29 +4,29 @@ import DownArrowIcon from '../../svgs/DownArrowIcon';
 
 interface PostSortProps {
   wrapperRef: React.RefObject<HTMLDivElement | null>;
-  isSelecting: boolean;
-  setIsSelecting: React.Dispatch<React.SetStateAction<boolean>>;
+  isDropdownOpen: boolean;
+  setIsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleSelect: (option: string) => void;
   sortOption: '최신순' | '인기순' | '댓글 많은 순';
 }
 
 const PostSort = ({
   wrapperRef,
-  isSelecting,
-  setIsSelecting,
+  isDropdownOpen,
+  setIsDropdownOpen,
   handleSelect,
   sortOption,
 }: PostSortProps) => {
   return (
     <StyledSortDiv ref={wrapperRef}>
-      <SortButton onClick={() => setIsSelecting((e) => !e)}>
+      <SortButton onClick={() => setIsDropdownOpen((e) => !e)}>
         <span>{sortOption}</span>
         <span>
           <DownArrowIcon />
         </span>
       </SortButton>
 
-      <DropdownMenu $isSelecting={isSelecting}>
+      <DropdownMenu $isDropdownOpen={isDropdownOpen}>
         <DropdownItem $isHeader>정렬 기준</DropdownItem>
         {['최신순', '인기순', '댓글 많은 순'].map((option) => (
           <DropdownItem
@@ -97,13 +97,15 @@ const SortButton = styled.button`
   }
 `;
 
-const DropdownMenu = styled.ul<{ $isSelecting: boolean }>`
+const DropdownMenu = styled.ul<{ $isDropdownOpen: boolean }>`
   position: absolute;
   top: calc(100% + var(--spacer-2xs));
 
-  transform: ${({ $isSelecting }) => ($isSelecting ? 'scale(1)' : 'scale(0)')};
-  opacity: ${({ $isSelecting }) => ($isSelecting ? 1 : 0)};
-  visibility: ${({ $isSelecting }) => ($isSelecting ? 'visible' : 'hidden')};
+  transform: ${({ $isDropdownOpen }) =>
+    $isDropdownOpen ? 'scale(1)' : 'scale(0)'};
+  opacity: ${({ $isDropdownOpen }) => ($isDropdownOpen ? 1 : 0)};
+  visibility: ${({ $isDropdownOpen }) =>
+    $isDropdownOpen ? 'visible' : 'hidden'};
 
   overflow-y: auto;
 

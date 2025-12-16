@@ -11,7 +11,7 @@ import { Post } from '@/app/types';
 
 const PostList = ({ posts }: { posts: Post[] }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [isSelecting, setIsSelecting] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [sortOption, setSortOption] = useState<
     '최신순' | '인기순' | '댓글 많은 순'
   >('최신순');
@@ -20,7 +20,7 @@ const PostList = ({ posts }: { posts: Post[] }) => {
 
   const handleSelect = (option: string) => {
     setSortOption(option as typeof sortOption);
-    setIsSelecting(false);
+    setIsDropdownOpen(false);
   };
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const PostList = ({ posts }: { posts: Post[] }) => {
         wrapperRef.current &&
         !wrapperRef.current.contains(event.target as Node)
       ) {
-        setIsSelecting(false);
+        setIsDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -40,8 +40,8 @@ const PostList = ({ posts }: { posts: Post[] }) => {
     <PostListContainer>
       <PostSort
         wrapperRef={wrapperRef}
-        isSelecting={isSelecting}
-        setIsSelecting={setIsSelecting}
+        isDropdownOpen={isDropdownOpen}
+        setIsDropdownOpen={setIsDropdownOpen}
         handleSelect={handleSelect}
         sortOption={sortOption}
       />

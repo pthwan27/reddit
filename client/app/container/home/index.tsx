@@ -13,23 +13,45 @@ import { CustomError } from '@/app/types';
 import HomePostListContainer from './list';
 
 const Home = () => {
-  const { user, loading: isAuthLoading } = useAuthStore();
+  const { loading: isAuthLoading } = useAuthStore();
 
   const [error, setError] = useState('');
 
-  const { posts, clearPosts, fetchHomePosts, loading, hasMore } =
-    usePostStore();
+  const {
+    posts,
+    clearPosts,
+    fetchHomePosts,
+    loading,
+    hasMore,
+    sortOption,
+    setSortOption,
+  } = usePostStore();
 
   const observerRef = useRef<HTMLDivElement>(null);
+
+  const fetchHomePostsRef = useRef(fetchHomePosts);
+  const clearPostsRef = useRef(clearPosts);
+  useEffect(() => {
+    fetchHomePostsRef.current = fetchHomePosts;
+    clearPostsRef.current = clearPosts;
+  });
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleSelectOption = (option: '최신순' | '인기순' | '댓글 많은 순') => {
+    setSortOption(option);
+
+    setIsDropdownOpen(false);
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const target = entries[0];
 
-        if (target.isIntersecting && !loading && hasMore) {
+        if (target.isIntersecting && !loading && hasMore && posts.length > 0) {
           try {
-            fetchHomePosts();
+            fetchHomePostsRef.current();
           } catch (err) {
             const error = err as CustomError;
             console.error('Fetching posts failed:', error);
@@ -51,26 +73,28 @@ const Home = () => {
     }
 
     return () => observer.disconnect();
-  }, [loading, hasMore]);
+  }, [loading, hasMore, posts]);
 
   useEffect(() => {
     if (!isAuthLoading) {
-      clearPosts();
-      fetchHomePosts();
+      fetchHomePostsRef.current(true);
     }
-  }, [user]);
-
-  useEffect(() => {
-    fetchHomePosts();
 
     return () => {
-      clearPosts();
+      clearPostsRef.current();
     };
-  }, []);
+  }, [isAuthLoading]);
+
   return (
     <HomeContainer>
       <ObserverWrapper>
-        <HomePostListContainer posts={posts} />
+        <HomePostListContainer
+          posts={posts}
+          isDropdownOpen={isDropdownOpen}
+          setIsDropdownOpen={setIsDropdownOpen}
+          handleSelect={handleSelectOption}
+          sortOption={sortOption}
+        />
         {loading && <LoadingSpinner />}
 
         {hasMore && !loading && (

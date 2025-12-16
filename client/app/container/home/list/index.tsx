@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import styled from 'styled-components';
 
@@ -8,17 +8,20 @@ import { Post } from '@/app/types';
 
 import HomePostItem from '../item';
 
-const HomePostList = ({ posts }: { posts: Post[] }) => {
+const HomePostList = ({
+  posts,
+  isDropdownOpen,
+  setIsDropdownOpen,
+  handleSelect,
+  sortOption,
+}: {
+  posts: Post[];
+  isDropdownOpen: boolean;
+  setIsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleSelect: (option: '최신순' | '인기순' | '댓글 많은 순') => void;
+  sortOption: '최신순' | '인기순' | '댓글 많은 순';
+}) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [isSelecting, setIsSelecting] = useState(false);
-  const [sortOption, setSortOption] = useState<
-    '최신순' | '인기순' | '댓글 많은 순'
-  >('최신순');
-
-  const handleSelect = (option: string) => {
-    setSortOption(option as typeof sortOption);
-    setIsSelecting(false);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -26,7 +29,7 @@ const HomePostList = ({ posts }: { posts: Post[] }) => {
         wrapperRef.current &&
         !wrapperRef.current.contains(event.target as Node)
       ) {
-        setIsSelecting(false);
+        setIsDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -37,8 +40,8 @@ const HomePostList = ({ posts }: { posts: Post[] }) => {
     <HomePostListContainer>
       <HomePostSort
         wrapperRef={wrapperRef}
-        isSelecting={isSelecting}
-        setIsSelecting={setIsSelecting}
+        isDropdownOpen={isDropdownOpen}
+        setIsDropdownOpen={setIsDropdownOpen}
         handleSelect={handleSelect}
         sortOption={sortOption}
       />

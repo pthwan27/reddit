@@ -44,14 +44,18 @@ export type SubState = {
   reset: () => void;
 };
 
+export type SortOption = '최신순' | '인기순' | '댓글 많은 순';
+
 export type PostState = {
   posts: Post[];
   loading: boolean;
   page: number;
   hasMore: boolean;
   curSubId: number;
+  sortOption: SortOption;
   selectedPost: Post | null;
   setSelectedPost: (post: Post | null) => void;
+  setSortOption: (option: SortOption) => void;
   fetchHomePosts: (isInitial?: boolean) => Promise<void>;
   fetchSubPosts: (id: number, isInitial?: boolean) => Promise<void>;
   clearPosts: () => void;

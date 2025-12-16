@@ -36,7 +36,7 @@ const CommentList = ({ post }: { post: Post }) => {
   const [content, setContent] = useState('');
 
   const [error, setError] = useState('');
-  const [isSelecting, setIsSelecting] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [sortOption, setSortOption] = useState<
     '최신순' | '인기순' | '댓글 많은 순'
   >('최신순');
@@ -68,7 +68,7 @@ const CommentList = ({ post }: { post: Post }) => {
 
   const handleSelect = (option: string) => {
     setSortOption(option as typeof sortOption);
-    setIsSelecting(false);
+    setIsDropdownOpen(false);
   };
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const CommentList = ({ post }: { post: Post }) => {
         wrapperRef.current &&
         !wrapperRef.current.contains(event.target as Node)
       ) {
-        setIsSelecting(false);
+        setIsDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -122,8 +122,8 @@ const CommentList = ({ post }: { post: Post }) => {
         <CommentsSection>
           <CommentSort
             wrapperRef={wrapperRef}
-            isSelecting={isSelecting}
-            setIsSelecting={setIsSelecting}
+            isDropdownOpen={isDropdownOpen}
+            setIsDropdownOpen={setIsDropdownOpen}
             handleSelect={handleSelect}
             sortOption={sortOption}
           />

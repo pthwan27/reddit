@@ -36,14 +36,16 @@ app.get('/', (_: Request, res: Response) => {
   res.send('running');
 });
 
-const port = 4040;
+const port = 4000;
 
-app.listen(port, async () => {
-  console.log(`🚀 Server ready at http://localhost:${port}`);
-
-  AppDataSource.initialize()
-    .then(async () => {
-      console.log('DB Connection');
-    })
-    .catch((error) => console.log(error));
-});
+AppDataSource.initialize()
+  .then(() => {
+    console.log('✅ DB Connection Success');
+    app.listen(port, () => {
+      console.log(`🚀 Server ready at http://localhost:${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error('❌ Database connection failed:', error);
+    process.exit(1);
+  });

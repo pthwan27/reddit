@@ -8,10 +8,11 @@ export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const page = searchParams.get('page') || '0';
   const limit = searchParams.get('limit') || '7';
+  const sortOption = searchParams.get('sortOption') || '최신순';
 
   try {
     const { data, status } = await serverAxiosInstance.get(
-      `/post/list/?page=${page}&limit=${limit}`,
+      `/post/list/?page=${page}&limit=${limit}&sortOption=${sortOption}`,
       {
         headers: {
           Cookie: req.headers.get('cookie') || '',
