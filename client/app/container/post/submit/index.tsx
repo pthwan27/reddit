@@ -48,7 +48,7 @@ const PostSubmit = ({ sub }: { sub: Sub }) => {
     [content]
   );
 
-  const handleSelect = (sub: Sub) => {
+  const handleSelectOption = (sub: Sub) => {
     setSearchTerm('');
     setIsSearching(false);
     setIsTagLoading(false);
@@ -142,7 +142,7 @@ const PostSubmit = ({ sub }: { sub: Sub }) => {
           setSearchTerm={setSearchTerm}
           isSearching={isSearching}
           setIsSearching={setIsSearching}
-          handleSelect={handleSelect}
+          handleSelectOption={handleSelectOption}
         />
         <PostSubmitMain
           title={title}

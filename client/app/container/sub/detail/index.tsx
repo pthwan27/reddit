@@ -26,14 +26,19 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   const { user } = useAuthStore();
 
   const [error, setError] = useState('');
-  const { posts, loading, hasMore, fetchSubPosts, clearPosts } = usePostStore();
   const { handleSubscribe: subscribe } = useSubStore();
   const { uploadIconImage, uploadBannerImage } = useUploadImage();
+  const { posts, loading, hasMore, fetchSubPosts, clearPosts } = usePostStore();
 
   const [sub, setSub] = useState<Sub>(initialSub);
 
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl || '');
   const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl || '');
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [sortOption, setSortOption] = useState<
+    '최신순' | '인기순' | '댓글 많은 순'
+  >('최신순');
 
   const iconFileInputRef = useRef<HTMLInputElement>(null);
   const bannerFileInputRef = useRef<HTMLInputElement>(null);
@@ -93,6 +98,18 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
     }
   };
 
+  const handleSelectOption = (option: '최신순' | '인기순' | '댓글 많은 순') => {
+    if (sortOption === option) {
+      setIsDropdownOpen(false);
+      return;
+    }
+
+    setSortOption(option);
+
+    fetchSubPosts(sub.id, true, option);
+    setIsDropdownOpen(false);
+  };
+
   useEffect(() => {
     setIconImage(sub.iconUrl);
   }, [sub.iconUrl]);
@@ -110,19 +127,13 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   }, [user]);
 
   useEffect(() => {
-    clearPosts();
-
-    fetchSubPosts(sub.id);
-  }, [sub.id, fetchSubPosts]);
-
-  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const target = entries[0];
 
-        if (target.isIntersecting && !loading && hasMore) {
+        if (target.isIntersecting && !loading && hasMore && posts.length > 0) {
           try {
-            fetchSubPosts(sub.id);
+            fetchSubPosts(sub.id, false, sortOption);
           } catch (err) {
             const error = err as CustomError;
             console.error('Fetching posts failed:', error);
@@ -144,52 +155,68 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
     }
 
     return () => observer.disconnect();
-  }, [loading, hasMore, sub.slug]);
+  }, [loading, hasMore, posts, sortOption, fetchSubPosts]);
+
+  useEffect(() => {
+    fetchSubPosts(sub.id, true, sortOption);
+
+    return () => {
+      clearPosts();
+    };
+  }, []);
 
   return (
     <SubDetailContainer>
-      <Header>
-        <SubBanner
-          sub={sub}
-          bannerImage={bannerImage}
-          onEditClick={() => handleClick('banner')}
-          isBanner={!!bannerImage}
-        />
+      <ObserverWrapper>
+        <Header>
+          <SubBanner
+            sub={sub}
+            bannerImage={bannerImage}
+            onEditClick={() => handleClick('banner')}
+            isBanner={!!bannerImage}
+          />
 
-        <SubInfos
-          sub={sub}
-          iconImage={iconImage}
-          onEditClick={() => handleClick('icon')}
-          isIcon={!!iconImage}
-          handleSubscribe={handleSubscribe}
-        />
-      </Header>
-      <Main>
-        <ObserverWrapper>
-          <PostList posts={posts} />
-
-          {loading && <LoadingSpinner />}
-
-          {hasMore && !loading && (
-            <div
-              ref={observerRef}
-              style={{ height: '20px', background: 'black' }}
+          <SubInfos
+            sub={sub}
+            iconImage={iconImage}
+            onEditClick={() => handleClick('icon')}
+            isIcon={!!iconImage}
+            handleSubscribe={handleSubscribe}
+          />
+        </Header>
+        <Main>
+          <PostListWrapper>
+            <PostList
+              posts={posts}
+              isDropdownOpen={isDropdownOpen}
+              setIsDropdownOpen={setIsDropdownOpen}
+              handleSelectOption={handleSelectOption}
+              sortOption={sortOption}
             />
-          )}
-        </ObserverWrapper>
-        <RightSideBar sub={sub} />
-      </Main>
 
-      <HiddenInput
-        ref={bannerFileInputRef}
-        type="file"
-        onChange={handleFileChange('banner')}
-      />
-      <HiddenInput
-        ref={iconFileInputRef}
-        type="file"
-        onChange={handleFileChange('icon')}
-      />
+            {loading && <LoadingSpinner />}
+
+            {hasMore && !loading && (
+              <div
+                ref={observerRef}
+                style={{ height: '20px', background: 'black' }}
+              />
+            )}
+          </PostListWrapper>
+          <RightSideBar sub={sub} />
+        </Main>
+
+        <HiddenInput
+          ref={bannerFileInputRef}
+          type="file"
+          onChange={handleFileChange('banner')}
+        />
+        <HiddenInput
+          ref={iconFileInputRef}
+          type="file"
+          onChange={handleFileChange('icon')}
+        />
+      </ObserverWrapper>
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </SubDetailContainer>
@@ -232,12 +259,13 @@ const Main = styled.div`
     }
   }
 `;
-
-const ObserverWrapper = styled.div`
+const PostListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--spacer-sm);
 `;
+
+const ObserverWrapper = styled.div``;
 
 const HiddenInput = styled.input`
   display: none;

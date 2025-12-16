@@ -12,13 +12,13 @@ const HomePostList = ({
   posts,
   isDropdownOpen,
   setIsDropdownOpen,
-  handleSelect,
+  handleSelectOption,
   sortOption,
 }: {
   posts: Post[];
   isDropdownOpen: boolean;
   setIsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleSelect: (option: '최신순' | '인기순' | '댓글 많은 순') => void;
+  handleSelectOption: (option: '최신순' | '인기순' | '댓글 많은 순') => void;
   sortOption: '최신순' | '인기순' | '댓글 많은 순';
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -42,7 +42,7 @@ const HomePostList = ({
         wrapperRef={wrapperRef}
         isDropdownOpen={isDropdownOpen}
         setIsDropdownOpen={setIsDropdownOpen}
-        handleSelect={handleSelect}
+        handleSelectOption={handleSelectOption}
         sortOption={sortOption}
       />
 
@@ -57,7 +57,11 @@ const HomePostList = ({
   );
 };
 
-const HomePostListContainer = styled.div``;
+const HomePostListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-sm);
+`;
 
 const HomePostWrapper = styled.div``;
 

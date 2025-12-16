@@ -42,7 +42,7 @@ export const SubmitHandler: RequestHandler = async (req, res) => {
     post.body = content || '';
     post.user = user;
     post.sub = sub;
-    post.subTitle = sub.title;
+    post.subId = sub.id;
     post.postType = postType;
     if (postType === 'link') {
       post.linkUrl = linkUrl;

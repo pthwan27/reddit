@@ -18,7 +18,7 @@ interface PostSubmitHeaderProps {
   setSearchTerm: (term: string) => void;
   isSearching: boolean;
   setIsSearching: (searching: boolean) => void;
-  handleSelect: (sub: Sub) => void;
+  handleSelectOption: (sub: Sub) => void;
 }
 
 const PostSubmitHeader = ({
@@ -27,7 +27,7 @@ const PostSubmitHeader = ({
   setSearchTerm,
   isSearching,
   setIsSearching,
-  handleSelect,
+  handleSelectOption,
 }: PostSubmitHeaderProps) => {
   const { subs, selectedSub } = useSubStore();
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -98,7 +98,10 @@ const PostSubmitHeader = ({
             <DropdownMenu $isSearching={true}>
               {filteredSubs && filteredSubs.length > 0 ? (
                 filteredSubs.map((sub) => (
-                  <DropdownItem key={sub.id} onClick={() => handleSelect(sub)}>
+                  <DropdownItem
+                    key={sub.id}
+                    onClick={() => handleSelectOption(sub)}
+                  >
                     <IconBox
                       iconUrl={sub.iconUrl}
                       altText={sub.title}

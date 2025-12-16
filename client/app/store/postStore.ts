@@ -19,39 +19,29 @@ export const usePostStore = create<PostState>((set, get) => ({
   setSelectedPost: (post: Post | null) => set({ selectedPost: post }),
 
   fetchHomePosts: async (isInitial?: boolean, option?: SortOption) => {
-    const { loading, page, hasMore } = get();
+    if (get().loading) return;
+
+    const { page } = get();
     const LIMIT = 10;
 
+    const currentPage = isInitial ? 0 : page;
+    const currentSortOption = option || '최신순';
+
+    set({ loading: true });
+
     try {
-      if (isInitial) {
-        set({ ...initialState });
+      const { data } = await clientAxiosInstance(
+        `/api/home/posts?page=${currentPage}&limit=${LIMIT}&sortOption=${currentSortOption}`
+      );
 
-        const { data } = await clientAxiosInstance(
-          `/api/home/posts?page=${0}&limit=${LIMIT}&sortOption=${option || '최신순'}`
-        );
-
-        set(() => ({
-          posts: data.posts,
-          page: 1,
-          hasMore: data.posts.length === LIMIT,
-        }));
-      } else {
-        if (loading || !hasMore) return;
-        set({ loading: true });
-
-        const { data } = await clientAxiosInstance(
-          `/api/home/posts?page=${page}&limit=${LIMIT}&sortOption=${option || '최신순'}`
-        );
-
-        set((state) => ({
-          posts: [...state.posts, ...data.posts],
-          page: state.page + 1,
-          hasMore: data.posts.length === LIMIT,
-        }));
-      }
+      set((state) => ({
+        posts: isInitial ? data.posts : [...state.posts, ...data.posts],
+        page: currentPage + 1,
+        hasMore: data.posts.length === LIMIT,
+        loading: false,
+      }));
     } catch (error) {
       console.error('Failed to fetch home posts:', error);
-    } finally {
       set({ loading: false });
     }
   },
@@ -61,54 +51,37 @@ export const usePostStore = create<PostState>((set, get) => ({
     isInitial?: boolean,
     option?: SortOption
   ) => {
-    const { loading, page, hasMore, curSubId } = get();
+    if (get().loading) return;
+
+    const { page, curSubId } = get();
     const LIMIT = 7;
 
-    if (curSubId !== id) {
-      set({
-        ...initialState,
-        curSubId: id,
-        loading: true,
-      });
+    const isSubChanged = curSubId !== id;
 
-      try {
-        const { data } = await clientAxiosInstance.get(
-          `/api/post/list/${id}?page=${0}&limit=${LIMIT}&sortOption=${option || '최신순'}`
-        );
-        set((state) => ({
-          posts: page === 0 ? data.posts : [...state.posts, ...data.posts],
-          page: 1,
-          hasMore: data.posts.length === LIMIT,
-          loading: false,
-          curSubId: id,
-        }));
-
-        return;
-      } catch (error) {
-        console.error('Failed to fetch posts:', error);
-        set({ loading: false });
-
-        return;
-      }
-    }
-
-    if (loading || !hasMore) return;
+    const currentPage = isSubChanged || isInitial ? 0 : page;
+    const currentSortOption = option || '최신순';
 
     set({ loading: true });
 
     try {
       const { data } = await clientAxiosInstance.get(
-        `/api/post/list/${id}?page=${page}&limit=${LIMIT}`
+        `/api/post/list/${id}?page=${currentPage}&limit=${LIMIT}&sortOption=${currentSortOption}`
       );
 
       set((state) => ({
-        posts: [...state.posts, ...data.posts],
-        page: state.page + 1,
+        posts:
+          isSubChanged || isInitial
+            ? data.posts
+            : [...state.posts, ...data.posts],
+        page: currentPage + 1,
         hasMore: data.posts.length === LIMIT,
+        curSubId: id,
         loading: false,
       }));
     } catch (error) {
       console.error('Failed to fetch posts:', error);
+      set({ loading: false });
+    } finally {
       set({ loading: false });
     }
   },

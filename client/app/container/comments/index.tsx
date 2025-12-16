@@ -66,7 +66,7 @@ const CommentList = ({ post }: { post: Post }) => {
     }
   };
 
-  const handleSelect = (option: string) => {
+  const handleSelectOption = (option: string) => {
     setSortOption(option as typeof sortOption);
     setIsDropdownOpen(false);
   };
@@ -124,7 +124,7 @@ const CommentList = ({ post }: { post: Post }) => {
             wrapperRef={wrapperRef}
             isDropdownOpen={isDropdownOpen}
             setIsDropdownOpen={setIsDropdownOpen}
-            handleSelect={handleSelect}
+            handleSelectOption={handleSelectOption}
             sortOption={sortOption}
           />
           <CommentListWrapper>

@@ -9,19 +9,22 @@ import PostItem from '@/app/container/post/item';
 
 import { Post } from '@/app/types';
 
-const PostList = ({ posts }: { posts: Post[] }) => {
+const PostList = ({
+  posts,
+  isDropdownOpen,
+  setIsDropdownOpen,
+  handleSelectOption,
+  sortOption,
+}: {
+  posts: Post[];
+  isDropdownOpen: boolean;
+  setIsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleSelectOption: (option: '최신순' | '인기순' | '댓글 많은 순') => void;
+  sortOption: '최신순' | '인기순' | '댓글 많은 순';
+}) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [sortOption, setSortOption] = useState<
-    '최신순' | '인기순' | '댓글 많은 순'
-  >('최신순');
 
   const [isHighlightView, setIsHighlightView] = useState(false);
-
-  const handleSelect = (option: string) => {
-    setSortOption(option as typeof sortOption);
-    setIsDropdownOpen(false);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -42,7 +45,7 @@ const PostList = ({ posts }: { posts: Post[] }) => {
         wrapperRef={wrapperRef}
         isDropdownOpen={isDropdownOpen}
         setIsDropdownOpen={setIsDropdownOpen}
-        handleSelect={handleSelect}
+        handleSelectOption={handleSelectOption}
         sortOption={sortOption}
       />
 
@@ -62,6 +65,10 @@ const PostList = ({ posts }: { posts: Post[] }) => {
   );
 };
 
-const PostListContainer = styled.div``;
+const PostListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-sm);
+`;
 const PostWrapper = styled.div``;
 export default PostList;

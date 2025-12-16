@@ -6,7 +6,7 @@ interface HomePostSortProps {
   wrapperRef: React.RefObject<HTMLDivElement | null>;
   isDropdownOpen: boolean;
   setIsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleSelect: (option: '최신순' | '인기순' | '댓글 많은 순') => void;
+  handleSelectOption: (option: '최신순' | '인기순' | '댓글 많은 순') => void;
   sortOption: '최신순' | '인기순' | '댓글 많은 순';
 }
 
@@ -14,7 +14,7 @@ const HomePostSort = ({
   wrapperRef,
   isDropdownOpen,
   setIsDropdownOpen,
-  handleSelect,
+  handleSelectOption,
   sortOption,
 }: HomePostSortProps) => {
   return (
@@ -32,7 +32,7 @@ const HomePostSort = ({
           <DropdownItem
             $isSelected={sortOption === option}
             key={option}
-            onClick={() => handleSelect(option as typeof sortOption)}
+            onClick={() => handleSelectOption(option as typeof sortOption)}
           >
             {option}
           </DropdownItem>
