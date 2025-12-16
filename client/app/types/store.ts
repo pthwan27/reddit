@@ -52,12 +52,14 @@ export type PostState = {
   page: number;
   hasMore: boolean;
   curSubId: number;
-  sortOption: SortOption;
   selectedPost: Post | null;
   setSelectedPost: (post: Post | null) => void;
-  setSortOption: (option: SortOption) => void;
-  fetchHomePosts: (isInitial?: boolean) => Promise<void>;
-  fetchSubPosts: (id: number, isInitial?: boolean) => Promise<void>;
+  fetchHomePosts: (isInitial?: boolean, option?: SortOption) => Promise<void>;
+  fetchSubPosts: (
+    id: number,
+    isInitial?: boolean,
+    option?: SortOption
+  ) => Promise<void>;
   clearPosts: () => void;
   vote: (id: number, value: number, type: string) => Promise<void>;
   updatePostSubscribeStatus: (subId: number, isSubscribed: boolean) => void;

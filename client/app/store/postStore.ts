@@ -11,32 +11,25 @@ const initialState = {
   hasMore: true,
   curSubId: 0,
   selectedPost: null,
-  sortOption: '최신순' as SortOption,
 };
 
 export const usePostStore = create<PostState>((set, get) => ({
   ...initialState,
 
-  setSortOption: (option: SortOption) => {
-    if (get().sortOption !== option) {
-      set({ sortOption: option });
-      get().fetchHomePosts(true);
-    }
-  },
-
   setSelectedPost: (post: Post | null) => set({ selectedPost: post }),
 
-  fetchHomePosts: async (isInitial?: boolean) => {
-    const { loading, page, hasMore, sortOption } = get();
+  fetchHomePosts: async (isInitial?: boolean, option?: SortOption) => {
+    const { loading, page, hasMore } = get();
     const LIMIT = 10;
 
     try {
       if (isInitial) {
-        set({ ...initialState, sortOption });
+        set({ ...initialState });
 
         const { data } = await clientAxiosInstance(
-          `/api/home/posts?page=${0}&limit=${LIMIT}&sortOption=${sortOption}`
+          `/api/home/posts?page=${0}&limit=${LIMIT}&sortOption=${option || '최신순'}`
         );
+
         set(() => ({
           posts: data.posts,
           page: 1,
@@ -47,12 +40,12 @@ export const usePostStore = create<PostState>((set, get) => ({
         set({ loading: true });
 
         const { data } = await clientAxiosInstance(
-          `/api/home/posts?page=${page}&limit=${LIMIT}&sortOption=${sortOption}`
+          `/api/home/posts?page=${page}&limit=${LIMIT}&sortOption=${option || '최신순'}`
         );
 
         set((state) => ({
-          posts: isInitial ? data.posts : [...state.posts, ...data.posts],
-          page: isInitial ? 1 : state.page + 1,
+          posts: [...state.posts, ...data.posts],
+          page: state.page + 1,
           hasMore: data.posts.length === LIMIT,
         }));
       }
@@ -63,8 +56,12 @@ export const usePostStore = create<PostState>((set, get) => ({
     }
   },
 
-  fetchSubPosts: async (id: number) => {
-    const { loading, page, hasMore, curSubId, sortOption } = get();
+  fetchSubPosts: async (
+    id: number,
+    isInitial?: boolean,
+    option?: SortOption
+  ) => {
+    const { loading, page, hasMore, curSubId } = get();
     const LIMIT = 7;
 
     if (curSubId !== id) {
@@ -76,7 +73,7 @@ export const usePostStore = create<PostState>((set, get) => ({
 
       try {
         const { data } = await clientAxiosInstance.get(
-          `/api/post/list/${id}?page=${0}&limit=${LIMIT}&sortOption=${sortOption}`
+          `/api/post/list/${id}?page=${0}&limit=${LIMIT}&sortOption=${option || '최신순'}`
         );
         set((state) => ({
           posts: page === 0 ? data.posts : [...state.posts, ...data.posts],

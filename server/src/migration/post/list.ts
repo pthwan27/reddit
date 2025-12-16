@@ -21,10 +21,7 @@ export const ListHandler: RequestHandler = async (req, res) => {
       .leftJoinAndSelect('post.votes', 'votes')
       .leftJoinAndSelect('votes.user', 'voteUser')
       .leftJoinAndSelect('post.comments', 'comments')
-      .leftJoinAndSelect('comments.user', 'commentUser')
-
-      .skip(page * limit)
-      .take(limit);
+      .leftJoinAndSelect('comments.user', 'commentUser');
 
     switch (sortOption) {
       case '인기순':
@@ -58,6 +55,8 @@ export const ListHandler: RequestHandler = async (req, res) => {
         queryBuilder.orderBy('post.createdAt', 'DESC');
         break;
     }
+
+    queryBuilder.skip(page * limit).take(limit);
 
     const [posts] = await queryBuilder.getManyAndCount();
 

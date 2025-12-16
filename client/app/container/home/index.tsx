@@ -16,31 +16,25 @@ const Home = () => {
   const { loading: isAuthLoading } = useAuthStore();
 
   const [error, setError] = useState('');
+  const [sortOption, setSortOption] = useState<
+    '최신순' | '인기순' | '댓글 많은 순'
+  >('최신순');
 
-  const {
-    posts,
-    clearPosts,
-    fetchHomePosts,
-    loading,
-    hasMore,
-    sortOption,
-    setSortOption,
-  } = usePostStore();
+  const { posts, clearPosts, fetchHomePosts, loading, hasMore } =
+    usePostStore();
 
   const observerRef = useRef<HTMLDivElement>(null);
-
-  const fetchHomePostsRef = useRef(fetchHomePosts);
-  const clearPostsRef = useRef(clearPosts);
-  useEffect(() => {
-    fetchHomePostsRef.current = fetchHomePosts;
-    clearPostsRef.current = clearPosts;
-  });
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleSelectOption = (option: '최신순' | '인기순' | '댓글 많은 순') => {
-    setSortOption(option);
+    if (sortOption === option) {
+      setIsDropdownOpen(false);
+      return;
+    }
 
+    fetchHomePosts(true, option);
+    setSortOption(option);
     setIsDropdownOpen(false);
   };
 
@@ -51,7 +45,7 @@ const Home = () => {
 
         if (target.isIntersecting && !loading && hasMore && posts.length > 0) {
           try {
-            fetchHomePostsRef.current();
+            fetchHomePosts(false, sortOption);
           } catch (err) {
             const error = err as CustomError;
             console.error('Fetching posts failed:', error);
@@ -77,11 +71,11 @@ const Home = () => {
 
   useEffect(() => {
     if (!isAuthLoading) {
-      fetchHomePostsRef.current(true);
+      fetchHomePosts(true, sortOption);
     }
 
     return () => {
-      clearPostsRef.current();
+      clearPosts();
     };
   }, [isAuthLoading]);
 
