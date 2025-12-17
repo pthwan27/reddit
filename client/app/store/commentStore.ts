@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { Comment } from '../types';
-import { CommentState } from '../types/store';
+import { CommentState, SortOption } from '../types/store';
 import { clientAxiosInstance } from '../utils/axios';
 
 const initialState = {
@@ -82,61 +82,42 @@ export const useCommentStore = create<CommentState>((set, get) => ({
           submitting: false,
         }));
       }
-
-      return data;
     } catch (error) {
       set({ submitting: false });
       throw error;
     }
   },
 
-  fetchComments: async (id: number) => {
-    const { loading, page, hasMore, curPostId } = get();
+  fetchComments: async (
+    id: number,
+    isInitial?: boolean,
+    option?: SortOption
+  ) => {
+    const { page, curPostId } = get();
     const LIMIT = 10;
 
-    if (curPostId !== id) {
-      set({
-        ...initialState,
-        curPostId: id,
-        loading: true,
-      });
+    if (get().loading) return;
 
-      try {
-        const { data } = await clientAxiosInstance.get(
-          `/api/comments/getOnPost/${id}?page=${page}&limit=${LIMIT}`
-        );
-        set((state) => ({
-          comments:
-            page === 0 ? data.comments : [...state.comments, ...data.comments],
-          page: 1,
-          hasMore: data.comments.length === LIMIT,
-          loading: false,
-          curPostId: id,
-        }));
+    const isPostChanged = curPostId !== id;
 
-        return;
-      } catch (error) {
-        console.error('Failed to fetch comments:', error);
-        set({ loading: false });
-
-        return;
-      }
-    }
-
-    if (loading || !hasMore) return;
+    const currentPage = isPostChanged || isInitial ? 0 : page;
+    const currentSortOption = option || '최신순';
 
     set({ loading: true });
 
     try {
       const { data } = await clientAxiosInstance.get(
-        `/api/comments/getOnPost/${id}?page=${page}&limit=${LIMIT}`
+        `/api/comments/getOnPost/${id}?page=${currentPage}&limit=${LIMIT}&sortOption=${currentSortOption}`
       );
 
       set((state) => ({
-        comments: [...state.comments, ...data.comments],
-        page: state.page + 1,
+        comments: isPostChanged
+          ? data.comments
+          : [...state.comments, ...data.comments],
+        page: currentPage + 1,
         hasMore: data.comments.length === LIMIT,
         loading: false,
+        curPostId: id,
       }));
     } catch (error) {
       console.error('Failed to fetch comments:', error);
@@ -190,6 +171,7 @@ export const useCommentStore = create<CommentState>((set, get) => ({
     );
 
     set({ comments: optimisticallyUpdatedComments });
+
     try {
       const targetComment = optimisticallyUpdatedComments
         .flat()
@@ -209,15 +191,11 @@ export const useCommentStore = create<CommentState>((set, get) => ({
         return;
       }
 
-      const { data } = await clientAxiosInstance.patch('/api/vote', {
+      await clientAxiosInstance.patch('/api/vote', {
         id,
         value: targetComment.userVote,
         type,
       });
-
-      set((state) => ({
-        comments: state.comments.map((c) => (c.id === id ? data : c)),
-      }));
     } catch (error) {
       console.error('Vote failed, rolling back.', error);
       set({ comments: originComments });

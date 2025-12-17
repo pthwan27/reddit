@@ -30,7 +30,7 @@ export const usePostStore = create<PostState>((set, get) => ({
     set({ loading: true });
 
     try {
-      const { data } = await clientAxiosInstance(
+      const { data } = await clientAxiosInstance.get(
         `/api/home/posts?page=${currentPage}&limit=${LIMIT}&sortOption=${currentSortOption}`
       );
 
@@ -156,6 +156,20 @@ export const usePostStore = create<PostState>((set, get) => ({
         }
         return post;
       }),
+    }));
+  },
+
+  updatePostCommentCount: (postId: number, isIncrease: boolean) => {
+    set((state) => ({
+      selectedPost:
+        state.selectedPost && state.selectedPost.id === postId
+          ? {
+              ...state.selectedPost,
+              commentCount: isIncrease
+                ? state.selectedPost.commentCount + 1
+                : state.selectedPost.commentCount - 1,
+            }
+          : state.selectedPost,
     }));
   },
 

@@ -63,6 +63,7 @@ export type PostState = {
   clearPosts: () => void;
   vote: (id: number, value: number, type: string) => Promise<void>;
   updatePostSubscribeStatus: (subId: number, isSubscribed: boolean) => void;
+  updatePostCommentCount: (postId: number, isIncrease: boolean) => void;
   reset: () => void;
 };
 
@@ -78,7 +79,11 @@ export type CommentState = {
     content: string,
     type: 'post' | 'comment'
   ) => Promise<void>;
-  fetchComments: (id: number, isInitial?: boolean) => Promise<void>;
+  fetchComments: (
+    id: number,
+    isInitial?: boolean,
+    option?: SortOption
+  ) => Promise<void>;
   clearComments: () => void;
   vote: (id: number, value: number, type: string) => Promise<void>;
 };

@@ -6,7 +6,7 @@ interface CommentSortProps {
   wrapperRef: React.RefObject<HTMLDivElement | null>;
   isDropdownOpen: boolean;
   setIsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleSelectOption: (option: string) => void;
+  handleSelectOption: (option: '최신순' | '인기순' | '댓글 많은 순') => void;
   sortOption: '최신순' | '인기순' | '댓글 많은 순';
 }
 

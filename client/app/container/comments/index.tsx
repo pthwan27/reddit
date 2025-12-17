@@ -21,16 +21,19 @@ import RightSideBar from '@/app/components/sub/rightSideBar';
 
 import CommentItem from '@/app/container/comments/item';
 
-import { Post } from '@/app/types';
+import { CustomError, Post } from '@/app/types';
 
 const CommentList = ({ post }: { post: Post }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
   const { user } = useAuthStore();
 
-  const { selectedPost, setSelectedPost } = usePostStore();
-  const { comments, loading, fetchComments, submitComment } = useCommentStore();
+  const { selectedPost, setSelectedPost, updatePostCommentCount } =
+    usePostStore();
+  const { comments, loading, hasMore, fetchComments, submitComment } =
+    useCommentStore();
 
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [content, setContent] = useState('');
@@ -58,6 +61,8 @@ const CommentList = ({ post }: { post: Post }) => {
 
       await submitComment(post.id, content, 'post');
 
+      updatePostCommentCount(post.id, true);
+
       cancelHandler();
     } catch (err: unknown) {
       const error = err as Error;
@@ -66,8 +71,15 @@ const CommentList = ({ post }: { post: Post }) => {
     }
   };
 
-  const handleSelectOption = (option: string) => {
-    setSortOption(option as typeof sortOption);
+  const handleSelectOption = (option: '최신순' | '인기순' | '댓글 많은 순') => {
+    if (sortOption === option) {
+      setIsDropdownOpen(false);
+      return;
+    }
+
+    setSortOption(option);
+
+    fetchComments(post.id, true, option);
     setIsDropdownOpen(false);
   };
 
@@ -93,6 +105,42 @@ const CommentList = ({ post }: { post: Post }) => {
     };
   }, [post]);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+
+        if (
+          target.isIntersecting &&
+          !loading &&
+          hasMore &&
+          comments.length > 0
+        ) {
+          try {
+            fetchComments(post.id, false, sortOption);
+          } catch (err) {
+            const error = err as CustomError;
+            console.error('Fetching posts failed:', error);
+
+            setError(
+              error.response?.data?.error || '게시물 불러오기를 실패했습니다.'
+            );
+          }
+        }
+      },
+      {
+        threshold: 0.5,
+        rootMargin: '100px',
+      }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [loading, hasMore, comments, sortOption, fetchComments]);
+
   if (!selectedPost) {
     return (
       <SkeletonWrapper>
@@ -103,7 +151,7 @@ const CommentList = ({ post }: { post: Post }) => {
 
   return (
     <GridWrapper>
-      <PostCommentsWrapper>
+      <PostListWrapper>
         <PostInfoSection>
           <CommentPostInfos {...selectedPost} />
           <CommentPostBody {...selectedPost} />
@@ -128,21 +176,24 @@ const CommentList = ({ post }: { post: Post }) => {
             sortOption={sortOption}
           />
           <CommentListWrapper>
-            {loading ? (
-              <LoadingSpinner />
-            ) : (
-              <>
-                <div />
-                {comments.map((comment) => (
-                  <CommentItem {...comment} key={comment.identifier} />
-                ))}
-              </>
+            {loading && <LoadingSpinner />}
+            <>
+              <div />
+              {comments.map((comment, idx) => (
+                <CommentItem {...comment} key={comment.identifier + idx} />
+              ))}
+            </>
+            {hasMore && !loading && (
+              <div
+                ref={observerRef}
+                style={{ height: '20px', background: 'black' }}
+              />
             )}
           </CommentListWrapper>
         </CommentsSection>
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
-      </PostCommentsWrapper>
+      </PostListWrapper>
       <RightSideBar sub={selectedPost.sub} />
     </GridWrapper>
   );
@@ -151,6 +202,8 @@ const CommentList = ({ post }: { post: Post }) => {
 const SkeletonWrapper = styled.div`
   width: 100%;
   height: 400px;
+
+  padding: var(--spacer-md) var(--spacer-xs) 0;
 `;
 
 const GridWrapper = styled.div`
@@ -176,7 +229,7 @@ const GridWrapper = styled.div`
     grid-template-columns: minmax(0, 756px) minmax(0, 316px);
   }
 `;
-const PostCommentsWrapper = styled.div``;
+const PostListWrapper = styled.div``;
 
 const PostInfoSection = styled.section`
   display: flex;
