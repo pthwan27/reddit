@@ -81,8 +81,6 @@ export const usePostStore = create<PostState>((set, get) => ({
     } catch (error) {
       console.error('Failed to fetch posts:', error);
       set({ loading: false });
-    } finally {
-      set({ loading: false });
     }
   },
 

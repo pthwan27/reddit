@@ -43,16 +43,15 @@ export const ListBySubHandler: RequestHandler = async (req, res) => {
             'sort_by_votes'
           )
           .addOrderBy('sort_by_votes', 'DESC');
-
         break;
       case '댓글 많은 순':
         queryBuilder
           .addSelect(
             (subQuery) =>
               subQuery
-                .select('COUNT(c.id)')
-                .from('comments', 'c')
-                .where('c.postId = post.id'),
+                .select('COUNT(comments.id)')
+                .from('comments', 'comments')
+                .where('comments.postId = post.id'),
             'sort_by_comments'
           )
           .addOrderBy('sort_by_comments', 'DESC');

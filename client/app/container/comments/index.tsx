@@ -32,8 +32,14 @@ const CommentList = ({ post }: { post: Post }) => {
 
   const { selectedPost, setSelectedPost, updatePostCommentCount } =
     usePostStore();
-  const { comments, loading, hasMore, fetchComments, submitComment } =
-    useCommentStore();
+  const {
+    comments,
+    loading,
+    hasMore,
+    fetchComments,
+    submitComment,
+    clearComments,
+  } = useCommentStore();
 
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [content, setContent] = useState('');
@@ -102,6 +108,7 @@ const CommentList = ({ post }: { post: Post }) => {
 
     return () => {
       setSelectedPost(null);
+      clearComments();
     };
   }, [post]);
 
@@ -229,7 +236,9 @@ const GridWrapper = styled.div`
     grid-template-columns: minmax(0, 756px) minmax(0, 316px);
   }
 `;
-const PostListWrapper = styled.div``;
+const PostListWrapper = styled.div`
+  margin-bottom: var(--spacer-2xl);
+`;
 
 const PostInfoSection = styled.section`
   display: flex;

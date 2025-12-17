@@ -13,10 +13,11 @@ export async function GET(
 
     const searchParams = req.nextUrl.searchParams;
     const page = searchParams.get('page') || '0';
-    const limit = searchParams.get('limit') || '7';
+    const limit = searchParams.get('limit') || '10';
+    const sortOption = searchParams.get('sortOption') || '최신순';
 
     const { data, status } = await serverAxiosInstance.get(
-      `/comments/getOnPost/${id}?page=${page}&limit=${limit}`,
+      `/comments/getOnPost/${id}?page=${page}&limit=${limit}&sortOption=${sortOption}`,
       {
         headers: {
           Cookie: req.headers.get('cookie') || '',

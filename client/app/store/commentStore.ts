@@ -111,13 +111,14 @@ export const useCommentStore = create<CommentState>((set, get) => ({
       );
 
       set((state) => ({
-        comments: isPostChanged
-          ? data.comments
-          : [...state.comments, ...data.comments],
+        comments:
+          isPostChanged || isInitial
+            ? data.comments
+            : [...state.comments, ...data.comments],
         page: currentPage + 1,
         hasMore: data.comments.length === LIMIT,
-        loading: false,
         curPostId: id,
+        loading: false,
       }));
     } catch (error) {
       console.error('Failed to fetch comments:', error);
