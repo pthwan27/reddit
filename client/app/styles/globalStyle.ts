@@ -63,6 +63,7 @@ const GlobalStyle = createGlobalStyle`
   --size-lg: 1.5rem;
   --size-xl: 2rem;
   --size-2xl: 2.5rem;
+  --size-2.5xl: 3rem;
   --size-3xl: 3.5rem;
   --size-4xl: 4rem;
   --size-5xl: 5rem;

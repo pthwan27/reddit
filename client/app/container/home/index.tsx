@@ -99,7 +99,7 @@ const Home = () => {
 };
 
 const HomeContainer = styled.div`
-  margin-bottom: var(--spacer-2xl);
+  margin-bottom: var(--spacer-2.5xl);
 `;
 
 const ObserverWrapper = styled.div``;

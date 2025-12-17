@@ -237,7 +237,7 @@ const GridWrapper = styled.div`
   }
 `;
 const PostListWrapper = styled.div`
-  margin-bottom: var(--spacer-2xl);
+  margin-bottom: var(--spacer-2.5xl);
 `;
 
 const PostInfoSection = styled.section`
