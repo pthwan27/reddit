@@ -151,10 +151,10 @@ const CommentItem = ({ depth = 0, ...comment }: CommentItemProps) => {
               <ThreadLineWrapper
                 className="threadLineWrapper"
                 onClick={toggleSummary}
-                onMouseEnter={() => setHoveredChildIndex(idx)}
+                onMouseEnter={() => setHoveredChildIndex(depth)}
                 onMouseLeave={() => setHoveredChildIndex(null)}
               >
-                <ThreadLine $isHovered={hoveredChildIndex === idx} />
+                <ThreadLine $isHovered={hoveredChildIndex === depth} />
               </ThreadLineWrapper>
             )}
             <ItemGridWrapper key={childComment.identifier}>
@@ -162,10 +162,10 @@ const CommentItem = ({ depth = 0, ...comment }: CommentItemProps) => {
                 <BranchLineWrapper
                   onClick={toggleSummary}
                   className="branchLineWrapper"
-                  onMouseEnter={() => setHoveredChildIndex(idx)}
+                  onMouseEnter={() => setHoveredChildIndex(depth)}
                   onMouseLeave={() => setHoveredChildIndex(null)}
                 >
-                  <BranchLine $isHovered={hoveredChildIndex === idx} />
+                  <BranchLine $isHovered={hoveredChildIndex === depth} />
                 </BranchLineWrapper>
                 <CommentItem
                   key={childComment.identifier}
