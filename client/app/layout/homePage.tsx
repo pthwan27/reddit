@@ -46,6 +46,7 @@ const MainWrapper = styled.div`
 
   width: 100%;
   margin: 0 auto;
+  margin-bottom: var(--spacer-3xl);
 
   z-index: 1;
 

@@ -6,6 +6,7 @@ import { styled } from 'styled-components';
 
 import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
+import RightSideBar from '@/app/components/sub/rightSideBar';
 
 import { CustomError } from '@/app/types';
 
@@ -76,32 +77,51 @@ const Home = () => {
 
   return (
     <HomeContainer>
-      <ObserverWrapper>
-        <HomePostListContainer
-          posts={posts}
-          isDropdownOpen={isDropdownOpen}
-          setIsDropdownOpen={setIsDropdownOpen}
-          handleSelectOption={handleSelectOption}
-          sortOption={sortOption}
-        />
-        {loading && <LoadingSpinner />}
-
-        {hasMore && !loading && (
-          <div
-            ref={observerRef}
-            style={{ height: '20px', background: 'black' }}
+      <Main>
+        <div>
+          <HomePostListContainer
+            posts={posts}
+            isDropdownOpen={isDropdownOpen}
+            setIsDropdownOpen={setIsDropdownOpen}
+            handleSelectOption={handleSelectOption}
+            sortOption={sortOption}
           />
-        )}
-      </ObserverWrapper>
+          {loading && <LoadingSpinner />}
+
+          {hasMore && !loading && (
+            <div
+              ref={observerRef}
+              style={{ height: '20px', background: 'black' }}
+            />
+          )}
+        </div>
+
+        <RightSideBar />
+      </Main>
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </HomeContainer>
   );
 };
 
-const HomeContainer = styled.div`
-  margin-bottom: var(--spacer-2.5xl);
-`;
+const HomeContainer = styled.div``;
 
-const ObserverWrapper = styled.div``;
+const Main = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+
+  & > :nth-child(2) {
+    display: none;
+  }
+
+  gap: var(--spacer-lg);
+
+  @media (min-width: 960px) {
+    grid-template-columns: minmax(0, 756px) minmax(0, 316px);
+
+    & > :nth-child(2) {
+      display: block;
+    }
+  }
+`;
 
 export default Home;

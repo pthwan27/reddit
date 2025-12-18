@@ -203,7 +203,7 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
               />
             )}
           </PostListWrapper>
-          <RightSideBar sub={sub} />
+          <RightSideBar />
         </Main>
 
         <HiddenInput
@@ -254,8 +254,10 @@ const Main = styled.div`
   gap: var(--spacer-lg);
 
   @media (min-width: 960px) {
-    & > :nth-child(1) {
-      grid-template-columns: minmax(0, 756px) minmax(0, 316px);
+    grid-template-columns: minmax(0, 756px) minmax(0, 316px);
+
+    & > :nth-child(2) {
+      display: block;
     }
   }
 `;

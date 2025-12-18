@@ -201,7 +201,7 @@ const CommentList = ({ post }: { post: Post }) => {
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </PostListWrapper>
-      <RightSideBar sub={selectedPost.sub} />
+      <RightSideBar />
     </GridWrapper>
   );
 };
@@ -236,9 +236,7 @@ const GridWrapper = styled.div`
     grid-template-columns: minmax(0, 756px) minmax(0, 316px);
   }
 `;
-const PostListWrapper = styled.div`
-  margin-bottom: var(--spacer-2.5xl);
-`;
+const PostListWrapper = styled.div``;
 
 const PostInfoSection = styled.section`
   display: flex;

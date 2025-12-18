@@ -172,7 +172,7 @@ const PostSubmit = ({ sub }: { sub: Sub }) => {
         </PostSubmitButtons>
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </PostSubmitContainer>
-      <RightSideBar sub={sub} />
+      <RightSideBar />
     </GridWrapper>
   );
 };
