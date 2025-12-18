@@ -1,20 +1,52 @@
+import { useEffect, useState } from 'react';
+
+import { useSubStore } from '@/app/store/subStore';
+
 import styled from 'styled-components';
 
+import IconBox from '../common/IconBox';
+import DarkCloseIcon from '../svgs/DarkCloseIcon';
 import SearchIcon from '../svgs/SearchIcon';
 
 const SearchInput = () => {
+  const { selectedSub } = useSubStore();
+
+  const [isTagVisible, setIsTagVisible] = useState(selectedSub !== null);
+
+  useEffect(() => {
+    setIsTagVisible(selectedSub !== null);
+  }, [selectedSub]);
+
   return (
     <StyledSearchInput>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
-      <Input id="search-input" name="search-input" placeholder="Search" />
+
+      <InputWrapper id="search-input">
+        {selectedSub && isTagVisible && (
+          <Tag>
+            <IconBox iconUrl={selectedSub.iconUrl} width={16} height={16} />
+            <span>{selectedSub.title}</span>
+            <IconBox
+              icon={<DarkCloseIcon />}
+              width={16}
+              height={16}
+              onClick={() => setIsTagVisible(false)}
+            />
+          </Tag>
+        )}
+        <Input name="search-input" placeholder="Search" />
+      </InputWrapper>
     </StyledSearchInput>
   );
 };
 
 const StyledSearchInput = styled.label`
+  display: flex;
   position: relative;
+
+  width: 100%;
 
   @media (min-width: 1200px) {
     width: 560px;
@@ -37,15 +69,18 @@ const SearchIconWrapper = styled.span`
   align-items: center;
 `;
 
-const Input = styled.input`
+const InputWrapper = styled.div`
+  display: flex;
   width: 100%;
 
   background: ${({ theme }) => theme.colors.secondary.background};
   border: var(--line-md) solid transparent;
   padding-left: var(--spacer-2-5xl);
-  border-radius: var(--radius-3xl);
+  border-radius: var(--radius-full);
 
-  &:focus {
+  box-shadow: var(--box-shadow-xs);
+
+  &:focus-within {
     border: var(--line-md) solid ${({ theme }) => theme.colors.default.primary};
     background: 0 0;
   }
@@ -54,6 +89,35 @@ const Input = styled.input`
   &:hover {
     background: ${({ theme }) => theme.colors.secondary.backgroundHover};
   }
+`;
+
+const Tag = styled.div`
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-xs);
+
+  padding: var(--spacer-2xs) var(--spacer-sm);
+  margin: var(--spacer-4xs) 0;
+
+  border-radius: var(--radius-full);
+
+  font: var(--font-12-16-semibold);
+  line-height: 1.5;
+
+  background-color: ${({ theme }) =>
+    theme.components.button.background.activated};
+
+  height: var(--rem-32);
+
+  > span {
+    display: flex;
+    align-items: center;
+    line-height: 1.5;
+  }
+`;
+
+const Input = styled.input`
+  padding: 6px var(--spacer-sm);
 `;
 
 export default SearchInput;

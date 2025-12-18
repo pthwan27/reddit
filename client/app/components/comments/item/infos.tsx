@@ -19,15 +19,14 @@ const CommentPostInfos = ({ ...post }: Post) => {
   return (
     <StyledPostInfos>
       <PostInfoWrapper>
-        <BackButton onClick={goToBack}>
-          <IconBox
-            icon={<ArrowBackIcon />}
-            width={32}
-            height={32}
-            percentage={50}
-            backgroundColor="secondary"
-          />
-        </BackButton>
+        <IconBox
+          icon={<ArrowBackIcon />}
+          width={32}
+          height={32}
+          percentage={50}
+          backgroundColor="secondary"
+          onClick={goToBack}
+        />
         <PostInfo>
           <IconBox
             iconUrl={post.sub.iconUrl}
@@ -91,10 +90,6 @@ const PostInfoWrapper = styled.div`
     }
   }
 `;
-const BackButton = styled.button`
-  padding: 0;
-`;
-
 const PostInfo = styled.div`
   display: flex;
   gap: var(--spacer-2xs);

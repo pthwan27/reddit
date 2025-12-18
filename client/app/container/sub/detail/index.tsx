@@ -24,14 +24,11 @@ import PostList from '../../post/list';
 
 const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   const { user } = useAuthStore();
-
-  const [error, setError] = useState('');
-  const { handleSubscribe: subscribe } = useSubStore();
-  const { uploadIconImage, uploadBannerImage } = useUploadImage();
+  const { handleSubscribe: subscribe, setSelectedSub } = useSubStore();
   const { posts, loading, hasMore, fetchSubPosts, clearPosts } = usePostStore();
 
+  const [error, setError] = useState('');
   const [sub, setSub] = useState<Sub>(initialSub);
-
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl || '');
   const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl || '');
 
@@ -39,6 +36,8 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   const [sortOption, setSortOption] = useState<
     '최신순' | '인기순' | '댓글 많은 순'
   >('최신순');
+
+  const { uploadIconImage, uploadBannerImage } = useUploadImage();
 
   const iconFileInputRef = useRef<HTMLInputElement>(null);
   const bannerFileInputRef = useRef<HTMLInputElement>(null);
@@ -119,14 +118,6 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   }, [sub.bannerUrl]);
 
   useEffect(() => {
-    (async () => {
-      const { data } = await clientAxiosInstance.get(`/api/sub/${sub.slug}`);
-
-      setSub(data);
-    })();
-  }, [user]);
-
-  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const target = entries[0];
@@ -158,9 +149,19 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   }, [loading, hasMore, posts, sortOption, fetchSubPosts]);
 
   useEffect(() => {
+    (async () => {
+      const { data } = await clientAxiosInstance.get(`/api/sub/${sub.slug}`);
+
+      setSub(data);
+    })();
+  }, [user]);
+
+  useEffect(() => {
+    setSelectedSub(sub);
     fetchSubPosts(sub.id, true, sortOption);
 
     return () => {
+      setSelectedSub(null);
       clearPosts();
     };
   }, []);

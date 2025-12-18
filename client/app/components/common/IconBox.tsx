@@ -93,6 +93,8 @@ const StyledIconBox = styled.div<{
 
   overflow: hidden;
 
+  cursor: ${({ onClick }) => (onClick ? 'pointer' : 'default')};
+
   img {
     width: ${({ $percentage }) => `${$percentage}%`};
     height: ${({ $percentage }) => `${$percentage}%`};

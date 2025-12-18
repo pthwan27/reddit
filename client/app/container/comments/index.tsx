@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useAuthStore } from '@/app/store/authStore';
 import { useCommentStore } from '@/app/store/commentStore';
 import { usePostStore } from '@/app/store/postStore';
+import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
@@ -30,6 +31,7 @@ const CommentList = ({ post }: { post: Post }) => {
   const router = useRouter();
   const { user } = useAuthStore();
 
+  const { setSelectedSub } = useSubStore();
   const { selectedPost, setSelectedPost, updatePostCommentCount } =
     usePostStore();
   const {
@@ -111,6 +113,14 @@ const CommentList = ({ post }: { post: Post }) => {
       clearComments();
     };
   }, [post]);
+
+  useEffect(() => {
+    setSelectedSub(post.sub);
+
+    return () => {
+      setSelectedSub(null);
+    };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

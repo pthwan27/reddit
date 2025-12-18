@@ -181,6 +181,10 @@ const RightNav = styled.div`
   justify-content: flex-end;
   gap: var(--spacer-xs);
 
+  width: var(--rem-32);
+  height: 100%;
+
+  margin-left: var(--spacer-lg);
   padding-inline-start: var(--spacer-lg);
 `;
 const DropdownContainer = styled.div`
@@ -193,11 +197,11 @@ const ProfileButton = styled.button`
   display: flex;
   gap: var(--spacer-4xs);
 
-  width: var(--rem-32);
-  height: var(--rem-32);
-
   justify-content: center;
   align-items: center;
+
+  width: 100%;
+  height: 100%;
 
   background: none;
   border: none;
