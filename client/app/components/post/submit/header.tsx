@@ -131,11 +131,7 @@ const PostSubmitHeader = ({
                       width={24}
                       height={24}
                     />
-                    <span>
-                      {selectedSub.profileUser
-                        ? 'u' + ('/' + selectedSub.title)
-                        : 'r' + ('/' + selectedSub.title)}
-                    </span>
+                    <span>{'r/' + selectedSub.title}</span>
                     <ArrowWrapper>
                       <DownArrowIcon />
                     </ArrowWrapper>
