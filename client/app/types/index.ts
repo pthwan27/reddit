@@ -30,6 +30,7 @@ export interface Sub {
   isOwner: boolean;
   posts?: Post[];
 }
+
 // Post 타입
 export interface Post {
   id: number;

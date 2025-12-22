@@ -62,12 +62,6 @@ const PostSubmitHeader = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [setIsSearching, setSearchTerm]);
 
-  useEffect(() => {
-    if (!selectedSub) {
-      setIsSearching(true);
-    }
-  }, [setIsSearching, selectedSub]);
-
   return (
     <StyledPostSubmitHeader>
       <TitleSection>

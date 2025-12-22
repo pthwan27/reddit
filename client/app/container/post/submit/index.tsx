@@ -74,7 +74,7 @@ const PostSubmit = ({ sub }: { sub: Sub }) => {
       setMediaFiles([]);
       setLinkUrl('');
 
-      router.push(`/r/${sub.slug}/submit`);
+      router.replace(`/r/${sub.slug}/submit`);
     }
   };
 
