@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import styled from 'styled-components';
 
-import HightlightPosts from '@/app/components/post/list/highlightList';
+import HighlightPosts from '@/app/components/post/highlight/list';
 import PostSort from '@/app/components/post/list/sort';
 
 import PostItem from '@/app/container/post/item';
@@ -11,12 +11,14 @@ import { Post } from '@/app/types';
 
 const PostList = ({
   posts,
+  highlightPosts,
   isDropdownOpen,
   setIsDropdownOpen,
   handleSelectOption,
   sortOption,
 }: {
   posts: Post[];
+  highlightPosts: Post[];
   isDropdownOpen: boolean;
   setIsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleSelectOption: (option: '최신순' | '인기순' | '댓글 많은 순') => void;
@@ -49,7 +51,8 @@ const PostList = ({
         sortOption={sortOption}
       />
 
-      <HightlightPosts
+      <HighlightPosts
+        highlightPosts={highlightPosts}
         isHighlightView={isHighlightView}
         setIsHighlightView={setIsHighlightView}
       />
@@ -68,7 +71,6 @@ const PostList = ({
 const PostListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--spacer-sm);
 `;
 const PostWrapper = styled.div``;
 export default PostList;

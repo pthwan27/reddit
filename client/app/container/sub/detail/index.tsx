@@ -25,9 +25,16 @@ import PostList from '../../post/list';
 const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   const { user } = useAuthStore();
   const { handleSubscribe: subscribe, setSelectedSub } = useSubStore();
-  const { posts, loading, hasMore, fetchSubPosts, clearPosts } = usePostStore();
+  const {
+    posts,
+    highlightPosts,
+    loading,
+    hasMore,
+    fetchSubPosts,
+    fetchSubHighlightPosts,
+    clearPosts,
+  } = usePostStore();
 
-  const [error, setError] = useState('');
   const [sub, setSub] = useState<Sub>(initialSub);
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl || '');
   const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl || '');
@@ -36,12 +43,13 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   const [sortOption, setSortOption] = useState<
     '최신순' | '인기순' | '댓글 많은 순'
   >('최신순');
-
-  const { uploadIconImage, uploadBannerImage } = useUploadImage();
+  const [error, setError] = useState('');
 
   const iconFileInputRef = useRef<HTMLInputElement>(null);
   const bannerFileInputRef = useRef<HTMLInputElement>(null);
   const observerRef = useRef<HTMLDivElement>(null);
+
+  const { uploadIconImage, uploadBannerImage } = useUploadImage();
 
   const handleFileChange =
     (uploadType: 'icon' | 'banner') =>
@@ -159,6 +167,7 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   useEffect(() => {
     setSelectedSub(sub);
     fetchSubPosts(sub.id, true, sortOption);
+    fetchSubHighlightPosts(sub.id);
 
     return () => {
       setSelectedSub(null);
@@ -189,6 +198,7 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
           <PostListWrapper>
             <PostList
               posts={posts}
+              highlightPosts={highlightPosts}
               isDropdownOpen={isDropdownOpen}
               setIsDropdownOpen={setIsDropdownOpen}
               handleSelectOption={handleSelectOption}

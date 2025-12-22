@@ -6,6 +6,7 @@ import { clientAxiosInstance } from '../utils/axios';
 
 const initialState = {
   posts: [] as Post[],
+  highlightPosts: [] as Post[],
   loading: false,
   page: 0,
   hasMore: true,
@@ -84,7 +85,32 @@ export const usePostStore = create<PostState>((set, get) => ({
     }
   },
 
-  clearPosts: () => set(initialState),
+  fetchSubHighlightPosts: async (id: number) => {
+    set({ loading: true });
+    try {
+      const { data } = await clientAxiosInstance.get(
+        `/api/post/list/${id}/highlight`
+      );
+
+      set({ highlightPosts: data.posts, loading: false });
+    } catch (error) {
+      console.error('Failed to fetch posts:', error);
+      set({ loading: false });
+    }
+  },
+  clearPosts: () =>
+    set({
+      posts: [],
+      loading: false,
+      page: 0,
+      hasMore: true,
+      curSubId: 0,
+    }),
+
+  clearHighlightPosts: () =>
+    set({
+      highlightPosts: [],
+    }),
 
   vote: async (id: number, value: number, type: string) => {
     const { posts: originPosts, selectedPost } = get();

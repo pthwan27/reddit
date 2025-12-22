@@ -1,13 +1,18 @@
 import styled from 'styled-components';
 
+import { Post } from '@/app/types';
+
 import DownArrowIcon from '../../svgs/DownArrowIcon';
 import PinIcon from '../../svgs/PinIcon';
+import HighlightItem from './item';
 
 interface HighlightListProps {
+  highlightPosts: Post[];
   isHighlightView: boolean;
   setIsHighlightView: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const HightlightPosts = ({
+const HighlightPosts = ({
+  highlightPosts,
   isHighlightView,
   setIsHighlightView,
 }: HighlightListProps) => {
@@ -23,7 +28,17 @@ const HightlightPosts = ({
         </IconWrapper>
       </StyledHighlightToggle>
 
-      {isHighlightView && <StyledHighlightPostList></StyledHighlightPostList>}
+      {isHighlightView && (
+        <StyledHighlightPostList>
+          {highlightPosts.map((post) => (
+            <HighlightItem
+              key={post.id}
+              post={post}
+              postLength={highlightPosts.length}
+            />
+          ))}
+        </StyledHighlightPostList>
+      )}
     </>
   );
 };
@@ -89,11 +104,19 @@ const IconWrapper = styled.div<{ $isHighlightView: boolean }>`
   }
 `;
 
-const StyledHighlightPostList = styled.div`
-  height: 200px;
-  background: lightgray;
+const StyledHighlightPostList = styled.ul`
+  display: flex;
+
+  width: 100%;
+  height: 100%;
 
   margin-bottom: var(--spacer-xs);
+
+  overflow-x: auto;
+
+  > li:first-child {
+    padding-inline-start: var(--spacer-md);
+  }
 `;
 
-export default HightlightPosts;
+export default HighlightPosts;

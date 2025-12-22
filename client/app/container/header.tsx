@@ -185,7 +185,7 @@ const RightNav = styled.div`
   height: 100%;
 
   margin-left: var(--spacer-lg);
-  padding-inline-start: var(--spacer-lg);
+  padding-inline-start: var(--rem-64);
 `;
 const DropdownContainer = styled.div`
   position: absolute;

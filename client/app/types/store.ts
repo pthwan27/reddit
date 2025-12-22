@@ -48,6 +48,7 @@ export type SortOption = '최신순' | '인기순' | '댓글 많은 순';
 
 export type PostState = {
   posts: Post[];
+  highlightPosts: Post[];
   loading: boolean;
   page: number;
   hasMore: boolean;
@@ -60,7 +61,11 @@ export type PostState = {
     isInitial?: boolean,
     option?: SortOption
   ) => Promise<void>;
+  fetchSubHighlightPosts: (id: number) => Promise<void>;
+
   clearPosts: () => void;
+  clearHighlightPosts: () => void;
+
   vote: (id: number, value: number, type: string) => Promise<void>;
   updatePostSubscribeStatus: (subId: number, isSubscribed: boolean) => void;
   updatePostCommentCount: (postId: number, isIncrease: boolean) => void;
