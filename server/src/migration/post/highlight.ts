@@ -25,7 +25,9 @@ export const HighlightListBySubHandler: RequestHandler = async (req, res) => {
       .leftJoinAndSelect('votes.user', 'voteUser')
       .leftJoinAndSelect('post.comments', 'comments')
       .leftJoinAndSelect('comments.user', 'commentUser')
-      .where('sub.id = :subId', { subId: parseInt(id, 10) });
+      .where('sub.id = :subId', { subId: parseInt(id, 10) })
+      .andWhere('post.imageUrns IS NOT NULL')
+      .andWhere('array_length(post.imageUrns, 1) > 0');
 
     queryBuilder.addSelect(
       (subquery) =>
@@ -48,7 +50,8 @@ export const HighlightListBySubHandler: RequestHandler = async (req, res) => {
     queryBuilder
       .orderBy('sort_by_votes', 'DESC')
       .addOrderBy('sort_by_comments', 'DESC')
-      .addOrderBy('post.createdAt', 'DESC');
+      .addOrderBy('post.createdAt', 'DESC')
+      .limit(10);
 
     const [posts] = await queryBuilder.getManyAndCount();
 
