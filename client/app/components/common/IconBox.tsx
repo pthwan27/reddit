@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 import styled, { DefaultTheme, css } from 'styled-components';
 
-type BackgroundColor = 'neutral' | 'transparent' | 'secondary';
+type BackgroundColor = 'media' | 'neutral' | 'transparent' | 'secondary';
 interface IconBoxProps {
   iconUrl?: string | null;
   icon?: ReactNode;
@@ -60,6 +60,19 @@ const bgColor = (backgroundColor: BackgroundColor, theme: DefaultTheme) => {
 
         &:hover { 
           background: ${theme.components.button.secondary.background.hover};
+      `;
+
+    case 'media':
+      return css`
+        background: ${theme.colors.media.background};
+
+        svg{ 
+          fill: ${theme.colors.media.onBackground};
+        }
+          
+        &:hover { 
+          background: ${theme.colors.media.backgroundHover};
+
       `;
     case 'neutral':
     default:

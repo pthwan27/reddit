@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { usePostStore } from '@/app/store/postStore';
+import { useSubStore } from '@/app/store/subStore';
 
 import { styled } from 'styled-components';
 
@@ -15,6 +16,7 @@ import HomePostListContainer from './list';
 const Home = () => {
   const { posts, clearPosts, fetchHomePosts, loading, hasMore } =
     usePostStore();
+  const { setSelectedSub } = useSubStore();
 
   const observerRef = useRef<HTMLDivElement>(null);
 
@@ -69,6 +71,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchHomePosts(true, sortOption);
+    setSelectedSub(null);
 
     return () => {
       clearPosts();

@@ -48,7 +48,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } finally {
       set({ user: null });
       useSubStore.getState().reset();
-      usePostStore.getState().fetchHomePosts(true);
+      usePostStore.getState().reset();
     }
   },
   register: async (
@@ -114,7 +114,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
         if (
           originalRequest.url === '/api/auth/login' ||
-          originalRequest.url === '/api/auth/register'
+          originalRequest.url === '/api/auth/register' ||
+          originalRequest.url === '/api/auth/logout' ||
+          originalRequest.url === '/api/auth/me' ||
+          originalRequest.url === '/api/auth/refresh'
         ) {
           return Promise.reject(error);
         }
@@ -132,7 +135,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           return clientAxiosInstance(originalRequest);
         } catch (refreshError) {
           console.error('Unable to refresh token, logging out.', refreshError);
-          await get().logout();
+
+          useSubStore.getState().reset();
+          usePostStore.getState().reset();
+
+          set({ user: null });
+
           return Promise.reject(refreshError);
         } finally {
           refreshTokenPromise = null;

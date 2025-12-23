@@ -40,7 +40,7 @@ export const useSubStore = create(
 
         const optimisticSub: Sub = {
           id: tempId,
-          slug: title, // 임시 slug
+          slug: title,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           title,

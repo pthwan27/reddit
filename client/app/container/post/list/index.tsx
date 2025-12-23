@@ -26,7 +26,7 @@ const PostList = ({
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const [isHighlightView, setIsHighlightView] = useState(false);
+  const [isHighlightView, setIsHighlightView] = useState(true);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
