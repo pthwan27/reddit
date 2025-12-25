@@ -15,7 +15,7 @@ interface UseGetLinkMetadataResult {
   error: boolean;
 }
 
-export const useGetLinkMetadata = (url: string): UseGetLinkMetadataResult => {
+export const useGetLinkMetadata = (url?: string): UseGetLinkMetadataResult => {
   const [metadata, setMetadata] = useState<LinkMetadata | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);

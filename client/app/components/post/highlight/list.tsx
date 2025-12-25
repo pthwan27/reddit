@@ -218,6 +218,7 @@ const StyledHighlightPostList = styled.ul`
 
 const ScrollButton = styled.button<{ $direction: 'left' | 'right' }>`
   padding: 0;
+  background: none;
 
   position: absolute;
   top: 50%;

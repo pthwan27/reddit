@@ -26,9 +26,11 @@ export const HighlightListBySubHandler: RequestHandler = async (req, res) => {
       .leftJoinAndSelect('post.comments', 'comments')
       .leftJoinAndSelect('comments.user', 'commentUser')
       .where('sub.id = :subId', { subId: parseInt(id, 10) })
-      .andWhere('post.linkUrl IS NOT NULL')
-      .andWhere('post.imageUrns IS NOT NULL')
-      .andWhere('array_length(post.imageUrns, 1) > 0');
+      .where(
+        '(post."postType" = :link) OR ' +
+          '(post."postType" = :media AND post."mediaType" = :image)',
+        { link: 'link', media: 'media', image: 'image' }
+      );
 
     queryBuilder.addSelect(
       (subquery) =>

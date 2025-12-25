@@ -7,7 +7,7 @@ import { Post } from '@/app/types';
 import IconBox from '../../common/IconBox';
 import ChevronLeftIcon from '../../svgs/ChevronLeftIcon';
 import ChevronRightIcon from '../../svgs/ChevronRightIcon';
-import HighlightItem from './item';
+import HomeHighlightItem from './item';
 
 interface HomeHighlightListProps {
   highlightPosts: Post[];
@@ -82,7 +82,7 @@ const HomeHighlightPosts = ({
             onScroll={checkScrollability}
           >
             {highlightPosts.map((post) => (
-              <HighlightItem
+              <HomeHighlightItem
                 key={post.id}
                 post={post}
                 postLength={highlightPosts.length}
@@ -135,14 +135,11 @@ const StyledHighlightPostList = styled.ul`
   > li {
     margin-right: var(--spacer-sm);
   }
-
-  > li:first-child {
-    // margin-left: var(--spacer-md);
-  }
 `;
 
 const ScrollButton = styled.button<{ $direction: 'left' | 'right' }>`
   padding: 0;
+  background: none;
 
   position: absolute;
   top: 50%;
