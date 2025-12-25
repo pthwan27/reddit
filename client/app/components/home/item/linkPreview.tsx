@@ -1,50 +1,15 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 
-import { clientAxiosInstance } from '@/app/utils/axios';
+import { useGetLinkMetadata } from '@/app/hooks/useGetLinkMetadata';
 
 import styled from 'styled-components';
 
 import Skeleton from '../../common/loading/skeleton';
 
-interface LinkPreviewProps {
-  url: string;
-}
-
-interface LinkMetadata {
-  title?: string;
-  description?: string;
-  image?: string;
-  siteName?: string;
-}
-
-const HomePostLinkPreview = ({ url }: LinkPreviewProps) => {
-  const [metadata, setMetadata] = useState<LinkMetadata | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    const getMetadata = async () => {
-      try {
-        const { data } = await clientAxiosInstance.get(
-          `/api/linkPreview?url=${encodeURIComponent(url)}`
-        );
-
-        setMetadata(data);
-      } catch (err) {
-        console.error('Link preview error:', err);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (url) {
-      getMetadata();
-    }
-  }, [url]);
+const HomePostLinkPreview = ({ url }: { url: string }) => {
+  const { metadata, loading, error } = useGetLinkMetadata(url);
 
   if (loading) {
     return (

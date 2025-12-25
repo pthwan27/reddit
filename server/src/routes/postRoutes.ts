@@ -4,7 +4,6 @@ import { AuthMiddleware } from '../middleware/auth';
 import { UserMiddleware } from '../middleware/userCheck';
 import { GetPostDetailHandler } from '../migration/post/detail';
 import { PostUpload } from '../migration/post/fileUpload';
-import { HighlightListBySubHandler } from '../migration/post/highlight';
 import { ListHandler } from '../migration/post/list';
 import { ListBySubHandler } from '../migration/post/listBySub';
 import { SubmitHandler } from '../migration/post/submit';
@@ -14,11 +13,6 @@ const PostRouter = Router();
 PostRouter.post('/submit', AuthMiddleware, PostUpload, SubmitHandler);
 PostRouter.get('/list', UserMiddleware, ListHandler);
 PostRouter.get('/list/:id', UserMiddleware, ListBySubHandler);
-PostRouter.get(
-  '/list/:id/highlight',
-  UserMiddleware,
-  HighlightListBySubHandler
-);
 PostRouter.get('/:identifier', UserMiddleware, GetPostDetailHandler);
 
 export default PostRouter;

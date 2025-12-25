@@ -3,20 +3,12 @@ import { RequestHandler } from 'express';
 
 import { AppDataSource } from '../../data-source';
 import { Post } from '../../entities/Post';
-import { Sub } from '../../entities/Sub';
 import { User } from '../../entities/User';
 
-export const HighlightListBySubHandler: RequestHandler = async (req, res) => {
+export const HighlightListHandler: RequestHandler = async (req, res) => {
   const user: User | undefined = res.locals.user;
-  const { id } = req.params;
 
   try {
-    const sub = await Sub.findOneBy({ id: parseInt(id, 10) });
-
-    if (!sub) {
-      return res.status(404).json({ error: '커뮤니티를 찾을 수 없습니다.' });
-    }
-
     const queryBuilder = AppDataSource.getRepository(Post)
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.sub', 'sub')
@@ -25,9 +17,11 @@ export const HighlightListBySubHandler: RequestHandler = async (req, res) => {
       .leftJoinAndSelect('votes.user', 'voteUser')
       .leftJoinAndSelect('post.comments', 'comments')
       .leftJoinAndSelect('comments.user', 'commentUser')
-      .where('sub.id = :subId', { subId: parseInt(id, 10) })
-      .andWhere('post.imageUrns IS NOT NULL')
-      .andWhere('array_length(post.imageUrns, 1) > 0');
+      .where(
+        '(post."postType" = :link) OR ' +
+          '(post."postType" = :media AND post."mediaType" = :image)',
+        { link: 'link', media: 'media', image: 'image' }
+      );
 
     queryBuilder.addSelect(
       (subquery) =>

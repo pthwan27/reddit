@@ -85,11 +85,11 @@ export const usePostStore = create<PostState>((set, get) => ({
     }
   },
 
-  fetchSubHighlightPosts: async (id: number) => {
+  fetchHighlightPosts: async (id?: number) => {
     set({ loading: true });
     try {
       const { data } = await clientAxiosInstance.get(
-        `/api/post/list/${id}/highlight`
+        `/api/highlight/post/${id || ''}`
       );
 
       set({ highlightPosts: data.posts, loading: false });

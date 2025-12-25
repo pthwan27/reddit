@@ -1,18 +1,27 @@
 import Link from 'next/link';
 
+import DOMPurify from 'dompurify';
 import { styled } from 'styled-components';
 
 import { Post } from '@/app/types';
 
 import IconBox from '../../common/IconBox';
+import HighlightPostLinkPreview from './linkPreview';
 
-const HighlightItem = ({
+const HomeHighlightItem = ({
   post,
   postLength,
 }: {
   post: Post;
   postLength: number;
 }) => {
+  // const { metadata, loading, error } = useGetLinkMetadata(post.url);
+
+  const cleanContent = DOMPurify.sanitize(post.body);
+
+  if (post.postType === 'link' && post.linkUrl)
+    return <HighlightPostLinkPreview url={post.linkUrl} />;
+
   return (
     <StyledHighlightItem $postLength={postLength}>
       <ItemWrapper
@@ -26,9 +35,12 @@ const HighlightItem = ({
           backgroundPosition: 'center',
         }}
       >
-        <Title $postImage={!!post.imageUrls?.length}>{post.title}</Title>
+        <Title>{post.title}</Title>
+        <Content dangerouslySetInnerHTML={{ __html: cleanContent }} />
+
         <UserProfile>
-          <IconBox iconUrl={post.user.profileUrl} width={24} height={24} />
+          <IconBox iconUrl={post.sub.iconUrl} width={24} height={24} />
+          <SubTitle>{post.sub.title} </SubTitle>
         </UserProfile>
       </ItemWrapper>
     </StyledHighlightItem>
@@ -37,16 +49,19 @@ const HighlightItem = ({
 
 const StyledHighlightItem = styled.li<{ $postLength: number }>`
   width: ${({ $postLength }) => 1 / $postLength}%;
-  min-width: 174px;
+  min-width: 280px;
 
-  height: 160px;
+  height: 226px;
 
   margin-right: var(--spacer-sm);
 `;
 
 const ItemWrapper = styled(Link)<{ $postLength: number }>`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
   position: relative;
-  display: block;
 
   width: 100%;
   height: 100%;
@@ -63,19 +78,32 @@ const ItemWrapper = styled(Link)<{ $postLength: number }>`
   }
 `;
 
-const Title = styled.span<{ $postImage: boolean }>`
-  font: var(--font-14-20-semibold);
+const Title = styled.span`
+  font: var(--font-title-h3);
 
-  color: ${({ theme, $postImage }) =>
-    $postImage
-      ? theme.colors.neutral.background
-      : theme.colors.neutral.contentStrong};
+  color: ${({ theme }) => theme.colors.neutral.background};
+`;
+
+const Content = styled.span`
+  font: var(--font-14-20-regular);
+  margin: var(--spacer-2xs) 0 var(--spacer-xs) 0;
+
+  color: ${({ theme }) => theme.colors.neutral.background};
+`;
+
+const SubTitle = styled.span`
+  font: var(--font-12-16-regular);
+
+  color: ${({ theme }) => theme.colors.neutral.background};
 `;
 
 const UserProfile = styled.span`
-  position: absolute;
-  bottom: var(--spacer-xs);
-  left: var(--spacer-sm);
+  > span {
+    font: var(--font-12-16-semibold);
+  }
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-xs);
 `;
 
-export default HighlightItem;
+export default HomeHighlightItem;

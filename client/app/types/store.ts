@@ -61,7 +61,7 @@ export type PostState = {
     isInitial?: boolean,
     option?: SortOption
   ) => Promise<void>;
-  fetchSubHighlightPosts: (id: number) => Promise<void>;
+  fetchHighlightPosts: (id?: number) => Promise<void>;
 
   clearPosts: () => void;
   clearHighlightPosts: () => void;

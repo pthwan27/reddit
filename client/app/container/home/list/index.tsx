@@ -60,7 +60,6 @@ const HomePostList = ({
 const HomePostListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--spacer-sm);
 `;
 
 const HomePostWrapper = styled.div``;

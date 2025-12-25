@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import formatTimeAgo from '@/app/utils/formatTimeAgo';
@@ -36,7 +37,7 @@ const CommentPostInfos = ({ ...post }: Post) => {
           />
           <InfoWrapper>
             <Info>
-              <span>r/{post.sub.title}</span>
+              <Link href={`/r/${post.sub.slug}`}>r/{post.sub.title}</Link>
               <span>•</span>
               <span>{formatTimeAgo(post.createdAt)}</span>
             </Info>
@@ -110,11 +111,16 @@ const Info = styled.div`
 
   font: var(--font-12-16-regular);
 
-  > span:nth-child(1) {
+  > a:nth-child(1) {
     font: var(--font-12-16-bold);
+
     line-height: 1rem;
 
     color: ${({ theme }) => theme.colors.neutral.content};
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.primary.plain};
+    }
   }
 
   > span:nth-child(2),

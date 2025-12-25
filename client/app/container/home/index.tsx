@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { useAuthStore } from '@/app/store/authStore';
 import { usePostStore } from '@/app/store/postStore';
 import { useSubStore } from '@/app/store/subStore';
 
@@ -7,20 +8,32 @@ import { styled } from 'styled-components';
 
 import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
+import HomeHighlightPosts from '@/app/components/home/highlight/list';
 import RightSideBar from '@/app/components/sub/rightSideBar';
 
 import { CustomError } from '@/app/types';
 
-import HomePostListContainer from './list';
+import HomePostList from './list';
 
 const Home = () => {
-  const { posts, clearPosts, fetchHomePosts, loading, hasMore } =
-    usePostStore();
+  const { user } = useAuthStore();
+  const {
+    posts,
+    highlightPosts,
+    loading,
+    hasMore,
+    fetchHomePosts,
+    fetchHighlightPosts,
+    clearPosts,
+    clearHighlightPosts,
+  } = usePostStore();
+
   const { setSelectedSub } = useSubStore();
 
   const observerRef = useRef<HTMLDivElement>(null);
 
   const [error, setError] = useState('');
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [sortOption, setSortOption] = useState<
     '최신순' | '인기순' | '댓글 많은 순'
@@ -71,18 +84,27 @@ const Home = () => {
 
   useEffect(() => {
     fetchHomePosts(true, sortOption);
+    fetchHighlightPosts();
+
     setSelectedSub(null);
 
     return () => {
       clearPosts();
+      clearHighlightPosts();
     };
   }, []);
 
   return (
     <HomeContainer>
+      {!user && (
+        <HomeHighlightPosts
+          highlightPosts={highlightPosts}
+          isHighlightView={true}
+        />
+      )}
       <Main>
         <div>
-          <HomePostListContainer
+          <HomePostList
             posts={posts}
             isDropdownOpen={isDropdownOpen}
             setIsDropdownOpen={setIsDropdownOpen}

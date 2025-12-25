@@ -4,21 +4,13 @@ import { serverAxiosInstance } from '@/app/utils/axios';
 
 import { CustomError } from '@/app/types';
 
-export async function GET(
-  req: NextRequest,
-  context: { params: Promise<{ id: string }> }
-) {
-  const { id } = await context.params;
-
+export async function GET(req: NextRequest) {
   try {
-    const { data, status } = await serverAxiosInstance.get(
-      `/post/list/${id}/highlight`,
-      {
-        headers: {
-          Cookie: req.headers.get('cookie') || '',
-        },
-      }
-    );
+    const { data, status } = await serverAxiosInstance.get(`/highlight/post`, {
+      headers: {
+        Cookie: req.headers.get('cookie') || '',
+      },
+    });
 
     return NextResponse.json(data, { status });
   } catch (err: unknown) {

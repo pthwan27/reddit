@@ -31,8 +31,9 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
     loading,
     hasMore,
     fetchSubPosts,
-    fetchSubHighlightPosts,
+    fetchHighlightPosts,
     clearPosts,
+    clearHighlightPosts,
   } = usePostStore();
 
   const [sub, setSub] = useState<Sub>(initialSub);
@@ -167,11 +168,12 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   useEffect(() => {
     setSelectedSub(sub);
     fetchSubPosts(sub.id, true, sortOption);
-    fetchSubHighlightPosts(sub.id);
+    fetchHighlightPosts(sub.id);
 
     return () => {
       setSelectedSub(null);
       clearPosts();
+      clearHighlightPosts();
     };
   }, []);
 

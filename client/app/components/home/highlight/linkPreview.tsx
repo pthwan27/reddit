@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 import Skeleton from '../../common/loading/skeleton';
 
-const CommentPostLinkPreview = ({ url }: { url: string }) => {
+const HighlightPostLinkPreview = ({ url }: { url: string }) => {
   const { metadata, loading, error } = useGetLinkMetadata(url);
 
   if (loading) {
@@ -135,4 +135,4 @@ const PreviewUrl = styled.div`
   color: ${({ theme }) => theme.colors.neutral.content};
 `;
 
-export default CommentPostLinkPreview;
+export default HighlightPostLinkPreview;
