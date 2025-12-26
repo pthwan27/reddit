@@ -48,7 +48,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } finally {
       set({ user: null });
       useSubStore.getState().reset();
-      usePostStore.getState().reset();
+      useSubStore.getState().getPopularSubs();
+      usePostStore.getState().fetchHomePosts(true);
+      usePostStore.getState().fetchHighlightPosts();
+
+      if (useSubStore.getState().selectedSub) {
+        usePostStore
+          .getState()
+          .fetchSubPosts(useSubStore.getState().selectedSub?.id || 0);
+      }
     }
   },
   register: async (

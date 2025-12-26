@@ -33,13 +33,18 @@ export type ModalState = {
 
 export type SubState = {
   subs: Sub[];
+  popularSubs: Sub[];
   selectedSub: Sub | null;
   loading: boolean;
   getMySubs: () => Promise<void>;
+  getPopularSubs: () => Promise<void>;
   setSelectedSub: (sub: Sub | null) => void;
   createSub: (subData: CreateSubProps) => Promise<void>;
   handleSubscribe: (sub: Sub) => Promise<boolean>;
   _hasHydrated: boolean;
+
+  clearSubs: () => void;
+  clearPopularSubs: () => void;
   setHasHydrated: (hydrated: boolean) => void;
   reset: () => void;
 };

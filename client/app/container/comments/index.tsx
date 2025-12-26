@@ -15,10 +15,10 @@ import CommentPostBody from '@/app/components/comments/item/body';
 import CommentPostInfos from '@/app/components/comments/item/infos';
 import CommentInput from '@/app/components/comments/item/input';
 import CommentSort from '@/app/components/comments/item/sort';
+import CommentsRightSideBar from '@/app/components/comments/rightSideBar';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 import Skeleton from '@/app/components/common/loading/skeleton';
-import RightSideBar from '@/app/components/sub/rightSideBar';
 
 import CommentItem from '@/app/container/comments/item';
 
@@ -211,7 +211,7 @@ const CommentList = ({ post }: { post: Post }) => {
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </PostListWrapper>
-      <RightSideBar />
+      <CommentsRightSideBar />
     </GridWrapper>
   );
 };

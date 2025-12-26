@@ -28,6 +28,7 @@ export interface Sub {
   username: string;
   isSubscribed: boolean;
   isOwner: boolean;
+  subscriberCount?: number;
   posts?: Post[];
 }
 

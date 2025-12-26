@@ -19,7 +19,7 @@ import SubInfos from '@/app/components/sub/detail/info';
 
 import { CustomError, Sub } from '@/app/types';
 
-import RightSideBar from '../../../components/sub/rightSideBar';
+import SubDetailRightSideBar from '../../../components/sub/rightSideBar';
 import PostList from '../../post/list';
 
 const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
@@ -216,7 +216,7 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
               />
             )}
           </PostListWrapper>
-          <RightSideBar />
+          <SubDetailRightSideBar />
         </Main>
 
         <HiddenInput

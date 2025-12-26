@@ -1,5 +1,4 @@
 //community
-
 import {
   Entity,
   Column,
@@ -60,10 +59,8 @@ export class Sub extends CoreEntity {
   @Expose()
   isSubscribed: boolean;
 
-  
   @Expose()
   isOwner: boolean;
-
 
   @Expose()
   get iconUrl(): string {
@@ -77,6 +74,11 @@ export class Sub extends CoreEntity {
     return this.bannerUrn
       ? `${process.env.APP_URL}/images/subs/${this.slug}/banner/${this.bannerUrn}`
       : ``;
+  }
+  
+  @Expose()
+  get subscriberCount(): number {
+    return this.subscribers?.length || 0;
   }
 
   @BeforeInsert()

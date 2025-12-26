@@ -9,7 +9,7 @@ import { styled } from 'styled-components';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 import HomeHighlightPosts from '@/app/components/home/highlight/list';
-import RightSideBar from '@/app/components/sub/rightSideBar';
+import HomeRightSideBar from '@/app/components/home/rightSideBar';
 
 import { CustomError } from '@/app/types';
 
@@ -17,6 +17,7 @@ import HomePostList from './list';
 
 const Home = () => {
   const { user } = useAuthStore();
+
   const {
     posts,
     highlightPosts,
@@ -28,7 +29,8 @@ const Home = () => {
     clearHighlightPosts,
   } = usePostStore();
 
-  const { setSelectedSub } = useSubStore();
+  const { popularSubs, getPopularSubs, clearPopularSubs, setSelectedSub } =
+    useSubStore();
 
   const observerRef = useRef<HTMLDivElement>(null);
 
@@ -85,12 +87,14 @@ const Home = () => {
   useEffect(() => {
     fetchHomePosts(true, sortOption);
     fetchHighlightPosts();
+    getPopularSubs();
 
     setSelectedSub(null);
 
     return () => {
       clearPosts();
       clearHighlightPosts();
+      clearPopularSubs();
     };
   }, []);
 
@@ -121,7 +125,7 @@ const Home = () => {
           )}
         </div>
 
-        <RightSideBar />
+        <HomeRightSideBar user={user} popularSubs={popularSubs} />
       </Main>
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </HomeContainer>

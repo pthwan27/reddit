@@ -1,13 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { CreateSubProps, CustomError, Sub } from '../types';
+import { CreateSubProps, Sub } from '../types';
 import { SubState } from '../types/store';
 import { clientAxiosInstance } from '../utils/axios';
 import { usePostStore } from './postStore';
 
 const initialState = {
   subs: [],
+  popularSubs: [],
   selectedSub: null,
   loading: false,
 };
@@ -71,8 +72,7 @@ export const useSubStore = create(
           set((state) => ({
             subs: [newSub, ...state.subs.filter((sub) => sub.id !== tempId)],
           }));
-        } catch (err: unknown) {
-          const error = err as CustomError;
+        } catch (error) {
           console.error('Create Sub failed:', error);
 
           set({ subs: originalSubs });
@@ -92,10 +92,27 @@ export const useSubStore = create(
 
           set({
             subs: data,
-            loading: false,
           });
         } catch (error) {
+          console.error('Get My Subs failed:', error);
+          throw error;
+        } finally {
           set({ loading: false });
+        }
+      },
+
+      getPopularSubs: async () => {
+        set({ loading: true });
+
+        try {
+          const { data } =
+            await clientAxiosInstance.get<Sub[]>('/api/sub/popular');
+
+          set({
+            popularSubs: data,
+          });
+        } catch (error) {
+          console.error('Get Popular Subs failed:', error);
           throw error;
         } finally {
           set({ loading: false });
@@ -144,7 +161,6 @@ export const useSubStore = create(
 
           return data.isSubscribed;
         } catch (error) {
-          set({ loading: false });
           set({ subs: originSubs });
           usePostStore
             .getState()
@@ -156,6 +172,14 @@ export const useSubStore = create(
       },
 
       setSelectedSub: (sub) => set({ selectedSub: sub || null }),
+
+      clearSubs: () => {
+        set({ subs: [] });
+      },
+
+      clearPopularSubs: () => {
+        set({ popularSubs: [] });
+      },
 
       reset: () => {
         set(initialState);

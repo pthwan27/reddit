@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 
-const SubDetailRightSideBar = () => {
+const PostSubmitRightSideBar = () => {
   return (
     <StyledRightSideBar>
       <RightSideBarWrapper>Sidebar Item</RightSideBarWrapper>
@@ -24,4 +24,4 @@ const RightSideBarWrapper = styled.div`
   }
 `;
 
-export default SubDetailRightSideBar;
+export default PostSubmitRightSideBar;

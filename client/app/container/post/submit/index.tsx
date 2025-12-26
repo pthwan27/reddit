@@ -15,9 +15,10 @@ import IconButton from '@/app/components/common/button/iconButton';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import PostSubmitHeader from '@/app/components/post/submit/header';
 import PostSubmitMain from '@/app/components/post/submit/main';
-import RightSideBar from '@/app/components/sub/rightSideBar';
 
 import { Sub } from '@/app/types';
+
+import PostSubmitRightSideBar from '../../../components/post/submit/rightSideBar';
 
 type PostType = 'text' | 'media' | 'link';
 
@@ -172,7 +173,7 @@ const PostSubmit = ({ sub }: { sub: Sub }) => {
         </PostSubmitButtons>
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </PostSubmitContainer>
-      <RightSideBar />
+      <PostSubmitRightSideBar />
     </GridWrapper>
   );
 };
