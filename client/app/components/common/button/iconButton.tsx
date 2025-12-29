@@ -7,6 +7,7 @@ interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: ReactNode;
   value?: string;
   variant?: ButtonVariant;
+  selected?: boolean;
 
   font?: string;
   fontColor?: string;
@@ -20,6 +21,7 @@ const IconButton = ({
   icon,
   value,
   variant = 'neutral',
+  selected = false,
   font = '14',
   fontColor,
   width = 'auto',
@@ -31,6 +33,7 @@ const IconButton = ({
   return (
     <StyledButton
       $variant={variant}
+      $selected={selected}
       $font={font}
       $fontColor={fontColor}
       $width={width}
@@ -48,7 +51,8 @@ const IconButton = ({
 const getVariantStyles = (
   variant: ButtonVariant,
   theme: DefaultTheme,
-  fontColor?: string
+  fontColor?: string,
+  selected?: boolean
 ) => {
   switch (variant) {
     case 'primary':
@@ -87,7 +91,10 @@ const getVariantStyles = (
     case 'neutral':
     default:
       return css`
-        background: ${theme.colors.neutral.background};
+        background: ${selected
+          ? theme.colors.neutral.backgroundSelected
+          : theme.colors.neutral.background};
+
         color: ${fontColor || theme.colors.default.secondary};
         border: none;
 
@@ -107,6 +114,7 @@ const getVariantStyles = (
 
 const StyledButton = styled.button<{
   $variant: ButtonVariant;
+  $selected?: boolean;
   $font?: string;
   $fontColor?: string;
   $width?: string;
@@ -131,8 +139,8 @@ const StyledButton = styled.button<{
   border-radius: ${({ $radius }) => $radius || 'var(--radius-md)'};
   font: ${({ $font }) => `var(--font-${$font})`};
 
-  ${({ $variant, theme, $fontColor }) =>
-    getVariantStyles($variant, theme, $fontColor)}
+  ${({ $variant, theme, $fontColor, $selected }) =>
+    getVariantStyles($variant, theme, $fontColor, $selected)}
 
   &:disabled {
     background: ${({ theme }) => theme.colors.interactive.backgroundDisabled};

@@ -15,7 +15,7 @@ import MenuIcon from '@/app/components/svgs/MenuIcon';
 
 import { Sub } from '@/app/types';
 
-import CommonLeftNavMenu from '../../components/leftNav/common';
+import Common from '../../components/leftNav/common';
 import CreateSubModal from '../modal/createSubModal';
 
 const LeftNav = () => {
@@ -69,19 +69,20 @@ const LeftNav = () => {
   return (
     <>
       <LeftNavContainer $leftNavVisible={leftNavVisible}>
-        <ToggleButton $leftNavVisible={leftNavVisible} onClick={toggleLeftNav}>
+        <ToggleButton $leftNavVisible={leftNavVisible}>
           <IconBox
             icon={<MenuIcon />}
             altText="메뉴 아이콘"
             width={32}
             height={32}
             percentage={50}
+            onClick={toggleLeftNav}
           />
         </ToggleButton>
 
         <LeftNavWrapper $leftNavVisible={leftNavVisible}>
           <MenuContainer>
-            <CommonLeftNavMenu
+            <Common
               goToHome={goToHome}
               openCreateSubModal={openCreateSubModal}
             />
@@ -111,7 +112,7 @@ const LeftNav = () => {
           $leftNavByHeaderVisible={leftNavByHeaderVisible}
         >
           <MenuContainer>
-            <CommonLeftNavMenu
+            <Common
               goToHome={goToHome}
               openCreateSubModal={openCreateSubModal}
             />

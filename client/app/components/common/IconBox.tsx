@@ -27,7 +27,6 @@ const IconBox = ({
 }: IconBoxProps) => {
   return (
     <StyledIconBox
-      $isIcon={!!iconUrl}
       $width={width}
       $height={height}
       $percentage={percentage}
@@ -83,7 +82,6 @@ const bgColor = (backgroundColor: BackgroundColor, theme: DefaultTheme) => {
 };
 
 const StyledIconBox = styled.div<{
-  $isIcon?: boolean;
   $width: number;
   $height: number;
   $percentage: number;

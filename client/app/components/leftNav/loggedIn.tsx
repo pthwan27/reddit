@@ -6,6 +6,7 @@ import { Sub } from '@/app/types';
 
 import IconButton from '../common/button/iconButton';
 import Skeleton from '../common/loading/skeleton';
+import CommunityFill from '../svgs/CommunityFill';
 import SettingIcon from '../svgs/SettingIcon';
 import CollapsibleList from './collapsibleList';
 
@@ -34,12 +35,21 @@ const LoggedIn = ({ subscribeSubs, loading, goToSubDetail }: LoggedInProps) => {
         ) : (
           subscribeSubs.map((sub: Sub, idx: number) => (
             <SubItem key={sub.title + idx} onClick={() => goToSubDetail(sub)}>
-              <IconBox
-                iconUrl={sub.iconUrl}
-                altText={sub.title}
-                width={32}
-                height={32}
-              />
+              {sub.iconUrl ? (
+                <IconBox
+                  iconUrl={sub.iconUrl}
+                  altText={sub.title}
+                  width={32}
+                  height={32}
+                />
+              ) : (
+                <IconBox
+                  icon={<CommunityFill />}
+                  altText={sub.title}
+                  width={32}
+                  height={32}
+                />
+              )}
               <TitleBox>{`r/${sub.title}`}</TitleBox>
             </SubItem>
           ))

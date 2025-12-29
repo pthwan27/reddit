@@ -1,5 +1,7 @@
+import { usePathname } from 'next/navigation';
+
 import IconButton from '../common/button/iconButton';
-import ArrowIcon from '../svgs/ArrowIcon';
+import HomeFillIcon from '../svgs/HomeFillIcon';
 import HomeIcon from '../svgs/HomeIcon';
 import PlusIcon from '../svgs/PlusIcon';
 
@@ -8,15 +10,17 @@ interface CommonProps {
   openCreateSubModal: () => void;
 }
 const Common = ({ goToHome, openCreateSubModal }: CommonProps) => {
+  const pathname = usePathname();
+
   return (
     <>
       <IconButton
         variant="neutral"
-        icon={<HomeIcon />}
+        icon={pathname === '/' ? <HomeFillIcon /> : <HomeIcon />}
+        selected={pathname === '/'}
         value={'홈'}
         onClick={goToHome}
       />
-      <IconButton variant="neutral" icon={<ArrowIcon />} value={'인기'} />
       <IconButton
         variant="neutral"
         icon={<PlusIcon />}
