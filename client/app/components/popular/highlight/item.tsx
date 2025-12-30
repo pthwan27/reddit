@@ -11,7 +11,7 @@ import { Post } from '@/app/types';
 import IconBox from '../../common/IconBox';
 import Skeleton from '../../common/loading/skeleton';
 
-const HomeHighlightItem = ({
+const PopularHighlightItem = ({
   post,
   postLength,
 }: {
@@ -171,4 +171,4 @@ const UserProfile = styled.span`
   gap: var(--spacer-xs);
 `;
 
-export default HomeHighlightItem;
+export default PopularHighlightItem;

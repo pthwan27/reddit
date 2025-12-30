@@ -7,16 +7,14 @@ import { Post } from '@/app/types';
 import IconBox from '../../common/IconBox';
 import ChevronLeftIcon from '../../svgs/ChevronLeftIcon';
 import ChevronRightIcon from '../../svgs/ChevronRightIcon';
-import HomeHighlightItem from './item';
+import PopularHighlightItem from './item';
 
-interface HomeHighlightListProps {
+interface PopularHighlightListProps {
   highlightPosts: Post[];
-  isHighlightView: boolean;
 }
-const HomeHighlightPosts = ({
+const PopularHighlightPosts = ({
   highlightPosts,
-  isHighlightView,
-}: HomeHighlightListProps) => {
+}: PopularHighlightListProps) => {
   const scrollContainerRef = useRef<HTMLUListElement>(null);
 
   const [isInitialized, setIsInitialized] = useState(false);
@@ -64,45 +62,43 @@ const HomeHighlightPosts = ({
   }, [highlightPosts]);
   return (
     <>
-      {isHighlightView && (
-        <CarouselWrapper>
-          {isInitialized && canScrollLeft && (
-            <ScrollButton $direction="left" onClick={scrollLeft}>
-              <IconBox
-                icon={<ChevronLeftIcon />}
-                width={32}
-                height={32}
-                percentage={50}
-                backgroundColor="media"
-              />
-            </ScrollButton>
-          )}
-          <StyledHighlightPostList
-            ref={scrollContainerRef}
-            onScroll={checkScrollability}
-          >
-            {highlightPosts.map((post) => (
-              <HomeHighlightItem
-                key={post.id}
-                post={post}
-                postLength={highlightPosts.length}
-              />
-            ))}
-          </StyledHighlightPostList>
+      <CarouselWrapper>
+        {isInitialized && canScrollLeft && (
+          <ScrollButton $direction="left" onClick={scrollLeft}>
+            <IconBox
+              icon={<ChevronLeftIcon />}
+              width={32}
+              height={32}
+              percentage={50}
+              backgroundColor="media"
+            />
+          </ScrollButton>
+        )}
+        <StyledHighlightPostList
+          ref={scrollContainerRef}
+          onScroll={checkScrollability}
+        >
+          {highlightPosts.map((post) => (
+            <PopularHighlightItem
+              key={post.id}
+              post={post}
+              postLength={highlightPosts.length}
+            />
+          ))}
+        </StyledHighlightPostList>
 
-          {isInitialized && canScrollRight && (
-            <ScrollButton $direction="right" onClick={scrollRight}>
-              <IconBox
-                icon={<ChevronRightIcon />}
-                width={32}
-                height={32}
-                percentage={50}
-                backgroundColor="media"
-              />
-            </ScrollButton>
-          )}
-        </CarouselWrapper>
-      )}
+        {isInitialized && canScrollRight && (
+          <ScrollButton $direction="right" onClick={scrollRight}>
+            <IconBox
+              icon={<ChevronRightIcon />}
+              width={32}
+              height={32}
+              percentage={50}
+              backgroundColor="media"
+            />
+          </ScrollButton>
+        )}
+      </CarouselWrapper>
     </>
   );
 };
@@ -161,4 +157,4 @@ const ScrollButton = styled.button<{ $direction: 'left' | 'right' }>`
   }
 `;
 
-export default HomeHighlightPosts;
+export default PopularHighlightPosts;

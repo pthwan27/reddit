@@ -18,13 +18,6 @@ export const useSubStore = create(
     (set, get) => ({
       ...initialState,
 
-      _hasHydrated: false,
-      setHasHydrated: (hydrated) => {
-        set({
-          _hasHydrated: hydrated,
-        });
-      },
-
       createSub: async ({
         title,
         description,
@@ -187,11 +180,6 @@ export const useSubStore = create(
     }),
     {
       name: 'sub-storage',
-      onRehydrateStorage: () => (state) => {
-        if (state) {
-          state.setHasHydrated(true);
-        }
-      },
     }
   )
 );

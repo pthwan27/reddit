@@ -52,6 +52,10 @@ const LeftNav = () => {
     router.push('/');
   };
 
+  const goToPopular = () => {
+    router.push('/r/popular');
+  };
+
   const closeLeftNavByHeader = (e: React.MouseEvent) => {
     e.stopPropagation();
 
@@ -84,6 +88,7 @@ const LeftNav = () => {
           <MenuContainer>
             <Common
               goToHome={goToHome}
+              goToPopular={goToPopular}
               openCreateSubModal={openCreateSubModal}
             />
           </MenuContainer>
@@ -114,6 +119,7 @@ const LeftNav = () => {
           <MenuContainer>
             <Common
               goToHome={goToHome}
+              goToPopular={goToPopular}
               openCreateSubModal={openCreateSubModal}
             />
           </MenuContainer>

@@ -9,16 +9,25 @@ import { styled } from 'styled-components';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 import HomeRightSideBar from '@/app/components/home/rightSideBar';
+import PopularHighlightPosts from '@/app/components/popular/highlight/list';
 
 import { CustomError } from '@/app/types';
 
-import HomePostList from './list';
+import PopularPostList from './list';
 
-const Home = () => {
+const Popular = () => {
   const { user } = useAuthStore();
 
-  const { posts, loading, hasMore, fetchHomePosts, clearPosts } =
-    usePostStore();
+  const {
+    posts,
+    highlightPosts,
+    loading,
+    hasMore,
+    fetchHomePosts,
+    fetchHighlightPosts,
+    clearPosts,
+    clearHighlightPosts,
+  } = usePostStore();
 
   const { popularSubs, getPopularSubs, clearPopularSubs, setSelectedSub } =
     useSubStore();
@@ -77,22 +86,25 @@ const Home = () => {
 
   useEffect(() => {
     fetchHomePosts(true, sortOption);
+    fetchHighlightPosts();
     getPopularSubs();
 
     setSelectedSub(null);
 
     return () => {
       clearPosts();
+      clearHighlightPosts();
       clearPopularSubs();
     };
   }, []);
 
   return (
-    <HomeContainer>
+    <PopularContainer>
+      <PopularHighlightPosts highlightPosts={highlightPosts} />
       <Main>
         <div>
-          <HomePostList
-            posts={posts}
+          <PopularPostList
+            posts={highlightPosts}
             isDropdownOpen={isDropdownOpen}
             setIsDropdownOpen={setIsDropdownOpen}
             handleSelectOption={handleSelectOption}
@@ -111,11 +123,11 @@ const Home = () => {
         <HomeRightSideBar user={user} popularSubs={popularSubs} />
       </Main>
       {error && <ErrorMessage>{error}</ErrorMessage>}
-    </HomeContainer>
+    </PopularContainer>
   );
 };
 
-const HomeContainer = styled.div``;
+const PopularContainer = styled.div``;
 
 const Main = styled.div`
   display: grid;
@@ -136,4 +148,4 @@ const Main = styled.div`
   }
 `;
 
-export default Home;
+export default Popular;

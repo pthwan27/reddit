@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useAuthStore } from '@/app/store/authStore';
 import { useCommentStore } from '@/app/store/commentStore';
 import { usePostStore } from '@/app/store/postStore';
+import { useRecentPostsStore } from '@/app/store/recentPostsStore';
 import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
@@ -31,6 +32,7 @@ const CommentList = ({ post }: { post: Post }) => {
   const router = useRouter();
   const { user } = useAuthStore();
 
+  const { addRecentPost } = useRecentPostsStore();
   const { setSelectedSub } = useSubStore();
   const { selectedPost, setSelectedPost, updatePostCommentCount } =
     usePostStore();
@@ -105,6 +107,7 @@ const CommentList = ({ post }: { post: Post }) => {
   }, []);
 
   useEffect(() => {
+    addRecentPost(post);
     setSelectedPost(post);
     fetchComments(post.id);
 

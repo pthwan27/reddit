@@ -41,11 +41,9 @@ export type SubState = {
   setSelectedSub: (sub: Sub | null) => void;
   createSub: (subData: CreateSubProps) => Promise<void>;
   handleSubscribe: (sub: Sub) => Promise<boolean>;
-  _hasHydrated: boolean;
 
   clearSubs: () => void;
   clearPopularSubs: () => void;
-  setHasHydrated: (hydrated: boolean) => void;
   reset: () => void;
 };
 
@@ -104,4 +102,10 @@ export type UIState = {
   leftNavByHeaderVisible: boolean;
   toggleLeftNavByHeader: () => void;
   setLeftNavByHeaderVisible: (visible: boolean) => void;
+};
+
+export type RecentPostsState = {
+  recentPosts: Post[];
+  addRecentPost: (post: Post) => void;
+  clearRecentPosts: () => void;
 };

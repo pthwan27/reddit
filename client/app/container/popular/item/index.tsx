@@ -2,47 +2,48 @@ import { useRouter } from 'next/navigation';
 
 import styled from 'styled-components';
 
-import HomePostActions from '@/app/components/home/item/actions';
-import HomePostBody from '@/app/components/home/item/body';
-import HomePostInfos from '@/app/components/home/item/infos';
-import LinkPreview from '@/app/components/home/item/linkPreview';
+import PopularPostActions from '@/app/components/popular/item/actions';
+import PopularPostBody from '@/app/components/popular/item/body';
+import PopularPostInfos from '@/app/components/popular/item/infos';
+import PopularPostLinkPreview from '@/app/components/popular/item/linkPreview';
 
 import { Post } from '@/app/types';
 
-const HomePostItem = ({ post }: { post: Post }) => {
+const PopularPostItem = ({ post }: { post: Post }) => {
   const router = useRouter();
 
   const goToComments = () => {
     router.push(`/r/${post.sub.slug}/comments/${post.identifier}`);
   };
+
   if (post.postType === 'link') {
     return (
-      <HomePostLinkItemContainer onClick={() => goToComments()}>
+      <PopularPostLinkItemContainer onClick={() => goToComments()}>
         <PostHeader>
-          <HomePostInfos post={post} />
+          <PopularPostInfos post={post} />
         </PostHeader>
         <PostContent>
-          <HomePostBody {...post} />
+          <PopularPostBody {...post} />
         </PostContent>
         <PostLinkPreview>
-          {post.linkUrl && <LinkPreview url={post.linkUrl} />}
+          {post.linkUrl && <PopularPostLinkPreview url={post.linkUrl} />}
         </PostLinkPreview>
 
-        <HomePostActions {...post} />
-      </HomePostLinkItemContainer>
+        <PopularPostActions {...post} />
+      </PopularPostLinkItemContainer>
     );
   }
 
   return (
-    <HomePostItemContainer onClick={() => goToComments()}>
-      <HomePostInfos post={post} />
-      <HomePostBody {...post} />
-      <HomePostActions {...post} />
-    </HomePostItemContainer>
+    <PopularPostItemContainer onClick={() => goToComments()}>
+      <PopularPostInfos post={post} />
+      <PopularPostBody {...post} />
+      <PopularPostActions {...post} />
+    </PopularPostItemContainer>
   );
 };
 
-const HomePostLinkItemContainer = styled.div`
+const PopularPostLinkItemContainer = styled.div`
   display: grid;
 
   grid-template-rows: auto auto auto;
@@ -65,7 +66,7 @@ const HomePostLinkItemContainer = styled.div`
   }
 `;
 
-const HomePostItemContainer = styled.div`
+const PopularPostItemContainer = styled.div`
   padding: var(--spacer-2xs) var(--spacer-md);
 
   margin: var(--spacer-2xs) 0;
@@ -105,4 +106,4 @@ const PostLinkPreview = styled.div`
   grid-column-end: 3;
 `;
 
-export default HomePostItem;
+export default PopularPostItem;

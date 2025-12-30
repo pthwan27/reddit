@@ -3,12 +3,16 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { useRecentPostsStore } from '@/app/store/recentPostsStore';
+
 import styled from 'styled-components';
 
 import { Sub, User } from '@/app/types';
 
 import IconBox from '../common/IconBox';
 import CommunityFill from '../svgs/CommunityFill';
+import RecentPostInfos from './recentPostItem/infos';
+import RecentPostPreview from './recentPostItem/preview';
 
 const HomeRightSideBar = ({
   user,
@@ -17,6 +21,7 @@ const HomeRightSideBar = ({
   user: User | null;
   popularSubs: Sub[];
 }) => {
+  const { recentPosts } = useRecentPostsStore();
   const [expanded, setExpanded] = useState(false);
 
   const DEFAULT_VISIBLE = 5;
@@ -27,11 +32,13 @@ const HomeRightSideBar = ({
     <StyledRightSideBar>
       <RightSideBarWrapper>
         {!user ? (
-          <LoggedOutContainer>
-            <Title>인기 커뮤니티</Title>
-            <PopularSubsContainer>
+          <RightSideBarContainer>
+            <TopSection>
+              <Title>인기 커뮤니티</Title>
+            </TopSection>
+            <PopularSubsWrapper>
               {popularSubs.slice(0, visibleCount).map((sub) => (
-                <PopularSubItemWrapper key={sub.id}>
+                <PopularSubItemContainer key={sub.id}>
                   <PopularSubItem href={`/r/${sub.slug}`}>
                     {sub.iconUrl ? (
                       <IconBox
@@ -54,9 +61,9 @@ const HomeRightSideBar = ({
                       <span>{'멤버 ' + sub.subscriberCount}명</span>
                     </Info>
                   </PopularSubItem>
-                </PopularSubItemWrapper>
+                </PopularSubItemContainer>
               ))}
-            </PopularSubsContainer>
+            </PopularSubsWrapper>
 
             {shouldShowToggle && (
               <ToggleWrapper>
@@ -69,9 +76,44 @@ const HomeRightSideBar = ({
                 </ToggleButton>
               </ToggleWrapper>
             )}
-          </LoggedOutContainer>
+          </RightSideBarContainer>
         ) : (
-          <LoggedInContainer></LoggedInContainer>
+          <RightSideBarContainer>
+            <TopSection>
+              <Title>최근 본 게시물</Title>
+              <ClearButton>지우기</ClearButton>
+            </TopSection>
+            {recentPosts.length > 0 &&
+              recentPosts.map((post) => {
+                return (
+                  <RecentPostItemContainer key={post.identifier}>
+                    <RecentPostItemTop>
+                      <Content>
+                        <RecentPostInfos post={post} />
+                        <Body>{post.title}</Body>
+                      </Content>
+
+                      {post.postType !== 'text' && (
+                        <Preview>
+                          <RecentPostPreview
+                            postType={post.postType}
+                            linkUrl={post.linkUrl}
+                            mediaType={post.mediaType}
+                            imageUrls={post.imageUrls}
+                            videoUrl={post.videoUrl}
+                          />
+                        </Preview>
+                      )}
+                    </RecentPostItemTop>
+                    <RecentPostItemBottom>
+                      <span>{`좋아요 ${post.voteScore}개`}</span>
+                      <span>·</span>
+                      <span>{`댓글 ${post.commentCount}개`}</span>
+                    </RecentPostItemBottom>
+                  </RecentPostItemContainer>
+                );
+              })}
+          </RightSideBarContainer>
         )}
       </RightSideBarWrapper>
     </StyledRightSideBar>
@@ -83,48 +125,55 @@ const StyledRightSideBar = styled.aside`
 `;
 
 const RightSideBarWrapper = styled.div`
-  padding: 0 var(--spacer-md);
   background: ${({ theme }) => theme.colors.neutral.backgroundContainer};
-
   border-radius: var(--radius-md);
-
-  @media (min-width: 768px) {
-  }
 `;
 
-const LoggedOutContainer = styled.div`
+const RightSideBarContainer = styled.div`
   display: flex;
   flex-direction: column;
-
   padding: var(--spacer-xs) 0 var(--spacer-2xs) 0;
 `;
 
-const Title = styled.span`
-  margin-bottom: var(--spacer-sm);
+const TopSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--rem-48);
+  margin: 0 var(--spacer-md);
+`;
 
+const Title = styled.span`
   font: var(--font-12-16-semibold);
   color: ${({ theme }) => theme.colors.neutral.contentWeak};
 `;
 
-const PopularSubsContainer = styled.ul`
-  margin-top: var(--spacer-md);
+const ClearButton = styled.button`
+  padding: 0;
+  background: transparent;
+  color: ${({ theme }) => theme.colors.default.primary};
+  font: var(--font-14-20-regular);
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary.plainHover};
+  }
 `;
 
-const PopularSubItemWrapper = styled.li`
+const PopularSubsWrapper = styled.ul`
+  margin: 0 var(--spacer-md);
+`;
+
+const PopularSubItemContainer = styled.li`
   display: flex;
   align-items: flex-start;
-
   height: var(--rem-56);
 `;
 
 const PopularSubItem = styled(Link)`
   display: flex;
   align-items: center;
-
   gap: var(--spacer-xs);
-
   padding: var(--spacer-2xs) var(--spacer-md);
-
   height: var(--rem-48);
 `;
 
@@ -155,23 +204,62 @@ const Info = styled.div`
 
 const ToggleWrapper = styled.div`
   display: flex;
-
   margin-bottom: var(--spacer-md);
 `;
 
 const ToggleButton = styled.button`
+  padding: var(--spacer-2xs) var(--spacer-xs);
   background: transparent;
+  border-radius: var(--radius-sm);
   color: ${({ theme }) => theme.components.button.plain.text.default};
-
   font: var(--font-12-16-semibold);
   cursor: pointer;
-  padding: var(--spacer-2xs) var(--spacer-xs);
-  border-radius: var(--radius-sm);
 
   &:hover {
     background: ${({ theme }) => theme.colors.neutral.backgroundHover};
   }
 `;
 
-const LoggedInContainer = styled.div``;
+const RecentPostItemContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--spacer-md) var(--spacer-sm);
+  margin-bottom: var(--spacer-sm);
+  border-bottom: var(--line-sm) solid
+    ${({ theme }) => theme.colors.neutral.borderWeak};
+`;
+
+const RecentPostItemTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Content = styled.div``;
+
+const Body = styled.div`
+  margin: var(--spacer-2xs) 0 var(--spacer-xs) 0;
+  overflow: hidden;
+  white-space: wrap;
+  webkit-line-clamp: 2;
+  font: var(--font-14-20-semibold);
+  line-height: 1.25rem;
+  color: ${({ theme }) => theme.colors.neutral.contentWeak};
+  cursor: pointer;
+
+  &:hover {
+    text-decoration-line: underline;
+  }
+`;
+
+const Preview = styled.div``;
+
+const RecentPostItemBottom = styled.div`
+  display: flex;
+  gap: var(--spacer-xs);
+  margin-top: var(--spacer-2xs);
+  font: var(--font-12-16-regular);
+  color: ${({ theme }) => theme.colors.neutral.contentWeak};
+`;
+
 export default HomeRightSideBar;
