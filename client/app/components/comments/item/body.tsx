@@ -36,9 +36,7 @@ const CommentPostBody = ({
         </MediaCarouselWrapper>
       )}
       {postType === 'link' && <CommentPostLinkPreview url={linkUrl} />}
-      {postType === 'text' && (
-        <Content dangerouslySetInnerHTML={{ __html: cleanContent }} />
-      )}
+      <Content dangerouslySetInnerHTML={{ __html: cleanContent }} />
     </StyledCommentPostBody>
   );
 };
@@ -53,19 +51,18 @@ const Title = styled.div`
 
   padding: var(--spacer-md) var(--spacer-md) var(--spacer-2xs);
 
-  @media (min-width: 768px) {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
   font-weight: 600;
   font-size: 1.125rem;
   line-height: 1.5rem;
 
   @media (min-width: 768px) {
-    font-size: 1.125rem;
-    line-height: 1.5rem;
-    margin-bottom: var(--spacer-xs);
+    padding-left: 0;
+    padding-right: 0;
+
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+
+    margin-bottom: var(--spacer-md);
   }
 `;
 
@@ -80,13 +77,8 @@ const MediaCarouselWrapper = styled.div`
 const Content = styled.div`
   padding-bottom: var(--spacer-2xs);
 
-  font-size: 0.75rem;
-  line-height: 1rem;
-
-  @media (min-width: 768px) {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 
   margin-bottom: var(--spacer-xs);
 

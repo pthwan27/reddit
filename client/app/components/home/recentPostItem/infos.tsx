@@ -79,6 +79,8 @@ const SubTitle = styled.span`
   font: var(--font-12-16-semibold);
   line-height: 1rem;
 
+  margin-left: var(--spacer-4xs);
+
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

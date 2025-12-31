@@ -21,13 +21,16 @@ const HomeRightSideBar = ({
   user: User | null;
   popularSubs: Sub[];
 }) => {
-  const { recentPosts } = useRecentPostsStore();
+  const { recentPosts, clearRecentPosts } = useRecentPostsStore();
   const [expanded, setExpanded] = useState(false);
 
   const DEFAULT_VISIBLE = 5;
   const visibleCount = expanded ? popularSubs.length : DEFAULT_VISIBLE;
   const shouldShowToggle = popularSubs.length > DEFAULT_VISIBLE;
 
+  const clearRecentPostsHandler = () => {
+    clearRecentPosts();
+  };
   return (
     <StyledRightSideBar>
       <RightSideBarWrapper>
@@ -78,42 +81,46 @@ const HomeRightSideBar = ({
             )}
           </RightSideBarContainer>
         ) : (
-          <RightSideBarContainer>
-            <TopSection>
-              <Title>최근 본 게시물</Title>
-              <ClearButton>지우기</ClearButton>
-            </TopSection>
-            {recentPosts.length > 0 &&
-              recentPosts.map((post) => {
-                return (
-                  <RecentPostItemContainer key={post.identifier}>
-                    <RecentPostItemTop>
-                      <Content>
-                        <RecentPostInfos post={post} />
-                        <Body>{post.title}</Body>
-                      </Content>
+          recentPosts.length > 0 && (
+            <RightSideBarContainer>
+              <TopSection>
+                <Title>최근 본 게시물</Title>
+                <ClearButton onClick={clearRecentPostsHandler}>
+                  지우기
+                </ClearButton>
+              </TopSection>
+              {recentPosts.length > 0 &&
+                recentPosts.map((post) => {
+                  return (
+                    <RecentPostItemContainer key={post.identifier}>
+                      <RecentPostItemTop>
+                        <Content>
+                          <RecentPostInfos post={post} />
+                          <Body>{post.title}</Body>
+                        </Content>
 
-                      {post.postType !== 'text' && (
-                        <Preview>
-                          <RecentPostPreview
-                            postType={post.postType}
-                            linkUrl={post.linkUrl}
-                            mediaType={post.mediaType}
-                            imageUrls={post.imageUrls}
-                            videoUrl={post.videoUrl}
-                          />
-                        </Preview>
-                      )}
-                    </RecentPostItemTop>
-                    <RecentPostItemBottom>
-                      <span>{`좋아요 ${post.voteScore}개`}</span>
-                      <span>·</span>
-                      <span>{`댓글 ${post.commentCount}개`}</span>
-                    </RecentPostItemBottom>
-                  </RecentPostItemContainer>
-                );
-              })}
-          </RightSideBarContainer>
+                        {post.postType !== 'text' && (
+                          <Preview>
+                            <RecentPostPreview
+                              postType={post.postType}
+                              linkUrl={post.linkUrl}
+                              mediaType={post.mediaType}
+                              imageUrls={post.imageUrls}
+                              videoUrl={post.videoUrl}
+                            />
+                          </Preview>
+                        )}
+                      </RecentPostItemTop>
+                      <RecentPostItemBottom>
+                        <span>{`좋아요 ${post.voteScore}개`}</span>
+                        <span>·</span>
+                        <span>{`댓글 ${post.commentCount}개`}</span>
+                      </RecentPostItemBottom>
+                    </RecentPostItemContainer>
+                  );
+                })}
+            </RightSideBarContainer>
+          )
         )}
       </RightSideBarWrapper>
     </StyledRightSideBar>
@@ -160,7 +167,7 @@ const ClearButton = styled.button`
 `;
 
 const PopularSubsWrapper = styled.ul`
-  margin: 0 var(--spacer-md);
+  margin: var(--spacer-xs) var(--spacer-md) 0;
 `;
 
 const PopularSubItemContainer = styled.li`
@@ -204,7 +211,8 @@ const Info = styled.div`
 
 const ToggleWrapper = styled.div`
   display: flex;
-  margin-bottom: var(--spacer-md);
+
+  margin: 0 var(--spacer-md) var(--spacer-md);
 `;
 
 const ToggleButton = styled.button`

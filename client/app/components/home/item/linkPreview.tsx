@@ -43,13 +43,6 @@ const HomePostLinkPreview = ({ url }: { url: string }) => {
           />
         </PreviewImage>
       )}
-      <PreviewInfo>
-        {metadata.siteName && <SiteName>{metadata.siteName}</SiteName>}
-        {metadata.title && <PreviewTitle>{metadata.title}</PreviewTitle>}
-        {metadata.description && (
-          <PreviewDescription>{metadata.description}</PreviewDescription>
-        )}
-      </PreviewInfo>
     </StyledPreview>
   );
 };
@@ -79,41 +72,6 @@ const PreviewImage = styled.div`
   width: 100%;
   height: 100%;
   flex-shrink: 0;
-`;
-
-const PreviewInfo = styled.div`
-  padding: var(--spacer-sm);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacer-2xs);
-`;
-
-const SiteName = styled.div`
-  font: var(--font-12-16-regular);
-  color: ${({ theme }) => theme.colors.neutral.contentWeak};
-  text-transform: uppercase;
-`;
-
-const PreviewTitle = styled.div`
-  font: var(--font-14-semibold);
-  color: ${({ theme }) => theme.colors.neutral.contentStrong};
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const PreviewDescription = styled.div`
-  font: var(--font-12-16-regular);
-  color: ${({ theme }) => theme.colors.neutral.content};
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 const DefaultPreview = styled.div`

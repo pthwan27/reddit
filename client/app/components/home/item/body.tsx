@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useState } from 'react';
 
 import DOMPurify from 'dompurify';
@@ -33,7 +34,16 @@ const HomePostBody = ({
           />
         </MediaCarouselWrapper>
       )}
-      {postType === 'link' && <Link>{linkUrl}</Link>}
+      {postType === 'link' && (
+        <LinkStyled
+          href={linkUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {linkUrl}
+        </LinkStyled>
+      )}
       {postType === 'text' && (
         <Content dangerouslySetInnerHTML={{ __html: cleanContent }} />
       )}
@@ -82,7 +92,7 @@ const Content = styled.div`
   margin-bottom: var(--spacer-xs);
 `;
 
-const Link = styled.a`
+const LinkStyled = styled(Link)`
   margin-bottom: var(--spacer-xs);
 
   font-weight: 600;
