@@ -1,32 +1,23 @@
 import styled from 'styled-components';
 
-import ImageInput from '@/app/components/common/input/imageInput';
+import PlaceHolderInput from '@/app/components/common/input/placeholderInput';
 
 type CreateSubSecProps = {
-  banner: File | null;
-  setBanner: React.Dispatch<React.SetStateAction<File | null>>;
-  icon: File | null;
-  setIcon: React.Dispatch<React.SetStateAction<File | null>>;
+  title: string;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
 };
-const SecCreateSub = ({
-  banner,
-  setBanner,
-  icon,
-  setIcon,
-}: CreateSubSecProps) => {
+const SecCreateSub = ({ title, setTitle }: CreateSubSecProps) => {
   return (
     <InputBox>
-      <ImageInput
-        label="배너"
-        value={banner?.name}
-        type="file"
-        onFileChange={setBanner}
-      />
-      <ImageInput
-        label="아이콘"
-        value={icon?.name}
-        type="file"
-        onFileChange={setIcon}
+      <PlaceHolderInput
+        variant="primary"
+        label="주제"
+        value={title}
+        type="text"
+        maxLength={19}
+        required={true}
+        isExtraWrapperVisible={false}
+        onChange={(e) => setTitle(e.target.value)}
       />
     </InputBox>
   );
@@ -34,7 +25,6 @@ const SecCreateSub = ({
 const InputBox = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: var(--spacer-md);
   width: 100%;
 `;

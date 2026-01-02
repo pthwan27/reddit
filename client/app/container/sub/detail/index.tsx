@@ -216,7 +216,7 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
               />
             )}
           </PostListWrapper>
-          <SubDetailRightSideBar />
+          <SubDetailRightSideBar sub={sub} />
         </Main>
 
         <HiddenInput

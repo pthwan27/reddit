@@ -67,15 +67,13 @@ const BaseModal = ({
           {createPortal(
             <BaseModalContainer data-modal>
               <ModalBackground onClick={() => close(modalkey)} />
-              <Modal $width={width}>
+              <Modal $width={width} id="modal">
                 <ModalContentHeader>
-                  {headerInfo ? (
+                  {headerInfo && (
                     <HeaderInfo>
                       <h2>{headerInfo}</h2>
                       {headerSubInfo && <span>{headerSubInfo}</span>}
                     </HeaderInfo>
-                  ) : (
-                    <div></div>
                   )}
                   <ModalCloseButton onClick={() => close(modalkey)}>
                     <CloseIcon />
@@ -152,6 +150,8 @@ const ModalContentHeader = styled.div`
   align-items: center;
   justify-content: space-between;
 
+  flex: 1 1 0;
+
   padding: var(--spacer-lg) var(--spacer-lg) var(--spacer-xs);
 
   width: 100%;
@@ -160,6 +160,14 @@ const HeaderInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--spacer-xs);
+
+  > h2 {
+    font: var(--font-title-h3);
+  }
+  > span {
+    font: var(--font-12-16-regular);
+    color: ${({ theme }) => theme.colors.tone[2]};
+  }
 `;
 
 const ModalCloseButton = styled.button`
@@ -178,12 +186,17 @@ const ModalCloseButton = styled.button`
 `;
 
 const ModalContentMain = styled.div`
+  position: relative;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
+  flex: 9 1 0;
+
   width: 100%;
+  height: 100%;
   padding: var(--spacer-xs) 0 var(--spacer-2xl) 0;
 `;
 

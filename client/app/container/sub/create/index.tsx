@@ -15,9 +15,17 @@ import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 
 import FirstCreateSub from './subFirst';
+import FourthCreateSub from './subFourth';
 import SecCreateSub from './subSec';
+import ThirdCreateSub from './subThird';
 
-const CreateSub = () => {
+const CreateSub = ({
+  curInputBoxNum,
+  setCurInputBoxNum,
+}: {
+  curInputBoxNum: number;
+  setCurInputBoxNum: React.Dispatch<React.SetStateAction<number>>;
+}) => {
   const router = useRouter();
 
   const { user } = useAuthStore();
@@ -28,7 +36,6 @@ const CreateSub = () => {
   const [description, setDescription] = useState('');
   const [banner, setBanner] = useState<File | null>(null);
   const [icon, setIcon] = useState<File | null>(null);
-  const [curInputBoxNum, setCurInputBoxNum] = useState<number>(0);
 
   const [error, setError] = useState('');
   const { createSub, loading } = useSubStore();
@@ -51,11 +58,17 @@ const CreateSub = () => {
       key={'create-sub-first'}
       title={title}
       setTitle={setTitle}
+    />,
+    <SecCreateSub key={'create-sub-sec'} title={title} setTitle={setTitle} />,
+    <ThirdCreateSub
+      key={'create-sub-third'}
+      title={title}
+      setTitle={setTitle}
       desc={description}
       setDesc={setDescription}
     />,
-    <SecCreateSub
-      key={'create-sub-sec'}
+    <FourthCreateSub
+      key={'create-sub-fourth'}
       banner={banner}
       setBanner={setBanner}
       icon={icon}
@@ -108,12 +121,14 @@ const CreateSub = () => {
   };
 
   const moveToSlide = (idx: number, check: boolean) => {
+    setError('');
+
     if (!check) {
       setCurInputBoxNum(idx);
       return;
     }
 
-    if (curInputBoxNum === 0) {
+    if (curInputBoxNum === 2) {
       if (titleValidation !== 'valid') {
         return setError(titleValidation);
       }
@@ -228,9 +243,11 @@ const CreateSub = () => {
 const CreateSubContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
   padding: 0 var(--spacer-md);
   width: 100%;
+  height: 100%;
 `;
 
 const MainWrapper = styled.div`
