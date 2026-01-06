@@ -121,7 +121,7 @@ const PreviewDescription = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 
-  padding-right: var(--spacer-xl);
+  padding-right: var(--spacer-3xl);
 `;
 
 const DefaultPreview = styled.div`

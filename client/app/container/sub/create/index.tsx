@@ -14,6 +14,8 @@ import styled from 'styled-components';
 import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 
+import { MAX_TAGS } from '@/app/constants/tags';
+
 import FirstCreateSub from './subFirst';
 import FourthCreateSub from './subFourth';
 import SecCreateSub from './subSec';
@@ -32,6 +34,7 @@ const CreateSub = ({
   const { close } = useModalStore();
   const modalkey = 'createSubModal';
 
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState('');
   const [banner, setBanner] = useState<File | null>(null);
@@ -53,28 +56,19 @@ const CreateSub = ({
     [description]
   );
 
-  const inputBoxes = [
-    <FirstCreateSub
-      key={'create-sub-first'}
-      title={title}
-      setTitle={setTitle}
-    />,
-    <SecCreateSub key={'create-sub-sec'} title={title} setTitle={setTitle} />,
-    <ThirdCreateSub
-      key={'create-sub-third'}
-      title={title}
-      setTitle={setTitle}
-      desc={description}
-      setDesc={setDescription}
-    />,
-    <FourthCreateSub
-      key={'create-sub-fourth'}
-      banner={banner}
-      setBanner={setBanner}
-      icon={icon}
-      setIcon={setIcon}
-    />,
-  ];
+  const handleTageToggle = (tag: string) => {
+    setSelectedTags((prev) => {
+      if (prev.includes(tag)) {
+        return prev.filter((t) => t !== tag);
+      } else {
+        if (prev.length >= MAX_TAGS) {
+          setError(`최대 ${MAX_TAGS}개의 태그만 선택할 수 있습니다.`);
+          return prev;
+        }
+        return [...prev, tag];
+      }
+    });
+  };
 
   const handleCreateSub = async () => {
     if (!user) {
@@ -168,43 +162,68 @@ const CreateSub = ({
 
     return () => URL.revokeObjectURL(objectURL);
   }, [icon]);
+
+  const inputBoxes = [
+    <FirstCreateSub
+      key={'create-sub-first'}
+      selectedTags={selectedTags}
+      onTagToggle={handleTageToggle}
+    />,
+    <SecCreateSub key={'create-sub-sec'} title={title} setTitle={setTitle} />,
+    <ThirdCreateSub
+      key={'create-sub-third'}
+      title={title}
+      setTitle={setTitle}
+      desc={description}
+      setDesc={setDescription}
+    />,
+    <FourthCreateSub
+      key={'create-sub-fourth'}
+      banner={banner}
+      setBanner={setBanner}
+      icon={icon}
+      setIcon={setIcon}
+    />,
+  ];
   return (
     <CreateSubContainer>
       <MainWrapper>
-        <CreateInputBox>{inputBoxes[curInputBoxNum]}</CreateInputBox>
-        <CreateSubInfoBox>
-          <InfoWrapper>
-            {curInputBoxNum > 0 && (
-              <StyledBanner $isSelected={!banner}>
-                {bannerPreview && (
-                  <Image
-                    src={bannerPreview}
-                    alt="banner"
-                    fill
-                    sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
-                  />
-                )}
-              </StyledBanner>
-            )}
-            <StyledMain>
+        <CreateInputBox $showInfoBox={curInputBoxNum >= 2}>
+          {inputBoxes[curInputBoxNum]}
+        </CreateInputBox>
+        {curInputBoxNum >= 2 && (
+          <CreateSubInfoBox>
+            <InfoWrapper>
               {curInputBoxNum > 0 && (
-                <IconBox $isSelected={!icon}>
-                  {iconPreview && <Image src={iconPreview} alt="icon" fill />}
-                </IconBox>
+                <StyledBanner $isSelected={!banner}>
+                  {bannerPreview && (
+                    <Image
+                      src={bannerPreview}
+                      alt="banner"
+                      fill
+                      sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
+                    />
+                  )}
+                </StyledBanner>
               )}
-              <InfoBox>
-                <span>r/{title}</span>
-                <span>1 멤버 ·온라인 접속자 1명</span>
-              </InfoBox>
-            </StyledMain>
-            <StyledDesc>
-              {description ? description : '내 커뮤니티 설명'}
-            </StyledDesc>
-          </InfoWrapper>
-        </CreateSubInfoBox>
+              <StyledMain>
+                {curInputBoxNum > 0 && (
+                  <IconBox $isSelected={!icon}>
+                    {iconPreview && <Image src={iconPreview} alt="icon" fill />}
+                  </IconBox>
+                )}
+                <InfoBox>
+                  <span>r/{title}</span>
+                  <span>1 멤버 ·온라인 접속자 1명</span>
+                </InfoBox>
+              </StyledMain>
+              <StyledDesc>
+                {description ? description : '내 커뮤니티 설명'}
+              </StyledDesc>
+            </InfoWrapper>
+          </CreateSubInfoBox>
+        )}
       </MainWrapper>
-
-      <div style={{ marginBottom: '40px' }} />
 
       <CreateSubCarousel>
         <CarouselWrapper>
@@ -255,14 +274,14 @@ const MainWrapper = styled.div`
   gap: var(--spacer-md);
 `;
 
-const CreateInputBox = styled.div`
+const CreateInputBox = styled.div<{ $showInfoBox: boolean }>`
   display: flex;
   justify-content: center;
 
   flex: 1;
   @media (min-width: 768px) {
-    flex: 0 0 404px;
-    width: 404px;
+    flex: ${({ $showInfoBox }) => ($showInfoBox ? '0 0 404px' : '1')};
+    width: ${({ $showInfoBox }) => ($showInfoBox ? '404px' : '100%')};
   }
 `;
 const CreateSubInfoBox = styled.div`

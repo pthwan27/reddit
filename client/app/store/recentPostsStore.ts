@@ -15,7 +15,10 @@ export const useRecentPostsStore = create(
 
       addRecentPost: (post: Post) => {
         set((state) => ({
-          recentPosts: [post, ...state.recentPosts],
+          recentPosts: [
+            post,
+            ...state.recentPosts.filter((p) => p.id !== post.id),
+          ],
         }));
       },
 

@@ -269,6 +269,10 @@ export const newTheme = {
         },
         text: '#000000',
       },
+      interactive: {
+        pressed:
+          'linear-gradient(#00000026, #00000026), linear-gradient(#DBE4E9, #DBE4E9)',
+      },
     },
     input: {
       border: 'transparent',

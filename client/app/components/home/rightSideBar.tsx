@@ -90,9 +90,9 @@ const HomeRightSideBar = ({
                 </ClearButton>
               </TopSection>
               {recentPosts.length > 0 &&
-                recentPosts.map((post) => {
+                recentPosts.map((post, idx) => {
                   return (
-                    <RecentPostItemContainer key={post.identifier}>
+                    <RecentPostItemContainer key={post.identifier + idx}>
                       <RecentPostItemTop>
                         <Content>
                           <RecentPostInfos post={post} />

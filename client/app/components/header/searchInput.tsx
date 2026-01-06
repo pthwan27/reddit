@@ -36,7 +36,10 @@ const SearchInput = () => {
             />
           </Tag>
         )}
-        <Input name="search-input" placeholder="Search" />
+        <Input
+          name="search-input"
+          placeholder={`${selectedSub ? '검색 범위 : ' + selectedSub.title : 'Search'}`}
+        />
       </InputWrapper>
     </StyledSearchInput>
   );
@@ -74,6 +77,7 @@ const InputWrapper = styled.div`
   width: 100%;
 
   background: ${({ theme }) => theme.colors.secondary.background};
+
   border: var(--line-md) solid transparent;
   padding-left: var(--spacer-2-5xl);
   border-radius: var(--radius-full);
@@ -117,7 +121,15 @@ const Tag = styled.div`
 `;
 
 const Input = styled.input`
-  padding: 6px var(--spacer-sm);
+  padding: 6px var(--spacer-xs);
+
+  font: var(--font-14-20-regular);
+
+  color: ${({ theme }) => theme.colors.neutral.contentStrong};
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.neutral.contentWeak};
+  }
 `;
 
 export default SearchInput;

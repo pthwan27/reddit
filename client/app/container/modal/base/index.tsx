@@ -167,6 +167,7 @@ const HeaderInfo = styled.div`
   > span {
     font: var(--font-12-16-regular);
     color: ${({ theme }) => theme.colors.tone[2]};
+    padding-bottom: var(--spacer-2xl);
   }
 `;
 
