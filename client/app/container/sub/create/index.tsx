@@ -15,6 +15,7 @@ import ErrorMessage from '@/app/components/common/errorMessage';
 import LoadingSpinner from '@/app/components/common/loading/loadingSpinner';
 
 import { MAX_TAGS } from '@/app/constants/tags';
+import { SubVisibility } from '@/app/types';
 
 import FirstCreateSub from './subFirst';
 import FourthCreateSub from './subFourth';
@@ -35,6 +36,8 @@ const CreateSub = ({
   const modalkey = 'createSubModal';
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [subVisibility, setSubVisibility] = useState<SubVisibility>('public');
+
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState('');
   const [banner, setBanner] = useState<File | null>(null);
@@ -169,7 +172,11 @@ const CreateSub = ({
       selectedTags={selectedTags}
       onTagToggle={handleTageToggle}
     />,
-    <SecCreateSub key={'create-sub-sec'} title={title} setTitle={setTitle} />,
+    <SecCreateSub
+      key={'create-sub-sec'}
+      subVisibility={subVisibility}
+      setSubVisibility={setSubVisibility}
+    />,
     <ThirdCreateSub
       key={'create-sub-third'}
       title={title}

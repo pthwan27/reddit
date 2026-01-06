@@ -3,6 +3,8 @@ export type ValidationRule = {
   message: string;
 };
 
+export type SubVisibility = 'public' | 'restricted' | 'private';
+
 export interface CustomError extends Error {
   response?: {
     data?: { error?: string };

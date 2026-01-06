@@ -20,7 +20,7 @@ const FirstCreateSub = ({ selectedTags, onTagToggle }: CreateSubFirstProps) => {
   );
 
   return (
-    <Container>
+    <CreateSubFirstContainer>
       <SearchInput>
         <SearchIconWrapper>
           <SearchIcon />
@@ -57,11 +57,11 @@ const FirstCreateSub = ({ selectedTags, onTagToggle }: CreateSubFirstProps) => {
           </CategoryWrapper>
         ))}
       </Category>
-    </Container>
+    </CreateSubFirstContainer>
   );
 };
 
-const Container = styled.div`
+const CreateSubFirstContainer = styled.div`
   width: 100%;
 `;
 
