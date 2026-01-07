@@ -112,5 +112,5 @@ export type RecentPostsState = {
   recentPostsByUser: RecentPostsByUser;
   addRecentPost: (post: Post, userId: string) => void;
   getRecentPosts: (userId: string) => Post[];
-  clearRecentPosts: () => void;
+  clearRecentPosts: (userId: string) => void;
 };

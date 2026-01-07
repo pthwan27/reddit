@@ -24,12 +24,15 @@ const HomeRightSideBar = ({
   const { getRecentPosts, clearRecentPosts } = useRecentPostsStore();
   const [expanded, setExpanded] = useState(false);
 
+  const userId = user?.id || '';
+  const recentPosts = getRecentPosts(userId);
+
   const DEFAULT_VISIBLE = 5;
   const visibleCount = expanded ? popularSubs.length : DEFAULT_VISIBLE;
   const shouldShowToggle = popularSubs.length > DEFAULT_VISIBLE;
 
   const clearRecentPostsHandler = () => {
-    clearRecentPosts();
+    clearRecentPosts(userId);
   };
 
   return (
@@ -82,7 +85,7 @@ const HomeRightSideBar = ({
             )}
           </RightSideBarContainer>
         ) : (
-          getRecentPosts(user?.id || '').length > 0 && (
+          recentPosts.length > 0 && (
             <RightSideBarContainer>
               <TopSection>
                 <Title>최근 본 게시물</Title>
@@ -90,8 +93,8 @@ const HomeRightSideBar = ({
                   지우기
                 </ClearButton>
               </TopSection>
-              {getRecentPosts(user?.id || '').length > 0 &&
-                getRecentPosts(user?.id || '').map((post, idx) => {
+              {recentPosts.length > 0 &&
+                recentPosts.map((post, idx) => {
                   return (
                     <RecentPostItemContainer key={post.identifier + idx}>
                       <RecentPostItemTop>

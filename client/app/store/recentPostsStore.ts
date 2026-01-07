@@ -32,8 +32,12 @@ export const useRecentPostsStore = create(
         return get().recentPostsByUser[userId] || [];
       },
 
-      clearRecentPosts: () => {
-        set({ recentPostsByUser: {} });
+      clearRecentPosts: (userId: string) => {
+        set((state) => {
+          const newRecentPostsByUser = { ...state.recentPostsByUser };
+          delete newRecentPostsByUser[userId];
+          return { recentPostsByUser: newRecentPostsByUser };
+        });
       },
     }),
     {
