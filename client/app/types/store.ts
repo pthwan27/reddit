@@ -104,8 +104,13 @@ export type UIState = {
   setLeftNavByHeaderVisible: (visible: boolean) => void;
 };
 
+export type RecentPostsByUser = {
+  [userId: string]: Post[];
+};
+
 export type RecentPostsState = {
-  recentPosts: Post[];
-  addRecentPost: (post: Post) => void;
+  recentPostsByUser: RecentPostsByUser;
+  addRecentPost: (post: Post, userId: string) => void;
+  getRecentPosts: (userId: string) => Post[];
   clearRecentPosts: () => void;
 };

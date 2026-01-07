@@ -21,7 +21,7 @@ const HomeRightSideBar = ({
   user: User | null;
   popularSubs: Sub[];
 }) => {
-  const { recentPosts, clearRecentPosts } = useRecentPostsStore();
+  const { getRecentPosts, clearRecentPosts } = useRecentPostsStore();
   const [expanded, setExpanded] = useState(false);
 
   const DEFAULT_VISIBLE = 5;
@@ -31,6 +31,7 @@ const HomeRightSideBar = ({
   const clearRecentPostsHandler = () => {
     clearRecentPosts();
   };
+
   return (
     <StyledRightSideBar>
       <RightSideBarWrapper>
@@ -81,7 +82,7 @@ const HomeRightSideBar = ({
             )}
           </RightSideBarContainer>
         ) : (
-          recentPosts.length > 0 && (
+          getRecentPosts(user?.id || '').length > 0 && (
             <RightSideBarContainer>
               <TopSection>
                 <Title>최근 본 게시물</Title>
@@ -89,8 +90,8 @@ const HomeRightSideBar = ({
                   지우기
                 </ClearButton>
               </TopSection>
-              {recentPosts.length > 0 &&
-                recentPosts.map((post, idx) => {
+              {getRecentPosts(user?.id || '').length > 0 &&
+                getRecentPosts(user?.id || '').map((post, idx) => {
                   return (
                     <RecentPostItemContainer key={post.identifier + idx}>
                       <RecentPostItemTop>

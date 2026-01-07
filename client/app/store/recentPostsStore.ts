@@ -2,32 +2,42 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { Post } from '../types';
-import { RecentPostsState } from '../types/store';
+import { RecentPostsByUser, RecentPostsState } from '../types/store';
+import { useAuthStore } from './authStore';
 
 const initialState = {
-  recentPosts: [] as Post[],
+  recentPostsByUser: {} as RecentPostsByUser,
 };
 
 export const useRecentPostsStore = create(
   persist<RecentPostsState>(
-    (set) => ({
+    (set, get) => ({
       ...initialState,
 
-      addRecentPost: (post: Post) => {
+      addRecentPost: (post: Post, userId: string) => {
         set((state) => ({
-          recentPosts: [
-            post,
-            ...state.recentPosts.filter((p) => p.id !== post.id),
-          ],
+          recentPostsByUser: {
+            ...state.recentPostsByUser,
+            [userId || '']: [
+              post,
+              ...(state.recentPostsByUser[userId || ''] || []).filter(
+                (p) => p.id !== post.id
+              ),
+            ],
+          },
         }));
       },
 
+      getRecentPosts: (userId: string) => {
+        return get().recentPostsByUser[userId] || [];
+      },
+
       clearRecentPosts: () => {
-        set({ recentPosts: [] });
+        set({ recentPostsByUser: {} });
       },
     }),
     {
-      name: 'recent-posts-storage',
+      name: `recent-posts-${useAuthStore.getState().user?.id}`,
     }
   )
 );

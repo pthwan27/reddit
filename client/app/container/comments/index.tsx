@@ -107,7 +107,7 @@ const CommentList = ({ post }: { post: Post }) => {
   }, []);
 
   useEffect(() => {
-    addRecentPost(post);
+    addRecentPost(post, user?.id || '');
     setSelectedPost(post);
     fetchComments(post.id);
 
