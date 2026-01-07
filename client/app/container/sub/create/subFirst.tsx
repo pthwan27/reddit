@@ -144,13 +144,20 @@ const TagButton = styled.button<{ isSelected: boolean }>`
       ? theme.components.button.background.activated
       : theme.colors.secondary.background};
   border-radius: var(--radius-full);
-  outline: ${({ isSelected, theme }) =>
+
+  border: ${({ isSelected, theme }) =>
     isSelected
       ? `var(--line-sm) solid ${theme.components.button.border.activated}`
       : 'var(--line-sm) solid transparent'};
+
   font: var(--font-12-16-semibold);
 
   &:hover {
+    border: ${({ isSelected, theme }) =>
+      isSelected
+        ? `var(--line-sm) solid ${theme.components.button.border.activated}`
+        : 'var(--line-sm) solid transparent'};
+
     background: ${({ theme }) => theme.colors.secondary.backgroundHover};
   }
 

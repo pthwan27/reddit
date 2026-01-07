@@ -19,6 +19,8 @@ export const useSubStore = create(
       ...initialState,
 
       createSub: async ({
+        tags,
+        visibility,
         title,
         description,
         icon,
@@ -37,6 +39,8 @@ export const useSubStore = create(
           slug: title,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
+          tags,
+          visibility,
           title,
           description,
           bannerUrl: bannerPreview || '',
@@ -52,6 +56,9 @@ export const useSubStore = create(
 
         try {
           const formData = new FormData();
+
+          formData.append('tags', JSON.stringify(tags));
+          formData.append('visibility', visibility);
           formData.append('title', title);
           formData.append('description', description);
           if (banner) formData.append('banner', banner);

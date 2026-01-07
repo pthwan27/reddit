@@ -165,6 +165,10 @@ const HeaderInfo = styled.div`
     font: var(--font-title-h3);
   }
   > span {
+    display: block;
+    padding-right: var(--spacer-3xl);
+    white-space: pre-wrap;
+
     font: var(--font-12-16-regular);
     color: ${({ theme }) => theme.colors.tone[2]};
     padding-bottom: var(--spacer-2xl);

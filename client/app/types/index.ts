@@ -23,6 +23,8 @@ export interface Sub {
   createdAt: string;
   updatedAt: string;
   slug: string;
+  tags: string[];
+  visibility: SubVisibility;
   title: string;
   description: string | null;
   iconUrl: string;
@@ -74,6 +76,8 @@ export interface Comment {
 }
 
 export interface CreateSubProps {
+  tags: string[];
+  visibility: SubVisibility;
   title: string;
   description: string;
   icon?: File | null;

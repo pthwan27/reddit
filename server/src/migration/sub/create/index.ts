@@ -9,14 +9,31 @@ import { Subscription } from '../../../entities/Subscription';
 import { User } from '../../../entities/User';
 
 export const CreateHandler: RequestHandler = async (req, res) => {
-  const { title, description } = req.body;
+  const { tags, visibility, title, description } = req.body;
   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
   const user: User = res.locals.user;
 
+  const tagsArray: string[] = tags ? JSON.parse(tags) : [];
+
   if (!user) {
     return res.status(401).json({ error: 'User not found in context' });
   }
+
+  if (!tagsArray) {
+    return res.status(400).json({ error: '태그를 선택해주세요.' });
+  }
+
+  if (tagsArray.length > 3) {
+    return res
+      .status(400)
+      .json({ error: '태그는 최대 3개까지 선택할 수 있습니다.' });
+  }
+
+  if (!visibility) {
+    return res.status(400).json({ error: '공개 설정을 선택해주세요.' });
+  }
+
   if (!title || title.trim() === '') {
     return res.status(400).json({ error: '커뮤니티 이름을 입력해주세요.' });
   }
@@ -61,6 +78,8 @@ export const CreateHandler: RequestHandler = async (req, res) => {
 
   try {
     const sub = new Sub();
+    sub.tags = tagsArray;
+    sub.visibility = visibility;
     sub.title = title;
     sub.description = description || title + '주제의 커뮤니티입니다.';
     sub.user = user;

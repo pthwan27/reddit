@@ -15,6 +15,7 @@ import { Post } from "./Post";
 import { Exclude, Expose } from "class-transformer";
 import { Subscription } from "./Subscription";
 
+export type SubVisibility = 'public' | 'restricted' | 'private';
 @Entity("subs")
 export class Sub extends CoreEntity {
   @Index()
@@ -45,6 +46,18 @@ export class Sub extends CoreEntity {
   @OneToMany(() => Subscription, (subscription) => subscription.sub)
   subscribers: Subscription[];
 
+  @Column({
+    type: "enum",
+    enum: ["public", "restricted", "private"],
+    default: "public",
+  })
+  visibility: SubVisibility;
+
+  @Column({
+    type: "simple-array",
+    nullable: true,
+  })
+  tags: string[];
 
   @Expose()
   get userId(): number {
@@ -86,5 +99,13 @@ export class Sub extends CoreEntity {
     this.slug = this.title
       .trim()
       .replace(/ /g, "-")
+  }
+
+  
+  @BeforeInsert()
+  validateTags() {
+    if (this.tags && this.tags.length > 3) {
+      throw new Error("최대 3개의 태그만 허용됩니다.");
+    }
   }
 }

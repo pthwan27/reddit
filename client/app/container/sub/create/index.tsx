@@ -54,7 +54,7 @@ const CreateSub = ({
     () => validationCheck(title, 'subTitle'),
     [title]
   );
-  const descValidtiaon = useMemo(
+  const descValidation = useMemo(
     () => validationCheck(description, 'subDesc'),
     [description]
   );
@@ -62,6 +62,7 @@ const CreateSub = ({
   const handleTageToggle = (tag: string) => {
     setSelectedTags((prev) => {
       if (prev.includes(tag)) {
+        setError('');
         return prev.filter((t) => t !== tag);
       } else {
         if (prev.length >= MAX_TAGS) {
@@ -79,6 +80,8 @@ const CreateSub = ({
     }
     try {
       await createSub({
+        tags: selectedTags,
+        visibility: subVisibility,
         title,
         description,
         icon,
@@ -130,8 +133,8 @@ const CreateSub = ({
         return setError(titleValidation);
       }
 
-      if (descValidtiaon !== 'valid') {
-        return setError(descValidtiaon);
+      if (descValidation !== 'valid') {
+        return setError(descValidation);
       }
     }
 
@@ -252,8 +255,9 @@ const CreateSub = ({
           <button
             onClick={() => nextSlice()}
             disabled={
-              curInputBoxNum === 0 &&
-              (titleValidation !== 'valid' || descValidtiaon !== 'valid')
+              (curInputBoxNum === inputBoxes.length - 1 ||
+                selectedTags.length === 0) &&
+              (titleValidation !== 'valid' || descValidation !== 'valid')
             }
           >
             {curInputBoxNum === inputBoxes.length - 1 ? '생성하기' : '다음'}
