@@ -4,6 +4,10 @@ import styled from 'styled-components';
 
 import { Sub } from '@/app/types';
 
+import IconBox from '../common/IconBox';
+import BrowserIcon from '../svgs/BrowserIcon';
+import CakeIcon from '../svgs/CakeIcon';
+
 const SubDetailRightSideBar = ({ sub }: { sub: Sub }) => {
   return (
     <StyledRightSideBar>
@@ -12,7 +16,23 @@ const SubDetailRightSideBar = ({ sub }: { sub: Sub }) => {
           <Title>{sub.title}</Title>
           <Description>{sub.description}</Description>
 
-          <CreatedAt>{`생성일 : ${sub.createdAt}`}</CreatedAt>
+          <Options>
+            <CreatedAtOption>
+              <IconBox icon={<CakeIcon />} width={16} height={16} />
+              <span>{`생성일 : ${formatTime(sub.createdAt)}`}</span>
+            </CreatedAtOption>
+
+            <VisibiltiyOption>
+              <IconBox icon={<BrowserIcon />} width={16} height={16} />
+              <span>
+                {sub.visibility === 'public'
+                  ? '공개'
+                  : sub.visibility === 'restricted'
+                    ? '제한됨'
+                    : '비공개'}
+              </span>
+            </VisibiltiyOption>
+          </Options>
         </InfoSection>
       </RightSideBarWrapper>
     </StyledRightSideBar>
@@ -43,9 +63,47 @@ const Description = styled.p`
   font: var(--font-14-20-regular);
 `;
 
-const CreatedAt = styled.p`
+const Options = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  height: var(--rem-40);
+
+  gap: var(--spacer-2xs);
+  margin-top: var(--spacer-sm);
+`;
+
+const CreatedAtOption = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+
   font: var(--font-12-16-regular);
   color: ${({ theme }) => theme.colors.neutral.contentWeak};
-  margin-top: var(--spacer-sm);
+
+  > div {
+    margin-inline-end: var(--spacer-2xs);
+  }
+
+  > span {
+    line-height: 1.5;
+  }
+`;
+
+const VisibiltiyOption = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+
+  font: var(--font-12-16-regular);
+  color: ${({ theme }) => theme.colors.neutral.contentWeak};
+
+  > div {
+    margin-inline-end: var(--spacer-2xs);
+  }
+
+  > span {
+    line-height: 1.5;
+  }
 `;
 export default SubDetailRightSideBar;

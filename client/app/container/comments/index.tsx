@@ -214,7 +214,7 @@ const CommentList = ({ post }: { post: Post }) => {
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </PostListWrapper>
-      <CommentsRightSideBar />
+      <CommentsRightSideBar sub={selectedPost.sub} />
     </GridWrapper>
   );
 };

@@ -59,7 +59,7 @@ const CreateSub = ({
     [description]
   );
 
-  const handleTageToggle = (tag: string) => {
+  const handleTagToggle = (tag: string) => {
     setSelectedTags((prev) => {
       if (prev.includes(tag)) {
         setError('');
@@ -173,7 +173,7 @@ const CreateSub = ({
     <FirstCreateSub
       key={'create-sub-first'}
       selectedTags={selectedTags}
-      onTagToggle={handleTageToggle}
+      onTagToggle={handleTagToggle}
     />,
     <SecCreateSub
       key={'create-sub-sec'}
