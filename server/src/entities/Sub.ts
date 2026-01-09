@@ -57,7 +57,7 @@ export class Sub extends CoreEntity {
     type: "simple-array",
     nullable: true,
   })
-  tags: string[];
+  tags: string[]; 
 
   @Expose()
   get userId(): number {

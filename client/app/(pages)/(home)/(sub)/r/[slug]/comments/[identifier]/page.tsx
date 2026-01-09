@@ -7,7 +7,7 @@ import CommentList from '@/app/container/comments';
 
 import { Post } from '@/app/types';
 
-async function getDetailPost(identifier: string): Promise<{ post: Post }> {
+async function getDetailPost(identifier: string): Promise<Post> {
   try {
     const cookieStore = await cookies();
 
@@ -22,7 +22,7 @@ async function getDetailPost(identifier: string): Promise<{ post: Post }> {
       }
     );
 
-    return { post: response.data };
+    return response.data;
   } catch (error) {
     console.error('Failed to get sub data:', error);
     notFound();
@@ -38,7 +38,7 @@ const PostDetailPage = async ({
 
   const data = await getDetailPost(identifier);
 
-  return <CommentList post={data.post} />;
+  return <CommentList post={data} />;
 };
 
 export default PostDetailPage;

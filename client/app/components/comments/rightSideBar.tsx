@@ -1,9 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import formatTime from '@/app/utils/formatTime';
 
+import { useAuthStore } from '@/app/store/authStore';
 import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
@@ -14,8 +17,37 @@ import IconBox from '../common/IconBox';
 import BrowserIcon from '../svgs/BrowserIcon';
 import CakeIcon from '../svgs/CakeIcon';
 
-const CommentsRightSideBar = ({ sub }: { sub: Sub }) => {
-  const { handleSubscribe } = useSubStore();
+const CommentsRightSideBar = ({ sub: initialSub }: { sub: Sub }) => {
+  const router = useRouter();
+  const [sub, setSub] = useState<Sub>(initialSub);
+
+  const { user } = useAuthStore();
+  const { subs, handleSubscribe } = useSubStore();
+
+  const onHandleSubscribe = async () => {
+    if (!user) {
+      router.push('/login');
+      return;
+    }
+    await handleSubscribe(sub);
+
+    setSub({
+      ...sub,
+      isSubscribed: !sub.isSubscribed,
+      subscriberCount: sub.isSubscribed
+        ? sub.subscriberCount - 1
+        : sub.subscriberCount + 1,
+    });
+  };
+
+  useEffect(() => {
+    if (!user) {
+      setSub({ ...initialSub, isSubscribed: false });
+      return;
+    }
+
+    setSub({ ...initialSub });
+  }, [user, subs, initialSub]);
 
   return (
     <StyledRightSideBar>
@@ -24,7 +56,7 @@ const CommentsRightSideBar = ({ sub }: { sub: Sub }) => {
           <SubLink href={`/r/${sub.slug}`}>{`r/${sub.title}`}</SubLink>
           <SubScribeButton
             $isSubscribed={sub.isSubscribed}
-            onClick={() => handleSubscribe(sub)}
+            onClick={onHandleSubscribe}
           >
             {sub.isSubscribed ? '가입됨' : '가입'}
           </SubScribeButton>

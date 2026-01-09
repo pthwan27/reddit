@@ -30,12 +30,14 @@ const CommentList = ({ post }: { post: Post }) => {
   const observerRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
-  const { user } = useAuthStore();
 
+  const { user } = useAuthStore();
   const { addRecentPost } = useRecentPostsStore();
   const { setSelectedSub } = useSubStore();
+
   const { selectedPost, setSelectedPost, updatePostCommentCount } =
     usePostStore();
+
   const {
     comments,
     loading,
@@ -171,7 +173,7 @@ const CommentList = ({ post }: { post: Post }) => {
 
   return (
     <GridWrapper>
-      <PostListWrapper>
+      <CommentsWrapper>
         <PostInfoSection>
           <CommentPostInfos {...selectedPost} />
           <CommentPostBody {...selectedPost} />
@@ -213,8 +215,8 @@ const CommentList = ({ post }: { post: Post }) => {
         </CommentsSection>
 
         {error && <ErrorMessage>{error}</ErrorMessage>}
-      </PostListWrapper>
-      <CommentsRightSideBar sub={selectedPost.sub} />
+      </CommentsWrapper>
+      <CommentsRightSideBar sub={post.sub} />
     </GridWrapper>
   );
 };
@@ -249,7 +251,7 @@ const GridWrapper = styled.div`
     grid-template-columns: minmax(0, 756px) minmax(0, 316px);
   }
 `;
-const PostListWrapper = styled.div``;
+const CommentsWrapper = styled.div``;
 
 const PostInfoSection = styled.section`
   display: flex;

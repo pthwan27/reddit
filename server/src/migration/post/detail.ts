@@ -13,7 +13,15 @@ export const GetPostDetailHandler: RequestHandler = async (req, res) => {
 
     const post = await Post.findOne({
       where: { identifier },
-      relations: ['user', 'sub', 'votes', 'votes.user', 'comments'],
+      relations: [
+        'user',
+        'sub',
+        'sub.posts',
+        'sub.subscribers',
+        'votes',
+        'votes.user',
+        'comments',
+      ],
     });
 
     if (!post) {

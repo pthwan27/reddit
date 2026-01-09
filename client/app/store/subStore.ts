@@ -46,6 +46,8 @@ export const useSubStore = create(
           bannerUrl: bannerPreview || '',
           iconUrl: iconPreview || '',
           username,
+          subscriberCount: 0,
+          postCount: 0,
           isSubscribed: false,
           isOwner: false,
         };
@@ -122,14 +124,43 @@ export const useSubStore = create(
       handleSubscribe: async (sub: Sub) => {
         const originSubs = get().subs;
 
+        const existingSubIndex = originSubs.findIndex((s) => s.id === sub.id);
+
         const isCurSubscribed = !!originSubs.find((s) => s.id === sub.id);
 
         let updatedSubs: Sub[];
 
         if (isCurSubscribed) {
-          updatedSubs = originSubs.filter((s) => s.id !== sub.id);
+          updatedSubs = originSubs.map((s) =>
+            s.id === sub.id
+              ? {
+                  ...s,
+                  isSubscribed: false,
+                  subscriberCount: s.subscriberCount - 1,
+                }
+              : s
+          );
         } else {
-          updatedSubs = [{ ...sub, isSubscribed: true }, ...originSubs];
+          if (existingSubIndex !== -1) {
+            updatedSubs = originSubs.map((s) =>
+              s.id === sub.id
+                ? {
+                    ...s,
+                    isSubscribed: true,
+                    subscriberCount: s.subscriberCount + 1,
+                  }
+                : s
+            );
+          } else {
+            updatedSubs = [
+              {
+                ...sub,
+                isSubscribed: true,
+                subscriberCount: sub.subscriberCount + 1,
+              },
+              ...originSubs,
+            ];
+          }
         }
         set({ subs: updatedSubs });
 
