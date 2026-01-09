@@ -88,6 +88,11 @@ export class Sub extends CoreEntity {
       ? `${process.env.APP_URL}/images/subs/${this.slug}/banner/${this.bannerUrn}`
       : ``;
   }
+
+  @Expose()
+  get postCount(): number {
+    return this.posts?.length || 0;
+  }
   
   @Expose()
   get subscriberCount(): number {

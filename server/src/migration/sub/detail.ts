@@ -13,7 +13,7 @@ export const GetSubDetailHandler: RequestHandler = async (req, res) => {
 
     const sub = await Sub.findOne({
       where: { slug },
-      relations: ['user'],
+      relations: ['user', 'subscribers', 'posts'],
     });
 
     if (!sub) {

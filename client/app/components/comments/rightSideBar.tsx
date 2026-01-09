@@ -29,11 +29,11 @@ const CommentsRightSideBar = ({ sub }: { sub: Sub }) => {
             {sub.isSubscribed ? '가입됨' : '가입'}
           </SubScribeButton>
         </ActionsSection>
-        <InfoSection>
+        <TopSection>
           <Title>{sub.title}</Title>
           <Description>{sub.description}</Description>
 
-          <Options>
+          <Infos>
             <CreatedAtOption>
               <IconBox icon={<CakeIcon />} width={16} height={16} />
               <span>{`생성일 : ${formatTime(sub.createdAt)}`}</span>
@@ -49,8 +49,20 @@ const CommentsRightSideBar = ({ sub }: { sub: Sub }) => {
                     : '비공개'}
               </span>
             </VisibiltiyOption>
-          </Options>
-        </InfoSection>
+
+            <InfosBottomRow>
+              <SubscriberCount>
+                <span>{sub.subscriberCount}</span>
+                <span>subscriber</span>
+              </SubscriberCount>
+
+              <PostCount>
+                <span>{sub.postCount}</span>
+                <span>post</span>
+              </PostCount>
+            </InfosBottomRow>
+          </Infos>
+        </TopSection>
       </RightSideBarWrapper>
     </StyledRightSideBar>
   );
@@ -110,7 +122,7 @@ const SubScribeButton = styled.button<{ $isSubscribed: boolean }>`
   }
 `;
 
-const InfoSection = styled.div`
+const TopSection = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -124,12 +136,9 @@ const Title = styled.p`
 const Description = styled.p`
   font: var(--font-14-20-regular);
 `;
-
-const Options = styled.div`
+const Infos = styled.div`
   display: flex;
   flex-direction: column;
-
-  height: var(--rem-40);
 
   gap: var(--spacer-2xs);
   margin-top: var(--spacer-sm);
@@ -166,6 +175,43 @@ const VisibiltiyOption = styled.div`
 
   > span {
     line-height: 1.5;
+  }
+`;
+
+const InfosBottomRow = styled.div`
+  display: flex;
+
+  margin-top: var(--spacer-xs);
+`;
+
+const SubscriberCount = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  > span:first-child {
+    font: var(--font-14-20-bold);
+    color: ${({ theme }) => theme.colors.neutral.content};
+  }
+
+  > span:last-child {
+    font: var(--font-12-16-regular);
+    color: ${({ theme }) => theme.colors.neutral.contentWeak};
+  }
+`;
+const PostCount = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  > span:first-child {
+    font: var(--font-14-20-bold);
+    color: ${({ theme }) => theme.colors.neutral.content};
+  }
+
+  > span:last-child {
+    font: var(--font-12-16-regular);
+    color: ${({ theme }) => theme.colors.neutral.contentWeak};
   }
 `;
 export default CommentsRightSideBar;

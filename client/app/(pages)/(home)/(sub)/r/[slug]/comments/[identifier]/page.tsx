@@ -3,9 +3,9 @@ import { notFound } from 'next/navigation';
 
 import { clientAxiosInstance } from '@/app/utils/axios';
 
+import CommentList from '@/app/container/comments';
 
 import { Post } from '@/app/types';
-import CommentList from '@/app/container/comments';
 
 async function getDetailPost(identifier: string): Promise<{ post: Post }> {
   try {
@@ -37,6 +37,7 @@ const PostDetailPage = async ({
   const { identifier } = await params;
 
   const data = await getDetailPost(identifier);
+
   return <CommentList post={data.post} />;
 };
 

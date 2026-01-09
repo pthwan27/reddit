@@ -1,5 +1,7 @@
 'use client';
 
+import formatTime from '@/app/utils/formatTime';
+
 import styled from 'styled-components';
 
 import { Sub } from '@/app/types';
@@ -12,11 +14,11 @@ const SubDetailRightSideBar = ({ sub }: { sub: Sub }) => {
   return (
     <StyledRightSideBar>
       <RightSideBarWrapper>
-        <InfoSection>
+        <TopSection>
           <Title>{sub.title}</Title>
           <Description>{sub.description}</Description>
 
-          <Options>
+          <Infos>
             <CreatedAtOption>
               <IconBox icon={<CakeIcon />} width={16} height={16} />
               <span>{`생성일 : ${formatTime(sub.createdAt)}`}</span>
@@ -32,8 +34,20 @@ const SubDetailRightSideBar = ({ sub }: { sub: Sub }) => {
                     : '비공개'}
               </span>
             </VisibiltiyOption>
-          </Options>
-        </InfoSection>
+
+            <InfosBottomRow>
+              <SubscriberCount>
+                <span>{sub.subscriberCount}</span>
+                <span>subscriber</span>
+              </SubscriberCount>
+
+              <PostCount>
+                <span>{sub.postCount}</span>
+                <span>post</span>
+              </PostCount>
+            </InfosBottomRow>
+          </Infos>
+        </TopSection>
       </RightSideBarWrapper>
     </StyledRightSideBar>
   );
@@ -50,7 +64,7 @@ const RightSideBarWrapper = styled.div`
   padding: var(--spacer-md) 0;
 `;
 
-const InfoSection = styled.div`
+const TopSection = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -63,11 +77,9 @@ const Description = styled.p`
   font: var(--font-14-20-regular);
 `;
 
-const Options = styled.div`
+const Infos = styled.div`
   display: flex;
   flex-direction: column;
-
-  height: var(--rem-40);
 
   gap: var(--spacer-2xs);
   margin-top: var(--spacer-sm);
@@ -106,4 +118,42 @@ const VisibiltiyOption = styled.div`
     line-height: 1.5;
   }
 `;
+
+const InfosBottomRow = styled.div`
+  display: flex;
+
+  margin-top: var(--spacer-xs);
+`;
+
+const SubscriberCount = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  > span:first-child {
+    font: var(--font-14-20-bold);
+    color: ${({ theme }) => theme.colors.neutral.content};
+  }
+
+  > span:last-child {
+    font: var(--font-12-16-regular);
+    color: ${({ theme }) => theme.colors.neutral.contentWeak};
+  }
+`;
+const PostCount = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  > span:first-child {
+    font: var(--font-14-20-bold);
+    color: ${({ theme }) => theme.colors.neutral.content};
+  }
+
+  > span:last-child {
+    font: var(--font-12-16-regular);
+    color: ${({ theme }) => theme.colors.neutral.contentWeak};
+  }
+`;
+
 export default SubDetailRightSideBar;
