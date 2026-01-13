@@ -92,7 +92,7 @@ const LeftNav = () => {
               openCreateSubModal={openCreateSubModal}
             />
           </MenuContainer>
-          <hr />
+          <Divider />
           <MenuContainer>
             {user ? (
               <LoggedIn
@@ -104,7 +104,7 @@ const LeftNav = () => {
               <LoggedOut />
             )}
           </MenuContainer>
-          {user ? <hr /> : <></>}
+          {user ? <Divider /> : <></>}
         </LeftNavWrapper>
 
         <CreateSubModal />
@@ -123,7 +123,7 @@ const LeftNav = () => {
               openCreateSubModal={openCreateSubModal}
             />
           </MenuContainer>
-          <hr />
+          <Divider />
           <MenuContainer>
             {user ? (
               <LoggedIn
@@ -135,7 +135,7 @@ const LeftNav = () => {
               <LoggedOut />
             )}
           </MenuContainer>
-          {user ? <hr /> : <></>}
+          {user ? <Divider /> : <></>}
         </LeftNavByHeaderWrapper>
 
         {leftNavByHeaderVisible && (
@@ -212,7 +212,7 @@ const LeftNavWrapper = styled.nav<{ $leftNavVisible: boolean }>`
     display: flex;
   }
 
-  hr {
+  Divider {
     margin: var(--spacer-sm) 0;
   }
 `;
@@ -244,7 +244,7 @@ const LeftNavByHeaderWrapper = styled.nav<{ $leftNavByHeaderVisible: boolean }>`
     display: none;
   }
 
-  hr {
+  Divider {
     margin: var(--spacer-sm) 0;
   }
 `;
@@ -305,5 +305,12 @@ const ToggleButton = styled.button<{ $leftNavVisible: boolean }>`
     border: var(--line-sm) solid
       ${({ theme }) => theme.components.button.border.hover};
   }
+`;
+
+const Divider = styled.hr`
+  border: 0;
+  border-bottom: var(--line-sm) solid
+    ${({ theme }) => theme.colors.neutral.borderWeak};
+  margin: var(--spacer-sm) 0;
 `;
 export default LeftNav;

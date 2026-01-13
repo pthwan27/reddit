@@ -46,11 +46,11 @@ const HomePostList = ({
         sortOption={sortOption}
       />
 
-      <hr />
+      <Divider />
       {posts.map((post, idx) => (
         <HomePostWrapper key={idx + post.identifier}>
           <HomePostItem post={post} />
-          {idx < posts.length - 1 && <hr />}
+          {idx < posts.length - 1 && <Divider />}
         </HomePostWrapper>
       ))}
     </HomePostListContainer>
@@ -60,6 +60,12 @@ const HomePostList = ({
 const HomePostListContainer = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const Divider = styled.hr`
+  border: 0;
+  border-bottom: var(--line-sm) solid
+    ${({ theme }) => theme.colors.neutral.borderWeak};
 `;
 
 const HomePostWrapper = styled.div``;

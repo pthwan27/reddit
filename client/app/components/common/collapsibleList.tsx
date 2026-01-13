@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import DownArrowIcon from '../svgs/DownArrowIcon';
 
 interface CollapsibleListProps {
-  title: string;
+  title: React.ReactNode;
   children: React.ReactNode;
   initialOpen?: boolean;
 }
@@ -22,7 +22,7 @@ const CollapsibleList = ({
   return (
     <StyledCollapsibleList>
       <ToggleButton onClick={() => setIsOpen(!isOpen)}>
-        <span>{title}</span>
+        {title}
         <ArrowWrapper $isOpen={isOpen}>
           <DownArrowIcon />
         </ArrowWrapper>
@@ -42,19 +42,15 @@ const ToggleButton = styled.button`
   justify-content: space-between;
   align-items: center;
 
-  padding: var(--spacer-2xs) var(--spacer-md);
-  letter-spacing: 0.1em;
+  background: transparent;
 
+  padding: 0 var(--spacer-md);
   width: 100%;
-  height: var(--rem-40);
   font: var(--font-12);
 
   border: none;
 
   color: ${({ theme }) => theme.colors.secondary.weak};
-  text-transform: uppercase;
-
-  margin-bottom: var(--spacer-xs);
 
   span {
     display: flex;

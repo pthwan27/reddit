@@ -5,10 +5,10 @@ import IconBox from '@/app/components/common/IconBox';
 import { Sub } from '@/app/types';
 
 import IconButton from '../common/button/iconButton';
+import CollapsibleList from '../common/collapsibleList';
 import Skeleton from '../common/loading/skeleton';
 import CommunityFill from '../svgs/CommunityFill';
 import SettingIcon from '../svgs/SettingIcon';
-import CollapsibleList from './collapsibleList';
 
 interface LoggedInProps {
   subscribeSubs: Sub[];
@@ -17,7 +17,9 @@ interface LoggedInProps {
 }
 const LoggedIn = ({ subscribeSubs, loading, goToSubDetail }: LoggedInProps) => {
   return (
-    <CollapsibleList title="커뮤니티">
+    <CollapsibleList
+      title={<CollapsibleListTitle>커뮤니티</CollapsibleListTitle>}
+    >
       <IconButton
         variant="neutral"
         icon={<SettingIcon />}
@@ -58,6 +60,16 @@ const LoggedIn = ({ subscribeSubs, loading, goToSubDetail }: LoggedInProps) => {
     </CollapsibleList>
   );
 };
+const CollapsibleListTitle = styled.span`
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  height: var(--rem-40);
+  letter-spacing: 0.1em;
+
+  padding: var(--spacer-2xs) 0;
+`;
 
 const SubList = styled.div`
   display: flex;
@@ -71,7 +83,7 @@ const SkeletonWrapper = styled.div`
   flex-direction: column;
 `;
 const SkeletonItemWrapper = styled.div`
-  height: var(--rem-32);
+  height: var(--rem-48);
   padding: var(--spacer-2xs) var(--spacer-md);
 
   border-radius: var(--radius-md);

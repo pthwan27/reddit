@@ -80,8 +80,8 @@ export const newTheme = {
     },
     neutral: {
       background: '#FFFFFF',
-      backgroundHover: '#F6F8F9',
-      backgroundContainer: '#F6F8F9',
+      backgroundHover: '#ECEFF1',
+      backgroundContainer: '#f8fafbff',
       backgroundSelected: '#E5EBEE',
       border: '#00000033',
       borderMedium: '#0000007F',

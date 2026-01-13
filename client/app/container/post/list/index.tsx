@@ -57,11 +57,11 @@ const PostList = ({
         setIsHighlightView={setIsHighlightView}
       />
 
-      <hr />
+      <Divider />
       {posts.map((post, idx) => (
         <PostWrapper key={idx + post.identifier}>
           <PostItem post={post} />
-          {idx < posts.length - 1 && <hr />}
+          {idx < posts.length - 1 && <Divider />}
         </PostWrapper>
       ))}
     </PostListContainer>
@@ -72,5 +72,12 @@ const PostListContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const Divider = styled.hr`
+  border: 0;
+  border-bottom: var(--line-sm) solid
+    ${({ theme }) => theme.colors.neutral.borderWeak};
+`;
+
 const PostWrapper = styled.div``;
 export default PostList;

@@ -46,11 +46,11 @@ const PopularPostList = ({
         sortOption={sortOption}
       />
 
-      <hr />
+      <Divider />
       {posts.map((post, idx) => (
         <PopularPostWrapper key={idx + post.identifier}>
           <PopularPostItem post={post} />
-          {idx < posts.length - 1 && <hr />}
+          {idx < posts.length - 1 && <Divider />}
         </PopularPostWrapper>
       ))}
     </PopularPostListContainer>
@@ -60,6 +60,12 @@ const PopularPostList = ({
 const PopularPostListContainer = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const Divider = styled.hr`
+  border: 0;
+  border-bottom: var(--line-sm) solid
+    ${({ theme }) => theme.colors.neutral.borderWeak};
 `;
 
 const PopularPostWrapper = styled.div``;

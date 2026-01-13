@@ -66,12 +66,12 @@ const CommentsRightSideBar = ({ sub: initialSub }: { sub: Sub }) => {
           <Description>{sub.description}</Description>
 
           <Infos>
-            <CreatedAtOption>
+            <InfoItem>
               <IconBox icon={<CakeIcon />} width={16} height={16} />
               <span>{`생성일 : ${formatTime(sub.createdAt)}`}</span>
-            </CreatedAtOption>
+            </InfoItem>
 
-            <VisibiltiyOption>
+            <InfoItem>
               <IconBox icon={<BrowserIcon />} width={16} height={16} />
               <span>
                 {sub.visibility === 'public'
@@ -80,21 +80,23 @@ const CommentsRightSideBar = ({ sub: initialSub }: { sub: Sub }) => {
                     ? '제한됨'
                     : '비공개'}
               </span>
-            </VisibiltiyOption>
+            </InfoItem>
 
-            <InfosBottomRow>
-              <SubscriberCount>
+            <CountInfosRows>
+              <CountInfosRowItem>
                 <span>{sub.subscriberCount}</span>
                 <span>subscriber</span>
-              </SubscriberCount>
+              </CountInfosRowItem>
 
-              <PostCount>
+              <CountInfosRowItem>
                 <span>{sub.postCount}</span>
                 <span>post</span>
-              </PostCount>
-            </InfosBottomRow>
+              </CountInfosRowItem>
+            </CountInfosRows>
           </Infos>
         </TopSection>
+
+        <RuleSection></RuleSection>
       </RightSideBarWrapper>
     </StyledRightSideBar>
   );
@@ -105,10 +107,10 @@ const StyledRightSideBar = styled.aside`
 `;
 
 const RightSideBarWrapper = styled.div`
+  padding: var(--spacer-md) 0;
+
   background: ${({ theme }) => theme.colors.neutral.backgroundContainer};
   border-radius: var(--radius-md);
-
-  padding: var(--spacer-md) 0;
 `;
 
 const ActionsSection = styled.div`
@@ -121,32 +123,30 @@ const ActionsSection = styled.div`
 const SubLink = styled(Link)`
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.colors.neutral.content};
+
   font: var(--font-18-20-bold);
   line-height: 1;
+  color: ${({ theme }) => theme.colors.neutral.content};
 `;
 
 const SubScribeButton = styled.button<{ $isSubscribed: boolean }>`
+  padding: var(--spacer-xs) var(--spacer-sm);
+
   font: var(--font-12-16-semibold);
   line-height: 1;
+  color: ${({ $isSubscribed, theme }) =>
+    $isSubscribed ? theme.colors.neutral.content : theme.colors.global.white};
 
   background: ${({ $isSubscribed, theme }) =>
     $isSubscribed ? 'transparent' : theme.colors.primary.background};
-
   border: ${({ $isSubscribed, theme }) =>
     $isSubscribed
       ? `var(--line-sm) solid ${theme.colors.neutral.borderMedium}`
       : 'none'};
 
-  color: ${({ $isSubscribed, theme }) =>
-    $isSubscribed ? theme.colors.neutral.content : theme.colors.global.white};
-
-  padding: var(--spacer-xs) var(--spacer-sm);
-
   &:hover {
     background: ${({ $isSubscribed, theme }) =>
       $isSubscribed ? 'transparent' : theme.colors.primary.backgroundHover};
-
     border: ${({ $isSubscribed, theme }) =>
       $isSubscribed
         ? `var(--line-sm) solid ${theme.colors.neutral.borderMedium}`
@@ -160,25 +160,28 @@ const TopSection = styled.div`
 
   padding: 0 var(--spacer-md);
 `;
-const Title = styled.p`
-  font: var(--font-14-20-semibold);
 
+const Title = styled.p`
   margin-top: var(--spacer-xs);
+
+  font: var(--font-14-20-semibold);
 `;
+
 const Description = styled.p`
   font: var(--font-14-20-regular);
 `;
+
 const Infos = styled.div`
   display: flex;
   flex-direction: column;
-
   gap: var(--spacer-2xs);
+
   margin-top: var(--spacer-sm);
 `;
 
-const CreatedAtOption = styled.div`
-  flex: 1;
+const InfoItem = styled.div`
   display: flex;
+  flex: 1;
   align-items: center;
 
   font: var(--font-12-16-regular);
@@ -193,30 +196,13 @@ const CreatedAtOption = styled.div`
   }
 `;
 
-const VisibiltiyOption = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-
-  font: var(--font-12-16-regular);
-  color: ${({ theme }) => theme.colors.neutral.contentWeak};
-
-  > div {
-    margin-inline-end: var(--spacer-2xs);
-  }
-
-  > span {
-    line-height: 1.5;
-  }
-`;
-
-const InfosBottomRow = styled.div`
+const CountInfosRows = styled.div`
   display: flex;
 
   margin-top: var(--spacer-xs);
 `;
 
-const SubscriberCount = styled.div`
+const CountInfosRowItem = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -231,19 +217,7 @@ const SubscriberCount = styled.div`
     color: ${({ theme }) => theme.colors.neutral.contentWeak};
   }
 `;
-const PostCount = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
 
-  > span:first-child {
-    font: var(--font-14-20-bold);
-    color: ${({ theme }) => theme.colors.neutral.content};
-  }
+const RuleSection = styled.div``;
 
-  > span:last-child {
-    font: var(--font-12-16-regular);
-    color: ${({ theme }) => theme.colors.neutral.contentWeak};
-  }
-`;
 export default CommentsRightSideBar;

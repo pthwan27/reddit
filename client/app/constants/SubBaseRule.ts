@@ -20,4 +20,11 @@ export const SubBaseRule = [
     
     Please review and follow each community's specific rules and guidelines before posting.`,
   },
+  {
+    id: 4,
+    title: 'Stay On Topic, Stay On Topic,Stay On Topic,Stay On Topic,',
+    description: `Only post content that is relevant to the community's theme and purpose. Off-topic posts may be removed at moderator discretion.
+    
+    Please review and follow each community's specific rules and guidelines before posting.`,
+  },
 ];
