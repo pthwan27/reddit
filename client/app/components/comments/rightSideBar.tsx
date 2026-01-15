@@ -11,9 +11,12 @@ import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
+import { SubBaseRule } from '@/app/constants/SubBaseRule';
 import { Sub } from '@/app/types';
 
 import IconBox from '../common/IconBox';
+import IconButton from '../common/button/iconButton';
+import CollapsibleList from '../common/collapsibleList';
 import BrowserIcon from '../svgs/BrowserIcon';
 import CakeIcon from '../svgs/CakeIcon';
 
@@ -46,7 +49,9 @@ const CommentsRightSideBar = ({ sub: initialSub }: { sub: Sub }) => {
       return;
     }
 
-    setSub({ ...initialSub });
+    if (subs.find((s) => s.id === initialSub.id)) {
+      setSub({ ...initialSub, isSubscribed: true });
+    }
   }, [user, subs, initialSub]);
 
   return (
@@ -54,12 +59,25 @@ const CommentsRightSideBar = ({ sub: initialSub }: { sub: Sub }) => {
       <RightSideBarWrapper>
         <ActionsSection>
           <SubLink href={`/r/${sub.slug}`}>{`r/${sub.title}`}</SubLink>
-          <SubScribeButton
-            $isSubscribed={sub.isSubscribed}
-            onClick={onHandleSubscribe}
-          >
-            {sub.isSubscribed ? '가입됨' : '가입'}
-          </SubScribeButton>
+          {sub.isSubscribed || sub.isOwner ? (
+            <IconButton
+              value="가입됨"
+              radius="var(--radius-xl)"
+              variant="outlined"
+              font="12-16-semibold"
+              disabled={sub.isOwner}
+              onClick={() => onHandleSubscribe()}
+            />
+          ) : (
+            <IconButton
+              value="가입"
+              fontColor="white"
+              radius="var(--radius-xl)"
+              variant="primary"
+              font="12-16-semibold"
+              onClick={() => onHandleSubscribe()}
+            />
+          )}
         </ActionsSection>
         <TopSection>
           <Title>{sub.title}</Title>
@@ -96,7 +114,29 @@ const CommentsRightSideBar = ({ sub: initialSub }: { sub: Sub }) => {
           </Infos>
         </TopSection>
 
-        <RuleSection></RuleSection>
+        <Divider />
+
+        <RuleSection>
+          <RuleTitle>{`r/${sub.title} 이용 규칙`}</RuleTitle>
+
+          <RulesWrapper>
+            {SubBaseRule.map((rule) => (
+              <RuleItem key={rule.id}>
+                <CollapsibleList
+                  title={
+                    <CollapsibleListTitleWrapper>
+                      <RuleNumber>{rule.id}</RuleNumber>
+                      <RuleItemTitle>{rule.title}</RuleItemTitle>
+                    </CollapsibleListTitleWrapper>
+                  }
+                  initialOpen={false}
+                >
+                  <RuleDescription>{rule.description}</RuleDescription>
+                </CollapsibleList>
+              </RuleItem>
+            ))}
+          </RulesWrapper>
+        </RuleSection>
       </RightSideBarWrapper>
     </StyledRightSideBar>
   );
@@ -129,31 +169,6 @@ const SubLink = styled(Link)`
   color: ${({ theme }) => theme.colors.neutral.content};
 `;
 
-const SubScribeButton = styled.button<{ $isSubscribed: boolean }>`
-  padding: var(--spacer-xs) var(--spacer-sm);
-
-  font: var(--font-12-16-semibold);
-  line-height: 1;
-  color: ${({ $isSubscribed, theme }) =>
-    $isSubscribed ? theme.colors.neutral.content : theme.colors.global.white};
-
-  background: ${({ $isSubscribed, theme }) =>
-    $isSubscribed ? 'transparent' : theme.colors.primary.background};
-  border: ${({ $isSubscribed, theme }) =>
-    $isSubscribed
-      ? `var(--line-sm) solid ${theme.colors.neutral.borderMedium}`
-      : 'none'};
-
-  &:hover {
-    background: ${({ $isSubscribed, theme }) =>
-      $isSubscribed ? 'transparent' : theme.colors.primary.backgroundHover};
-    border: ${({ $isSubscribed, theme }) =>
-      $isSubscribed
-        ? `var(--line-sm) solid ${theme.colors.neutral.borderMedium}`
-        : 'none'};
-  }
-`;
-
 const TopSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -164,7 +179,7 @@ const TopSection = styled.div`
 const Title = styled.p`
   margin-top: var(--spacer-xs);
 
-  font: var(--font-14-20-semibold);
+  font: var(--font-14-20-bold);
 `;
 
 const Description = styled.p`
@@ -218,6 +233,82 @@ const CountInfosRowItem = styled.div`
   }
 `;
 
-const RuleSection = styled.div``;
+const Divider = styled.hr`
+  margin: var(--spacer-md) 0;
+
+  border: 0;
+  border-bottom: var(--line-sm) solid
+    ${({ theme }) => theme.colors.neutral.borderWeak};
+`;
+
+const RuleSection = styled.div`
+  padding: 0 var(--spacer-md);
+`;
+
+const RuleTitle = styled.p`
+  margin-bottom: var(--spacer-sm);
+
+  font: var(--font-12-16-semibold);
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.colors.neutral.contentWeak};
+`;
+
+const RulesWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const RuleItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  margin-bottom: var(--spacer-xs);
+`;
+
+const CollapsibleListTitleWrapper = styled.div`
+  position: relative;
+  display: flex;
+
+  width: 100%;
+  min-height: var(--rem-48);
+`;
+
+const RuleNumber = styled.span`
+  display: flex;
+  flex: 0 0 var(--rem-32);
+  align-items: center;
+  justify-content: flex-start;
+
+  font: var(--font-14-20-regular);
+  color: ${({ theme }) => theme.colors.neutral.contentWeak};
+`;
+
+const RuleItemTitle = styled.span`
+  flex: 1;
+  max-width: 200px;
+
+  overflow: hidden;
+
+  font: var(--font-14-20-regular);
+  text-align: left;
+  text-wrap: wrap;
+  color: ${({ theme }) => theme.colors.neutral.contentWeak};
+
+  padding: var(--spacer-2xs) 0;
+`;
+
+const RuleDescription = styled.p`
+  margin-top: var(--spacer-2xs);
+  margin-bottom: var(--spacer-2xs);
+  margin-left: var(--spacer-xl);
+  padding-right: var(--spacer-xl);
+  padding-left: var(--spacer-md);
+
+  font: var(--font-14-20-regular);
+  line-height: 1.7;
+  color: ${({ theme }) => theme.colors.neutral.contentWeak};
+`;
 
 export default CommentsRightSideBar;

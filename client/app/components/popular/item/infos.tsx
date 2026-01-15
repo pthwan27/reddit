@@ -124,6 +124,14 @@ const RegisterButton = styled.button`
 
   background: ${({ theme }) => theme.colors.primary.background};
   color: ${({ theme }) => theme.colors.global.white};
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primary.backgroundHover};
+  }
+
+  &:active {
+    background: ${({ theme }) => theme.colors.primary.focused};
+  }
 `;
 
 const IconWrapper = styled.div`

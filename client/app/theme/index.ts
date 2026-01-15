@@ -81,7 +81,7 @@ export const newTheme = {
     neutral: {
       background: '#FFFFFF',
       backgroundHover: '#ECEFF1',
-      backgroundContainer: '#f8fafbff',
+      backgroundContainer: 'rgba(248, 250, 251, 0.7)',
       backgroundSelected: '#E5EBEE',
       border: '#00000033',
       borderMedium: '#0000007F',
@@ -93,9 +93,10 @@ export const newTheme = {
       contentDisabled: '#D6D6D6',
     },
     primary: {
-      background: '#0A449B',
-      backgroundHover: '#0A2F6C',
+      background: 'rgba(10, 68, 155, 1)',
+      backgroundHover: 'rgba(10, 47, 108, 1)',
       border: '#0A449B',
+      focused: 'rgba(10, 35, 90, 1)',
       plain: '#0A449B',
       plainHover: '#0A2F6C',
       onBackground: '#FFFFFF',

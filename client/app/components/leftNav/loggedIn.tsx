@@ -28,7 +28,7 @@ const LoggedIn = ({ subscribeSubs, loading, goToSubDetail }: LoggedInProps) => {
       <SubList>
         {loading ? (
           <SkeletonWrapper>
-            {Array.from({ length: 5 }).map((_, idx) => (
+            {Array.from({ length: subscribeSubs.length || 5 }).map((_, idx) => (
               <SkeletonItemWrapper key={idx}>
                 <Skeleton />
               </SkeletonItemWrapper>
@@ -101,12 +101,18 @@ const SubItem = styled.button`
   border-radius: var(--radius-md);
   border: none;
 
+  color: ${({ theme }) => theme.colors.neutral.contentStrong};
+
   &:hover {
     background: ${({ theme }) => theme.colors.neutral.backgroundHover};
     border: transparent;
   }
 
   font: var(--font-14);
+
+  > div {
+    cursor: pointer;
+  }
 `;
 
 const TitleBox = styled.span`

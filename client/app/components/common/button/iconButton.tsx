@@ -59,7 +59,7 @@ const getVariantStyles = (
       return css`
         background: ${theme.colors.primary.background};
         color: ${fontColor || theme.colors.secondary.plain};
-        border: transparent;
+        border: var(--line-sm) solid ${theme.colors.primary.background};
 
         div {
           svg {
@@ -69,7 +69,10 @@ const getVariantStyles = (
 
         &:hover {
           background: ${theme.colors.primary.backgroundHover};
-          border: transparent;
+        }
+
+        &:active {
+          background: ${theme.colors.primary.focused};
         }
       `;
     case 'outlined':
@@ -107,6 +110,10 @@ const getVariantStyles = (
         &:hover {
           border: none;
           background: ${theme.colors.neutral.backgroundHover};
+        }
+
+        &:active {
+          background: ${theme.colors.interactive.pressed};
         }
       `;
   }

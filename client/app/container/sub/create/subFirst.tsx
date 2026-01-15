@@ -2,9 +2,10 @@ import { useState } from 'react';
 
 import styled from 'styled-components';
 
+import CheckMarkIcon from '@/app/components/svgs/CheckMarkIcon';
 import SearchIcon from '@/app/components/svgs/SearchIcon';
 
-import { TAG_CATEGORIES } from '@/app/constants/tags';
+import { TAGS } from '@/app/constants/tags';
 
 interface CreateSubFirstProps {
   selectedTags: string[];
@@ -13,11 +14,15 @@ interface CreateSubFirstProps {
 const FirstCreateSub = ({ selectedTags, onTagToggle }: CreateSubFirstProps) => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredCategories = TAG_CATEGORIES.filter(
-    (category) =>
-      category.name.includes(searchTerm) ||
-      category.subTags.some((subTag) => subTag.includes(searchTerm))
-  );
+  const filteredCategories = TAGS.filter((tag) => {
+    if (!searchTerm.trim()) return true;
+
+    const lowerSearchTerm = searchTerm.toLowerCase();
+
+    return (
+      tag.name.includes(lowerSearchTerm) || tag.id.includes(lowerSearchTerm)
+    );
+  });
 
   return (
     <CreateSubFirstContainer>
@@ -38,25 +43,25 @@ const FirstCreateSub = ({ selectedTags, onTagToggle }: CreateSubFirstProps) => {
 
       <Spacer />
 
-      <Category>
-        {filteredCategories.map((tag) => (
-          <CategoryWrapper key={tag.id}>
-            <CategoryTitle>{tag.name}</CategoryTitle>
-
-            <TagButtons>
-              {tag.subTags.map((subTag) => (
-                <TagButton
-                  key={subTag}
-                  isSelected={selectedTags.includes(subTag)}
-                  onClick={() => onTagToggle(subTag)}
-                >
-                  {subTag}
-                </TagButton>
-              ))}
-            </TagButtons>
-          </CategoryWrapper>
+      <TagButtonsWrapper>
+        {filteredCategories.map((tag, idx) => (
+          <TagButton
+            key={tag.id + idx}
+            isSelected={selectedTags.includes(tag.id)}
+            onClick={() => onTagToggle(tag.id)}
+          >
+            {selectedTags.includes(tag.id) ? (
+              <TagEmojiWrapper>
+                <CheckMarkIcon />
+              </TagEmojiWrapper>
+            ) : (
+              <TagEmojiWrapper />
+            )}
+            <span>{tag.emoji}</span>
+            <span>{tag.name}</span>
+          </TagButton>
         ))}
-      </Category>
+      </TagButtonsWrapper>
     </CreateSubFirstContainer>
   );
 };
@@ -111,58 +116,58 @@ const Input = styled.input`
 `;
 
 const SelectedTagCount = styled.p`
-  margin: var(--spacer-xs) 0;
+  margin: var(--spacer-xs) var(--spacer-4xs);
   font: var(--font-16-20-semibold);
 `;
 
-const Category = styled.div`
+const TagButtonsWrapper = styled.div`
   height: 330px;
   padding: 0 var(--spacer-2xs);
   overflow-y: auto;
 `;
 
-const CategoryWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacer-2xs);
-  margin-bottom: var(--spacer-md);
-`;
-
-const CategoryTitle = styled.p`
-  font: var(--font-14-20-semibold);
-`;
-
-const TagButtons = styled.div`
-  display: flex;
-  gap: var(--spacer-2xs);
-`;
-
 const TagButton = styled.button<{ isSelected: boolean }>`
+  margin: var(--spacer-2xs);
+  height: var(--rem-32);
+  display: inline-flex;
+
+  align-items: center;
   padding: 6px var(--spacer-sm);
+
+  border: var(--line-sm) solid ${({ theme }) => theme.colors.neutral.border};
+
+  border-radius: var(--radius-sm);
+  font: var(--font-12-16-regular);
+
   background: ${({ isSelected, theme }) =>
-    isSelected
-      ? theme.components.button.background.activated
-      : theme.colors.secondary.background};
-  border-radius: var(--radius-full);
+    isSelected ? theme.colors.secondary.background : 'transparent'};
 
-  border: ${({ isSelected, theme }) =>
-    isSelected
-      ? `var(--line-sm) solid ${theme.components.button.border.activated}`
-      : 'var(--line-sm) solid transparent'};
-
-  font: var(--font-12-16-semibold);
+  > span:nth-child(2) {
+    margin-right: var(--spacer-4xs);
+  }
 
   &:hover {
-    border: ${({ isSelected, theme }) =>
-      isSelected
-        ? `var(--line-sm) solid ${theme.components.button.border.activated}`
-        : 'var(--line-sm) solid transparent'};
+    border: var(--line-sm) solid ${({ theme }) => theme.colors.neutral.border};
 
     background: ${({ theme }) => theme.colors.secondary.backgroundHover};
   }
 
   &:active {
+    border: var(--line-sm) solid ${({ theme }) => theme.colors.neutral.border};
+
     background: ${({ theme }) => theme.components.button.interactive.pressed};
+  }
+`;
+
+const TagEmojiWrapper = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: var(--rem-16);
+
+  > svg {
+    margin-right: var(--spacer-2xs);
   }
 `;
 

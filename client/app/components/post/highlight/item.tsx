@@ -96,7 +96,7 @@ const ItemWrapper = styled(Link)<{ $postLength: number }>`
   padding: var(--spacer-xs) var(--spacer-sm);
 
   &:hover {
-    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
+    background-color: ${({ theme }) => theme.colors.neutral.backgroundHover};
   }
 `;
 const BackgroundImageWrapper = styled.div`
@@ -120,12 +120,23 @@ const Overlay = styled.div`
   border-radius: var(--radius-md);
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.7) 0%,
-    rgba(0, 0, 0, 0.1) 40%,
-    rgba(0, 0, 0, 0.05) 100%
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.15) 30%,
+    rgba(0, 0, 0, 0.05) 50%,
+    rgba(0, 0, 0, 0.15) 70%,
+    rgba(0, 0, 0, 0.25) 100%
   );
 
   pointer-events: none;
+
+  transition: opacity 0.2s ease-in-out;
+  opacity: 1;
+
+  pointer-events: none;
+
+  ${ItemWrapper}:hover & {
+    opacity: 0.5;
+  }
 `;
 
 const Title = styled.span<{ $postImage: boolean }>`
@@ -146,6 +157,8 @@ const UserProfile = styled.span`
   position: absolute;
   bottom: var(--spacer-xs);
   left: var(--spacer-sm);
+
+  z-index: 10;
 `;
 
 export default HighlightItem;

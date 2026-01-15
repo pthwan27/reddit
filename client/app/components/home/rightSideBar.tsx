@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import { Sub, User } from '@/app/types';
 
 import IconBox from '../common/IconBox';
+import Skeleton from '../common/loading/skeleton';
 import CommunityFill from '../svgs/CommunityFill';
 import RecentPostInfos from './recentPostItem/infos';
 import RecentPostPreview from './recentPostItem/preview';
@@ -43,34 +44,44 @@ const HomeRightSideBar = ({
             <TopSection>
               <Title>인기 커뮤니티</Title>
             </TopSection>
-            <PopularSubsWrapper>
-              {popularSubs.slice(0, visibleCount).map((sub) => (
-                <PopularSubItemContainer key={sub.id}>
-                  <PopularSubItem href={`/r/${sub.slug}`}>
-                    {sub.iconUrl ? (
-                      <IconBox
-                        iconUrl={sub.iconUrl}
-                        altText={sub.title}
-                        width={32}
-                        height={32}
-                      />
-                    ) : (
-                      <IconBox
-                        icon={<CommunityFill />}
-                        altText={sub.title}
-                        width={32}
-                        height={32}
-                      />
-                    )}
+            {popularSubs.length === 0 ? (
+              <SkeletonWrapper>
+                {Array.from({ length: 5 }).map((_, idx) => (
+                  <SkeletonItemWrapper key={idx}>
+                    <Skeleton />
+                  </SkeletonItemWrapper>
+                ))}
+              </SkeletonWrapper>
+            ) : (
+              <PopularSubsWrapper>
+                {popularSubs.slice(0, visibleCount).map((sub) => (
+                  <PopularSubItemContainer key={sub.id}>
+                    <PopularSubItem href={`/r/${sub.slug}`}>
+                      {sub.iconUrl ? (
+                        <IconBox
+                          iconUrl={sub.iconUrl}
+                          altText={sub.title}
+                          width={32}
+                          height={32}
+                        />
+                      ) : (
+                        <IconBox
+                          icon={<CommunityFill />}
+                          altText={sub.title}
+                          width={32}
+                          height={32}
+                        />
+                      )}
 
-                    <Info>
-                      <span>{'r/' + sub.title}</span>
-                      <span>{'멤버 ' + sub.subscriberCount}명</span>
-                    </Info>
-                  </PopularSubItem>
-                </PopularSubItemContainer>
-              ))}
-            </PopularSubsWrapper>
+                      <Info>
+                        <span>{'r/' + sub.title}</span>
+                        <span>{'멤버 ' + sub.subscriberCount}명</span>
+                      </Info>
+                    </PopularSubItem>
+                  </PopularSubItemContainer>
+                ))}
+              </PopularSubsWrapper>
+            )}
 
             {shouldShowToggle && (
               <ToggleWrapper>
@@ -143,6 +154,7 @@ const RightSideBarWrapper = styled.div`
 const RightSideBarContainer = styled.div`
   display: flex;
   flex-direction: column;
+
   padding: var(--spacer-xs) 0 var(--spacer-2xs) 0;
 `;
 
@@ -150,6 +162,7 @@ const TopSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   height: var(--rem-48);
   margin: 0 var(--spacer-md);
 `;
@@ -161,13 +174,27 @@ const Title = styled.span`
 
 const ClearButton = styled.button`
   padding: 0;
-  background: transparent;
-  color: ${({ theme }) => theme.colors.default.primary};
+
   font: var(--font-14-20-regular);
+  color: ${({ theme }) => theme.colors.default.primary};
+
+  background: transparent;
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary.plainHover};
   }
+`;
+const SkeletonWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+`;
+const SkeletonItemWrapper = styled.div`
+  height: var(--rem-48);
+  padding: var(--spacer-2xs) var(--spacer-md);
+
+  border-radius: var(--radius-md);
+  border: none;
 `;
 
 const PopularSubsWrapper = styled.ul`
@@ -177,6 +204,7 @@ const PopularSubsWrapper = styled.ul`
 const PopularSubItemContainer = styled.li`
   display: flex;
   align-items: flex-start;
+
   height: var(--rem-56);
 `;
 
@@ -184,8 +212,17 @@ const PopularSubItem = styled(Link)`
   display: flex;
   align-items: center;
   gap: var(--spacer-xs);
-  padding: var(--spacer-2xs) var(--spacer-md);
+
+  width: 100%;
   height: var(--rem-48);
+  padding: var(--spacer-2xs) var(--spacer-md);
+  border-radius: var(--radius-sm);
+
+  color: ${({ theme }) => theme.colors.neutral.contentStrong};
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
+  }
 `;
 
 const Info = styled.div`
@@ -194,12 +231,14 @@ const Info = styled.div`
 
   > span {
     overflow: hidden;
+
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
   > span:first-child {
     height: var(--rem-20);
+
     font: var(--font-14-20-regular);
     line-height: 1rem;
     color: ${({ theme }) => theme.colors.neutral.content};
@@ -207,6 +246,7 @@ const Info = styled.div`
 
   > span:last-child {
     height: var(--rem-16);
+
     font: var(--font-12-16-regular);
     line-height: 1rem;
     color: ${({ theme }) => theme.colors.secondary.weak};
@@ -221,23 +261,24 @@ const ToggleWrapper = styled.div`
 
 const ToggleButton = styled.button`
   padding: var(--spacer-2xs) var(--spacer-xs);
+
+  font: var(--font-12-16-semibold);
+  color: ${({ theme }) => theme.components.button.plain.text.default};
+
   background: transparent;
   border-radius: var(--radius-sm);
-  color: ${({ theme }) => theme.components.button.plain.text.default};
-  font: var(--font-12-16-semibold);
-  cursor: pointer;
 
-  &:hover {
-    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
-  }
+  cursor: pointer;
 `;
 
 const RecentPostItemContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 0 var(--spacer-md) var(--spacer-sm);
+
   margin-bottom: var(--spacer-sm);
+  padding: 0 var(--spacer-md) var(--spacer-sm);
+
   border-bottom: var(--line-sm) solid
     ${({ theme }) => theme.colors.neutral.borderWeak};
 `;
@@ -251,12 +292,16 @@ const Content = styled.div``;
 
 const Body = styled.div`
   margin: var(--spacer-2xs) 0 var(--spacer-xs) 0;
+
   overflow: hidden;
-  white-space: wrap;
-  webkit-line-clamp: 2;
+
   font: var(--font-14-20-semibold);
   line-height: 1.25rem;
+  white-space: wrap;
   color: ${({ theme }) => theme.colors.neutral.contentWeak};
+
+  webkit-line-clamp: 2;
+
   cursor: pointer;
 
   &:hover {
@@ -269,7 +314,9 @@ const Preview = styled.div``;
 const RecentPostItemBottom = styled.div`
   display: flex;
   gap: var(--spacer-xs);
+
   margin-top: var(--spacer-2xs);
+
   font: var(--font-12-16-regular);
   color: ${({ theme }) => theme.colors.neutral.contentWeak};
 `;

@@ -1,56 +1,154 @@
 export interface TagCategory {
   id: string;
   name: string;
-  subTags: string[];
+  emoji: string;
 }
 
-export const TAG_CATEGORIES: TagCategory[] = [
+export const TAGS: TagCategory[] = [
+  {
+    id: 'health',
+    name: '건강',
+    emoji: '💊',
+  },
   {
     id: 'game',
     name: '게임',
-    subTags: [
-      '액션 게임',
-      '전략 게임',
-      'RPG',
-      '스포츠 게임',
-      '퍼즐 게임',
-      '시뮬레이션',
-    ],
+    emoji: '🎮',
+  },
+  {
+    id: 'science',
+    name: '과학',
+    emoji: '🧪',
+  },
+  {
+    id: 'education',
+    name: '교육 & 커리어',
+    emoji: '📚',
+  },
+  {
+    id: 'news',
+    name: '뉴스 & 정치',
+    emoji: '📰',
+  },
+  {
+    id: 'culture',
+    name: '대중문화',
+    emoji: '✨',
+  },
+  {
+    id: 'reading',
+    name: '독서 & 글쓰기',
+    emoji: '📖',
+  },
+  {
+    id: 'business',
+    name: '비즈니스 & 금융',
+    emoji: '💼',
+  },
+  {
+    id: 'housing',
+    name: '수집 & 기타 취미',
+    emoji: '🧩',
   },
   {
     id: 'sports',
     name: '스포츠',
-    subTags: ['축구', '농구', '야구', '배구', '테니스', '골프'],
+    emoji: '🏆',
   },
   {
     id: 'movie',
-    name: '영화',
-    subTags: ['스릴러', '공포', '코미디', '로맨스', 'SF', '액션'],
+    name: '영화 & TV',
+    emoji: '🎬',
+  },
+  {
+    id: 'art',
+    name: '예술',
+    emoji: '🎨',
+  },
+  {
+    id: 'wellness',
+    name: '웰빙',
+    emoji: '🔥',
+  },
+  {
+    id: 'meta',
+    name: '으스스 섬뜩 주의',
+    emoji: '👀',
+  },
+  {
+    id: 'food',
+    name: '음식 & 음료',
+    emoji: '🍔',
   },
   {
     id: 'music',
     name: '음악',
-    subTags: ['K-POP', '힙합', '록', '재즈', '클래식', 'EDM'],
+    emoji: '🎵',
+  },
+  {
+    id: 'humanities',
+    name: '인문학 & 법',
+    emoji: '📜',
+  },
+  {
+    id: 'internet',
+    name: '인터넷 문화',
+    emoji: '🌐',
+  },
+  {
+    id: 'anime',
+    name: '일본 애니메이션 & 코스프레',
+    emoji: '🚗',
+  },
+  {
+    id: 'nature',
+    name: '자연 & 아웃도어',
+    emoji: '🌿',
+  },
+  {
+    id: 'place',
+    name: '장소 & 여행',
+    emoji: '🌍',
+  },
+  {
+    id: 'politics',
+    name: '정체성 & 관계',
+    emoji: '🌈',
+  },
+  {
+    id: 'car',
+    name: '차량',
+    emoji: '🚗',
   },
   {
     id: 'tech',
-    name: '기술',
-    subTags: ['프로그래밍', 'AI', '웹 개발', '모바일', '클라우드', '보안'],
-  },
-  {
-    id: 'food',
-    name: '음식',
-    subTags: ['한식', '양식', '중식', '일식', '디저트', '베이킹'],
-  },
-  {
-    id: 'travel',
-    name: '여행',
-    subTags: ['국내 여행', '해외 여행', '배낭 여행', '호캉스', '캠핑', '등산'],
+    name: '테크놀로지',
+    emoji: '💻',
   },
   {
     id: 'fashion',
-    name: '패션',
-    subTags: ['스트릿', '캐주얼', '포멀', '빈티지', '스포츠웨어', '액세서리'],
+    name: '패션 & 뷰티',
+    emoji: '💎',
+  },
+  {
+    id: 'home',
+    name: '홈 & 가드닝',
+    emoji: '🏡',
+  },
+  {
+    id: 'qa',
+    name: 'Q&A 및 이야기',
+    emoji: '✏️',
+  },
+  {
+    id: 'mature',
+    name: '성인용 주제',
+    emoji: '🔞',
+  },
+  {
+    id: 'adult',
+    name: '성인용 콘텐츠',
+    emoji: '🟥',
   },
 ];
 

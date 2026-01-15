@@ -129,12 +129,23 @@ const Overlay = styled.div`
   border-radius: var(--radius-md);
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.25) 0%,
-    rgba(0, 0, 0, 0.12) 50%,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.15) 30%,
+    rgba(0, 0, 0, 0.05) 50%,
+    rgba(0, 0, 0, 0.15) 70%,
     rgba(0, 0, 0, 0.25) 100%
   );
 
   pointer-events: none;
+
+  transition: opacity 0.2s ease-in-out;
+  opacity: 1;
+
+  pointer-events: none;
+
+  ${ItemWrapper}:hover & {
+    opacity: 0.5;
+  }
 `;
 
 const Title = styled.span`

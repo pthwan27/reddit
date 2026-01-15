@@ -1,6 +1,11 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import formatTime from '@/app/utils/formatTime';
+
+import { useAuthStore } from '@/app/store/authStore';
+import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
@@ -12,7 +17,22 @@ import CollapsibleList from '../common/collapsibleList';
 import BrowserIcon from '../svgs/BrowserIcon';
 import CakeIcon from '../svgs/CakeIcon';
 
-const SubDetailRightSideBar = ({ sub }: { sub: Sub }) => {
+const SubDetailRightSideBar = ({ sub: initialSub }: { sub: Sub }) => {
+  const { user } = useAuthStore();
+  const [sub, setSub] = useState<Sub>(initialSub);
+  const { subs } = useSubStore();
+
+  useEffect(() => {
+    if (!user) {
+      setSub({ ...initialSub, isSubscribed: false });
+      return;
+    }
+
+    if (subs.find((s) => s.id === initialSub.id)) {
+      setSub({ ...initialSub, isSubscribed: true });
+    }
+  }, [user, subs, initialSub]);
+
   return (
     <StyledRightSideBar>
       <RightSideBarWrapper>
@@ -216,9 +236,12 @@ const RuleItemTitle = styled.span`
   text-align: left;
   text-wrap: wrap;
   color: ${({ theme }) => theme.colors.neutral.contentWeak};
+
+  padding: var(--spacer-2xs) 0;
 `;
 
 const RuleDescription = styled.p`
+  margin-top: var(--spacer-2xs);
   margin-bottom: var(--spacer-2xs);
   margin-left: var(--spacer-xl);
   padding-right: var(--spacer-xl);

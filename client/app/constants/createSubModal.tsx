@@ -8,9 +8,8 @@ import ShowIcon from '../components/svgs/ShowIcon';
 export const CREATE_SUB_MODAL_STEPS = [
   {
     sequence: 1,
-    header: '주제를 선택해주세요',
-    subHeader:
-      '관심사가 같은 레디터가 커뮤니티를 발견할 수 있도록 최대 3개의 주제를 추가하세요.',
+    header: '커뮤니티에서 다루는 주제는 무엇인가요?',
+    subHeader: '커뮤니티를 잘 발견할 수 있도록 주제를 선택하세요.',
   },
   {
     sequence: 2,
