@@ -1,21 +1,26 @@
 import styled from 'styled-components';
 
-interface ProfileDropdownProps {
+interface EtcDropdownProps {
   isDropdownOpen: boolean;
-  logout: () => void;
+  isOwner: boolean;
+  isSubscribed: boolean;
 }
-const ProfileDropdown = ({ isDropdownOpen, logout }: ProfileDropdownProps) => {
+
+const EtcDropdown = ({
+  isDropdownOpen,
+  isOwner,
+  isSubscribed,
+}: EtcDropdownProps) => {
   return (
     <StyledDropdownMenu $isDropdownOpen={isDropdownOpen}>
       <DropdownItem>
-        <span>프로필</span>
+        {isSubscribed ? <span>가입 취소하기</span> : <span>가입하기</span>}
       </DropdownItem>
-      <DropdownItem>
-        <span>설정</span>
-      </DropdownItem>
-      <DropdownItem onClick={logout}>
-        <span>로그아웃</span>
-      </DropdownItem>
+      {isOwner && (
+        <DropdownItem>
+          <span>삭제하기</span>
+        </DropdownItem>
+      )}
     </StyledDropdownMenu>
   );
 };
@@ -23,18 +28,18 @@ const ProfileDropdown = ({ isDropdownOpen, logout }: ProfileDropdownProps) => {
 const StyledDropdownMenu = styled.div<{ $isDropdownOpen: boolean }>`
   position: absolute;
   top: 100%;
-  right: -1rem;
-  margin-top: var(--spacer-xs);
+  right: 0;
+
   width: 200px;
-  overflow: hidden;
+  margin-top: var(--spacer-xs);
 
   background: ${({ theme }) => theme.colors.neutral.background};
   border: var(--line-sm) solid ${({ theme }) => theme.colors.neutral.border};
   border-radius: var(--radius-md);
   box-shadow: var(--box-shadow);
 
+  overflow: hidden;
   transform-origin: top right;
-
   transform: ${({ $isDropdownOpen }) =>
     $isDropdownOpen ? 'scale(1)' : 'scale(0)'};
   opacity: ${({ $isDropdownOpen }) => ($isDropdownOpen ? 1 : 0)};
@@ -50,10 +55,13 @@ const StyledDropdownMenu = styled.div<{ $isDropdownOpen: boolean }>`
 const DropdownItem = styled.div`
   display: flex;
   align-items: center;
+
   padding: var(--spacer-sm) var(--spacer-md);
+
   font: var(--font-14);
-  cursor: pointer;
   white-space: nowrap;
+
+  cursor: pointer;
 
   &:hover {
     background: ${({ theme }) => theme.colors.neutral.backgroundHover};
@@ -64,4 +72,4 @@ const DropdownItem = styled.div`
   }
 `;
 
-export default ProfileDropdown;
+export default EtcDropdown;

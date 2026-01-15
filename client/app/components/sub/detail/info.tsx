@@ -1,5 +1,5 @@
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useSubStore } from '@/app/store/subStore';
 
@@ -13,6 +13,7 @@ import CommunityFill from '../../svgs/CommunityFill';
 import EtcIcon from '../../svgs/EtcIcon';
 import PencilIcon from '../../svgs/PencilIcon';
 import PlusIcon from '../../svgs/PlusIcon';
+import EtcDropdown from './etcDropdown';
 
 interface InfoProps {
   sub: Sub;
@@ -32,6 +33,12 @@ const SubInfos = ({
   const router = useRouter();
   const pathname = usePathname();
   const { setSelectedSub } = useSubStore();
+
+  const [isEtcOpen, setIsEtcOpen] = useState(false);
+
+  const toggleEtcOpen = () => {
+    setIsEtcOpen((prev) => !prev);
+  };
 
   const goToCreatePost = () => {
     setSelectedSub(sub);
@@ -101,6 +108,13 @@ const SubInfos = ({
             height="40px"
             justifyContent="center"
             variant="outlined"
+            onClick={toggleEtcOpen}
+          />
+
+          <EtcDropdown
+            isDropdownOpen={isEtcOpen}
+            isOwner={sub.isOwner}
+            isSubscribed={sub.isSubscribed}
           />
         </Buttons>
       </ActionsBar>
