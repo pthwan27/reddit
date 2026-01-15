@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -8,7 +7,9 @@ import styled from 'styled-components';
 
 import { Sub } from '@/app/types';
 
+import IconBox from '../../common/IconBox';
 import IconButton from '../../common/button/iconButton';
+import CommunityFill from '../../svgs/CommunityFill';
 import EtcIcon from '../../svgs/EtcIcon';
 import PencilIcon from '../../svgs/PencilIcon';
 import PlusIcon from '../../svgs/PlusIcon';
@@ -42,21 +43,16 @@ const SubInfos = ({
     <StyledSubInfos>
       <ActionsBar>
         <TitleInfo>
-          <IconBox onClick={onEditClick} $isIcon={isIcon}>
+          <IconBoxWrapper onClick={onEditClick} $isIcon={isIcon}>
             {isIcon ? (
-              <Image
-                src={iconImage}
-                alt={sub.title}
-                fill
-                sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
-              />
+              <IconBox iconUrl={iconImage} width={80} height={80} />
             ) : (
-              <span></span>
+              <IconBox icon={<CommunityFill />} width={80} height={80} />
             )}
             <EditOverlay>
               <PencilIcon />
             </EditOverlay>
-          </IconBox>
+          </IconBoxWrapper>
           <SubInfoBox>
             <div>
               <Title>{'r/' + sub.title}</Title>
@@ -170,7 +166,7 @@ const TitleInfo = styled.span`
   }
 `;
 
-const IconBox = styled.div<{ $isIcon?: boolean }>`
+const IconBoxWrapper = styled.div<{ $isIcon?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -192,15 +188,7 @@ const IconBox = styled.div<{ $isIcon?: boolean }>`
 
   cursor: pointer;
 
-  img {
-    width: 90%;
-    height: 90%;
-    border-radius: var(--radius-full);
-  }
-
   span {
-    width: 90%;
-    height: 90%;
     border-radius: var(--radius-full);
     background: ${({ $isIcon, theme }) =>
       $isIcon ? 'transparent' : theme.colors.neutral.content};

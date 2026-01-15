@@ -51,11 +51,13 @@ const PostList = ({
         sortOption={sortOption}
       />
 
-      <HighlightPosts
-        highlightPosts={highlightPosts}
-        isHighlightView={isHighlightView}
-        setIsHighlightView={setIsHighlightView}
-      />
+      {highlightPosts.length > 0 && (
+        <HighlightPosts
+          highlightPosts={highlightPosts}
+          isHighlightView={isHighlightView}
+          setIsHighlightView={setIsHighlightView}
+        />
+      )}
 
       <Divider />
       {posts.map((post, idx) => (

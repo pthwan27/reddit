@@ -11,7 +11,8 @@ export const HighlightListBySubHandler: RequestHandler = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const sub = await Sub.findOneBy({ id: parseInt(id, 10) });
+    const subId = parseInt(id, 10);
+    const sub = await Sub.findOneBy({ id: subId });
 
     if (!sub) {
       return res.status(404).json({ error: '커뮤니티를 찾을 수 없습니다.' });
@@ -25,10 +26,9 @@ export const HighlightListBySubHandler: RequestHandler = async (req, res) => {
       .leftJoinAndSelect('votes.user', 'voteUser')
       .leftJoinAndSelect('post.comments', 'comments')
       .leftJoinAndSelect('comments.user', 'commentUser')
-      .where('sub.id = :subId', { subId: parseInt(id, 10) })
-      .where(
-        '(post."postType" = :link) OR ' +
-          '(post."postType" = :media AND post."mediaType" = :image)',
+      .where('post.subId = :subId', { subId })
+      .andWhere(
+        '((post.postType = :link) OR (post.postType = :media AND post.mediaType = :image))',
         { link: 'link', media: 'media', image: 'image' }
       );
 
