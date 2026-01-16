@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/app/store/authStore';
 import { useCommentStore } from '@/app/store/commentStore';
 
 import styled from 'styled-components';
@@ -15,7 +16,10 @@ interface CommentActionsProps {
   setIsEditorOpen: () => void;
 }
 const CommentActions = ({ comment, setIsEditorOpen }: CommentActionsProps) => {
+  const { user } = useAuthStore();
   const { vote } = useCommentStore();
+
+  const userVote = user ? comment.userVote : 0;
 
   const voteHandler = (e: React.MouseEvent, value: number) => {
     e.stopPropagation();
@@ -24,23 +28,19 @@ const CommentActions = ({ comment, setIsEditorOpen }: CommentActionsProps) => {
 
   return (
     <StyledCommentActions>
-      <VoteButtons
-        $userVote={
-          comment.userVote === 1 ? 1 : comment.userVote === -1 ? -1 : 0
-        }
-      >
+      <VoteButtons $userVote={userVote === 1 ? 1 : userVote === -1 ? -1 : 0}>
         <UpvoteButton
           onClick={(e) => voteHandler(e, 1)}
-          $isActive={comment.userVote === 1}
+          $isActive={userVote === 1}
         >
-          {comment.userVote === 1 ? <UpVoteFillIcon /> : <UpVoteIcon />}
+          {userVote === 1 ? <UpVoteFillIcon /> : <UpVoteIcon />}
         </UpvoteButton>
         <span>{comment.voteScore || 0}</span>
         <DownvoteButton
           onClick={(e) => voteHandler(e, -1)}
-          $isActive={comment.userVote === -1}
+          $isActive={userVote === -1}
         >
-          {comment.userVote === -1 ? <DownVoteFillIcon /> : <DownVoteIcon />}
+          {userVote === -1 ? <DownVoteFillIcon /> : <DownVoteIcon />}
         </DownvoteButton>
       </VoteButtons>
 

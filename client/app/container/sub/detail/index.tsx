@@ -2,11 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { clientAxiosInstance } from '@/app/utils/axios';
-
 import { useUploadImage } from '@/app/hooks/useUploadImage';
 
-import { useAuthStore } from '@/app/store/authStore';
 import { usePostStore } from '@/app/store/postStore';
 import { useSubStore } from '@/app/store/subStore';
 
@@ -22,9 +19,8 @@ import { CustomError, Sub } from '@/app/types';
 import SubDetailRightSideBar from '../../../components/sub/rightSideBar';
 import PostList from '../../post/list';
 
-const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
-  const { user } = useAuthStore();
-  const { handleSubscribe: subscribe, setSelectedSub } = useSubStore();
+const SubDetail = ({ sub }: { sub: Sub }) => {
+  const { selectedSub, setSelectedSub } = useSubStore();
   const {
     posts,
     highlightPosts,
@@ -36,7 +32,6 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
     clearHighlightPosts,
   } = usePostStore();
 
-  const [sub, setSub] = useState<Sub>(initialSub);
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl || '');
   const [bannerImage, setBannerImage] = useState<string>(sub.bannerUrl || '');
 
@@ -88,21 +83,6 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
       iconFileInputRef.current?.click();
     } else {
       bannerFileInputRef.current?.click();
-    }
-  };
-
-  const handleSubscribe = async (sub: Sub) => {
-    try {
-      const isSubscribed = await subscribe(sub);
-
-      setSub({
-        ...sub,
-        isSubscribed: isSubscribed,
-      });
-    } catch (err) {
-      const error = err as Error;
-
-      console.error('구독/구독취소 실패:', error.message);
     }
   };
 
@@ -158,14 +138,6 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
   }, [loading, hasMore, posts, sortOption, fetchSubPosts]);
 
   useEffect(() => {
-    (async () => {
-      const { data } = await clientAxiosInstance.get(`/api/sub/${sub.slug}`);
-
-      setSub(data);
-    })();
-  }, [user]);
-
-  useEffect(() => {
     setSelectedSub(sub);
     fetchSubPosts(sub.id, true, sortOption);
     fetchHighlightPosts(sub.id);
@@ -177,23 +149,26 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
     };
   }, []);
 
+  if (!selectedSub) {
+    return null;
+  }
+
   return (
     <SubDetailContainer>
       <ObserverWrapper>
         <Header>
           <SubBanner
-            sub={sub}
+            sub={selectedSub}
             bannerImage={bannerImage}
             onEditClick={() => handleClick('banner')}
             isBanner={!!bannerImage}
           />
 
           <SubInfos
-            sub={sub}
+            sub={selectedSub}
             iconImage={iconImage}
             onEditClick={() => handleClick('icon')}
             isIcon={!!iconImage}
-            handleSubscribe={handleSubscribe}
           />
         </Header>
         <Main>
@@ -216,7 +191,7 @@ const SubDetail = ({ sub: initialSub }: { sub: Sub }) => {
               />
             )}
           </PostListWrapper>
-          <SubDetailRightSideBar sub={sub} />
+          <SubDetailRightSideBar sub={selectedSub} />
         </Main>
 
         <HiddenInput

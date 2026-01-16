@@ -23,7 +23,10 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json(data, { status });
   } catch (err) {
     const error = err as CustomError;
-    console.error('Vote API error:', error.response?.data || error.message);
+    console.error(
+      'Subscribe API error:',
+      error.response?.data || error.message
+    );
     return NextResponse.json(
       { error: error.response?.data?.error || 'Vote Error' },
       { status: error.response?.status || 500 }

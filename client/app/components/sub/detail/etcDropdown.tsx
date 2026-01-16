@@ -4,16 +4,18 @@ interface EtcDropdownProps {
   isDropdownOpen: boolean;
   isOwner: boolean;
   isSubscribed: boolean;
+  handleSubscribe: (e: React.MouseEvent) => void;
 }
 
 const EtcDropdown = ({
   isDropdownOpen,
   isOwner,
   isSubscribed,
+  handleSubscribe,
 }: EtcDropdownProps) => {
   return (
     <StyledDropdownMenu $isDropdownOpen={isDropdownOpen}>
-      <DropdownItem>
+      <DropdownItem onClick={handleSubscribe}>
         {isSubscribed ? <span>가입 취소하기</span> : <span>가입하기</span>}
       </DropdownItem>
       {isOwner && (

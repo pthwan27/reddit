@@ -83,7 +83,7 @@ const SkeletonWrapper = styled.div`
   flex-direction: column;
 `;
 const SkeletonItemWrapper = styled.div`
-  height: var(--rem-48);
+  height: var(--rem-40);
   padding: var(--spacer-2xs) var(--spacer-md);
 
   border-radius: var(--radius-md);

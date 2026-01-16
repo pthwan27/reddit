@@ -162,6 +162,11 @@ export const useSubStore = create(
             ];
           }
         }
+
+        if (sub.id === get().selectedSub?.id) {
+          set({ selectedSub: { ...sub, isSubscribed: !isCurSubscribed } });
+        }
+
         set({ subs: updatedSubs });
 
         usePostStore
@@ -184,6 +189,15 @@ export const useSubStore = create(
             set((state) => ({
               subs: state.subs.filter((s) => s.id !== data.id),
             }));
+          }
+
+          if (sub.id === get().selectedSub?.id) {
+            set({
+              selectedSub: {
+                ...sub,
+                isSubscribed: data?.isSubscribed,
+              },
+            });
           }
 
           usePostStore

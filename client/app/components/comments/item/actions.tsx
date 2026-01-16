@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/app/store/authStore';
 import { usePostStore } from '@/app/store/postStore';
 
 import styled from 'styled-components';
@@ -11,7 +12,10 @@ import UpVoteFillIcon from '../../svgs/UpVoteFillIcon';
 import UpVoteIcon from '../../svgs/UpVoteIcon';
 
 const CommentPostActions = ({ ...post }: Post) => {
+  const { user } = useAuthStore();
   const { vote } = usePostStore();
+
+  const userVote = user ? post.userVote : 0;
 
   const voteHandler = (e: React.MouseEvent, value: number) => {
     e.stopPropagation();
@@ -20,15 +24,13 @@ const CommentPostActions = ({ ...post }: Post) => {
 
   return (
     <StyledPostActions>
-      <VoteButtons
-        $userVote={post.userVote === 1 ? 1 : post.userVote === -1 ? -1 : 0}
-      >
+      <VoteButtons $userVote={userVote === 1 ? 1 : userVote === -1 ? -1 : 0}>
         <button onClick={(e) => voteHandler(e, 1)}>
-          {post.userVote === 1 ? <UpVoteFillIcon /> : <UpVoteIcon />}
+          {userVote === 1 ? <UpVoteFillIcon /> : <UpVoteIcon />}
         </button>
         <span>{post.voteScore || 0}</span>
         <button onClick={(e) => voteHandler(e, -1)}>
-          {post.userVote === -1 ? <DownVoteFillIcon /> : <DownVoteIcon />}
+          {userVote === -1 ? <DownVoteFillIcon /> : <DownVoteIcon />}
         </button>
       </VoteButtons>
 

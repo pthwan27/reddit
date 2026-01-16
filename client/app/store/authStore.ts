@@ -47,10 +47,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       console.error('Logout error:', error);
     } finally {
       set({ user: null });
-      useSubStore.getState().reset();
-      useSubStore.getState().getPopularSubs();
-      usePostStore.getState().fetchHomePosts(true);
-      usePostStore.getState().fetchHighlightPosts();
 
       if (useSubStore.getState().selectedSub) {
         usePostStore

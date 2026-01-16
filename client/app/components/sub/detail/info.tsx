@@ -1,5 +1,5 @@
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { useSubStore } from '@/app/store/subStore';
 
@@ -20,20 +20,12 @@ interface InfoProps {
   iconImage: string;
   onEditClick: () => void;
   isIcon?: boolean;
-  handleSubscribe: (sub: Sub) => Promise<void>;
 }
 
-const SubInfos = ({
-  sub,
-  iconImage,
-  onEditClick,
-  isIcon,
-  handleSubscribe,
-}: InfoProps) => {
+const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { setSelectedSub } = useSubStore();
-
+  const { setSelectedSub, handleSubscribe } = useSubStore();
   const [isEtcOpen, setIsEtcOpen] = useState(false);
 
   const toggleEtcOpen = () => {
@@ -45,7 +37,14 @@ const SubInfos = ({
     router.push(`${pathname}/submit`);
   };
 
-  useEffect(() => {}, [sub.isSubscribed]);
+  const onHandleSubscribe = async (e: React.MouseEvent, sub: Sub) => {
+    e.stopPropagation();
+
+    if (sub.isOwner) return;
+
+    await handleSubscribe(sub);
+  };
+
   return (
     <StyledSubInfos>
       <ActionsBar>
@@ -88,7 +87,7 @@ const SubInfos = ({
               variant="outlined"
               font="16-20-semibold"
               disabled={sub.isOwner}
-              onClick={() => handleSubscribe(sub)}
+              onClick={(e) => onHandleSubscribe(e, sub)}
             />
           ) : (
             <IconButton
@@ -97,7 +96,7 @@ const SubInfos = ({
               radius="var(--radius-xl)"
               variant="primary"
               font="16-20-semibold"
-              onClick={() => handleSubscribe(sub)}
+              onClick={(e) => onHandleSubscribe(e, sub)}
             />
           )}
 
@@ -115,6 +114,7 @@ const SubInfos = ({
             isDropdownOpen={isEtcOpen}
             isOwner={sub.isOwner}
             isSubscribed={sub.isSubscribed}
+            handleSubscribe={(e) => onHandleSubscribe(e, sub)}
           />
         </Buttons>
       </ActionsBar>
