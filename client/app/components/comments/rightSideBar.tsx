@@ -25,7 +25,7 @@ const CommentsRightSideBar = ({ sub: initialSub }: { sub: Sub }) => {
   const [sub, setSub] = useState<Sub>(initialSub);
 
   const { user } = useAuthStore();
-  const { subs, handleSubscribe } = useSubStore();
+  const { selectedSub, subs, handleSubscribe } = useSubStore();
 
   const onHandleSubscribe = async () => {
     if (!user) {
@@ -59,7 +59,17 @@ const CommentsRightSideBar = ({ sub: initialSub }: { sub: Sub }) => {
       <RightSideBarWrapper>
         <ActionsSection>
           <SubLink href={`/r/${sub.slug}`}>{`r/${sub.title}`}</SubLink>
-          {sub.isSubscribed || sub.isOwner ? (
+
+          {!user ? (
+            <IconButton
+              value="가입"
+              fontColor="white"
+              radius="var(--radius-xl)"
+              variant="primary"
+              font="12-16-semibold"
+              onClick={() => onHandleSubscribe()}
+            />
+          ) : sub.isSubscribed || sub.isOwner ? (
             <IconButton
               value="가입됨"
               radius="var(--radius-xl)"
@@ -102,12 +112,12 @@ const CommentsRightSideBar = ({ sub: initialSub }: { sub: Sub }) => {
 
             <CountInfosRows>
               <CountInfosRowItem>
-                <span>{sub.subscriberCount}</span>
+                <span>{selectedSub?.subscriberCount}</span>
                 <span>subscriber</span>
               </CountInfosRowItem>
 
               <CountInfosRowItem>
-                <span>{sub.postCount}</span>
+                <span>{selectedSub?.postCount}</span>
                 <span>post</span>
               </CountInfosRowItem>
             </CountInfosRows>

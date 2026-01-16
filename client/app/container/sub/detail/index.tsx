@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useUploadImage } from '@/app/hooks/useUploadImage';
 
+import { useAuthStore } from '@/app/store/authStore';
 import { usePostStore } from '@/app/store/postStore';
 import { useSubStore } from '@/app/store/subStore';
 
@@ -20,7 +21,8 @@ import SubDetailRightSideBar from '../../../components/sub/rightSideBar';
 import PostList from '../../post/list';
 
 const SubDetail = ({ sub }: { sub: Sub }) => {
-  const { selectedSub, setSelectedSub } = useSubStore();
+  const { user } = useAuthStore();
+  const { selectedSub, setSelectedSub, fetchSubDetail } = useSubStore();
   const {
     posts,
     highlightPosts,
@@ -134,6 +136,10 @@ const SubDetail = ({ sub }: { sub: Sub }) => {
 
     return () => observer.disconnect();
   }, [loading, hasMore, posts, sortOption, fetchSubPosts]);
+
+  useEffect(() => {
+    fetchSubDetail(sub.slug);
+  }, [user]);
 
   useEffect(() => {
     setSelectedSub(sub);

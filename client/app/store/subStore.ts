@@ -85,6 +85,18 @@ export const useSubStore = create(
         }
       },
 
+      fetchSubDetail: async (slug: string) => {
+        try {
+          const { data } = await clientAxiosInstance.get(`/api/sub/${slug}`);
+          set({ selectedSub: data });
+
+          return data;
+        } catch (error) {
+          console.error('Failed to fetch sub detail:', error);
+          throw error;
+        }
+      },
+
       getMySubs: async () => {
         set({ loading: true });
 

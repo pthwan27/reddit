@@ -36,6 +36,7 @@ export type SubState = {
   popularSubs: Sub[];
   selectedSub: Sub | null;
   loading: boolean;
+  fetchSubDetail: (slug: string) => Promise<Sub>;
   getMySubs: () => Promise<void>;
   getPopularSubs: () => Promise<void>;
   setSelectedSub: (sub: Sub | null) => void;

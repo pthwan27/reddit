@@ -7,6 +7,7 @@ import { useAuthStore } from '@/app/store/authStore';
 import { useCommentStore } from '@/app/store/commentStore';
 import { usePostStore } from '@/app/store/postStore';
 import { useRecentPostsStore } from '@/app/store/recentPostsStore';
+import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
@@ -31,6 +32,7 @@ const CommentList = ({ post }: { post: Post }) => {
   const router = useRouter();
 
   const { user } = useAuthStore();
+  const { fetchSubDetail } = useSubStore();
   const { addRecentPost } = useRecentPostsStore();
 
   const { selectedPost, setSelectedPost, updatePostCommentCount } =
@@ -141,6 +143,10 @@ const CommentList = ({ post }: { post: Post }) => {
 
     return () => observer.disconnect();
   }, [loading, hasMore, comments, sortOption, fetchComments]);
+
+  useEffect(() => {
+    fetchSubDetail(post.sub.slug);
+  }, [user]);
 
   useEffect(() => {
     addRecentPost(post, user?.id || '');

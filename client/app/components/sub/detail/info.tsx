@@ -1,6 +1,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { useAuthStore } from '@/app/store/authStore';
 import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
@@ -25,7 +26,10 @@ interface InfoProps {
 const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
   const router = useRouter();
   const pathname = usePathname();
+
+  const { user } = useAuthStore();
   const { setSelectedSub, handleSubscribe } = useSubStore();
+
   const [isEtcOpen, setIsEtcOpen] = useState(false);
 
   const toggleEtcOpen = () => {
@@ -80,7 +84,16 @@ const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
             font="16-20-semibold"
           />
 
-          {sub.isSubscribed || sub.isOwner ? (
+          {!user ? (
+            <IconButton
+              value="가입"
+              fontColor="white"
+              radius="var(--radius-xl)"
+              variant="primary"
+              font="16-20-semibold"
+              onClick={(e) => onHandleSubscribe(e, sub)}
+            />
+          ) : sub.isSubscribed || sub.isOwner ? (
             <IconButton
               value="가입됨"
               radius="var(--radius-xl)"
