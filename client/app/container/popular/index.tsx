@@ -25,12 +25,9 @@ const Popular = () => {
     hasMore,
     fetchHomePosts,
     fetchHighlightPosts,
-    clearPosts,
-    clearHighlightPosts,
   } = usePostStore();
 
-  const { popularSubs, getPopularSubs, clearPopularSubs, setSelectedSub } =
-    useSubStore();
+  const { popularSubs, getPopularSubs, setSelectedSub } = useSubStore();
 
   const observerRef = useRef<HTMLDivElement>(null);
 
@@ -85,17 +82,11 @@ const Popular = () => {
   }, [loading, hasMore, posts, sortOption, fetchHomePosts]);
 
   useEffect(() => {
-    fetchHomePosts(true, sortOption);
-    fetchHighlightPosts();
-    getPopularSubs();
-
     setSelectedSub(null);
 
-    return () => {
-      clearPosts();
-      clearHighlightPosts();
-      clearPopularSubs();
-    };
+    fetchHighlightPosts();
+    fetchHomePosts(true, sortOption);
+    getPopularSubs();
   }, []);
 
   return (

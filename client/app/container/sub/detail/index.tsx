@@ -28,8 +28,6 @@ const SubDetail = ({ sub }: { sub: Sub }) => {
     hasMore,
     fetchSubPosts,
     fetchHighlightPosts,
-    clearPosts,
-    clearHighlightPosts,
   } = usePostStore();
 
   const [iconImage, setIconImage] = useState<string>(sub.iconUrl || '');
@@ -141,12 +139,6 @@ const SubDetail = ({ sub }: { sub: Sub }) => {
     setSelectedSub(sub);
     fetchSubPosts(sub.id, true, sortOption);
     fetchHighlightPosts(sub.id);
-
-    return () => {
-      setSelectedSub(null);
-      clearPosts();
-      clearHighlightPosts();
-    };
   }, []);
 
   if (!selectedSub) {

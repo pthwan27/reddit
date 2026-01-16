@@ -17,11 +17,9 @@ import HomePostList from './list';
 const Home = () => {
   const { user } = useAuthStore();
 
-  const { posts, loading, hasMore, fetchHomePosts, clearPosts } =
-    usePostStore();
+  const { posts, loading, hasMore, fetchHomePosts } = usePostStore();
 
-  const { popularSubs, getPopularSubs, clearPopularSubs, setSelectedSub } =
-    useSubStore();
+  const { popularSubs, getPopularSubs, setSelectedSub } = useSubStore();
 
   const observerRef = useRef<HTMLDivElement>(null);
 
@@ -76,15 +74,10 @@ const Home = () => {
   }, [loading, hasMore, posts, sortOption, fetchHomePosts]);
 
   useEffect(() => {
-    fetchHomePosts(true, sortOption);
-    getPopularSubs();
-
     setSelectedSub(null);
 
-    return () => {
-      clearPosts();
-      clearPopularSubs();
-    };
+    fetchHomePosts(true, sortOption);
+    getPopularSubs();
   }, []);
 
   return (

@@ -7,7 +7,6 @@ import { useAuthStore } from '@/app/store/authStore';
 import { useCommentStore } from '@/app/store/commentStore';
 import { usePostStore } from '@/app/store/postStore';
 import { useRecentPostsStore } from '@/app/store/recentPostsStore';
-import { useSubStore } from '@/app/store/subStore';
 
 import styled from 'styled-components';
 
@@ -33,7 +32,6 @@ const CommentList = ({ post }: { post: Post }) => {
 
   const { user } = useAuthStore();
   const { addRecentPost } = useRecentPostsStore();
-  const { setSelectedSub } = useSubStore();
 
   const { selectedPost, setSelectedPost, updatePostCommentCount } =
     usePostStore();
@@ -109,25 +107,6 @@ const CommentList = ({ post }: { post: Post }) => {
   }, []);
 
   useEffect(() => {
-    addRecentPost(post, user?.id || '');
-    setSelectedPost(post);
-    fetchComments(post.id);
-
-    return () => {
-      setSelectedPost(null);
-      clearComments();
-    };
-  }, [post]);
-
-  useEffect(() => {
-    setSelectedSub(post.sub);
-
-    return () => {
-      setSelectedSub(null);
-    };
-  }, []);
-
-  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const target = entries[0];
@@ -162,6 +141,17 @@ const CommentList = ({ post }: { post: Post }) => {
 
     return () => observer.disconnect();
   }, [loading, hasMore, comments, sortOption, fetchComments]);
+
+  useEffect(() => {
+    addRecentPost(post, user?.id || '');
+    setSelectedPost(post);
+    fetchComments(post.id);
+
+    return () => {
+      setSelectedPost(null);
+      clearComments();
+    };
+  }, [post]);
 
   if (!selectedPost) {
     return (
