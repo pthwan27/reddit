@@ -47,6 +47,20 @@ export const usePostStore = create<PostState>((set, get) => ({
     }
   },
 
+  fetchHighlightPosts: async (id?: number) => {
+    set({ loading: true });
+    try {
+      const { data } = await clientAxiosInstance.get(
+        `/api/highlight/post/${id || ''}`
+      );
+
+      set({ highlightPosts: data.posts, loading: false });
+    } catch (error) {
+      console.error('Failed to fetch posts:', error);
+      set({ loading: false });
+    }
+  },
+
   fetchSubPosts: async (
     id: number,
     isInitial?: boolean,
@@ -85,19 +99,6 @@ export const usePostStore = create<PostState>((set, get) => ({
     }
   },
 
-  fetchHighlightPosts: async (id?: number) => {
-    set({ loading: true });
-    try {
-      const { data } = await clientAxiosInstance.get(
-        `/api/highlight/post/${id || ''}`
-      );
-
-      set({ highlightPosts: data.posts, loading: false });
-    } catch (error) {
-      console.error('Failed to fetch posts:', error);
-      set({ loading: false });
-    }
-  },
   clearPosts: () =>
     set({
       posts: [],

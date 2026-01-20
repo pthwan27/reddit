@@ -202,10 +202,7 @@ const CommentList = ({ post }: { post: Post }) => {
               ))}
             </>
             {hasMore && !loading && (
-              <div
-                ref={observerRef}
-                style={{ height: '20px', background: 'black' }}
-              />
+              <div ref={observerRef} style={{ height: '20px' }} />
             )}
           </CommentListWrapper>
         </CommentsSection>

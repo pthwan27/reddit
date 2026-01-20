@@ -183,10 +183,7 @@ const SubDetail = ({ sub }: { sub: Sub }) => {
             {loading && <LoadingSpinner />}
 
             {hasMore && !loading && (
-              <div
-                ref={observerRef}
-                style={{ height: '20px', background: 'black' }}
-              />
+              <div ref={observerRef} style={{ height: '20px' }} />
             )}
           </PostListWrapper>
           <SubDetailRightSideBar sub={selectedSub} />

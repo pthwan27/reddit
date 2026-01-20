@@ -95,7 +95,7 @@ const Popular = () => {
       <Main>
         <div>
           <PopularPostList
-            posts={highlightPosts}
+            posts={posts}
             isDropdownOpen={isDropdownOpen}
             setIsDropdownOpen={setIsDropdownOpen}
             handleSelectOption={handleSelectOption}
@@ -104,10 +104,7 @@ const Popular = () => {
           {loading && <LoadingSpinner />}
 
           {hasMore && !loading && (
-            <div
-              ref={observerRef}
-              style={{ height: '20px', background: 'black' }}
-            />
+            <div ref={observerRef} style={{ height: '20px' }} />
           )}
         </div>
 

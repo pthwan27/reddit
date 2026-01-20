@@ -94,10 +94,7 @@ const Home = () => {
           {loading && <LoadingSpinner />}
 
           {hasMore && !loading && (
-            <div
-              ref={observerRef}
-              style={{ height: '20px', background: 'black' }}
-            />
+            <div ref={observerRef} style={{ height: '20px' }} />
           )}
         </div>
 

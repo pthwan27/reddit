@@ -9,9 +9,13 @@ import DownVoteIcon from '../../svgs/DownVote';
 import DownVoteFillIcon from '../../svgs/DownVoteFill';
 import UpVoteFillIcon from '../../svgs/UpVoteFillIcon';
 import UpVoteIcon from '../../svgs/UpVoteIcon';
+import { useAuthStore } from '@/app/store/authStore';
 
 const PopularPostActions = ({ ...post }: Post) => {
+  const { user } = useAuthStore();
   const { vote } = usePostStore();
+
+  const userVote = user ? post.userVote : 0;
 
   const voteHandler = (e: React.MouseEvent, value: number) => {
     e.stopPropagation();
@@ -21,14 +25,14 @@ const PopularPostActions = ({ ...post }: Post) => {
   return (
     <StyledPopularPostActions>
       <VoteButtons
-        $userVote={post.userVote === 1 ? 1 : post.userVote === -1 ? -1 : 0}
+        $userVote={userVote === 1 ? 1 : userVote === -1 ? -1 : 0}
       >
         <button onClick={(e) => voteHandler(e, 1)}>
-          {post.userVote === 1 ? <UpVoteFillIcon /> : <UpVoteIcon />}
+          {userVote === 1 ? <UpVoteFillIcon /> : <UpVoteIcon />}
         </button>
         <span>{post.voteScore || 0}</span>
         <button onClick={(e) => voteHandler(e, -1)}>
-          {post.userVote === -1 ? <DownVoteFillIcon /> : <DownVoteIcon />}
+          {userVote === -1 ? <DownVoteFillIcon /> : <DownVoteIcon />}
         </button>
       </VoteButtons>
 
