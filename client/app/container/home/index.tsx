@@ -1,3 +1,4 @@
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import { useAuthStore } from '@/app/store/authStore';
@@ -15,9 +16,11 @@ import { CustomError } from '@/app/types';
 import HomePostList from './list';
 
 const Home = () => {
+  const pathname = usePathname();
   const { user } = useAuthStore();
 
-  const { posts, loading, hasMore, fetchHomePosts } = usePostStore();
+  const { posts, clearPosts, loading, hasMore, fetchHomePosts } =
+    usePostStore();
 
   const { popularSubs, getPopularSubs, setSelectedSub } = useSubStore();
 
@@ -71,14 +74,18 @@ const Home = () => {
     }
 
     return () => observer.disconnect();
-  }, [loading, hasMore, posts, sortOption, fetchHomePosts]);
+  }, [loading, hasMore, posts, sortOption]);
 
   useEffect(() => {
     setSelectedSub(null);
 
     fetchHomePosts(true, sortOption);
     getPopularSubs();
-  }, []);
+
+    return () => {
+      clearPosts();
+    };
+  }, [pathname]);
 
   return (
     <HomeContainer>

@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const { data, status } = await serverAxiosInstance.get(
-      `/post/home/?page=${page}&limit=${limit}&sortOption=${sortOption}`,
+      `/post/list/?page=${page}&limit=${limit}&sortOption=${sortOption}`,
       {
         headers: {
           Cookie: req.headers.get('cookie') || '',
@@ -24,11 +24,13 @@ export async function GET(req: NextRequest) {
   } catch (err: unknown) {
     const error = err as CustomError;
     console.error(
-      'Get HomePost List API error:',
+      'Get Popular List API error:',
       error.response?.data || error.message
     );
     return NextResponse.json(
-      { error: error.response?.data?.error || 'Failed to get home post list' },
+      {
+        error: error.response?.data?.error || 'Failed to get popular post list',
+      },
       { status: error.response?.status || 500 }
     );
   }

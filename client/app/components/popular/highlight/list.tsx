@@ -11,9 +11,11 @@ import PopularHighlightItem from './item';
 
 interface PopularHighlightListProps {
   highlightPosts: Post[];
+  highlightLoading: boolean;
 }
 const PopularHighlightPosts = ({
   highlightPosts,
+  highlightLoading,
 }: PopularHighlightListProps) => {
   const scrollContainerRef = useRef<HTMLUListElement>(null);
 
@@ -83,6 +85,7 @@ const PopularHighlightPosts = ({
               key={post.id}
               post={post}
               postLength={highlightPosts.length}
+              highlightLoading={highlightLoading}
             />
           ))}
         </StyledHighlightPostList>
@@ -115,6 +118,8 @@ const StyledHighlightPostList = styled.ul`
 
   width: 100%;
   height: 100%;
+
+  min-height: 226px;
 
   margin-bottom: var(--spacer-xs);
 

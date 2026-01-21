@@ -14,9 +14,11 @@ import Skeleton from '../../common/loading/skeleton';
 const PopularHighlightItem = ({
   post,
   postLength,
+  highlightLoading,
 }: {
   post: Post;
   postLength: number;
+  highlightLoading: boolean;
 }) => {
   const { loading, metadata } = useGetLinkMetadata(post?.linkUrl);
 
@@ -34,8 +36,18 @@ const PopularHighlightItem = ({
 
   const hasImage = !!post.imageUrls?.length || !!metadata?.image;
 
+  if (highlightLoading) {
+    return (
+      <StyledHighlightItem $postLength={postLength || 5}>
+        <SkeletonWrapper>
+          <Skeleton />
+        </SkeletonWrapper>
+      </StyledHighlightItem>
+    );
+  }
+
   return (
-    <StyledHighlightItem $postLength={postLength}>
+    <StyledHighlightItem $postLength={postLength || 5}>
       <ItemWrapper
         href={`/r/${post.sub.slug}/comments/${post.identifier}`}
         $postLength={postLength}
@@ -79,6 +91,7 @@ const StyledHighlightItem = styled.li<{ $postLength: number }>`
   min-width: 280px;
 
   height: 226px;
+  min-height: 226px;
 
   margin-right: var(--spacer-sm);
 `;

@@ -8,6 +8,7 @@ const initialState = {
   posts: [] as Post[],
   highlightPosts: [] as Post[],
   loading: false,
+  highlightLoading: false,
   page: 0,
   hasMore: true,
   curSubId: 0,
@@ -18,6 +19,34 @@ export const usePostStore = create<PostState>((set, get) => ({
   ...initialState,
 
   setSelectedPost: (post: Post | null) => set({ selectedPost: post }),
+
+  fetchPopularPosts: async (isInitial?: boolean, option?: SortOption) => {
+    if (get().loading) return;
+
+    const { page } = get();
+    const LIMIT = 10;
+
+    const currentPage = isInitial ? 0 : page;
+    const currentSortOption = option || '최신순';
+
+    set({ loading: true });
+
+    try {
+      const { data } = await clientAxiosInstance.get(
+        `/api/popular/posts?page=${currentPage}&limit=${LIMIT}&sortOption=${currentSortOption}`
+      );
+
+      set((state) => ({
+        posts: isInitial ? data.posts : [...state.posts, ...data.posts],
+        page: currentPage + 1,
+        hasMore: data.posts.length === LIMIT,
+        loading: false,
+      }));
+    } catch (error) {
+      console.error('Failed to fetch home posts:', error);
+      set({ loading: false });
+    }
+  },
 
   fetchHomePosts: async (isInitial?: boolean, option?: SortOption) => {
     if (get().loading) return;
@@ -48,16 +77,16 @@ export const usePostStore = create<PostState>((set, get) => ({
   },
 
   fetchHighlightPosts: async (id?: number) => {
-    set({ loading: true });
+    set({ highlightLoading: true });
     try {
       const { data } = await clientAxiosInstance.get(
         `/api/highlight/post/${id || ''}`
       );
 
-      set({ highlightPosts: data.posts, loading: false });
+      set({ highlightPosts: data.posts, highlightLoading: false });
     } catch (error) {
       console.error('Failed to fetch posts:', error);
-      set({ loading: false });
+      set({ highlightLoading: false });
     }
   },
 

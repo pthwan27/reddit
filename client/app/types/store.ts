@@ -54,12 +54,17 @@ export type PostState = {
   posts: Post[];
   highlightPosts: Post[];
   loading: boolean;
+  highlightLoading: boolean;
   page: number;
   hasMore: boolean;
   curSubId: number;
   selectedPost: Post | null;
   setSelectedPost: (post: Post | null) => void;
   fetchHomePosts: (isInitial?: boolean, option?: SortOption) => Promise<void>;
+  fetchPopularPosts: (
+    isInitial?: boolean,
+    option?: SortOption
+  ) => Promise<void>;
   fetchSubPosts: (
     id: number,
     isInitial?: boolean,

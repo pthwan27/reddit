@@ -1,3 +1,4 @@
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import { useAuthStore } from '@/app/store/authStore';
@@ -16,14 +17,18 @@ import { CustomError } from '@/app/types';
 import PopularPostList from './list';
 
 const Popular = () => {
+  const pathname = usePathname();
   const { user } = useAuthStore();
 
   const {
     posts,
     highlightPosts,
+    clearPosts,
+    clearHighlightPosts,
     loading,
+    highlightLoading,
     hasMore,
-    fetchHomePosts,
+    fetchPopularPosts,
     fetchHighlightPosts,
   } = usePostStore();
 
@@ -46,7 +51,7 @@ const Popular = () => {
 
     setSortOption(option);
 
-    fetchHomePosts(true, option);
+    fetchPopularPosts(true, option);
     setIsDropdownOpen(false);
   };
 
@@ -57,7 +62,7 @@ const Popular = () => {
 
         if (target.isIntersecting && !loading && hasMore && posts.length > 0) {
           try {
-            fetchHomePosts(false, sortOption);
+            fetchPopularPosts(false, sortOption);
           } catch (err) {
             const error = err as CustomError;
             console.error('Fetching posts failed:', error);
@@ -79,19 +84,27 @@ const Popular = () => {
     }
 
     return () => observer.disconnect();
-  }, [loading, hasMore, posts, sortOption, fetchHomePosts]);
+  }, [loading, hasMore, posts, sortOption]);
 
   useEffect(() => {
     setSelectedSub(null);
 
     fetchHighlightPosts();
-    fetchHomePosts(true, sortOption);
+    fetchPopularPosts(true, sortOption);
     getPopularSubs();
-  }, []);
+
+    return () => {
+      clearPosts();
+      clearHighlightPosts();
+    };
+  }, [pathname]);
 
   return (
     <PopularContainer>
-      <PopularHighlightPosts highlightPosts={highlightPosts} />
+      <PopularHighlightPosts
+        highlightPosts={highlightPosts}
+        highlightLoading={highlightLoading}
+      />
       <Main>
         <div>
           <PopularPostList
