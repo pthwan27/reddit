@@ -49,6 +49,28 @@ const PostSubmit = ({ sub }: { sub: Sub }) => {
     [content]
   );
 
+  const handleChangeTab = (tab: PostType) => {
+    if (activeTab !== 'text') {
+      if (typeof window === 'undefined') return;
+
+      if (mediaFiles.length > 0 || linkUrl.trim()) {
+        const confirmed = window.confirm(
+          '작성 중인 내용이 있습니다. 정말 다른 탭으로 이동하시겠습니까?'
+        );
+
+        if (!confirmed) {
+          return;
+        }
+
+        setActiveTab(tab);
+        setMediaFiles([]);
+        setLinkUrl('');
+      }
+    }
+
+    setActiveTab(tab);
+  };
+
   const handleSelectOption = (sub: Sub) => {
     setSearchTerm('');
     setIsSearching(false);
@@ -151,7 +173,7 @@ const PostSubmit = ({ sub }: { sub: Sub }) => {
           content={content}
           setContent={setContent}
           activeTab={activeTab}
-          setActiveTab={setActiveTab}
+          setActiveTab={handleChangeTab}
           mediaFiles={mediaFiles}
           setMediaFiles={setMediaFiles}
           linkUrl={linkUrl}
@@ -177,36 +199,34 @@ const PostSubmit = ({ sub }: { sub: Sub }) => {
     </GridWrapper>
   );
 };
-
 const GridWrapper = styled.div`
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+
   width: 100%;
   max-width: 1120px;
+
   margin: 0 auto;
 
   gap: var(--spacer-lg);
-
-  grid-template-columns: minmax(0, 1fr);
 
   & > :nth-child(2) {
     display: none;
   }
 
-  @media (min-width: 1200px) {
-  }
-
   @media (min-width: 768px) {
+    grid-template-columns: minmax(0, 756px) minmax(0, 316px);
+
     & > :nth-child(2) {
       display: block;
     }
-
-    grid-template-columns: minmax(0, 756px) minmax(0, 316px);
   }
 `;
 
 const PostSubmitContainer = styled.div`
   display: flex;
   flex-direction: column;
+
   width: 100%;
   height: 100%;
 
@@ -220,9 +240,9 @@ const PostSubmitContainer = styled.div`
 const PostSubmitButtons = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: 0 var(--spacer-md);
 
   margin-top: -8px;
+  padding: 0 var(--spacer-md);
 `;
 
 export default PostSubmit;

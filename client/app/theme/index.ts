@@ -130,6 +130,16 @@ export const newTheme = {
       secondary: '#21272A',
       scrim: '#00000099',
     },
+    overlay: {
+      background: `linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.15) 30%,
+    rgba(0, 0, 0, 0.05) 50%,
+    rgba(0, 0, 0, 0.15) 70%,
+    rgba(0, 0, 0, 0.25) 100%
+  )`,
+    },
     tone: {
       1: '#131313',
       2: '#434343',

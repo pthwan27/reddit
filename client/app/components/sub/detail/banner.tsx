@@ -52,21 +52,21 @@ const BannerBox = styled.div`
   height: 100%;
 
   background: ${({ theme }) => theme.colors.neutral.content};
-
   background-repeat: no-repeat;
   background-position: 50%;
   background-size: cover;
 
-  img {
-    object-fit: cover;
+  > img {
     width: 100%;
     height: 100%;
+
+    object-fit: cover;
   }
 
   @media (min-width: 768px) {
     border-radius: var(--radius-md);
 
-    img {
+    > img {
       border-radius: var(--radius-md);
     }
   }
@@ -78,28 +78,29 @@ const EditIcon = styled.div`
   justify-content: center;
 
   position: absolute;
-
   right: 0;
   bottom: 0;
-
-  margin-right: var(--spacer-sm);
-  margin-bottom: var(--spacer-sm);
 
   width: var(--rem-32);
   height: var(--rem-32);
 
+  margin-right: var(--spacer-sm);
+  margin-bottom: var(--spacer-sm);
+
+  background: ${({ theme }) => theme.colors.neutral.background};
   border-radius: var(--radius-full);
 
   cursor: pointer;
-  z-index: 10;
 
-  background: ${({ theme }) => theme.colors.neutral.background};
   mix-blend-mode: normal;
 
-  &:hover {
-    filter: brightness(0.7); /* 이미지를 어둡게 만듭니다 */
+  z-index: 10;
 
+  &:hover {
     opacity: 1;
+
+    filter: brightness(0.7);
   }
 `;
+
 export default SubBanner;

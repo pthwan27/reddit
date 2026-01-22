@@ -1,11 +1,9 @@
-import { useState } from 'react';
-
 import styled from 'styled-components';
 
 import PlaceHolderInput from '@/app/components/common/input/placeholderInput';
 import RichTextEditor from '@/app/components/common/input/richTextEditor';
 
-import ImageUpload from './mediaUpload';
+import MediaUpload from './mediaUpload';
 
 type PostType = 'text' | 'media' | 'link';
 
@@ -34,18 +32,11 @@ const PostSubmitMain = ({
   linkUrl,
   setLinkUrl,
 }: PostSubmitMainProps) => {
-  const [imgUrls, setImgUrls] = useState<string[]>([]);
-
   const renderingTap = () => {
     switch (activeTab) {
       case 'media':
         return (
-          <ImageUpload
-            mediaFiles={mediaFiles}
-            setMediaFiles={setMediaFiles}
-            imgUrls={imgUrls}
-            setImgUrls={setImgUrls}
-          />
+          <MediaUpload mediaFiles={mediaFiles} setMediaFiles={setMediaFiles} />
         );
       case 'link':
         return (
@@ -131,8 +122,8 @@ const StyledPostSubmitMain = styled.main`
 const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--spacer-lg);
 
+  gap: var(--spacer-lg);
   padding: var(--spacer-md);
 `;
 
@@ -149,17 +140,17 @@ const TabList = styled.ul`
 const Tab = styled.li<{ $isActive?: boolean }>`
   display: inline-flex;
   flex-direction: column;
-  gap: var(--spacer-sm);
-  cursor: pointer;
-
   align-items: center;
   justify-content: flex-end;
 
   height: var(--rem-48);
 
+  gap: var(--spacer-sm);
   padding: 0 calc(var(--spacer-md) - 2px);
 
   font: var(--font-14-20-semibold);
+
+  cursor: pointer;
 
   span:nth-child(2) {
     width: 100%;

@@ -8,18 +8,12 @@ import UploadIcon from '@/app/components/svgs/UploadIcon';
 
 import MediaCarousel from '../../../common/mediaCarousel';
 
-interface ImageUploadProps {
+interface MediaUploadProps {
   mediaFiles: File[];
   setMediaFiles: (files: File[]) => void;
-  imgUrls: string[];
-  setImgUrls: (urls: string[]) => void;
 }
-const ImageUpload = ({
-  mediaFiles,
-  setMediaFiles,
-  imgUrls,
-  setImgUrls,
-}: ImageUploadProps) => {
+const MediaUpload = ({ mediaFiles, setMediaFiles }: MediaUploadProps) => {
+  const [imgUrls, setImgUrls] = useState<string[]>([]);
   const [mediaType, setMediaType] = useState<'image' | 'video' | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -205,6 +199,7 @@ const ImageUpload = ({
 
 const MediaUploadArea = styled.div`
   position: relative;
+
   min-height: min(20vw, 250px);
   height: max(23vw, 250px);
 `;
@@ -217,23 +212,22 @@ const InputBox = styled.div`
 `;
 
 const PlaceholderText = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   position: absolute;
 
   width: 100%;
   height: 100%;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   gap: var(--spacer-2xs);
-
-  font: var(--font-14-20-regular);
-
   padding: var(--spacer-2xs) var(--spacer-sm);
 
   border: var(--line-sm) dashed ${({ theme }) => theme.colors.neutral.border};
   border-radius: var(--radius-xl);
+
+  font: var(--font-14-20-regular);
 
   span {
     padding-top: 0.25rem;
@@ -246,6 +240,9 @@ const PlaceholderText = styled.div`
 `;
 
 const CarouselWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
   position: absolute;
   bottom: var(--spacer-sm);
   left: 50%;
@@ -253,8 +250,6 @@ const CarouselWrapper = styled.div`
 
   height: var(--rem-16);
 
-  display: flex;
-  align-items: center;
   gap: var(--spacer-4xs);
   padding: 0 var(--spacer-2xs);
 
@@ -268,25 +263,26 @@ const CarouselItem = styled.button<{ $isSelected: boolean }>`
   width: var(--rem-6);
   height: var(--rem-6);
 
+  margin: var(--spacer-4xs);
+  padding: 0;
+
   background: ${({ $isSelected, theme }) =>
     $isSelected
       ? theme.colors.media.onBackground
       : theme.colors.media.onBackgroundDisabled};
 
   border-radius: var(--radius-full);
+
   cursor: pointer;
 
-  padding: 0;
-  margin: var(--spacer-4xs);
-
   z-index: 10;
+
+  transition: all 0.4s;
 
   &:hover {
     background: ${({ $isSelected, theme }) =>
       !$isSelected && theme.colors.media.onBackgroundWeak};
   }
-
-  transition: all 0.4s;
 `;
 
 const HiddenInput = styled.input`
@@ -305,4 +301,4 @@ const SpinnerWrapper = styled.div`
   border-radius: var(--radius-xl);
 `;
 
-export default ImageUpload;
+export default MediaUpload;

@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import Image from 'next/image';
 
-import IconBox from '@/app/components/common/IconBox';
+import styled from 'styled-components';
 
 import { Sub } from '@/app/types';
 
@@ -37,21 +37,20 @@ const LoggedIn = ({ subscribeSubs, loading, goToSubDetail }: LoggedInProps) => {
         ) : (
           subscribeSubs.map((sub: Sub, idx: number) => (
             <SubItem key={sub.title + idx} onClick={() => goToSubDetail(sub)}>
-              {sub.iconUrl ? (
-                <IconBox
-                  iconUrl={sub.iconUrl}
-                  altText={sub.title}
-                  width={32}
-                  height={32}
-                />
-              ) : (
-                <IconBox
-                  icon={<CommunityFill />}
-                  altText={sub.title}
-                  width={32}
-                  height={32}
-                />
-              )}
+              <IconBoxWrapper>
+                {sub.iconUrl ? (
+                  <SubIconWrapper>
+                    <Image
+                      src={sub.iconUrl}
+                      alt={sub.title}
+                      fill
+                      sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
+                    />
+                  </SubIconWrapper>
+                ) : (
+                  <CommunityFill />
+                )}
+              </IconBoxWrapper>
               <TitleBox>{`r/${sub.title}`}</TitleBox>
             </SubItem>
           ))
@@ -60,47 +59,56 @@ const LoggedIn = ({ subscribeSubs, loading, goToSubDetail }: LoggedInProps) => {
     </CollapsibleList>
   );
 };
+
 const CollapsibleListTitle = styled.span`
-  position: relative;
   display: flex;
   align-items: center;
 
+  position: relative;
+
   height: var(--rem-40);
-  letter-spacing: 0.1em;
 
   padding: var(--spacer-2xs) 0;
+
+  letter-spacing: 0.1em;
 `;
 
 const SubList = styled.div`
   display: flex;
   flex-direction: column;
+
   gap: var(--spacer-4xs);
 `;
 
 const SkeletonWrapper = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
+
+  position: relative;
 `;
+
 const SkeletonItemWrapper = styled.div`
   height: var(--rem-40);
+
   padding: var(--spacer-2xs) var(--spacer-md);
 
-  border-radius: var(--radius-md);
   border: none;
+  border-radius: var(--radius-md);
 `;
 
 const SubItem = styled.button`
-  width: 100%;
   display: flex;
   align-items: center;
+
+  width: 100%;
 
   gap: var(--spacer-xs);
   padding: var(--spacer-2xs) var(--spacer-md);
 
-  border-radius: var(--radius-md);
   border: none;
+  border-radius: var(--radius-md);
 
+  font: var(--font-14);
   color: ${({ theme }) => theme.colors.neutral.contentStrong};
 
   &:hover {
@@ -108,11 +116,38 @@ const SubItem = styled.button`
     border: transparent;
   }
 
-  font: var(--font-14);
-
   > div {
     cursor: pointer;
   }
+`;
+
+const IconBoxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  width: var(--rem-32);
+  height: var(--rem-32);
+
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+
+  border-radius: var(--radius-full);
+
+  cursor: pointer;
+`;
+
+const SubIconWrapper = styled.div`
+  position: relative;
+
+  width: 90%;
+  height: 90%;
+
+  border-radius: var(--radius-full);
+
+  overflow: hidden;
 `;
 
 const TitleBox = styled.span`

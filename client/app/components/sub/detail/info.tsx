@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -8,7 +9,6 @@ import styled from 'styled-components';
 
 import { Sub } from '@/app/types';
 
-import IconBox from '../../common/IconBox';
 import IconButton from '../../common/button/iconButton';
 import CommunityFill from '../../svgs/CommunityFill';
 import EtcIcon from '../../svgs/EtcIcon';
@@ -55,9 +55,16 @@ const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
         <TitleInfo>
           <IconBoxWrapper onClick={onEditClick} $isIcon={isIcon}>
             {isIcon ? (
-              <IconBox iconUrl={iconImage} width={80} height={80} />
+              <SubIconWrapper>
+                <Image
+                  src={iconImage}
+                  alt={sub.title}
+                  fill
+                  sizes="(min-width: 1415px) 750px, (min-width: 768px) 50vw, 100vw"
+                />
+              </SubIconWrapper>
             ) : (
-              <IconBox icon={<CommunityFill />} width={80} height={80} />
+              <CommunityFill />
             )}
             <EditOverlay>
               <PencilIcon />
@@ -146,50 +153,55 @@ const StyledSubInfos = styled.section`
 
   @media (min-width: 768px) {
     top: -2rem;
-    margin-bottom: -2.25rem;
+
     height: var(--rem-88);
+
+    margin-bottom: -2.25rem;
   }
 `;
 
 const ActionsBar = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
 
-  flex-direction: column;
-
   width: 100%;
+
   gap: var(--spacer-sm);
 
   @media (min-width: 768px) {
     flex-direction: row;
-    justify-content: space-between;
     align-items: flex-end;
+    justify-content: space-between;
 
     gap: 0;
   }
 `;
 
 const TitleInfo = styled.span`
-  position: relative;
   display: flex;
+
+  position: relative;
 
   width: 100%;
 
+  gap: var(--spacer-sm);
+
   h1 {
+    font: var(--font-title-h3);
+    line-height: 1.5rem;
+
     @media (min-width: 768px) {
       font: var(--font-title-h1);
       line-height: 2.25rem;
     }
-    font: var(--font-title-h3);
-    line-height: 1.5rem;
   }
 
-  gap: var(--spacer-sm);
-
   @media (min-width: 768px) {
-    gap: var(--spacer-2xs);
     align-items: flex-end;
+
+    gap: var(--spacer-2xs);
   }
 `;
 
@@ -210,23 +222,17 @@ const IconBoxWrapper = styled.div<{ $isIcon?: boolean }>`
   aspect-ratio: 1 / 1;
 
   background: ${({ theme }) => theme.colors.neutral.background};
-  border: var(--line-lg) solid ${({ theme }) => theme.colors.global.white};
   border-radius: var(--radius-full);
 
   cursor: pointer;
 
-  span {
-    border-radius: var(--radius-full);
-    background: ${({ $isIcon, theme }) =>
-      $isIcon ? 'transparent' : theme.colors.neutral.content};
+  > svg {
+    width: 100%;
+    height: 100%;
   }
 
   &:hover {
     background: ${({ theme }) => theme.colors.neutral.backgroundHover};
-
-    img {
-      filter: brightness(0.7);
-    }
 
     > div {
       opacity: 1;
@@ -238,6 +244,18 @@ const IconBoxWrapper = styled.div<{ $isIcon?: boolean }>`
     height: var(--rem-88);
   }
 `;
+
+const SubIconWrapper = styled.div`
+  position: relative;
+
+  width: 90%;
+  height: 90%;
+
+  border-radius: var(--radius-full);
+
+  overflow: hidden;
+`;
+
 const EditOverlay = styled.div`
   display: flex;
   align-items: center;
@@ -245,15 +263,19 @@ const EditOverlay = styled.div`
 
   position: absolute;
 
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
 
-  opacity: 0;
-  transition: opacity 0.2s ease;
+  background: ${({ theme }) => theme.colors.overlay.background};
+  border-radius: var(--radius-full);
 
   mix-blend-mode: hard-light;
 
-  svg {
+  opacity: 0;
+
+  transition: opacity 0.2s ease;
+
+  > svg {
     fill: ${({ theme }) => theme.colors.global.white};
   }
 `;
@@ -264,20 +286,24 @@ const SubInfoBox = styled.div`
 
   width: 100%;
 
-  div {
+  > div {
     display: flex;
     flex-direction: column;
+
     gap: var(--spacer-2xs);
   }
 `;
+
 const Title = styled.h1``;
 
 const Desc = styled.span`
   display: flex;
+
   @media (min-width: 768px) {
     display: none;
   }
 `;
+
 const SubInfoChangeButton = styled.button`
   @media (min-width: 768px) {
     display: none;
@@ -287,8 +313,9 @@ const SubInfoChangeButton = styled.button`
 const Buttons = styled.span`
   display: flex;
 
-  gap: var(--spacer-sm);
   height: var(--rem-40);
+
+  gap: var(--spacer-sm);
 `;
 
 export default SubInfos;

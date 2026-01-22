@@ -118,14 +118,7 @@ const Overlay = styled.div`
   z-index: 2;
 
   border-radius: var(--radius-md);
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.4) 0%,
-    rgba(0, 0, 0, 0.15) 30%,
-    rgba(0, 0, 0, 0.05) 50%,
-    rgba(0, 0, 0, 0.15) 70%,
-    rgba(0, 0, 0, 0.25) 100%
-  );
+  background: ${({ theme }) => theme.colors.overlay.background};
 
   pointer-events: none;
 
