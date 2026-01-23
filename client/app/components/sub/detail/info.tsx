@@ -10,11 +10,11 @@ import styled from 'styled-components';
 import { Sub } from '@/app/types';
 
 import IconButton from '../../common/button/iconButton';
+import Dropdown from '../../common/dropdown';
 import CommunityFill from '../../svgs/CommunityFill';
 import EtcIcon from '../../svgs/EtcIcon';
 import PencilIcon from '../../svgs/PencilIcon';
 import PlusIcon from '../../svgs/PlusIcon';
-import EtcDropdown from './etcDropdown';
 
 interface InfoProps {
   sub: Sub;
@@ -120,22 +120,39 @@ const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
             />
           )}
 
-          <IconButton
-            icon={<EtcIcon />}
-            radius="var(--radius-xl)"
-            width="40px"
-            height="40px"
-            justifyContent="center"
-            variant="outlined"
-            onClick={toggleEtcOpen}
-          />
+          <DropdownWrapper>
+            <IconButton
+              icon={<EtcIcon />}
+              radius="var(--radius-xl)"
+              width="40px"
+              height="40px"
+              justifyContent="center"
+              variant="outlined"
+              onClick={toggleEtcOpen}
+            />
 
-          <EtcDropdown
-            isDropdownOpen={isEtcOpen}
-            isOwner={sub.isOwner}
-            isSubscribed={sub.isSubscribed}
-            handleSubscribe={(e) => onHandleSubscribe(e, sub)}
-          />
+            <Dropdown
+              isDropdownOpen={isEtcOpen}
+              marginTop="xs"
+              dropdownItems={[
+                <DropdownItem
+                  key="subscribe"
+                  onClick={(e) => onHandleSubscribe(e, sub)}
+                >
+                  {sub.isSubscribed ? (
+                    <span>가입 취소하기</span>
+                  ) : (
+                    <span>가입하기</span>
+                  )}
+                </DropdownItem>,
+                sub.isOwner && (
+                  <DropdownItem key="delete">
+                    <span>삭제하기</span>
+                  </DropdownItem>
+                ),
+              ]}
+            />
+          </DropdownWrapper>
         </Buttons>
       </ActionsBar>
     </StyledSubInfos>
@@ -316,6 +333,30 @@ const Buttons = styled.span`
   height: var(--rem-40);
 
   gap: var(--spacer-sm);
+`;
+
+const DropdownWrapper = styled.div`
+  position: relative;
+`;
+
+const DropdownItem = styled.div`
+  display: flex;
+  align-items: center;
+
+  padding: var(--spacer-sm) var(--spacer-md);
+
+  font: var(--font-14);
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
+  }
+
+  span {
+    color: ${({ theme }) => theme.colors.default.secondary};
+  }
 `;
 
 export default SubInfos;

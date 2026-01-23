@@ -1,4 +1,5 @@
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import formatTimeAgo from '@/app/utils/formatTimeAgo';
 
@@ -9,11 +10,20 @@ import styled from 'styled-components';
 import { Post, Sub } from '@/app/types';
 
 import IconBox from '../../common/IconBox';
+import Dropdown from '../../common/dropdown';
 import EtcIcon from '../../svgs/EtcIcon';
+import SaveIcon from '../../svgs/SaveIcon';
 
 const HomePostInfos = ({ post }: { post: Post }) => {
   const router = useRouter();
   const { handleSubscribe: subscribe } = useSubStore();
+
+  const [isEtcOpen, setIsEtcOpen] = useState(false);
+
+  const toggleEtcOpen = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsEtcOpen((prev) => !prev);
+  };
 
   const goToSub = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -44,7 +54,7 @@ const HomePostInfos = ({ post }: { post: Post }) => {
         <span>•</span>
         <span>{formatTimeAgo(post.createdAt)}</span>
       </div>
-      <IconsWrapper>
+      <ActionsWrapper>
         {post.sub.isSubscribed ? (
           <></>
         ) : (
@@ -52,11 +62,29 @@ const HomePostInfos = ({ post }: { post: Post }) => {
             가입
           </RegisterButton>
         )}
-
         <IconWrapper>
-          <EtcIcon />
+          <IconBox
+            icon={<EtcIcon />}
+            width={16}
+            height={16}
+            onClick={(e) => toggleEtcOpen(e)}
+          />
+          <Dropdown
+            isDropdownOpen={isEtcOpen}
+            dropdownItems={[
+              <DropdownItem key="save">
+                <IconBox icon={<SaveIcon />} width={24} height={24} />
+                <span> 저장하기</span>
+              </DropdownItem>,
+              post.sub.isOwner && (
+                <DropdownItem key="delete">
+                  <span>삭제하기</span>
+                </DropdownItem>
+              ),
+            ]}
+          />
         </IconWrapper>
-      </IconsWrapper>
+      </ActionsWrapper>
     </StyledHomePostInfos>
   );
 };
@@ -110,7 +138,7 @@ const SubTitle = styled.span`
   }
 `;
 
-const IconsWrapper = styled.div``;
+const ActionsWrapper = styled.div``;
 
 const RegisterButton = styled.button`
   height: var(--rem-24);
@@ -135,6 +163,8 @@ const RegisterButton = styled.button`
 `;
 
 const IconWrapper = styled.div`
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,4 +186,23 @@ const IconWrapper = styled.div`
   }
 `;
 
+const DropdownItem = styled.div`
+  display: flex;
+  align-items: center;
+
+  padding: var(--spacer-sm) var(--spacer-md);
+
+  font: var(--font-14);
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
+  }
+
+  span {
+    color: ${({ theme }) => theme.colors.default.secondary};
+  }
+`;
 export default HomePostInfos;
