@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import formatTimeAgo from '@/app/utils/formatTimeAgo';
 
@@ -8,8 +9,11 @@ import styled from 'styled-components';
 import { Post } from '@/app/types';
 
 import IconBox from '../../common/IconBox';
+import Dropdown from '../../common/dropdown';
 import ArrowBackIcon from '../../svgs/ArrowBackIcon';
+import DeleteIcon from '../../svgs/DeleteIcon';
 import EtcIcon from '../../svgs/EtcIcon';
+import SaveIcon from '../../svgs/SaveIcon';
 
 const CommentPostInfos = ({ ...post }: Post) => {
   const router = useRouter();
@@ -17,6 +21,14 @@ const CommentPostInfos = ({ ...post }: Post) => {
   const goToBack = () => {
     router.back();
   };
+
+  const [isEtcOpen, setIsEtcOpen] = useState(false);
+
+  const toggleEtcOpen = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsEtcOpen((prev) => !prev);
+  };
+
   return (
     <StyledPostInfos>
       <PostInfoWrapper>
@@ -48,7 +60,28 @@ const CommentPostInfos = ({ ...post }: Post) => {
         </PostInfo>
       </PostInfoWrapper>
       <IconWrapper>
-        <EtcIcon />
+        <IconBox
+          icon={<EtcIcon />}
+          width={16}
+          height={16}
+          onClick={(e) => toggleEtcOpen(e)}
+        />
+        <Dropdown
+          isDropdownOpen={isEtcOpen}
+          marginTop="4xs"
+          dropdownItems={[
+            <DropdownItem key="save">
+              <IconBox icon={<SaveIcon />} width={32} height={32} />
+              <span>저장</span>
+            </DropdownItem>,
+            post.sub.isOwner && (
+              <DropdownItem key="delete">
+                <IconBox icon={<DeleteIcon />} width={32} height={32} />
+                <span>삭제</span>
+              </DropdownItem>
+            ),
+          ]}
+        />
       </IconWrapper>
     </StyledPostInfos>
   );
@@ -137,6 +170,8 @@ const User = styled.div`
 `;
 
 const IconWrapper = styled.div`
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,4 +193,29 @@ const IconWrapper = styled.div`
   }
 `;
 
+const DropdownItem = styled.div`
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+
+  padding: var(--spacer-2xs) var(--spacer-md);
+
+  font: var(--font-14);
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.neutral.backgroundHover};
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+
+    padding: 0 6px;
+    color: ${({ theme }) => theme.colors.default.secondary};
+  }
+`;
 export default CommentPostInfos;

@@ -7,7 +7,6 @@ import { Subscription } from '../../entities/Subscription';
 import { User } from '../../entities/User';
 
 export const GetHomeFeedHandler: RequestHandler = async (req, res) => {
-  console.log('getHomeFeed called');
   const user: User | undefined = res.locals.user;
   const page = parseInt(req.query.page as string) || 0;
   const limit = parseInt(req.query.limit as string) || 10;
@@ -110,9 +109,9 @@ export const GetHomeFeedHandler: RequestHandler = async (req, res) => {
       const subscriptionSubIds = subscriptions.map((s) => s.sub.id);
 
       posts.forEach((p: Post) => {
-        if (subscriptionSubIds.includes(p.sub.id)) {
-          p.sub.isSubscribed = true;
-        }
+        p.sub.isSubscribed = subscriptionSubIds.includes(p.sub.id);
+
+        p.sub.isOwner = p.user.id === user.id;
       });
     }
 

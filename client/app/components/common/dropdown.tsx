@@ -24,11 +24,14 @@ const StyledDropdownMenu = styled.div<{
   $isDropdownOpen: boolean;
   $marginTop?: string;
 }>`
+  display: flex;
+  flex-direction: column;
+
   position: absolute;
   top: 100%;
   right: 0;
 
-  width: 200px;
+  width: 160px;
 
   margin-top: ${({ $marginTop }) =>
     $marginTop ? `var(--spacer-${$marginTop})` : 0};

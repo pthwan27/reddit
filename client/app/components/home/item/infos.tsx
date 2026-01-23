@@ -11,6 +11,7 @@ import { Post, Sub } from '@/app/types';
 
 import IconBox from '../../common/IconBox';
 import Dropdown from '../../common/dropdown';
+import DeleteIcon from '../../svgs/DeleteIcon';
 import EtcIcon from '../../svgs/EtcIcon';
 import SaveIcon from '../../svgs/SaveIcon';
 
@@ -65,20 +66,23 @@ const HomePostInfos = ({ post }: { post: Post }) => {
         <IconWrapper>
           <IconBox
             icon={<EtcIcon />}
-            width={16}
-            height={16}
+            width={32}
+            height={32}
+            percentage={50}
             onClick={(e) => toggleEtcOpen(e)}
           />
           <Dropdown
             isDropdownOpen={isEtcOpen}
+            marginTop="2xs"
             dropdownItems={[
               <DropdownItem key="save">
-                <IconBox icon={<SaveIcon />} width={24} height={24} />
-                <span> 저장하기</span>
+                <IconBox icon={<SaveIcon />} width={20} height={20} />
+                <span>저장</span>
               </DropdownItem>,
               post.sub.isOwner && (
                 <DropdownItem key="delete">
-                  <span>삭제하기</span>
+                  <IconBox icon={<DeleteIcon />} width={20} height={20} />
+                  <span>삭제</span>
                 </DropdownItem>
               ),
             ]}
@@ -178,7 +182,7 @@ const IconWrapper = styled.div`
     background: ${({ theme }) => theme.colors.secondary.backgroundHover};
   }
 
-  svg {
+  > svg {
     width: var(--rem-16);
     height: var(--rem-16);
 
@@ -190,7 +194,9 @@ const DropdownItem = styled.div`
   display: flex;
   align-items: center;
 
-  padding: var(--spacer-sm) var(--spacer-md);
+  width: 100%;
+
+  padding: var(--spacer-2xs) var(--spacer-md);
 
   font: var(--font-14);
   white-space: nowrap;
@@ -201,7 +207,13 @@ const DropdownItem = styled.div`
     background: ${({ theme }) => theme.colors.neutral.backgroundHover};
   }
 
-  span {
+  > span {
+    display: flex;
+    align-items: center;
+    height: var(--rem-32);
+    font: var(--font-14);
+
+    padding: 0 6px;
     color: ${({ theme }) => theme.colors.default.secondary};
   }
 `;

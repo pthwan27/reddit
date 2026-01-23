@@ -140,14 +140,14 @@ const SubInfos = ({ sub, iconImage, onEditClick, isIcon }: InfoProps) => {
                   onClick={(e) => onHandleSubscribe(e, sub)}
                 >
                   {sub.isSubscribed ? (
-                    <span>가입 취소하기</span>
+                    <span>가입 취소</span>
                   ) : (
-                    <span>가입하기</span>
+                    <span>가입</span>
                   )}
                 </DropdownItem>,
                 sub.isOwner && (
                   <DropdownItem key="delete">
-                    <span>삭제하기</span>
+                    <span>삭제</span>
                   </DropdownItem>
                 ),
               ]}
@@ -205,7 +205,7 @@ const TitleInfo = styled.span`
 
   gap: var(--spacer-sm);
 
-  h1 {
+  > h1 {
     font: var(--font-title-h3);
     line-height: 1.5rem;
 
@@ -345,7 +345,6 @@ const DropdownItem = styled.div`
 
   padding: var(--spacer-sm) var(--spacer-md);
 
-  font: var(--font-14);
   white-space: nowrap;
 
   cursor: pointer;
@@ -354,7 +353,8 @@ const DropdownItem = styled.div`
     background: ${({ theme }) => theme.colors.neutral.backgroundHover};
   }
 
-  span {
+  > span {
+    font: var(--font-14);
     color: ${({ theme }) => theme.colors.default.secondary};
   }
 `;

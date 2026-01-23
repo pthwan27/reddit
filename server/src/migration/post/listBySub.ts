@@ -4,6 +4,7 @@ import { RequestHandler } from 'express';
 import { AppDataSource } from '../../data-source';
 import { Post } from '../../entities/Post';
 import { Sub } from '../../entities/Sub';
+import { Subscription } from '../../entities/Subscription';
 import { User } from '../../entities/User';
 
 export const ListBySubHandler: RequestHandler = async (req, res) => {
@@ -69,6 +70,19 @@ export const ListBySubHandler: RequestHandler = async (req, res) => {
 
     if (user) {
       posts.forEach((p: Post) => p.setUserVote(user));
+
+      const subscriptions = await Subscription.find({
+        where: { user: { id: user.id } },
+        relations: ['sub', 'sub.subscribers'],
+      });
+
+      const subscriptionSubIds = subscriptions.map((s) => s.sub.id);
+
+      posts.forEach((p: Post) => {
+        p.sub.isSubscribed = subscriptionSubIds.includes(p.sub.id);
+
+        p.sub.isOwner = p.user.id === user.id;
+      });
     }
 
     return res.status(200).json({ posts: instanceToPlain(posts) });

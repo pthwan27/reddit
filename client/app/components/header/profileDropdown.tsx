@@ -23,8 +23,8 @@ const ProfileDropdown = ({ isDropdownOpen, logout }: ProfileDropdownProps) => {
 const StyledDropdownMenu = styled.div<{ $isDropdownOpen: boolean }>`
   position: absolute;
   top: 100%;
-  right: -1rem;
-  margin-top: var(--spacer-xs);
+  right: 0rem;
+  margin-top: var(--spacer-2xs);
   width: 200px;
   overflow: hidden;
 
